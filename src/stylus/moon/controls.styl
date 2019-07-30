@@ -1,0 +1,43 @@
+.nav
+  align-self center
+  justify-self center
+
+.nav--prev
+  animation slideInLeft var(--transition-intro) ease
+  grid-area prev
+
+.nav--next
+  animation slideInRight var(--transition-intro) ease
+  grid-area next
+  text-align right
+
+.nav__link
+  align-items center
+  display flex
+  height CONTROLS_SIZE
+  justify-content center
+  width CONTROLS_SIZE
+
+// SVG icons.
+.nav__link__svg
+  height auto
+  flex 0 0 px_to_rem(32)
+  transition transform var(--transition)
+
+.nav__link:active .nav__link__svg
+  transform scale(.8)
+
+.nav__link__svg__path
+  fill none
+  stroke-width 4
+  transition stroke var(--transition)
+
+.nav__link:link .nav__link__svg__path
+.nav__link:visited .nav__link__svg__path
+  stroke white
+
+.nav__link:active .nav__link__svg__path
+  stroke rgba(white, .7)
+
+[no-touch] .nav__link:hover .nav__link__svg__path
+  stroke rgba(white, .7)

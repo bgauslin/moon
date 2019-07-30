@@ -1,0 +1,51 @@
+all_webfonts()
+
+html
+body
+  background black
+  margin 0
+  padding 0
+  -webkit-tap-highlight-color transparent
+  text-size-adjust none
+  webfont()
+
+*
+  box-sizing border-box
+
+// Disable UI while loading data.
+body[loading] *
+  pointer-events none
+
+a
+  text-decoration none
+
+  &:focus
+    outline none
+
+input
+button
+  appearance none
+  border 0
+  outline none
+  webfont()
+
+  &:focus
+    outline none
+
+button:hover
+  cursor pointer
+
+figure
+  margin 0
+
+img
+svg
+  height auto
+  pointer-events none
+  vertical-align middle
+  width 100%
+
+[hidden]
+  display none !important
+  pointer-events none !important
+  

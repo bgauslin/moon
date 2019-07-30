@@ -1,0 +1,45 @@
+@import 'functions'
+
+// NOTE: Keep values coordinated with 'ChartDimensions' enum in
+// 'source/js/modules/donutChart.js'
+// @type Hash
+ChartDimensions = {
+  SIZE: 320
+  SWEEP_WIDTH: 72
+  MARGIN: 44
+};
+
+// @type String
+AXIS_LABEL_SIZE = px_to_rem(32)
+
+// @type String
+BUTTON_SIZE = px_to_rem(32)
+
+// @type String
+CHART_MAX_WIDTH = px_to_rem(480)
+
+// @type Number
+CHART_SIZE_UNITS = ChartDimensions.SIZE + (ChartDimensions.MARGIN * 2)
+
+// @type String
+CHART_SIZE = px_to_rem(CHART_SIZE_UNITS)
+
+// @type String
+CONTROLS_SIZE = px_to_rem(48)
+
+// @type String
+LOCATION_HEIGHT = px_to_rem(32)
+
+// @type String
+LOCATION_MAX_WIDTH = px_to_rem(ChartDimensions.SIZE)
+
+// @type Number
+PHOTO_SIZE = ChartDimensions.SIZE - (ChartDimensions.SWEEP_WIDTH * 2)
+
+// @type String
+PHOTO_WIDTH = (PHOTO_SIZE / CHART_SIZE_UNITS) * 100%
+
+// @type Hash
+Breakpoint = {
+  SMALL: 'screen and (min-width: %s)' % (CHART_SIZE + (AXIS_LABEL_SIZE + CONTROLS_SIZE * 2))
+}

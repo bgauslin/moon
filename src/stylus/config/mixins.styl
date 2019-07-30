@@ -1,0 +1,38 @@
+// @mixin
+all_webfonts()
+  @font-face
+    font-display block
+    font-family 'Avenir Variable'
+    font-weight 1 999
+    src url('../webfonts/AvenirNext-Variable.woff2') format('woff2')
+
+// @mixin
+// @param Color link
+// @param Color visited
+// @param Color hover
+// @param Color active
+link(link, visited, hover, active)
+  &:link
+    color link
+
+  &:visited
+    color visited
+
+  &:active
+  &:focus
+    color active
+
+  [no-touch] &
+    &:hover
+      color hover
+
+// @mixin
+// @param Number weight [500]
+webfont(weight = 500)
+  font-family 'Avenir Variable', sans-serif
+  font-variation-settings 'wght' weight
+
+// @mixin
+// @param Number weight
+webfont_weight(weight)
+  font-variation-settings 'wght' weight

@@ -1,0 +1,118 @@
+// ------------------------------
+// Location container and form.
+.location
+.location__form
+[name=location]
+  height LOCATION_HEIGHT
+  width 100%
+
+.location
+  margin 0 auto
+  max-width LOCATION_MAX_WIDTH
+  position relative
+
+.location__form
+[name=location]
+  position absolute
+
+// ------------------------------
+// Location text input.
+[name=location]
+  align-items center
+  background rgba(white, 0)
+  border-radius (LOCATION_HEIGHT / 2)
+  color white
+  display inline-flex
+  font-size 1em
+  padding 0 px_to_rem(32)
+  text-align center
+  text-overflow ellipsis
+  transition background var(--transition)
+
+  &:hover
+    cursor pointer
+    opacity .7
+
+  &:focus:hover
+    cursor text
+    opacity 1
+
+  &:focus
+    background rgba(white, .25)
+
+[no-touch] [name=location]
+  transition background var(--transition), opacity var(--transition)
+
+// ------------------------------
+// All buttons - inherited.
+.location button
+  align-items center
+  background 0
+  border-radius 50%
+  display inline-flex
+  height BUTTON_SIZE
+  justify-content center
+  overflow hidden
+  padding 0
+  position absolute
+  top 0
+  transition background var(--transition)
+  width BUTTON_SIZE
+
+// ------------------------------
+// All icons - inherited.
+.icon > path
+  transition fill var(--transition)
+
+svg.icon
+  transition background var(--transition)
+
+// ------------------------------
+// Reset button and icon.
+button[type=reset]
+  padding 2px
+  right 0
+
+.icon--reset
+  border-radius 50%
+  overflow hidden
+  padding 2px
+  width 16px
+
+.icon--reset > path:first-child
+  fill black
+
+[name=location]:focus ~ button[type=reset]
+  & > .icon--reset
+    background rgba(white, .7)
+
+  &:hover > .icon--reset
+  &:focus > .icon--reset
+    background rgba(white, 1)
+
+// ------------------------------
+// Submit button.
+button[type=submit]
+  visibility hidden
+
+// ------------------------------
+// Geolocation button and icon.
+.geolocation
+  left 0
+  z-index 1
+
+.geolocation[enabled]
+  background rgba(white, 0)
+
+  &:hover
+  &:focus
+    background rgba(white, .25)
+
+.icon--location
+  width 24px
+
+.icon--location > path
+  fill rgba(white, 0)
+
+.geolocation[enabled] .icon--location > path:last-child
+  fill rgba(white, 1)

@@ -1,0 +1,23 @@
+.header
+  align-self center
+  animation slideInDown var(--transition-intro) ease
+  grid-area header
+  padding px_to_rem(8) px_to_rem(16)
+
+.header__title
+  font-size var(--site-header)
+  margin 0
+  text-align center
+
+.header__link
+  display inline-block
+  link(white, white, rgba(white, .7), rgba(white, .7))
+  padding px_to_rem(8)
+  transition transform var(--transition)
+  white-space nowrap
+
+.header__link:active
+  transform scale(.8)
+
+[no-touch] .header__link
+  transition color var(--transition), transform var(--transition)

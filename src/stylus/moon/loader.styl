@@ -1,0 +1,36 @@
+LOADER_HEIGHT = 3px
+LOADER_WIDTH = 20vw
+
+.loader
+  display none
+  height LOADER_HEIGHT
+  width 100vw
+  position fixed
+
+body[loading] .loader
+  display block
+
+.loader::before
+  animation loading 2s .3s linear infinite
+  background white
+  content ''
+  display block
+  height LOADER_HEIGHT
+  left (- LOADER_WIDTH)
+  position absolute
+  width LOADER_WIDTH
+
+@keyframes loading 
+  0
+    left (- LOADER_WIDTH)
+    width 30%
+  50%
+    width 30%
+  70%
+    width 70%
+  80%
+    left 50%
+  95%
+    left 120%
+  100%
+    left 100%

@@ -1,0 +1,22 @@
+.app
+  display grid
+  grid-template-areas 'header header header'\
+                      'charts charts charts'\
+                      'prev info next'\
+                      'footer footer footer'
+  grid-template-columns CONTROLS_SIZE 1fr CONTROLS_SIZE
+  grid-template-rows auto 1fr auto auto
+  min-height 100vh // fallback
+  min-height calc(var(--viewport-unit, 1vh) * 100)
+
+  @media Breakpoint.SMALL
+    grid-template-areas 'header header header'\
+                        'prev charts next'\
+                        'info info info'\
+                        'footer footer footer'
+    grid-template-columns minmax(CONTROLS_SIZE, 1fr) minmax(CHART_SIZE, CHART_MAX_WIDTH) minmax(CONTROLS_SIZE, 1fr)
+    grid-template-rows 1fr auto 1fr auto
+
+// Font styles if current date is also today.
+.today
+  webfont_weight(600)

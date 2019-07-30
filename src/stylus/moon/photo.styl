@@ -1,0 +1,39 @@
+.photo
+  padding 0 0 100%
+  position absolute
+  width 100%
+
+.photo[hemisphere=southern] .photo__figure
+  transform rotate(180deg)
+
+.photo__frame
+  align-items center
+  display flex
+  height 100%
+  justify-content center
+  position absolute
+  width 100%
+
+.photo__figure
+  border-radius 50%
+  flex 0 0 PHOTO_WIDTH
+  opacity 0
+  overflow hidden
+  padding 0 0 PHOTO_WIDTH
+  position relative
+  transition opacity var(--transition) ease
+
+.photo__figure[ready]
+  opacity 1
+
+.photo__image
+  position absolute
+
+.photo__image[frame="1"]
+  top 0
+
+// NOTE: Keep upper range value coordinated with 'MOONPHASE_IMAGE_COUNT' in
+// 'source/js/modules/sunAndMoonData.js'
+for n in (2..26)
+  .photo__image[frame=\"{n}\"]
+    top '-%s00%' % (n - 1)
