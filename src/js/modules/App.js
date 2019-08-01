@@ -82,24 +82,12 @@ class App {
     // Map local constants to API data.
     const { hemisphere, moonrise, moonset, percent, phase, sunrise, sunset } = data;
 
-    // console.log('hemisphere', hemisphere);
-    // console.log('moonrise', moonrise);
-    // console.log('moonset', moonset);
-    // console.log('percent', percent);
-    // console.log('phase', phase);
-    // console.log('sunrise', sunrise);
-    // console.log('sunset', sunset);
-
-    // return;
-
     // Update custom element attributes so each component can do its thing.
-
     this.moonInfoEl_.setAttribute('percent', percent);
     this.moonInfoEl_.setAttribute('phase', phase);
     
     this.moonPhotoEl_.setAttribute('hemisphere', hemisphere);
     this.moonPhotoEl_.setAttribute('percent', percent);
-    // this.moonPhotoEl_.setAttribute('phase', phase);
 
     this.moonChartEl_.setAttribute('start', moonrise);
     this.moonChartEl_.setAttribute('end', moonset);
@@ -110,7 +98,11 @@ class App {
     return;
 
     // Update the header and document title.
-    this.headerLinkEl_.textContent = this.dateTime_.formatDate(date, locale, 'long');
+    this.headerLinkEl_.textContent = this.dateTime_.formatDate(
+      this.date_,
+      this.locale_,
+      'long'
+    );
     this.updateDocumentTitle({
       date: this.date_,
       locale: this.locale_,
@@ -120,8 +112,8 @@ class App {
     });
 
     // Disable the progress bar and send a new Analytics pageview.
-    this.eventHandler_.loading(false);
-    this.eventHandler_.sendPageview(window.location.pathname, document.title);
+    // this.eventHandler_.loading(false);
+    // this.eventHandler_.sendPageview(window.location.pathname, document.title);
   }
 
   /** 
@@ -153,6 +145,7 @@ class App {
     document.title = pageTitle;
   }
 
+  // TODO: Move this to UserLocation custom element.
   /**
    * Updates UI with new location and saves it to localStorage.
    * @private

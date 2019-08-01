@@ -42,34 +42,34 @@ class DonutChart extends HTMLElement {
     super();
 
     /** @private {string} */
-    // this.color_ = this.getAttribute(COLOR_ATTR);
+    this.color_ = this.getAttribute(COLOR_ATTR);
 
     /** @private {string} */
-    // this.start_ = this.getAttribute(START_ATTR);
+    this.start_ = '';
 
     /** @private {string} */
-    // this.end_ = this.getAttribute(END_ATTR);
+    this.end_ = '';
 
     /** @private {number} */
-    // this.height_ = Chart.SIZE + (Chart.MARGIN * 2);
+    this.height_ = Chart.SIZE + (Chart.MARGIN * 2);
 
     /** @private {number} */
-    // this.width_ = Chart.SIZE + (Chart.MARGIN * 2);
+    this.width_ = Chart.SIZE + (Chart.MARGIN * 2);
 
     /** @private {number} */
-    // this.cx_ = this.height_ / 2;
+    this.cx_ = this.height_ / 2;
 
     /** @private {number} */
-    // this.cy_ = this.width_ / 2;
+    this.cy_ = this.width_ / 2;
 
     /** @private {number} */
-    // this.radius_ = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
+    this.radius_ = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
 
     /** @private {number} */
-    // this.circumference_ = 2 * Math.PI * this.radius_; // 2πr
+    this.circumference_ = 2 * Math.PI * this.radius_; // 2πr
 
     /** @private {!number} Gap from edge of chart's arc for label placement. */
-    // this.radiusForLabels_ = (Chart.SIZE / 2) + Chart.LABEL_GAP;
+    this.radiusForLabels_ = (Chart.SIZE / 2) + Chart.LABEL_GAP;
   }
 
   static get observedAttributes() {
@@ -78,7 +78,7 @@ class DonutChart extends HTMLElement {
 
   /** @callback */
   attributeChangedCallback() {
-    // this.render_();
+    this.render_();
   }
 
   /**
@@ -86,6 +86,13 @@ class DonutChart extends HTMLElement {
    * @private
    */
   render_() {
+    this.start_ = this.getAttribute(START_ATTR);
+    this.end_ = this.getAttribute(END_ATTR);
+
+    if (this.start_ === '' || this.end_ === '') {
+      return;
+    }
+
     // Convert values to degrees for arc. 'sweep' start and end values are
     // adjusted since the default start for SVG circles is 3 o'clock and we
     // want arcs to start at 6 o'clock, which is midnight graphically.
@@ -129,9 +136,8 @@ class DonutChart extends HTMLElement {
     const setTransform = `rotate(${setSweep.sweep}, ${setRotation.x}, ${setRotation.y})`;
 
     // Rendered chart HTML.
-    // TODO: refactor this.classname_ below
     const html = `
-      <svg class="chart chart--${this.classname_}" viewBox="0 0 ${this.height_} ${this.width_}">\
+      <svg viewBox="0 0 ${this.height_} ${this.width_}">\
         <g>\
           <circle \
             cx="${this.cx_}" \
