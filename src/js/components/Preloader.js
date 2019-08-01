@@ -16,13 +16,21 @@ const SPINNER_DELAY = 1000;
 const READY_ATTR = 'ready';
 
 /** @class */
-class Preloader {
-  constructor(photoClass) {
+class Preloader extends HTMLElement {
+  constructor() {
     /** @private {string} */
-    this.photoClass_ = photoClass;
+    this.target_ = this.getAttribute('target');
+
+    /** @private {Element} */
+    this.targetEl = this.querySelector(this.target_);
 
     /** @private {instance} */
     this.spinner_ = new Spinner(SpinnerOptions);
+  }
+
+  /** @callback */
+  connectedCallback() {
+    this.preload_();
   }
 
   /**
@@ -30,9 +38,8 @@ class Preloader {
    * an image's figure wrapper has a 'ready' attribute.
    * @public 
    */
-  preload() {
-    const photoEl = document.querySelector(`.${this.photoClass_}`);
-    const figureEl = photoEl.querySelector('figure');
+  preload_() {
+    const figureEl = this.targetEl_.querySelector('figure');
     const imageEl = figureEl.querySelector('img');
 
     let img = new Image();
@@ -45,7 +52,7 @@ class Preloader {
     window.setTimeout(() => {
       if (!figureEl.hasAttribute(READY_ATTR)) {
         this.spinner_.spin();
-        photoEl.appendChild(this.spinner_.el);
+        targetEl.appendChild(this.spinner_.el);
       }
     }, SPINNER_DELAY);
   }

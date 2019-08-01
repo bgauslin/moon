@@ -4,7 +4,6 @@ const EventType = {
   CLICK: 'click',
   FOCUS: 'focus',
   LOADING: 'loading', // custom event
-  LOCATION: 'location', // custom event
   POPSTATE: 'popstate',
   READY: 'DOMContentLoaded',
   RESET: 'reset',
@@ -62,20 +61,6 @@ class EventHandler {
       ga('set', 'title', title);
       ga('send', 'pageview');
     }
-  }
-
-  /**
-   * Dispatches custom event for location update.
-   * @param {?string} location
-   * @public
-   */
-  updateLocation(location) {
-    const event = new CustomEvent(EventType.LOCATION, {
-      detail: {
-        location: location,
-      }
-    });
-    document.dispatchEvent(event);
   }
 }
 

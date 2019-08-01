@@ -1,4 +1,6 @@
-import { EventType, EventHandler } from './EventHandler';
+// TODO: Convert all of this to a custom element.
+
+import { EventType, EventHandler } from '../modules/EventHandler';
 
 /** @enum {string} */ 
 const Attribute = {
@@ -43,11 +45,10 @@ const SVG_ICON_SUBMIT = `
 
 /** @class */
 class UserLocation {
-  /**
-   * @param {!Object} config
-   * @param {!string} config.fallbackLocation
-   */
-  constructor(config) {
+  constructor() {
+    /** @private {!string} */ 
+    this.fallbackLocation_ = this.getAttribute('location');
+    
     /** @private {?Element} */ 
     this.form_ = null;
 
@@ -60,9 +61,6 @@ class UserLocation {
     /** @private {?string} */ 
     this.userLocation_ = null;
 
-    /** @private {!string} */ 
-    this.fallbackLocation_ = config.fallbackLocation;
-
     /** @private {?string} */
     this.previousLocation_ = null;
 
@@ -72,7 +70,7 @@ class UserLocation {
 
   init() {
     this.getInitialLocation_();
-    this.eventHandler_.updateLocation(this.userLocation_);
+    // this.eventHandler_.updateLocation(this.userLocation_);
     this.renderLocationEl_(this.userLocation_);
     this.enableGeolocation_();
     this.addListeners_();
@@ -89,7 +87,6 @@ class UserLocation {
       const newLocation = this.input_.value;
       if (newLocation !== this.userLocation_) {
         this.userLocation_ = newLocation;
-        this.eventHandler_.updateLocation(this.userLocation_);
         this.input_.blur();
       }
     });

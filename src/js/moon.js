@@ -1,37 +1,40 @@
 require ('dotenv').config();
+import { App } from './modules/App';
+import { ChartAxes } from './components/ChartAxes';
+import { DonutChart } from './components/DonutChart';
 import { EventType } from './modules/EventHandler';
-import { SunAndMoonData } from './modules/SunAndMoonData';
+import { MoonInfo } from './components/MoonInfo';
+import { MoonPhoto } from './components/MoonPhoto';
+import { PrevNext } from './components/PrevNext';
 import { Tools } from './modules/Tools';
-import '../stylus/moon.styl';
+
+// Stylesheet import for Webpack.
+import '../stylus/moon.styl'; 
 
 /** @const {string} */
 const LOADING_ATTR = 'loading';
 
 /** @instance */
-const sunAndMoonData = new SunAndMoonData({
-  fallbackLocation: 'New York, NY',
-  locale: 'en-GB',
-});
+const app = new App('usno', 'en-GB');
 
 /** @instance */
 const tools = new Tools();
+
+// Define all custom elements.
+customElements.define('chart-axes', ChartAxes);
+customElements.define('donut-chart', DonutChart);
+customElements.define('moon-info', MoonInfo);
+customElements.define('moon-photo', MoonPhoto);
+customElements.define('prev-next', PrevNext);
 
 /**
  * Initializes app when DOM is ready.
  * @listens EventType.READY
  */
 document.addEventListener(EventType.READY, () => {
-  sunAndMoonData.init();
+  app.init();
   tools.init();
 }, { once: true } );
-
-/**
- * Updates UI when 'location' custom event occurs.
- * @listens EventType.LOCATION
- */
-document.addEventListener(EventType.LOCATION, (e) => {
-  sunAndMoonData.update(e.detail.location);
-});
 
 /**
  * Shows/hides progress bar when 'loading' custom event occurs.
@@ -50,7 +53,7 @@ document.addEventListener(EventType.LOADING, (e) => {
  * @listens EventType.POPSTATE
  */
 window.addEventListener(EventType.POPSTATE, () => {
-  sunAndMoonData.update();
+  app.update();
 }, false);
 
 /**

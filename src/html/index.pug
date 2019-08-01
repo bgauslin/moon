@@ -3,8 +3,31 @@ html(lang="en")
   head
     title Moon Phase
     meta(charset="utf-8")
-    meta(name="description", content="Location-based moon phase, moonrise, moonset, sunrise, and sunset.")    
-    meta(name="viewport", content="width=device-width,initial-scale=1")
-    meta(name="apple-mobile-web-app-capable", content="yes")
+    meta(name="description" content="Location-based moon phase, moonrise, moonset, sunrise, and sunset.")    
+    meta(name="viewport" content="width=device-width,initial-scale=1")
+    meta(name="apple-mobile-web-app-capable" content="yes")
   body
-    div.app#app
+    div.app
+      div.loader
+      header.header
+        h1.header__title
+          a.header__link(href="" title="Go to today")
+          div.location(location="New York, NY")
+      div.charts
+        div.charts__frame
+          chart-axes.chart.chart--axes
+          donut-chart.chart.chart--sun(start="" end="")
+          donut-chart.chart.chart--moon(start="" end="")
+          moon-photo.photo(hemisphere="")
+      moon-info.info(percent="" phase="")
+      prev-next.nav.nav--prev(direction="prev" date="" location="")
+      prev-next.nav.nav--next(direction="next" date="" location="")
+      footer.footer
+        p.copyright
+          span.copyright__years © 2018
+          a.copyright__owner(
+            href="https://gauslin.com",
+            title="Ben Gauslin’s Website",
+            target="_blank",
+            rel="noopener",
+          ) Ben Gauslin
