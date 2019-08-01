@@ -10,10 +10,10 @@ class MoonInfo extends HTMLElement {
     super();
 
     /** @private {string} */
-    this.percent_ = this.getAttribute(PERCENT_ATTR);
+    this.percent_ = '';
 
     /** @private {string} */
-    this.phase_ = this.getAttribute(PHASE_ATTR);
+    this.phase_ = '';
   }
 
   static get observedAttributes() {
@@ -22,7 +22,7 @@ class MoonInfo extends HTMLElement {
 
   /** @callback */
   attributeChangedCallback() {
-    // this.render_();
+    this.render_();
   }
 
   /**
@@ -30,15 +30,19 @@ class MoonInfo extends HTMLElement {
    * @private
    */
   render_() {
-    const visibility = (this.percent_ === 0) ? 'invisible' : '';
+    this.percent_ = this.getAttribute(PERCENT_ATTR);
+    this.phase_ = this.getAttribute(PHASE_ATTR);
+
+    const visibility = (this.percent_ === '0') ? 'invisible' : '';
     const html = `\
-      <div class="info__phase">${this.phaseLabel_}</div>\
-      <div class="info__percent" ${visibility}>${this.percent_}%</div>\
+      <div class="${this.className}__phase">${this.phaseLabel_()}</div>\
+      <div class="${this.className}__percent" ${visibility}>${this.percent_}%</div>\
     `;
     this.innerHTML = html.replace(/\s\s/g, '');
   }
   
   /**
+   * TODO: We may not need this...
    * Returns moon phase with first letter of each word capitalized.
    * @return {string} 
    * @private

@@ -193,8 +193,7 @@ class DataFetcher {
         break;
     }
 
-    return percent;
-    // return Math.floor(percent);
+    return Math.floor(percent);
   }
 }
 
