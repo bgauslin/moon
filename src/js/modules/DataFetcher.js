@@ -40,7 +40,32 @@ class DataFetcher {
         endpoint = `${process.env.API_DATA}?date=${month_}/${day_}/${year}&loc=${location_}`;
         break;
       case 'wwo':
-        endpoint = `${process.env.API_DATA}?format=json&key=${process.env.API_KEY}&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes`;
+        endpoint = `${process.env.WWO_API_DATA}?format=json&key=${process.env.WWO_API_KEY}&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes`;
+        break;
+      case 'aeris':
+        // Get the day before and after in case of null values.
+        const prevDate = this.dateTime_.prevDate(date);
+        const nextDate = this.dateTime_.nextDate(date);
+
+        // Zero-pad prevDate data.
+        const prevYear = prevDate.year;
+        const prevMonth = this.helpers_.zeroPad(prevDate.month);
+        const prevDay = this.helpers_.zeroPad(prevDate.day);
+
+        // Zero-pad nextDate data.
+        const nextYear = nextDate.year;
+        const nextMonth = this.helpers_.zeroPad(nextDate.month);
+        const nextDay = this.helpers_.zeroPad(nextDate.day);
+
+        // Make to/from references for API params.
+        const from = `${prevYear}-${prevMonth}-${prevDay}`;
+        const to = `${nextYear}-${nextMonth}-${nextDay}`;
+
+        // Customize which fields to return from the API.
+        const fields = 'loc,sun.riseISO,sun.setISO,moon.riseISO,moon.setISO,moon.phase.phase,moon.phase.name';
+      
+        // Construct the endpoint query.
+        endpoint = `${process.env.AERIS_API_DATA}${location_}?from=${from}&to=${to}&p=${location_}&fields=${fields}&client_id=${process.env.AERIS_ACCESS_ID}&client_secret=${process.env.AERIS_SECRET_KEY}`;
         break;
     }
 
@@ -54,11 +79,10 @@ class DataFetcher {
 
     console.log(this.data_);
 
-    // If no data is available, alert the user, restore their previous
-    // location, and return.
+    // If no data is available, alert the user and restore previous location.
     if (!this.data_ || this.data_.error !== false) {
       alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
-      // TODO: Return a string/boolean so that App can reset location.
+      // TODO: Return reponse status so that App can reset location.
       return;
     }
 
@@ -71,7 +95,7 @@ class DataFetcher {
       hemisphere: this.hemisphere_(),
       moonrise,
       moonset,
-      percent: this.moonPhasePercent_(), // TODO: debug
+      percent: this.moonPhasePercent_(),
       phase: this.moonPhase_(),
       sunrise,
       sunset,
@@ -92,6 +116,9 @@ class DataFetcher {
       case 'wwo':
         latitude = this.data_.nearest_area[0].latitude;
         break;
+      case 'aeris':
+        latitude = this.data_[0].loc.lat;
+        break;
     }
     return (parseInt(latitude) >= 0) ? 'northern' : 'southern';
   }
@@ -110,6 +137,8 @@ class DataFetcher {
           : this.data_.closestphase.phase);
       case 'wwo':
         return this.data_.moon_phase;
+      case 'aeris':
+        return this.data_[1].moon.phase.name;
     }
   }
 
@@ -134,6 +163,29 @@ class DataFetcher {
       case 'wwo':
         sunriseData = this.data_.time_zone[0].sunrise;
         sunsetData = this.data_.time_zone[0].sunset;
+        sunrise = this.dateTime_.militaryTime(sunriseData);
+        sunset = this.dateTime_.militaryTime(sunsetData);
+        break;
+      case 'aeris':
+        sunriseData = this.data_[1].sun.riseISO;
+        sunsetData = this.data_[1].sun.setISO;
+    
+        // Fallback to sunrise on the day before, then day after if day before
+        // is null.
+        if (!sunriseData) {
+          const sunriseBefore = this.data_[0].sun.riseISO;
+          const sunriseAfter = this.data_[2].sun.riseISO;
+          sunriseData = sunriseBefore ? sunriseBefore : sunriseAfter;
+        }
+    
+        // Fallback to sunset on the day before, then day after if day before
+        // is null.
+        if (!sunsetData) {
+          const sunsetBefore = this.data_[0].sun.setISO;
+          const sunsetAfter = this.data_[2].sun.setISO;
+          sunsetData = sunsetBefore ? sunsetBefore : sunsetAfter;
+        }
+
         sunrise = this.dateTime_.militaryTime(sunriseData);
         sunset = this.dateTime_.militaryTime(sunsetData);
         break;
@@ -169,6 +221,7 @@ class DataFetcher {
         }
         moonset = this.dateTime_.militaryTime(moonsetData.time);
         break;
+
       case 'wwo':
         moonriseData = this.data_.time_zone[0].moonrise;
         moonsetData = this.data_.time_zone[0].moonset;
@@ -190,7 +243,31 @@ class DataFetcher {
         } else {
           moonset = this.dateTime_.militaryTime(moonsetData);
         }
-        break; 
+        break;
+
+      case 'aeris':
+        moonriseData = this.data_[1].moon.riseISO;
+        moonsetData = this.data_[1].moon.setISO;
+    
+        // Fallback to moonrise on the day before, then day after if day before
+        // is null.
+        if (moonriseData === null) {
+          const moonriseBefore = this.data_[0].moon.riseISO;
+          const moonriseAfter = this.data_[2].moon.riseISO;
+          moonriseData = (moonriseBefore !== null) ? moonriseBefore : moonriseAfter;
+        }
+    
+        // Fallback to moonset on the day before, then day after if day before
+        // is null.
+        if (moonsetData === null) {
+          const moonsetBefore = this.data_[0].moon.setISO;
+          const moonsetAfter = this.data_[2].moon.setISO;
+          moonsetData = (moonsetBefore !== null) ? moonsetBefore : moonsetAfter;
+        }
+
+        moonrise = this.dateTime_.militaryTime(moonriseData);
+        moonset = this.dateTime_.militaryTime(moonsetData);
+        break;
     }
 
     return { moonrise, moonset };
@@ -214,7 +291,12 @@ class DataFetcher {
         break;
       case 'wwo':
         illumination = parseInt(this.data_.moon_illumination);
+        break;
+      case 'aeris':
+        // TODO: Figure out how to get illumination from AerisWeather API data.
+        // illumination = parseInt(this.data_.todo);
         break; 
+
     }
     
     switch (this.moonPhase_().toUpperCase()) {
