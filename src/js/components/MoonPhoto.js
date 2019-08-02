@@ -50,9 +50,10 @@ class MoonPhoto extends HTMLElement {
     }
 
     // TODO: (?) Provide a description in the 'alt' attribute.
+    // TODO: Remove 'ready' attribute on figure after preloader is wired up.
     const html = `\      
       <div class="${this.className}__frame">\
-        <figure class="${this.className}__figure">\
+        <figure class="${this.className}__figure" ready>\
           <img class="${this.className}__image" \
                 src="${Image.PATH_1X}" \
                 srcset="${Image.PATH_1X} 1x, ${Image.PATH_2X} 2x" \
