@@ -31,13 +31,16 @@ class DataFetcher {
     const { year, month, day } = date;
     const month_ = this.helpers_.zeroPad(month);
     const day_ = this.helpers_.zeroPad(day);
+    const location_ = location.toLowerCase().replace(/[\s]/g, '+');
 
     // Set up endpoint and query params based on the API.
     let endpoint;
     switch (this.api_) {
       case 'usno':
-        const loc = location.toLowerCase().replace(/[\s]/g, '+');
-        endpoint = `${process.env.API_DATA}?date=${month_}/${day_}/${year}&loc=${loc}`;
+        endpoint = `${process.env.API_DATA}?date=${month_}/${day_}/${year}&loc=${location_}`;
+        break;
+      case 'wwo':
+        endpoint = `${process.env.API_DATA}?format=json&key=${process.env.API_KEY}&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes`;
         break;
     }
 
@@ -81,10 +84,16 @@ class DataFetcher {
    * @private
    */
   hemisphere_() {
+    let latitude;
     switch (this.api_){
       case 'usno':
-        return (parseInt(this.data_.lat) >= 0) ? 'northern' : 'southern';
+        latitude = this.data_.lat;
+        break;
+      case 'wwo':
+        latitude = this.data_.nearest_area[0].latitude;
+        break;
     }
+    return (parseInt(latitude) >= 0) ? 'northern' : 'southern';
   }
 
   /**
@@ -99,6 +108,8 @@ class DataFetcher {
         return (this.data_.curphase
           ? this.data_.curphase
           : this.data_.closestphase.phase);
+      case 'wwo':
+        return this.data_.moon_phase;
     }
   }
 
@@ -119,6 +130,12 @@ class DataFetcher {
         sunsetData = this.data_.sundata.find(item => item.phen === 'S');
         sunrise = this.dateTime_.militaryTime(sunriseData.time);
         sunset = this.dateTime_.militaryTime(sunsetData.time);
+        break;
+      case 'wwo':
+        sunriseData = this.data_.time_zone[0].sunrise;
+        sunsetData = this.data_.time_zone[0].sunset;
+        sunrise = this.dateTime_.militaryTime(sunriseData);
+        sunset = this.dateTime_.militaryTime(sunsetData);
         break;
     }
 
@@ -152,6 +169,14 @@ class DataFetcher {
         }
         moonset = this.dateTime_.militaryTime(moonsetData.time);
         break;
+      case 'wwo':
+        moonriseData = this.data_.time_zone[0].moonrise;
+        moonsetData = this.data_.time_zone[0].moonset;
+        // TODO: fetch data for next day or previous day if data for current day
+        // doesn't exist.
+        moonrise = this.dateTime_.militaryTime(moonriseData);
+        moonset = this.dateTime_.militaryTime(moonsetData);
+        break; 
     }
 
     return { moonrise, moonset };
@@ -165,7 +190,6 @@ class DataFetcher {
   moonPhasePercent_() {
     let percent;
     let illumination;
-    const phase = this.moonPhase_();
 
     switch (this.api_) {
       case 'usno':
@@ -174,9 +198,12 @@ class DataFetcher {
         const fracillum = (this.data_.fracillum) ? this.data_.fracillum : '0%';
         illumination = parseInt(fracillum.replace('%', ''));
         break;
+      case 'wwo':
+        illumination = parseInt(this.data_.moon_illumination);
+        break; 
     }
     
-    switch (phase.toUpperCase()) {
+    switch (this.moonPhase_().toUpperCase()) {
       case 'NEW MOON':
         percent = 0;
         break;
