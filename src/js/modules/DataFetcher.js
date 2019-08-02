@@ -1,4 +1,5 @@
 import { DateTimeUtils } from './DateTimeUtils';
+import { Helpers } from './Helpers';
 
 /** @class */
 class DataFetcher {
@@ -14,6 +15,9 @@ class DataFetcher {
 
     /** @instance */
     this.dateTime_ = new DateTimeUtils();
+
+    /** @instance */
+    this.helpers_ = new Helpers();
   }
 
   /**
@@ -25,8 +29,8 @@ class DataFetcher {
    */
   async fetch(date, location) {
     const { year, month, day } = date;
-    const month_ = this.dateTime_.zeroPad(month);
-    const day_ = this.dateTime_.zeroPad(day);
+    const month_ = this.helpers_.zeroPad(month);
+    const day_ = this.helpers_.zeroPad(day);
 
     // Set up endpoint and query params based on the API.
     let endpoint;

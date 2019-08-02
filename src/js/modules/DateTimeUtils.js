@@ -224,15 +224,6 @@ class DateTimeUtils {
   validYear_(year) {
     return (year >= ApiYears.MIN && year <= ApiYears.MAX);
   }
-
-  /**
-   * @param {!number} n
-   * @return {string|number} Value with zero-padding if less than 10.
-   * @public
-   */
-  zeroPad(n) {
-    return (n < 10) ? `0${n}` : n;
-  }
 }
 
 export { DateTimeUtils };
