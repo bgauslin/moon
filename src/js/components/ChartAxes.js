@@ -101,7 +101,7 @@ class ChartAxes extends HTMLElement {
     });
 
     const html = `\
-      <svg class="chart chart--axes" viewbox="0 0 ${VIEWBOX} ${VIEWBOX}">\
+      <svg viewbox="0 0 ${VIEWBOX} ${VIEWBOX}">\
         <g>${axisLines}</g>\
         <g>${tickLines}</g>\
       </svg>\
