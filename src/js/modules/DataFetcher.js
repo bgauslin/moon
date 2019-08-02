@@ -92,7 +92,9 @@ class DataFetcher {
     switch (this.api_){
       case 'usno':
         // If there's no current phase in the API data, get the closest phase.
-        return (this.data_.curphase) ? this.data_.curphase : this.data_.closestphase.phase;
+        return (this.data_.curphase
+          ? this.data_.curphase
+          : this.data_.closestphase.phase);
     }
   }
 
