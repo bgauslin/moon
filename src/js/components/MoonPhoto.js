@@ -1,9 +1,3 @@
-/**
- * @typedef {Object} MoonPhaseImage
- * @property {number} imageNumber - Moon phase photo sprite's position.
- * @property {string} alt - Text content for image 'alt' attribute.
- */
-
 /** @enum {string} */
 const Image = {
   PATH_1X: '/img/moon-phases-26-240.min.jpg',
@@ -16,36 +10,36 @@ const Image = {
  */
 const MOONPHASE_IMAGE_COUNT = 26;
 
+/** @const {string} */
+const PERCENT_ATTR = 'percent';
+
+/** @const {string} */
+const PHASE_ATTR = 'phase';
+
 /** @class */
 class MoonPhoto extends HTMLElement {
   constructor() {
     super();
 
     /** @private {string} */
-    // this.description_ = this.getAttribute('description');
+    this.percent_ = '';
 
     /** @private {string} */
-    // this.hemisphere_ = this.getAttribute('hemisphere');
-
-    /** @private {string} */
-    // this.phase_ = this.getAttribute('phase');
-
-    /** @private {number} */
-    this.imageFrame_ = 0;
+    this.phase_ = '';
   }
 
   static get observedAttributes() {
-    return ['description', 'hemisphere', 'phase'];
+    return [PERCENT_ATTR, PHASE_ATTR];
   }
 
   /** @callback */
-  connectedCallback() {
-    // this.render_();
-  }
+  // connectedCallback() {
+  //   this.render_();
+  // }
 
   /** @callback */
   attributeChangedCallback() {
-    // this.update_();
+    this.render_();
   }
 
   /** 
@@ -53,18 +47,22 @@ class MoonPhoto extends HTMLElement {
    * @private
    */
   render_() {
-    // TODO: Set 'description', 'phase', and 'hemisphere' on the element, then
-    // let the custom element do the 'imageFrame' calculation based on 'phase'.
+    this.percent_ = this.getAttribute(PERCENT_ATTR);
+    this.phase_ = this.getAttribute(PHASE_ATTR);
 
-    // TODO: Make first line of html below the html for this custom element.
+    if (!this.phase_ || !this.percent_) {
+      return;
+    }
+
+    // TODO: (?) Provide a description in the 'alt' attribute.
     const html = `\      
       <div class="${this.className}__frame">\
         <figure class="${this.className}__figure">\
           <img class="${this.className}__image" \
                 src="${Image.PATH_1X}" \
                 srcset="${Image.PATH_1X} 1x, ${Image.PATH_2X} 2x" \
-                alt="${this.description_}" \
-                frame="${imageNumber}">\
+                alt="" \
+                frame="${this.imageNumber_()}">\
         </figure>\
       </div>\
     `;
@@ -75,33 +73,20 @@ class MoonPhoto extends HTMLElement {
     // this.preloader_.preload();
   }
 
-  /** @private */
-  update_() {
-    const imageEl = this.querySelector('img');
-    imageEl.setAttribute('alt', this.description_);
-    imageEl.setAttribute('frame', this.imageFrame_);
-  }
-
-  /** @private */
-  calculateImageFrame_() {
-    return;
-  }
-
   /**
    * Returns moon phase photo sprite's position and the image's 'alt' attribute.
-   * @return {MoonPhaseImage}
+   * @return {number}
    * @private
    */
   imageNumber_() {
     let imageNumber;
 
-    switch (this.moonPhase_.toUpperCase()) {
+    switch (this.phase_.toUpperCase()) {
       case 'WAXING CRESCENT':
       case 'WAXING GIBBOUS':
       case 'WANING CRESCENT':
       case 'WANING GIBBOUS':
-        // TODO: Calculate percentage here, or set it as an attribute elsewhere?
-        imageNumber = Math.round((this.currentMoonPhasePercentage_() / 100) * MOONPHASE_IMAGE_COUNT);
+        imageNumber = Math.round((this.percent_ / 100) * MOONPHASE_IMAGE_COUNT);
         break;
       case 'FIRST QUARTER':
         imageNumber = 6;
@@ -116,7 +101,6 @@ class MoonPhoto extends HTMLElement {
         imageNumber = MOONPHASE_IMAGE_COUNT;
         break;
     }
-
     return (imageNumber === 0) ? MOONPHASE_IMAGE_COUNT : imageNumber;
   }
 }

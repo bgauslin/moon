@@ -88,6 +88,7 @@ class App {
     
     this.moonPhotoEl_.setAttribute('hemisphere', hemisphere);
     this.moonPhotoEl_.setAttribute('percent', percent);
+    this.moonPhotoEl_.setAttribute('phase', phase);
 
     this.moonChartEl_.setAttribute('start', moonrise);
     this.moonChartEl_.setAttribute('end', moonset);
