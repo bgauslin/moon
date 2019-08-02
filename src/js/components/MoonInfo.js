@@ -1,3 +1,5 @@
+import { Helpers } from '../modules/Helpers';
+
 /** @const {string} */
 const PERCENT_ATTR = 'percent';
 
@@ -14,6 +16,9 @@ class MoonInfo extends HTMLElement {
 
     /** @private {string} */
     this.phase_ = '';
+
+    /** @private @instance */
+    this.helpers_ = new Helpers();
   }
 
   static get observedAttributes() {
@@ -26,7 +31,8 @@ class MoonInfo extends HTMLElement {
   }
 
   /**
-   * TODO...
+   * Displays current moon phase name and percentage, and makes the percent
+   * element invisible if percentage is '0'.
    * @private
    */
   render_() {
@@ -35,33 +41,10 @@ class MoonInfo extends HTMLElement {
 
     const visibility = (this.percent_ === '0') ? 'invisible' : '';
     const html = `\
-      <div class="${this.className}__phase">${this.phaseLabel_()}</div>\
+      <div class="${this.className}__phase">${this.helpers_.titleCase(this.phase_)}</div>\
       <div class="${this.className}__percent" ${visibility}>${this.percent_}%</div>\
     `;
     this.innerHTML = html.replace(/\s\s/g, '');
-  }
-  
-  /**
-   * TODO: We may not need this...
-   * Returns moon phase with first letter of each word capitalized.
-   * @return {string} 
-   * @private
-   */
-  phaseLabel_() {
-    const name = this.phase_;
-    const nameToArray = name.split(' ');
-    let nameFormatted = '';
-
-    for (let i = 0; i < nameToArray.length; i++) {
-      const word = nameToArray[i];
-      const wordFormatted = word.charAt(0).toUpperCase() + word.slice(1);
-      nameFormatted += wordFormatted;
-      if (i < nameToArray.length - 1) {
-        nameFormatted += ' ';
-      }
-    }
-
-    return nameFormatted;
   }
 }
 
