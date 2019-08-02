@@ -287,6 +287,18 @@ class UserLocation {
       history.pushState(null, null, newPathname);
     }
   }
+
+  // TODO: This moved here from elsewhere. Update/remove as needed.
+  /**
+   * Updates UI with new location and saves it to localStorage.
+   * @private
+   */
+  updateLocation_() {
+    const locationUrlified = this.location_.replace(/[\s]/g, '+');
+    this.userLocationWidget.updateAddressBar(locationUrlified);
+    this.userLocationWidget.savePreviousLocation(this.location_);
+    localStorage.setItem('location', this.location_);
+  }
 }
 
 export { UserLocation };

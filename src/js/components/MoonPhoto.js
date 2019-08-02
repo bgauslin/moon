@@ -5,7 +5,7 @@ const Image = {
 };
 
 /**
- * NOTE: Keep value coordinated with loop in 'source/stylus/moon/photo.styl'
+ * NOTE: Keep value coordinated with loop in 'src/stylus/moon/photo.styl'
  * @const {number} 
  */
 const MOONPHASE_IMAGE_COUNT = 26;
@@ -31,11 +31,6 @@ class MoonPhoto extends HTMLElement {
   static get observedAttributes() {
     return [PERCENT_ATTR, PHASE_ATTR];
   }
-
-  /** @callback */
-  // connectedCallback() {
-  //   this.render_();
-  // }
 
   /** @callback */
   attributeChangedCallback() {

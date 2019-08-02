@@ -60,8 +60,8 @@ class App {
   }
 
   /**
-   * Updates UI when URL changes: enables the loader, gets the date and
-   * location, then fetches API data via the data fetcher.
+   * Updates UI when URL changes: fetches API data, sets attributes on custom
+   * elements with fetched data results, then updates the header and title.
    * @async
    * @public
    */
@@ -82,7 +82,7 @@ class App {
     // Map local constants to API data.
     const { hemisphere, moonrise, moonset, percent, phase, sunrise, sunset } = data;
 
-    // Update custom element attributes so each component can do its thing.
+    // Update custom element attributes so each component can update itself.
     this.moonInfoEl_.setAttribute('percent', percent);
     this.moonInfoEl_.setAttribute('phase', phase);
     
@@ -96,14 +96,13 @@ class App {
     this.sunChartEl_.setAttribute('start', sunrise);
     this.sunChartEl_.setAttribute('end', sunset);
 
-    return;
-
     // Update the header and document title.
     this.headerLinkEl_.textContent = this.dateTime_.formatDate(
       this.date_,
       this.locale_,
       'long'
     );
+
     this.updateDocumentTitle({
       date: this.date_,
       locale: this.locale_,
@@ -144,18 +143,6 @@ class App {
     }
 
     document.title = pageTitle;
-  }
-
-  // TODO: Move this to UserLocation custom element.
-  /**
-   * Updates UI with new location and saves it to localStorage.
-   * @private
-   */
-  updateLocation_() {
-    const locationUrlified = this.location_.replace(/[\s]/g, '+');
-    this.userLocationWidget.updateAddressBar(locationUrlified);
-    this.userLocationWidget.savePreviousLocation(this.location_);
-    localStorage.setItem('location', this.location_);
   }
 }
 
