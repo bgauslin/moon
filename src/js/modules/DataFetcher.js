@@ -172,10 +172,24 @@ class DataFetcher {
       case 'wwo':
         moonriseData = this.data_.time_zone[0].moonrise;
         moonsetData = this.data_.time_zone[0].moonset;
-        // TODO: fetch data for next day or previous day if data for current day
-        // doesn't exist.
-        moonrise = this.dateTime_.militaryTime(moonriseData);
-        moonset = this.dateTime_.militaryTime(moonsetData);
+
+        // Make another API call for previous date if moonrise or moonset start
+        // with 'No' since we need start/end times to render the moon chart.
+        const prevDate = this.dateTime_.prevDate();
+        
+        if (moonriseData.startsWith('No')) {
+          // const dataPrevDate = await this.fetchData_(prevDate);
+          moonrise = this.dateTime_.militaryTime(dataPrevDate.time_zone[0].moonrise);
+        } else {
+          moonrise = this.dateTime_.militaryTime(moonriseData);
+        }
+
+        if (moonsetData.startsWith('No')) {
+          // const dataPrevDate = await this.fetchData_(prevDate);
+          moonset = this.dateTime_.militaryTime(dataPrevDate.time_zone[0].moonset);
+        } else {
+          moonset = this.dateTime_.militaryTime(moonsetData);
+        }
         break; 
     }
 
