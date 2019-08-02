@@ -26,7 +26,7 @@ class App {
     this.locationEl_ = document.querySelector('.location');
 
     /** @private {Element} */
-    this.moonChartEl_ = document.querySelector('.chart--moon');
+    this.moonChartEl_ = document.querySelector('[name=moon]');
 
     /** @private {Element} */
     this.moonInfoEl_ = document.querySelector('.info');
@@ -35,7 +35,7 @@ class App {
     this.moonPhotoEl_ = document.querySelector('.photo');
 
     /** @private {Element} */
-    this.sunChartEl_ = document.querySelector('.chart--sun');
+    this.sunChartEl_ = document.querySelector('[name=sun]');
 
     /** @private @instance */
     this.dataFetcher_ = new DataFetcher(api, locale);
@@ -45,9 +45,6 @@ class App {
 
     /** @private @instance */
     this.eventHandler_ = new EventHandler();
-
-    /** @private {MutationObserver} */
-    // this.locationObserver = new MutationObserver(() => this.update());
   }
 
   /**

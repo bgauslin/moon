@@ -1,15 +1,6 @@
 import { DateTimeUtils } from '../modules/DateTimeUtils';
 
 /** @const {string} */
-// const NEXT = 'nav--next';
-
-/** @const {string} */
-// const PREVIOUS = 'nav--prev';
-
-/** @const {string} */
-const DATE_ATTR = 'date';
-
-/** @const {string} */
 const DIRECTION_ATTR = 'direction';
 
 /** @const {string} */
@@ -27,13 +18,10 @@ class PrevNext extends HTMLElement {
     super();
 
     /** @private {string} */
-    // this.date_ = this.getAttribute(DATE_ATTR);
+    this.direction_ = this.getAttribute(DIRECTION_ATTR);
 
     /** @private {string} */
-    // this.direction_ = this.getAttribute(DIRECTION_ATTR);
-
-    /** @private {string} */
-    // this.location_ = this.getAttribute(LOCATION_ATTR);
+    this.location_ = this.getAttribute(LOCATION_ATTR);
 
     /** @const {Element} */
     this.linkEl_ = null;
@@ -43,17 +31,18 @@ class PrevNext extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [DATE_ATTR, LOCATION_ATTR];
+    return [LOCATION_ATTR];
   }
 
   /** @callback */
   connectedCallback() {
-    // this.render_();
+    this.render_();
+    this.update_(this.location_);
   }
 
   /** @callback */
-  attributeChangedCallback() {
-    // this.update_();
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.update_(newValue);
   }
 
   /**
@@ -61,29 +50,37 @@ class PrevNext extends HTMLElement {
    * @private
    */
   render_() {
-    const path = (this.direction_ === 'left') ? SvgPath.LEFT : SvgPath.RIGHT;
+    const path = (this.direction_ === 'prev') ? SvgPath.LEFT : SvgPath.RIGHT;
 
-    this.innerHTML = `
-      <a class="nav__link" href="#" title="${label}">
-        <svg class="nav__link__svg" viewBox="0 0 32 32">
-          <path class="nav__link__svg__path" d="${path}" />
+    const html = `\
+      <a class="nav__link" href="" title="">\
+        <svg class="nav__icon" viewBox="0 0 32 32">\
+          <path class="nav__icon__path" d="${path}" />\
         </svg>
       </a>
     `;
+    this.innerHTML = html.replace(/\s\s/g, '');
+
     this.linkEl_ = this.querySelector('a');
   }
 
   /**
    * Updates link and title relative to current date and location.
+   * @param {string} location
    * @private
    */
-  update_() {
-    // TODO: convert 'date' and 'location' attributes, then set them on the link.
-    const { year, month, day } = this.dateTime_.currentDate(this.date_);
+  update_(location) {
+    if (!this.linkEl_) {
+      return;
+    }
+
+    const { year, month, day } = this.dateTime_.currentDate();
+    
+    // TODO: Set prevDate or nextDate based on currentDate and element's direction
 
     const url = new URL(`/${year}/${month}/${day}/${location}`, window.location.origin);
     this.linkEl_.setAttribute('href', url);
-    this.linkEl_.setAttribute('title', '');
+    // this.linkEl_.setAttribute('title', '');
   }
 }
 

@@ -11,17 +11,17 @@ html(lang="en")
       div.loader
       header.header
         h1.header__title
-          a.header__link(href="" title="Go to today")
+          a.header__link(href="/" title="Today")
           div.location(location="New York, NY")
       div.charts
         div.charts__frame
-          chart-axes.chart.chart--axes
-          donut-chart.chart.chart--sun(start="" end="" color="#f8c537")
-          donut-chart.chart.chart--moon(start="" end="" color="#fff")
-          moon-photo.photo(hemisphere="")
-      moon-info.info(percent="" phase="")
-      prev-next.nav.nav--prev(direction="prev" date="" location="")
-      prev-next.nav.nav--next(direction="next" date="" location="")
+          chart-axes.chart
+          donut-chart.chart(name="sun" color="#f8c537")
+          donut-chart.chart(name="moon" color="#fff")
+          moon-photo.photo
+      moon-info.info
+      prev-next.nav(direction="prev")
+      prev-next.nav(direction="next")
       footer.footer
         p.copyright
           span.copyright__years © 2018
