@@ -10,6 +10,9 @@ const TITLE_DIVIDER = '·';
 /** @const {string} */
 const DEFAULT_LOCATION = 'New York, NY';
 
+/** @const {Array<string>} */
+const HIGHLIGHTED = ['.header__title', '.info__phase', '.info__percent'];
+
 /** @class */
 class App {
   constructor(api) {
@@ -138,7 +141,7 @@ class App {
       'long'
     );
 
-    this.updateDocumentTitle({
+    this.updateDocumentTitle_({
       date: this.date_,
       locale: document.documentElement.lang,
       location: this.location_,
@@ -146,12 +149,43 @@ class App {
       phase,
     });
 
+    // Highlight elements if the UI is currently displaying info for today.
+    this.highlightToday_(this.date_);
+
     // Save new location to localStorage.
     localStorage.setItem(Attribute.LOCATION, this.location_);
 
     // Disable the progress bar and send a new Analytics pageview.
     this.eventHandler_.loading(false);
     // this.eventHandler_.sendPageview(window.location.pathname, document.title);
+  }
+  
+  /**
+   * Adds/removes class if current date is today.
+   * @param {!Object} date
+   * @param {!number} date.year
+   * @param {!number} date.month
+   * @param {!number} date.day
+   * @private
+   */
+  highlightToday_(date) {
+    const now = new Date();
+    const dateNow = {
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+      day: now.getDate(),
+    };
+
+    const isToday = (date.year === dateNow.year && date.month === dateNow.month && date.day === dateNow.day);
+
+    HIGHLIGHTED.forEach((selector) => {
+      const el = document.querySelector(selector);
+      if (isToday) {
+        el.classList.add('today');
+      } else {
+        el.classList.remove('today');
+      }
+    }); 
   }
 
   /** 
@@ -165,9 +199,9 @@ class App {
    * @param {!string} settings.location
    * @param {!string} settings.percent
    * @param {!string} settings.phase
-   * @public
+   * @private
    */
-  updateDocumentTitle(settings) {
+  updateDocumentTitle_(settings) {
     const { date, locale, location, percent, phase } = settings;
     const dateLabel = this.dateTime_.prettyDate(date, locale, 'short');
 

@@ -75,36 +75,6 @@ class DateTimeUtils {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
-  // TODO: Rename this method, relocate it, and pass selectors into it.
-  /**
-   * Adds/removes class if current date is today.
-   * @param {!Object} date
-   * @param {!number} date.year
-   * @param {!number} date.month
-   * @param {!number} date.day
-   * @public
-   */
-  isToday(date) {
-    const now = new Date();
-    const dateNow = {
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
-      day: now.getDate(),
-    };
-
-    const isToday = (date.year === dateNow.year && date.month === dateNow.month && date.day === dateNow.day);
-
-    const selectors = ['.header__title', '.info__phase', '.info__percent'];
-    selectors.forEach((selector) => {
-      const el = document.querySelector(selector);
-      if (isToday) {
-        el.classList.add('today');
-      } else {
-        el.classList.remove('today');
-      }
-    }); 
-  }
-
   /**
    * @param {!string} time - Time in HH:MM AM/PM format.
    * @return {string} Time in HH:MM 24-hour format.
