@@ -9,6 +9,7 @@ const EventType = {
   RESET: 'reset',
   RESIZE: 'resize',
   SUBMIT: 'submit',
+  UPDATE: 'update',
 };
 
 /** @class */
@@ -28,10 +29,21 @@ class EventHandler {
         if (linkUrl.hostname === window.location.hostname) {
           e.preventDefault();
           history.pushState(null, null, href);
-          // this.updateLocation();
+          this.sendUpdate_();
         }
       }
     });
+  }
+
+  /**
+   * Dispatches custom event for the document to intercept.
+   * @private
+   */
+  sendUpdate_() {
+    const event = new CustomEvent(EventType.UPDATE, {
+      detail: { update: true }
+    });
+    document.dispatchEvent(event);
   }
 
   /**
@@ -41,9 +53,7 @@ class EventHandler {
    */
   loading(status) {
     const event = new CustomEvent(EventType.LOADING, {
-      detail: {
-        loading: status,
-      }
+      detail: { loading: status }
     });
     document.dispatchEvent(event);
   }

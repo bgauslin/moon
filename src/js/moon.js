@@ -15,7 +15,7 @@ import '../stylus/moon.styl';
 const LOADING_ATTR = 'loading';
 
 /** @instance */
-const app = new App('usno', 'en-GB');
+const app = new App('usno');
 
 /** @instance */
 const tools = new Tools();
@@ -46,6 +46,14 @@ document.addEventListener(EventType.LOADING, (e) => {
   } else {
     document.body.removeAttribute(LOADING_ATTR);
   }
+});
+
+/**
+ * Updates UI via custom event dispatched by elements.
+ * @listens EventType.UPDATE
+ */
+document.addEventListener(EventType.UPDATE, () => {
+  app.update();
 });
 
 /**

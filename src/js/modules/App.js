@@ -54,13 +54,15 @@ class App {
   }
 
   /**
-   * Initializes UI on first run.
+   * Initializes UI on first run. Observing the 'location' element and setting
+   * an attribute on it will trigger the 'update' method to fetch data and
+   * populate the UI on initial page load.
    * @public
    */
   init() {
-    this.eventHandler_.hijackLinks();
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
+    this.eventHandler_.hijackLinks();
   }
 
   /**
