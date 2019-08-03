@@ -18,7 +18,7 @@ class Helpers {
    * @return {string} 
    * @public
    */
-  urlify() {
+  urlify(value) {
     return value.toLowerCase().replace(/[\s]/g, '+')
   }
 
