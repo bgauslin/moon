@@ -1,4 +1,4 @@
-import { Chart } from '../modules/Chart';
+import { Chart } from '../modules/Constants';
 
 /** 
  * @typedef {Object} Point

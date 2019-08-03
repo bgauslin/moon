@@ -1,4 +1,4 @@
-import { Chart } from '../modules/Chart';
+import { Chart } from '../modules/Constants';
 
 /** @const {number} */
 const VIEWBOX = Chart.SIZE + (Chart.MARGIN * 2);

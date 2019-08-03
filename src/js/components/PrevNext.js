@@ -21,9 +21,6 @@ class PrevNext extends HTMLElement {
     /** @private {string} */
     this.direction_ = this.getAttribute(DIRECTION_ATTR);
 
-    /** @private {string} */
-    this.location_ = this.getAttribute(LOCATION_ATTR);
-
     /** @private {Element} */
     this.linkEl_ = null;
 
@@ -74,6 +71,10 @@ class PrevNext extends HTMLElement {
    * @private
    */
   update_(location) {
+    console.log('PrevNext location', location);
+
+    // this.location_ = this.getAttribute(LOCATION_ATTR);
+
     if (!this.linkEl_) {
       return;
     }

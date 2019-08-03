@@ -1,20 +1,14 @@
+import { Attribute } from '../modules/Constants';
+
 /** @enum {string} */
 const Image = {
   PATH_1X: '/img/moon-phases-26-240.min.jpg',
   PATH_2X: '/img/moon-phases-26-480.min.jpg',
 };
 
-/**
- * NOTE: Keep value coordinated with loop in 'src/stylus/moon/photo.styl'
- * @const {number} 
- */
+/** @const {number} */
+// NOTE: Keep value coordinated with loop in 'src/stylus/moon/photo.styl'
 const MOONPHASE_IMAGE_COUNT = 26;
-
-/** @const {string} */
-const PERCENT_ATTR = 'percent';
-
-/** @const {string} */
-const PHASE_ATTR = 'phase';
 
 /** @class */
 class MoonPhoto extends HTMLElement {
@@ -29,7 +23,7 @@ class MoonPhoto extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [PERCENT_ATTR, PHASE_ATTR];
+    return [Attribute.PERCENT, Attribute.PHASE];
   }
 
   /** @callback */
@@ -42,14 +36,14 @@ class MoonPhoto extends HTMLElement {
    * @private
    */
   render_() {
-    this.percent_ = this.getAttribute(PERCENT_ATTR);
-    this.phase_ = this.getAttribute(PHASE_ATTR);
+    this.percent_ = this.getAttribute(Attribute.PERCENT);
+    this.phase_ = this.getAttribute(Attribute.PHASE);
 
     if (!this.phase_ || !this.percent_) {
       return;
     }
 
-    // TODO: (?) Provide a description in the 'alt' attribute.
+    // TODO: Provide a description in the 'alt' attribute.
     // TODO: Remove 'ready' attribute on figure after preloader is wired up.
     const html = `\      
       <div class="${this.className}__frame">\

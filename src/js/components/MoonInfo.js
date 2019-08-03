@@ -1,10 +1,5 @@
 import { Helpers } from '../modules/Helpers';
-
-/** @const {string} */
-const PERCENT_ATTR = 'percent';
-
-/** @const {string} */
-const PHASE_ATTR = 'phase';
+import { Attribute } from '../modules/Constants';
 
 /** @class */
 class MoonInfo extends HTMLElement {
@@ -22,7 +17,7 @@ class MoonInfo extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [PERCENT_ATTR, PHASE_ATTR];
+    return [Attribute.PERCENT, Attribute.PHASE];
   }
 
   /** @callback */
@@ -36,8 +31,8 @@ class MoonInfo extends HTMLElement {
    * @private
    */
   render_() {
-    this.percent_ = this.getAttribute(PERCENT_ATTR);
-    this.phase_ = this.getAttribute(PHASE_ATTR);
+    this.percent_ = this.getAttribute(Attribute.PERCENT);
+    this.phase_ = this.getAttribute(Attribute.PHASE);
 
     if (this.percent_ === null || this.phase_ === null) {
       return;

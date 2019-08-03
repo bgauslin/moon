@@ -1,7 +1,9 @@
+import { Attribute } from './Constants';
 import { DataFetcher } from './DataFetcher';
 import { DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
 
+/** @const {string} */
 const TITLE_DIVIDER = '·';
 
 /** @class */
@@ -17,7 +19,8 @@ class App {
     this.date_ = null;
 
     /** @private {string} */
-    this.location_ = 'New York, NY'; // <= TODO: hard-coded for testing
+    // TODO: Fallback location is hard-coded for now for testing...
+    this.location_ = localStorage.getItem(Attribute.LOCATION) || 'New York, NY';
     
     /** @private {Element} */
     this.headerLinkEl_ = document.querySelector('.header__link');
@@ -34,6 +37,9 @@ class App {
     /** @private {Element} */
     this.moonPhotoEl_ = document.querySelector('.photo');
 
+    /** @private {NodeList} */
+    this.navEls_ = document.querySelectorAll('[direction]');
+
     /** @private {Element} */
     this.sunChartEl_ = document.querySelector('[name=sun]');
 
@@ -45,6 +51,9 @@ class App {
 
     /** @private @instance */
     this.eventHandler_ = new EventHandler();
+
+    /** @private {MutationObserver} */
+    this.observer_ = new MutationObserver(() => this.update());
   }
 
   /**
@@ -53,7 +62,8 @@ class App {
    */
   init() {
     this.eventHandler_.hijackLinks();
-    this.update();
+    this.observer_.observe(this.locationEl_, { attributes: true });
+    this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
   }
 
   /**
@@ -64,7 +74,7 @@ class App {
    */
   async update() {
     // Enable progress bar while we fetch data.
-    // this.eventHandler_.loading(true);
+    this.eventHandler_.loading(true);
 
     // Get the date from the address bar.
     this.date_ = this.dateTime_.currentDate();
@@ -72,7 +82,7 @@ class App {
     // Fetch data (and bail if there's nothing).
     const data = await this.dataFetcher_.fetch(this.date_, this.location_);
     if (!data) {
-      // this.eventHandler_.loading(false);
+      this.eventHandler_.loading(false);
       return;
     }
 
@@ -93,6 +103,10 @@ class App {
     this.sunChartEl_.setAttribute('start', sunrise);
     this.sunChartEl_.setAttribute('end', sunset);
 
+    Array.from(this.navEls_).forEach((el) => {
+      el.setAttribute('location', this.location_);
+    });
+
     // Update the header and document title.
     this.headerLinkEl_.textContent = this.dateTime_.formatDate(
       this.date_,
@@ -108,8 +122,11 @@ class App {
       phase,
     });
 
+    // Save new location to localStorage.
+    localStorage.setItem(Attribute.LOCATION, this.location_);
+
     // Disable the progress bar and send a new Analytics pageview.
-    // this.eventHandler_.loading(false);
+    this.eventHandler_.loading(false);
     // this.eventHandler_.sendPageview(window.location.pathname, document.title);
   }
 
