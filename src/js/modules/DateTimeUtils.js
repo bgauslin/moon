@@ -23,13 +23,12 @@ class DateTimeUtils {
    * @public
    */
   currentDate() {
-    const pathname = window.location.pathname;
-    const urlSegments = pathname.split('/');
+    const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
 
-    let year = Number(urlSegments[0]);
-    let month = Number(urlSegments[1]);
-    let day = Number(urlSegments[2]);
+    let year = parseInt(urlSegments[0]);
+    let month = parseInt(urlSegments[1]);
+    let day = parseInt(urlSegments[2]);
 
     // If URL isn't a valid date, get today instead and redirect to home page.
     if (!this.validYear_(year) || !this.validMonth_(month) || !this.validDay_(year, month, day)) {
@@ -115,7 +114,7 @@ class DateTimeUtils {
    */
   militaryTime(time) {
     const amPm = time.split(' ')[1].replace(/\./g, '').toUpperCase();
-    const hours = Number(time.split(' ')[0].split(':')[0]);
+    const hours = parseInt(time.split(' ')[0].split(':')[0]);
     const minutes = time.split(' ')[0].split(':')[1];
 
     let hours_ = hours;

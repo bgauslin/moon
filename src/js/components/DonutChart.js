@@ -24,7 +24,6 @@ const START_ATTR = 'start';
 /** @const {string} */
 const END_ATTR = 'end';
 
-// TODO: Replace all uses of Number() with parseInt().
 /** @class */
 class DonutChart extends HTMLElement {
   constructor() {
@@ -187,6 +186,7 @@ class DonutChart extends HTMLElement {
     const degreesToRadians = this.degreesToRadians_(angle);
     const x = radius * Math.cos(degreesToRadians) + xOffset;
     const y = radius * Math.sin(degreesToRadians) + yOffset;
+    
     return { x, y };
   }
 
@@ -197,12 +197,13 @@ class DonutChart extends HTMLElement {
    * @private`
    */
   timeToDegrees_(time) {
-    const hours = Number(time.split(' ')[0].split(':')[0]);
-    const minutes = Number(time.split(' ')[0].split(':')[1]);
+    const hours = parseInt(time.split(' ')[0].split(':')[0]);
+    const minutes = parseInt(time.split(' ')[0].split(':')[1]);
     const timeToDecimal = hours + (minutes / 60);
     const hourInDegrees = 360 / 24;
     const timeInDegrees = timeToDecimal * hourInDegrees;
-    return Number(timeInDegrees.toFixed(1));
+
+    return parseInt(timeInDegrees.toFixed(1));
   }
 
   /** 
