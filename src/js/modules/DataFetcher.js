@@ -31,7 +31,7 @@ class DataFetcher {
     const { year, month, day } = date;
     const month_ = this.helpers_.zeroPad(month);
     const day_ = this.helpers_.zeroPad(day);
-    const location_ = location.toLowerCase().replace(/[\s]/g, '+');
+    const location_ = this.helpers_.urlify(location);
 
     // Set up endpoint and query params based on the API.
     let endpoint;
