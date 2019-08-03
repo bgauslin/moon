@@ -244,7 +244,7 @@ class UserLocation {
    */
   async reverseGeocode_(coords) {
     const { lat, lng } = coords;
-    const endpoint = `${process.env.API_GEOCODER}?prox=${lat},${lng},${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${process.env.APP_ID}&app_code=${process.env.APP_CODE}`;
+    const endpoint = `${process.env.GEOCODER_API}?prox=${lat},${lng},${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`;
 
     try {
       const response = await fetch(endpoint);

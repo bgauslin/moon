@@ -34,10 +34,10 @@ class DataFetcher {
     let endpoint;
     switch (this.api_) {
       case 'usno':
-        endpoint = `${process.env.API_DATA}?date=${month_}/${day_}/${year}&loc=${location_}`;
+        endpoint = `${process.env.USNO_API}?date=${month_}/${day_}/${year}&loc=${location_}`;
         break;
       case 'wwo':
-        endpoint = `${process.env.WWO_API_DATA}?format=json&key=${process.env.WWO_API_KEY}&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes`;
+        endpoint = `${process.env.WWO_API}?format=json&key=${process.env.WWO_KEY}&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes`;
         break;
       case 'aeris':
         // Get the day before and after in case of null values.
@@ -62,7 +62,7 @@ class DataFetcher {
         const fields = 'loc,sun.riseISO,sun.setISO,moon.riseISO,moon.setISO,moon.phase.phase,moon.phase.name';
       
         // Construct the endpoint query.
-        endpoint = `${process.env.AERIS_API_DATA}${location_}?from=${from}&to=${to}&p=${location_}&fields=${fields}&client_id=${process.env.AERIS_ACCESS_ID}&client_secret=${process.env.AERIS_SECRET_KEY}`;
+        endpoint = `${process.env.AERIS_API}${location_}?from=${from}&to=${to}&p=${location_}&fields=${fields}&client_id=${process.env.AERIS_ACCESS_ID}&client_secret=${process.env.AERIS_SECRET_KEY}`;
         break;
     }
 
