@@ -1,8 +1,12 @@
 /** @enum {string} */
 const Attribute = {
+  COLOR: 'color',
+  DIRECTION: 'direction',
+  END: 'end',
   LOCATION: 'location',
   PERCENT: 'percent',
   PHASE: 'phase',
+  START: 'start',
 };
 
 /** @enum {number} */

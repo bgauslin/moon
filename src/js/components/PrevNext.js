@@ -1,11 +1,6 @@
+import { Attribute } from '../modules/Constants';
 import { DateTimeUtils } from '../modules/DateTimeUtils';
 import { Helpers } from '../modules/Helpers';
-
-/** @const {string} */
-const DIRECTION_ATTR = 'direction';
-
-/** @const {string} */
-const LOCATION_ATTR = 'location';
 
 /** @enum {string} */
 const SvgPath = {
@@ -19,7 +14,7 @@ class PrevNext extends HTMLElement {
     super();
 
     /** @private {string} */
-    this.direction_ = this.getAttribute(DIRECTION_ATTR);
+    this.direction_ = this.getAttribute(Attribute.DIRECTION);
 
     /** @private {Element} */
     this.linkEl_ = null;
@@ -32,7 +27,7 @@ class PrevNext extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [LOCATION_ATTR];
+    return [Attribute.LOCATION];
   }
 
   /** @callback */
@@ -73,7 +68,7 @@ class PrevNext extends HTMLElement {
   update_(location) {
     console.log('PrevNext location', location);
 
-    // this.location_ = this.getAttribute(LOCATION_ATTR);
+    // this.location_ = this.getAttribute(Attribute.LOCATION);
 
     if (!this.linkEl_) {
       return;

@@ -1,4 +1,4 @@
-import { Chart } from '../modules/Constants';
+import { Attribute, Chart } from '../modules/Constants';
 
 /** 
  * @typedef {Object} Point
@@ -15,22 +15,13 @@ import { Chart } from '../modules/Constants';
 /** @const {number} */
 const AXIS_OFFSET = -90;
 
-/** @const {string} */
-const COLOR_ATTR = 'color';
-
-/** @const {string} */
-const START_ATTR = 'start';
-
-/** @const {string} */
-const END_ATTR = 'end';
-
 /** @class */
 class DonutChart extends HTMLElement {
   constructor() {
     super();
 
     /** @private {string} */
-    this.color_ = this.getAttribute(COLOR_ATTR);
+    this.color_ = this.getAttribute(Attribute.COLOR);
 
     /** @private {string} */
     this.start_ = '';
@@ -61,7 +52,7 @@ class DonutChart extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [START_ATTR, END_ATTR];
+    return [Attribute.START, Attribute.END];
   }
 
   /** @callback */
@@ -74,8 +65,8 @@ class DonutChart extends HTMLElement {
    * @private
    */
   render_() {
-    this.start_ = this.getAttribute(START_ATTR);
-    this.end_ = this.getAttribute(END_ATTR);
+    this.start_ = this.getAttribute(Attribute.START);
+    this.end_ = this.getAttribute(Attribute.END);
 
     if (this.start_ === null || this.end_ === null) {
       return;
