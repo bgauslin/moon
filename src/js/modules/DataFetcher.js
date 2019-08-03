@@ -3,12 +3,9 @@ import { Helpers } from './Helpers';
 
 /** @class */
 class DataFetcher {
-  constructor(api, locale) {
+  constructor(api) {
     /** @private {!string} */
     this.api_ = api;
-
-    /** @private {!string} */
-    this.locale_ = locale;
 
     /** @private {!Object} */
     this.data_ = null;

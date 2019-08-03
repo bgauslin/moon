@@ -8,10 +8,7 @@ const TITLE_DIVIDER = '·';
 
 /** @class */
 class App {
-  constructor(api, locale) {
-    /** @private {string} */
-    this.locale_ = locale;
-
+  constructor(api) {
     /** @private {string} */
     this.baseTitle_ = document.title;
 
@@ -44,7 +41,7 @@ class App {
     this.sunChartEl_ = document.querySelector('[name=sun]');
 
     /** @private @instance */
-    this.dataFetcher_ = new DataFetcher(api, locale);
+    this.dataFetcher_ = new DataFetcher(api);
 
     /** @private @instance */
     this.dateTime_ = new DateTimeUtils();
@@ -108,15 +105,15 @@ class App {
     });
 
     // Update the header and document title.
-    this.headerLinkEl_.textContent = this.dateTime_.formatDate(
+    this.headerLinkEl_.textContent = this.dateTime_.prettyDate(
       this.date_,
-      this.locale_,
+      document.documentElement.lang,
       'long'
     );
 
     this.updateDocumentTitle({
       date: this.date_,
-      locale: this.locale_,
+      locale: document.documentElement.lang,
       location: this.location_,
       percent,
       phase,
@@ -149,7 +146,7 @@ class App {
     let urlSegments = pathname.split('/');
     urlSegments.shift();
 
-    const dateLabel = (urlSegments.length === 1) ? 'Today' : this.dateTime_.formatDate(date, locale, 'short');
+    const dateLabel = (urlSegments.length === 1) ? 'Today' : this.dateTime_.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
 
     if (percent > 0) {

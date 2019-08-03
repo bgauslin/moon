@@ -66,11 +66,7 @@ class PrevNext extends HTMLElement {
    * @private
    */
   update_(location) {
-    console.log('PrevNext location', location);
-
-    // this.location_ = this.getAttribute(Attribute.LOCATION);
-
-    if (!this.linkEl_) {
+    if (!location || !this.linkEl_) {
       return;
     }
 
@@ -85,7 +81,9 @@ class PrevNext extends HTMLElement {
 
     const url = new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
     this.linkEl_.setAttribute('href', url);
-    // this.linkEl_.setAttribute('title', '');
+
+    const linkTitle = `${this.dateTime_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
+    this.linkEl_.setAttribute('title', linkTitle);
   }
 }
 

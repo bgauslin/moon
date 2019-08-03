@@ -53,7 +53,7 @@ class DateTimeUtils {
    * @return {string} Date formatted per the locale.
    * @public
    */
-  formatDate(date, locale, monthFormat) {
+  prettyDate(date, locale, monthFormat) {
     let { year, month, day } = date;
     month -= 1; // Adjust month for UTC format
 
