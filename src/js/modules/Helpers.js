@@ -13,6 +13,16 @@ class Helpers {
   }
 
   /**
+   * Returns a URL-friendly lowercase string with each space replaced with a '+'.
+   * @param {string} value
+   * @return {string} 
+   * @public
+   */
+  urlify() {
+    return value.toLowerCase().replace(/[\s]/g, '+')
+  }
+
+  /**
    * @param {!number} n
    * @return {string|number} Value with zero-padding if less than 10.
    * @public
