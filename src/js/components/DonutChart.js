@@ -78,7 +78,7 @@ class DonutChart extends HTMLElement {
     this.start_ = this.getAttribute(START_ATTR);
     this.end_ = this.getAttribute(END_ATTR);
 
-    if (this.start_ === '' || this.end_ === '') {
+    if (this.start_ === null || this.end_ === null) {
       return;
     }
 
