@@ -2,9 +2,13 @@ import { Attribute } from './Constants';
 import { DataFetcher } from './DataFetcher';
 import { DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
+import { Helpers } from './Helpers';
 
 /** @const {string} */
 const TITLE_DIVIDER = '·';
+
+/** @const {string} */
+const DEFAULT_LOCATION = 'New York, NY';
 
 /** @class */
 class App {
@@ -16,8 +20,7 @@ class App {
     this.date_ = null;
 
     /** @private {string} */
-    // TODO: Fallback location is hard-coded for now for testing...
-    this.location_ = localStorage.getItem(Attribute.LOCATION) || 'New York, NY';
+    this.location_ = localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
     
     /** @private {Element} */
     this.headerLinkEl_ = document.querySelector('.header__link');
@@ -49,6 +52,9 @@ class App {
     /** @private @instance */
     this.eventHandler_ = new EventHandler();
 
+    /** @private @instance */
+    this.helpers_ = new Helpers();
+
     /** @private {MutationObserver} */
     this.observer_ = new MutationObserver(() => this.update());
   }
@@ -63,6 +69,25 @@ class App {
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
     this.eventHandler_.hijackLinks();
+
+    this.initialUrl_();
+  }
+
+  /**
+   * Replaces '/' or invalid URLs in the address bar with '/yyyy/mm/dd/location'
+   * URL for today.
+   * @private
+   */
+  initialUrl_() {
+    const { year, month, day } = this.dateTime_.currentDate();
+    const month_ = this.helpers_.zeroPad(month);
+    const day_ = this.helpers_.zeroPad(day);
+    const location = this.helpers_.urlify(this.location_);
+
+    const path = `/${year}/${month_}/${day_}/${location}`
+
+    this.headerLinkEl_.setAttribute('href', path);
+    history.replaceState(null, null, path);
   }
 
   /**
@@ -144,11 +169,8 @@ class App {
    */
   updateDocumentTitle(settings) {
     const { date, locale, location, percent, phase } = settings;
-    const pathname = window.location.pathname;
-    let urlSegments = pathname.split('/');
-    urlSegments.shift();
+    const dateLabel = this.dateTime_.prettyDate(date, locale, 'short');
 
-    const dateLabel = (urlSegments.length === 1) ? 'Today' : this.dateTime_.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
 
     if (percent > 0) {

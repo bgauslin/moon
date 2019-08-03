@@ -30,14 +30,12 @@ class DateTimeUtils {
     let month = parseInt(urlSegments[1]);
     let day = parseInt(urlSegments[2]);
 
-    // If URL isn't a valid date, get today instead and redirect to home page.
+    // If URL isn't a valid date, get today and return that.
     if (!this.validYear_(year) || !this.validMonth_(month) || !this.validDay_(year, month, day)) {
       const now = new Date();
       year = now.getFullYear();
       month = now.getMonth() + 1;
       day = now.getDate();
-
-      history.replaceState(null, null, '/');
     }
 
     return { year, month, day };
