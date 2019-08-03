@@ -1,3 +1,4 @@
+- var location = 'New York, NY'
 doctype html
 html(lang="en")
   head
@@ -12,7 +13,7 @@ html(lang="en")
       header.header
         h1.header__title
           a.header__link(href="/" title="Today")
-          div.location(location="New York, NY")
+          div.location(location=location)
       div.charts
         div.charts__frame
           chart-axes.chart
@@ -20,14 +21,15 @@ html(lang="en")
           donut-chart.chart(name="moon" color="#fff")
           moon-photo.photo
       moon-info.info
-      prev-next.nav(direction="prev")
-      prev-next.nav(direction="next")
-      footer.footer
-        p.copyright
-          span.copyright__years © 2018
-          a.copyright__owner(
-            href="https://gauslin.com",
-            title="Ben Gauslin’s Website",
-            target="_blank",
-            rel="noopener",
-          ) Ben Gauslin
+      prev-next.nav(direction="prev" location=location)
+      prev-next.nav(direction="next" location=location)
+      //- TODO: populate footer content with JS to avoid FOUC
+      //- footer.footer
+        //- p.copyright
+        //-   span.copyright__years
+        //-   a.copyright__owner(
+        //-     href="https://gauslin.com",
+        //-     title="Ben Gauslin’s Website",
+        //-     target="_blank",
+        //-     rel="noopener",
+        //-   )

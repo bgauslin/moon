@@ -1,4 +1,5 @@
 import { DateTimeUtils } from '../modules/DateTimeUtils';
+import { Helpers } from '../modules/Helpers';
 
 /** @const {string} */
 const DIRECTION_ATTR = 'direction';
@@ -23,11 +24,14 @@ class PrevNext extends HTMLElement {
     /** @private {string} */
     this.location_ = this.getAttribute(LOCATION_ATTR);
 
-    /** @const {Element} */
+    /** @private {Element} */
     this.linkEl_ = null;
 
-    /** @instance */
+    /** @private @instance */
     this.dateTime_ = new DateTimeUtils();
+
+    /** @private @instance */
+    this.helpers_ = new Helpers();
   }
 
   static get observedAttributes() {
@@ -66,7 +70,7 @@ class PrevNext extends HTMLElement {
 
   /**
    * Updates link and title relative to current date and location.
-   * @param {string} location
+   * @param {!string} location
    * @private
    */
   update_(location) {
@@ -74,11 +78,16 @@ class PrevNext extends HTMLElement {
       return;
     }
 
-    const { year, month, day } = this.dateTime_.currentDate();
-    
-    // TODO: Set prevDate or nextDate based on currentDate and element's direction
+    const date = ((this.direction_ === 'prev')
+      ? this.dateTime_.prevDate()
+      : this.dateTime_.nextDate());
 
-    const url = new URL(`/${year}/${month}/${day}/${location}`, window.location.origin);
+    const { year, month, day } = date;
+    const month_ = this.helpers_.zeroPad(month);
+    const day_ = this.helpers_.zeroPad(day);
+    const location_ = this.helpers_.urlify(location);
+
+    const url = new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
     this.linkEl_.setAttribute('href', url);
     // this.linkEl_.setAttribute('title', '');
   }
