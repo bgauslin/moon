@@ -19,16 +19,16 @@ class EventHandler {
    * @public
    */
   hijackLinks() {
-    document.addEventListener(EventType.CLICK, (event) => {
-      const target = event.target;
+    document.addEventListener(EventType.CLICK, (e) => {
+      const target = e.target;
       const href = target.getAttribute('href');
 
       if (href) {
         const linkUrl = new URL(href);
         if (linkUrl.hostname === window.location.hostname) {
-          event.preventDefault();
+          e.preventDefault();
           history.pushState(null, null, href);
-          this.updateLocation();
+          // this.updateLocation();
         }
       }
     });
