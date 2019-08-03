@@ -8,13 +8,6 @@
 /** @const {Array<number>} */
 const DAYS_IN_MONTHS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-/** @const {Array<string>} */
-const LABEL_SELECTORS = [
-  '.header__title',
-  '.info__phase',
-  '.info__percent',
-];
-
 /** @enum {number} */
 const ApiYears = {
   MAX: 2100,
@@ -85,6 +78,7 @@ class DateTimeUtils {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
+  // TODO: Rename this method, relocate it, and pass selectors into it.
   /**
    * Adds/removes class if current date is today.
    * @param {!Object} date
@@ -103,7 +97,8 @@ class DateTimeUtils {
 
     const isToday = (date.year === dateNow.year && date.month === dateNow.month && date.day === dateNow.day);
 
-    LABEL_SELECTORS.forEach((selector) => {
+    const selectors = ['.header__title', '.info__phase', '.info__percent'];
+    selectors.forEach((selector) => {
       const el = document.querySelector(selector);
       if (isToday) {
         el.classList.add('today');
