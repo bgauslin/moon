@@ -12,9 +12,6 @@ import { UserLocation } from './components/UserLocation';
 // Stylesheet import for Webpack.
 import '../stylus/moon.styl'; 
 
-/** @const {string} */
-const LOADING_ATTR = 'loading';
-
 /** @instance */
 const app = new App('usno');
 
@@ -37,18 +34,6 @@ document.addEventListener(EventType.READY, () => {
   app.init();
   tools.init();
 }, { once: true } );
-
-/**
- * Shows/hides progress bar when 'loading' custom event occurs.
- * @listens EventType.LOADING
- */
-document.addEventListener(EventType.LOADING, (e) => {
-  if (e.detail.loading) {
-    document.body.setAttribute(LOADING_ATTR, '');
-  } else {
-    document.body.removeAttribute(LOADING_ATTR);
-  }
-});
 
 /**
  * Updates UI via custom event dispatched by elements.

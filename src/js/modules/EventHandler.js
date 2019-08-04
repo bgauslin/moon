@@ -3,7 +3,6 @@ const EventType = {
   BLUR: 'blur',
   CLICK: 'click',
   FOCUS: 'focus',
-  LOADING: 'loading', // custom event
   POPSTATE: 'popstate',
   READY: 'DOMContentLoaded',
   RESET: 'reset',
@@ -42,18 +41,6 @@ class EventHandler {
   sendUpdate_() {
     const event = new CustomEvent(EventType.UPDATE, {
       detail: { update: true }
-    });
-    document.dispatchEvent(event);
-  }
-
-  /**
-   * Dispatches custom event for UI loading status.
-   * @param {boolean} status
-   * @public
-   */
-  loading(status) {
-    const event = new CustomEvent(EventType.LOADING, {
-      detail: { loading: status }
     });
     document.dispatchEvent(event);
   }

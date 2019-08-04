@@ -1,5 +1,5 @@
 import { Attribute } from '../modules/Constants';
-import { EventType, EventHandler } from '../modules/EventHandler';
+import { EventType } from '../modules/EventHandler';
 
 /** @const {number} */
 const GEOCODER_PROXIMITY = 100;
@@ -26,9 +26,6 @@ class UserLocation extends HTMLElement {
 
     /** @private {?Element} */ 
     this.input_ = null;
-
-    /** @private @instance */
-    this.eventHandler_ = new EventHandler();
   }
 
   static get observedAttributes() {
@@ -103,7 +100,7 @@ class UserLocation extends HTMLElement {
    * @private
    */
   async getGeolocation_() {
-    this.eventHandler_.loading(true);
+    document.body.setAttribute(Attribute.LOADING, '');
     this.input_.value = 'Retrieving location...';
 
     const options = {
@@ -116,7 +113,7 @@ class UserLocation extends HTMLElement {
     const error = () => {
       alert('Uh oh. We were unable to retrieve your location. :(\n\nYou may need to enable Location Services on your device before you can use this feature.');
       this.restore_();
-      this.eventHandler_.loading(false);
+      document.body.removeAttribute(Attribute.LOADING);
     }
 
     // Get user's location as city/state/country.
@@ -151,11 +148,14 @@ class UserLocation extends HTMLElement {
       const address = data.Response.View[0].Result[0].Location.Address;
       this.location_ = `${address.City}, ${address.State}`;
 
-      // Update input field and 'location' attribute (which will trigger App.update).
+      // Update input field, address bar, and 'location' attribute. Attribute 
+      // change will trigger App.update.
       this.input_.value = this.location_;
       this.setAttribute(Attribute.LOCATION, this.location_);
+      // TODO: update address bar here...
+      // this.updateUrl_();
 
-      this.eventHandler_.loading(false);
+      document.body.removeAttribute(Attribute.LOADING);
     } catch (e) {
       alert('Currently unable to fetch data. :(');
     }

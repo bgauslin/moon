@@ -106,7 +106,7 @@ class App {
    */
   async update() {
     // Enable progress bar while we fetch data.
-    this.eventHandler_.loading(true);
+    document.body.setAttribute(Attribute.LOADING, '');
 
     // Get the date from the address bar.
     this.date_ = this.dateTime_.currentDate();
@@ -117,7 +117,7 @@ class App {
     // Fetch data (and bail if there's nothing).
     const data = await this.dataFetcher_.fetch(this.date_, this.location_);
     if (!data) {
-      this.eventHandler_.loading(false);
+      document.body.removeAttribute(Attribute.LOADING);
       return;
     }
 
@@ -164,7 +164,7 @@ class App {
     localStorage.setItem(Attribute.LOCATION, this.location_);
 
     // Disable the progress bar and send a new Analytics pageview.
-    this.eventHandler_.loading(false);
+    document.body.removeAttribute(Attribute.LOADING);
     // this.eventHandler_.sendPageview(window.location.pathname, document.title);
   }
   
