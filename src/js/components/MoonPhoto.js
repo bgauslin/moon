@@ -81,7 +81,7 @@ class MoonPhoto extends HTMLElement {
       </div>\
     `;
     
-    this.innerHTML += html.replace(/\s\s/g, '');
+    this.innerHTML = html.replace(/\s\s/g, '');
 
     // TODO(moon-photo): Wire up spinner and preload_() method.
     this.figureEl_ = this.querySelector('figure');
