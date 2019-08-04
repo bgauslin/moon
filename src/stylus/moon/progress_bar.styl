@@ -1,16 +1,16 @@
 LOADER_HEIGHT = 3px
 LOADER_WIDTH = 20vw
 
-.loader
+.progress-bar
   display none
   height LOADER_HEIGHT
   width 100vw
   position fixed
 
-body[loading] .loader
+body[loading] .progress-bar
   display block
 
-.loader::before
+.progress-bar::before
   animation loading 2s .3s linear infinite
   background white
   content ''
