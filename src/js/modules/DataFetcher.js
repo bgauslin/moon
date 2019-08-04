@@ -78,7 +78,7 @@ class DataFetcher {
     // If no data is available, alert the user and restore previous location.
     if (!this.data_ || this.data_.error !== false) {
       alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
-      // TODO(fetcher): Return reponse status so that App can reset location.
+      // TODO(fetcher): Return response status so that App can reset location.
       return;
     }
 
