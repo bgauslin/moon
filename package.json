@@ -1,9 +1,9 @@
 {
-  "name": "moon_v2",
+  "name": "moon",
   "description": "Location-based moon phase, moonrise, moonset, sunrise, and sunset times via custom elements",
   "version": "2.0.0",
   "license": "UNLICENSED",
-  "repository": "https://github.com/bgauslin/moon_v2",
+  "repository": "https://github.com/bgauslin/moon",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
