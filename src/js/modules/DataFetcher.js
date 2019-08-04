@@ -18,7 +18,8 @@ class DataFetcher {
   }
 
   /**
-   * TODO...
+   * Fetches data depending on the API, then processes and normalizes the
+   * results before returning it in a standardized format.
    * @param {!Object} date
    * @param {!string} location
    * @async
@@ -77,7 +78,7 @@ class DataFetcher {
     // If no data is available, alert the user and restore previous location.
     if (!this.data_ || this.data_.error !== false) {
       alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
-      // TODO: Return reponse status so that App can reset location.
+      // TODO(fetcher): Return reponse status so that App can reset location.
       return;
     }
 
@@ -288,10 +289,9 @@ class DataFetcher {
         illumination = parseInt(this.data_.moon_illumination);
         break;
       case 'aeris':
-        // TODO: Figure out how to get illumination from AerisWeather API data.
-        // illumination = parseInt(this.data_.todo);
-        break; 
-
+        // TODO(fetcher): Figure out how to get illumination from AerisWeather API data.
+        // illumination = parseInt(this.data_.illumination);
+        break;
     }
     
     switch (this.moonPhase_().toUpperCase()) {

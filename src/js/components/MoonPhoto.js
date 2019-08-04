@@ -43,8 +43,9 @@ class MoonPhoto extends HTMLElement {
       return;
     }
 
-    // TODO: Provide a description in the 'alt' attribute.
-    // TODO: Remove 'ready' attribute on figure after preloader is wired up.
+    // TODO(moon-photo): Provide a description in the 'alt' attribute.
+    // TODO(moon-photo): Attach <preloader> custom element and modify its attributes.
+    // TODO(moon-photo): Remove 'ready' attribute on figure after preloader is wired up.
     const html = `\      
       <div class="${this.className}__frame">\
         <figure class="${this.className}__figure" ready>\
@@ -58,9 +59,6 @@ class MoonPhoto extends HTMLElement {
     `;
     
     this.innerHTML += html.replace(/\s\s/g, '');
-
-    // TODO: Attach <preloader> custom element.
-    // this.preloader_.preload();
   }
 
   /**

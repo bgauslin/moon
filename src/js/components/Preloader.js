@@ -15,6 +15,7 @@ const SPINNER_DELAY = 1000;
 /** @const {string} */
 const READY_ATTR = 'ready';
 
+// TODO(preloader): Refactor custom element for more flexible usage.
 /** @class */
 class Preloader extends HTMLElement {
   constructor() {
