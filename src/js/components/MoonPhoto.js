@@ -8,7 +8,7 @@ const Image = {
 };
 
 /**
- * NOTE: This value must stay coordinated with loop in 'src/stylus/moon/photo.styl'
+ * NOTE: This value must stay coordinated with loop value in 'src/stylus/moon/photo.styl'
  * @const {number}
  */
 const MOONPHASE_IMAGE_COUNT = 26;

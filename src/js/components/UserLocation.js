@@ -115,7 +115,9 @@ class UserLocation extends HTMLElement {
   
     // Alert user and restore input with previous location.
     const error = () => {
-      alert('Uh oh. We were unable to retrieve your location. :(\n\nYou may need to enable Location Services on your device before you can use this feature.');
+      alert(`Uh oh. We were unable to retrieve your location. :(\n\n
+        You may need to enable Location Services on your device before you \
+        can use this feature.`);
       this.restore_();
       document.body.removeAttribute(Attribute.LOADING);
     }
@@ -142,13 +144,17 @@ class UserLocation extends HTMLElement {
    */
   async reverseGeocode_(coords) {
     const { lat, lng } = coords;
-    const endpoint = `${process.env.GEOCODER_API}?prox=${lat},${lng},${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`;
+    const endpoint = (`${process.env.GEOCODER_API}?prox=${lat},${lng},\
+      ${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&\
+      app_id=${process.env.GEOCODER_APP_ID}\
+      &app_code=${process.env.GEOCODER_APP_CODE}`);
 
     try {
       const response = await fetch(endpoint);
       const data = await response.json();
 
-      // TODO(geolocation): Update lookup for city, state, country and display long-form name of country.
+      // TODO(geolocation): Update lookup for city, state, country and
+      // display long-form name of country.
       const address = data.Response.View[0].Result[0].Location.Address;
       this.location_ = `${address.City}, ${address.State}`;
       this.input_.value = this.location_;
@@ -201,14 +207,16 @@ class UserLocation extends HTMLElement {
   render_() {
     const html = `\      
       <form class="location__form">\
-        <input name="location" value="${this.location_}" type="text" aria-label="Type a new location" required>\
+        <input name="location" value="${this.location_}" type="text" \
+          aria-label="Type a new location" required>\
         <button type="submit" role="button" aria-label="Update location">\
           ${this.svgIcon_('submit')}\
         </button>\
         <button type="reset" role="button" aria-label="Clear location">\
           ${this.svgIcon_('reset')}\
       </form>\
-      <button class="geolocation" role="button" aria-label="Find my location" hidden>\
+      <button class="geolocation" role="button" \
+        aria-label="Find my location" hidden>\
         ${this.svgIcon_('location')}\
       </button>\
     `;

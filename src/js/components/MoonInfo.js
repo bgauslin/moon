@@ -40,8 +40,12 @@ class MoonInfo extends HTMLElement {
 
     const visibility = (this.percent_ === '0') ? 'invisible' : '';
     const html = `\
-      <div class="${this.className}__phase">${this.helpers_.titleCase(this.phase_)}</div>\
-      <div class="${this.className}__percent" ${visibility}>${this.percent_}%</div>\
+      <div class="${this.className}__phase">\
+        ${this.helpers_.titleCase(this.phase_)}\
+      </div>\
+      <div class="${this.className}__percent" ${visibility}>\
+        ${this.percent_}%\
+      </div>\
     `;
     this.innerHTML = html.replace(/\s\s/g, '');
   }

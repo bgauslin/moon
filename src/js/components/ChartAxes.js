@@ -20,9 +20,11 @@ const AXIS_SECOND_HALF_START = MIDPOINT + ((Chart.SIZE / 2) - Chart.SWEEP_WIDTH)
 /** @const {number} */
 const AXIS_SECOND_HALF_END = VIEWBOX - Chart.MARGIN;
 
-/** @const {Array<Object>} */
+/**
+ * Values start at the top and go clockwise.
+ * @const {Array<Object>}
+ */
 const Axes = [
-  // Moving clockwise from the top.
   {
     x1: MIDPOINT, y1: AXIS_FIRST_HALF_START,
     x2: MIDPOINT, y2: AXIS_FIRST_HALF_END,
@@ -52,7 +54,10 @@ const TICK_SECOND_HALF_START = VIEWBOX - Chart.MARGIN;
 /** @const {number} */
 const TICK_SECOND_HALF_END = VIEWBOX;
 
-/** @const {Array<Object>} */
+/**
+ * Values start at the top and go clockwise.
+ * @const {Array<Object>}
+ */
 const Ticks = [
   { 
     x1: MIDPOINT, y1: TICK_FIRST_HALF_START,
@@ -69,7 +74,11 @@ const Ticks = [
   }
 ];
 
-/** @class */
+/**
+ * This custom element doesn't do anything besides draw an SVG, but there's
+ * enough math involved to make it its own custom element.
+ * @class
+ */
 class ChartAxes extends HTMLElement {
   constructor() {
     super();

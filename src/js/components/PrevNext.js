@@ -47,7 +47,6 @@ class PrevNext extends HTMLElement {
    */
   render_() {
     const path = (this.direction_ === 'prev') ? SvgPath.LEFT : SvgPath.RIGHT;
-
     const html = `\
       <a class="nav__link" href="" title="">\
         <svg class="nav__icon" viewBox="0 0 32 32">\
@@ -62,7 +61,7 @@ class PrevNext extends HTMLElement {
 
   /**
    * Updates link and title relative to current date and location.
-   * @param {!string} location
+   * @param {?string} location
    * @private
    */
   update_(location) {
