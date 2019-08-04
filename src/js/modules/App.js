@@ -22,7 +22,12 @@ class App {
     /** @private {Object} */
     this.date_ = null;
 
-    /** @private {string} */
+    /**
+     * On first run, location may or may not be set in localStorage. If not,
+     * set it to the fallback. On all subsequent updates, location is pulled
+     * from a custom element attribute since location can be user-defined.
+     * @private {string}
+     */
     this.location_ = localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
     
     /** @private {Element} */
@@ -105,6 +110,9 @@ class App {
 
     // Get the date from the address bar.
     this.date_ = this.dateTime_.currentDate();
+
+    // Get location from custom element attribute.
+    this.location_ = this.locationEl_.getAttribute(Attribute.LOCATION);
 
     // Fetch data (and bail if there's nothing).
     const data = await this.dataFetcher_.fetch(this.date_, this.location_);

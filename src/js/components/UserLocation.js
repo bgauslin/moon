@@ -97,16 +97,6 @@ class UserLocation extends HTMLElement {
   }
 
   /**
-   * Shows geolocation button if browser supports Geolocation API.
-   * @private
-   */
-  enableGeolocation_() {
-    if (navigator.geolocation) {
-      this.geolocationButton_.removeAttribute(Attribute.HIDDEN);
-    }
-  }
-
-  /**
    * Fetches human-friendly location based on geo coordinates provided by the
    * Geolocation API.
    * @async
@@ -142,6 +132,64 @@ class UserLocation extends HTMLElement {
   }
 
   /**
+   * Fetches human-friendly location based on geo coordinates via API.
+   * @param {!Object} coords
+   * @param {!number} coords.lat - User's latitude.
+   * @param {!number} coords.lng - User's longitude.
+   * @async
+   * @private
+   */
+  async reverseGeocode_(coords) {
+    const { lat, lng } = coords;
+    const endpoint = `${process.env.GEOCODER_API}?prox=${lat},${lng},${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`;
+
+    try {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+
+      // TODO(geolocation): Update lookup for city, state, country and display long-form name of country.
+      const address = data.Response.View[0].Result[0].Location.Address;
+      this.location_ = `${address.City}, ${address.State}`;
+
+      // Update input field and 'location' attribute (which will trigger App.update).
+      this.input_.value = this.location_;
+      this.setAttribute(Attribute.LOCATION, this.location_);
+
+      this.eventHandler_.loading(false);
+    } catch (e) {
+      alert('Currently unable to fetch data. :(');
+    }
+  }
+
+  /**
+   * Updates previous location.
+   * @param {!string} location
+   * @public
+   */
+  savePreviousLocation(location) {
+    this.previousLocation_ = location;
+  }
+
+  /**
+   * Restores previous location.
+   * @private
+   */
+  restore_() {
+    this.location_ = this.previousLocation_;
+    this.input_.value = this.previousLocation_;
+  }
+
+  /**
+   * Shows geolocation button if browser supports Geolocation API.
+   * @private
+   */
+  enableGeolocation_() {
+    if (navigator.geolocation) {
+      this.geolocationButton_.removeAttribute(Attribute.HIDDEN);
+    }
+  }
+
+  /**
    * Renders HTML form element for user's location and sets references to
    * form elements.
    * @private
@@ -165,54 +213,6 @@ class UserLocation extends HTMLElement {
     this.form_ = this.querySelector('form');
     this.input_ = this.querySelector('input');
     this.geolocationButton_ = this.querySelector('button.geolocation');
-  }
-
-  /**
-   * Restores previous location.
-   * @private
-   */
-  restore_() {
-    this.location_ = this.previousLocation_;
-    this.input_.value = this.previousLocation_;
-  }
-
-  /**
-   * Fetches human-friendly location based on geo coordinates via API.
-   * @param {!Object} coords
-   * @param {!number} coords.lat - User's latitude.
-   * @param {!number} coords.lng - User's longitude.
-   * @async
-   * @private
-   */
-  async reverseGeocode_(coords) {
-    const { lat, lng } = coords;
-    const endpoint = `${process.env.GEOCODER_API}?prox=${lat},${lng},${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`;
-
-    try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-
-      // TODO(geolocation): Update lookup for city, state, country and display long-form name of country.
-      const address = data.Response.View[0].Result[0].Location.Address;
-      this.location_ = `${address.City}, ${address.State}`;
-      this.input_.value = this.location_;
-
-      // TODO: Update attribute, which will trigger App to call update()
-      // this.setAttribute(Attribute.LOCATION, this.location_);
-
-      this.eventHandler_.loading(false);
-    } catch (e) {
-      alert('Currently unable to fetch data. :(');
-    }
-  }
-
-  /**
-   * Updates previous location.
-   * @param {!string} location
-   * @public
-   */
-  savePreviousLocation(location) {
-    this.previousLocation_ = location;
   }
 
   /**
