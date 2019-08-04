@@ -7,6 +7,7 @@ import { MoonInfo } from './components/MoonInfo';
 import { MoonPhoto } from './components/MoonPhoto';
 import { PrevNext } from './components/PrevNext';
 import { Tools } from './modules/Tools';
+import { UserLocation } from './components/UserLocation';
 
 // Stylesheet import for Webpack.
 import '../stylus/moon.styl'; 
@@ -26,6 +27,7 @@ customElements.define('donut-chart', DonutChart);
 customElements.define('moon-info', MoonInfo);
 customElements.define('moon-photo', MoonPhoto);
 customElements.define('prev-next', PrevNext);
+customElements.define('user-location', UserLocation);
 
 /**
  * Initializes app when DOM is ready.

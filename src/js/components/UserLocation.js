@@ -1,53 +1,22 @@
-// TODO: Convert all of this to a custom element.
-
+import { Attribute } from '../modules/Constants';
 import { EventType, EventHandler } from '../modules/EventHandler';
-
-/** @enum {string} */ 
-const Attribute = {
-  ENABLED: 'enabled',
-  HIDDEN: 'hidden',
-};
-
-/** @enum {string} */ 
-const CssSelector = {
-  FORM: '.location__form',
-  GEOLOCATION: '.geolocation',
-  HEADER: '.header',
-  INPUT: '[name="location"]',
-};
 
 /** @const {number} */
 const GEOCODER_PROXIMITY = 100;
 
-/** @const {string} */ 
-const LOCAL_STORAGE_ITEM = 'location';
-
-/** @const {string} */ 
-const SVG_ICON_LOCATION = `
-  <svg class="icon icon--location" viewBox="0 0 24 24">
-    <path d="M0 0h24v24H0z" fill="none"/>
-    <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
-  </svg>`;
-
-/** @const {string} */ 
-const SVG_ICON_RESET =`
-  <svg class="icon icon--reset" viewBox="0 0 24 24">
-    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-    <path d="M0 0h24v24H0z" fill="none"/>
-  </svg>`;
-
-/** @const {string} */ 
-const SVG_ICON_SUBMIT = `
-  <svg class="icon icon--submit" viewBox="0 0 24 24">
-    <path d="M0 0h24v24H0z" fill="none"/>
-    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-  </svg>`;
-
 /** @class */
-class UserLocation {
+class UserLocation extends HTMLElement {
   constructor() {
+    super();
+
+    /** @private {boolean} */
+    this.hasSetup_ = false;
+
     /** @private {!string} */ 
-    this.fallbackLocation_ = this.getAttribute('location');
+    this.location_ = null;
+
+    /** @private {?string} */
+    this.previousLocation_ = null;
     
     /** @private {?Element} */ 
     this.form_ = null;
@@ -58,22 +27,27 @@ class UserLocation {
     /** @private {?Element} */ 
     this.input_ = null;
 
-    /** @private {?string} */ 
-    this.userLocation_ = null;
-
-    /** @private {?string} */
-    this.previousLocation_ = null;
-
-    /** @instance */
+    /** @private @instance */
     this.eventHandler_ = new EventHandler();
   }
 
-  init() {
-    this.getInitialLocation_();
-    // this.eventHandler_.updateLocation(this.userLocation_);
-    this.renderLocationEl_(this.userLocation_);
-    this.enableGeolocation_();
-    this.addListeners_();
+  static get observedAttributes() {
+    return [Attribute.LOCATION, Attribute.RESTORE];
+  }
+
+  /** @callback */
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === Attribute.RESTORE) {
+      this.restore_();
+    }
+
+    if (name === Attribute.LOCATION && !this.hasSetup_) {
+      this.location_ = this.getAttribute(Attribute.LOCATION);
+      this.render_();
+      this.enableGeolocation_();
+      this.addListeners_();
+      this.hasSetup_ = true;
+    }
   }
 
   /**
@@ -85,9 +59,12 @@ class UserLocation {
     this.form_.addEventListener(EventType.SUBMIT, (e) => {
       e.preventDefault();
       const newLocation = this.input_.value;
-      if (newLocation !== this.userLocation_) {
-        this.userLocation_ = newLocation;
+      if (newLocation !== this.location_) {
+        this.previousLocation_ = this.location_; // Save the previous location in case there's no data for it.
+        this.location_ = newLocation;
         this.input_.blur();
+        // TODO: update the location attribute, which will trigger App to call update()
+        // this.setAttribute(Attribute.LOCATION, this.location_);
       }
     });
 
@@ -107,7 +84,7 @@ class UserLocation {
     // geolocation button.
     this.input_.addEventListener(EventType.BLUR, () => {
       if (this.input_.value === '') {
-        this.restoreLocation();
+        this.restore_();
       }
       this.geolocationButton_.removeAttribute(Attribute.ENABLED);
     });
@@ -145,11 +122,10 @@ class UserLocation {
       maximumAge: 0
     };
   
-    // Alert user and populate input with fallback location.
+    // Alert user and restore input with previous location.
     const error = () => {
       alert('Uh oh. We were unable to retrieve your location. :(\n\nYou may need to enable Location Services on your device before you can use this feature.');
-      this.userLocation_ = this.fallbackLocation_;
-      this.restoreLocation();
+      this.restore_();
       this.eventHandler_.loading(false);
     }
 
@@ -166,71 +142,37 @@ class UserLocation {
   }
 
   /**
-   * Gets initial location from either URL segment or localStorage, uses
-   * fallback if neither exist.
-   * @private 
-   */
-  getInitialLocation_() {
-    const userLocationSegment = this.lastUrlSegment_().replace(/[+]/g, ' ');
-    const userLocationStored = localStorage.getItem(LOCAL_STORAGE_ITEM);
-
-    let location;
-    if (userLocationSegment) {
-      location = userLocationSegment;
-    } else if (userLocationStored) {
-      location = userLocationStored;
-    } else {
-      location = this.fallbackLocation_;
-    }
-
-    this.userLocation_ = location;
-    this.previousLocation_ = location;
-
-    localStorage.setItem(LOCAL_STORAGE_ITEM, this.userLocation_);
-  }
-
-  /**
-   * Gets last URL segment from the address bar.
-   * @return {string}
-   * @private
-   */
-  lastUrlSegment_() {
-    const pathname = window.location.pathname;
-    const urlSegments = pathname.split('/');
-    return urlSegments[urlSegments.length - 1];
-  }
-
-  /**
    * Renders HTML form element for user's location and sets references to
    * form elements.
-   * @param {!string} userLocation
    * @private
    */
-  renderLocationEl_(userLocation) {
-    const headerEl = document.querySelector(CssSelector.HEADER);
-
-    const userLocationHtml = `
-      <div class="location">
-        <form class="location__form">
-          <input name="location" value="${userLocation}" type="text" aria-label="Type a new location" required>
-          <button type="submit" role="button" aria-label="Update location">${SVG_ICON_SUBMIT}</button>
-          <button type="reset" role="button" aria-label="Clear location">${SVG_ICON_RESET}</button>
-        </form>
-        <button class="geolocation" role="button" aria-label="Find my location" hidden>${SVG_ICON_LOCATION}</button>
-      </div>
+  render_() {
+    const html = `\      
+      <form class="location__form">\
+        <input name="location" value="${this.location_}" type="text" aria-label="Type a new location" required>\
+        <button type="submit" role="button" aria-label="Update location">\
+          ${this.svgIcon_('submit')}\
+        </button>\
+        <button type="reset" role="button" aria-label="Clear location">\
+          ${this.svgIcon_('reset')}\
+      </form>\
+      <button class="geolocation" role="button" aria-label="Find my location" hidden>\
+        ${this.svgIcon_('location')}\
+      </button>\
     `;
-    headerEl.innerHTML += userLocationHtml;
+    this.innerHTML = html.replace(/\s\s/g, '');
 
-    this.form_ = document.querySelector(CssSelector.FORM);
-    this.geolocationButton_ = document.querySelector(CssSelector.GEOLOCATION);
-    this.input_ = document.querySelector(CssSelector.INPUT);
+    this.form_ = this.querySelector('form');
+    this.input_ = this.querySelector('input');
+    this.geolocationButton_ = this.querySelector('button.geolocation');
   }
 
   /**
-   * Restores user's previous location.
-   * @public
+   * Restores previous location.
+   * @private
    */
-  restoreLocation() {
+  restore_() {
+    this.location_ = this.previousLocation_;
     this.input_.value = this.previousLocation_;
   }
 
@@ -252,9 +194,12 @@ class UserLocation {
 
       // TODO(geolocation): Update lookup for city, state, country and display long-form name of country.
       const address = data.Response.View[0].Result[0].Location.Address;
-      this.userLocation_ = `${address.City}, ${address.State}`;
-      this.input_.value = this.userLocation_;
-      this.eventHandler_.updateLocation(this.userLocation_);
+      this.location_ = `${address.City}, ${address.State}`;
+      this.input_.value = this.location_;
+
+      // TODO: Update attribute, which will trigger App to call update()
+      // this.setAttribute(Attribute.LOCATION, this.location_);
+
       this.eventHandler_.loading(false);
     } catch (e) {
       alert('Currently unable to fetch data. :(');
@@ -271,33 +216,40 @@ class UserLocation {
   }
 
   /**
-   * Removes 'location' URL segment and replaces it with new URL segment.
-   * @param {!string} userLocationPathname
-   * @public
-   */
-  updateAddressBar(userLocationPathname) {
-    const userLocationSegment = this.lastUrlSegment_();
-
-    if (userLocationSegment && userLocationSegment !== userLocationPathname) {
-      const pathname = window.location.pathname;
-      let urlSegments = pathname.split('/');
-      urlSegments.splice(-1, 1); // remove last segment
-      urlSegments.push(userLocationPathname); // replace last segment
-      const newPathname = urlSegments.join('/');
-      history.pushState(null, null, newPathname);
-    }
-  }
-
-  // TODO: This moved here from elsewhere. Update/remove as needed.
-  /**
-   * Updates UI with new location and saves it to localStorage.
+   * Renders an inline SVG icon.
+   * @param {string} name
    * @private
    */
-  updateLocation_() {
-    const locationUrlified = this.location_.replace(/[\s]/g, '+');
-    this.userLocationWidget.updateAddressBar(locationUrlified);
-    this.userLocationWidget.savePreviousLocation(this.location_);
-    localStorage.setItem('location', this.location_);
+  svgIcon_(name) {
+    let svgPath;
+    switch (name) {
+      case 'location':
+        svgPath = `\
+          <path d="M0 0h24v24H0z" fill="none"/>\
+          <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>\    
+        `;
+        break;
+    case 'reset':
+      svgPath = `\
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>\
+        <path d="M0 0h24v24H0z" fill="none"/>\
+      `;
+      break;
+    case 'submit':
+      svgPath = `\
+        <path d="M0 0h24v24H0z" fill="none"/>\
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>\
+      `;
+      break;
+    }
+
+    const html = `\
+      <svg class="icon icon--${name}" viewBox="0 0 24 24">\
+        ${svgPath}\
+      </svg>\
+    `;
+
+    return html.replace(/\s\s/g, '');
   }
 }
 

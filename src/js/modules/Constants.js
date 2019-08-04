@@ -2,10 +2,13 @@
 const Attribute = {
   COLOR: 'color',
   DIRECTION: 'direction',
+  ENABLED: 'enabled',
   END: 'end',
+  HIDDEN: 'hidden',
   LOCATION: 'location',
   PERCENT: 'percent',
   PHASE: 'phase',
+  RESTORE: 'restore',
   START: 'start',
 };
 
