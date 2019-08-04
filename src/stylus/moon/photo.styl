@@ -17,17 +17,17 @@
 .photo__figure
   border-radius 50%
   flex 0 0 PHOTO_WIDTH
-  opacity 0
   overflow hidden
   padding 0 0 PHOTO_WIDTH
   position relative
+  
+.photo__image
+  opacity 0
+  position absolute
   transition opacity var(--transition) ease
 
-.photo__figure[ready]
+.photo__image[ready]
   opacity 1
-
-.photo__image
-  position absolute
 
 .photo__image[frame="1"]
   top 0

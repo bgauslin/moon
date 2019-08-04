@@ -7,12 +7,14 @@ const Image = {
   PATH_2X: '/img/moon-phases-26-480.min.jpg',
 };
 
-/** @const {number} */
-// NOTE: Keep value coordinated with loop in 'src/stylus/moon/photo.styl'
+/**
+ * NOTE: Keep value coordinated with loop in 'src/stylus/moon/photo.styl'
+ * @const {number}
+ */
 const MOONPHASE_IMAGE_COUNT = 26;
 
 /** @const {number} */
-const SPINNER_DELAY = 1000;
+const SPINNER_DELAY_MS = 1000;
 
 /** @const {Object} */
 const SpinnerOptions = {
@@ -67,12 +69,13 @@ class MoonPhoto extends HTMLElement {
     const ready = this.imagesLoaded_ ? Attribute.READY : '';
     const html = `\      
       <div class="${this.className}__frame">\
-        <figure class="${this.className}__figure" ${ready}>\
+        <figure class="${this.className}__figure">\
           <img class="${this.className}__image" \
                 src="${Image.PATH_1X}" \
                 srcset="${Image.PATH_1X} 1x, ${Image.PATH_2X} 2x" \
                 alt="${this.phase_}" \
-                frame="${this.imageNumber_()}">\
+                frame="${this.imageNumber_()}"
+                ${ready}>\
         </figure>\
       </div>\
     `;
@@ -121,21 +124,20 @@ class MoonPhoto extends HTMLElement {
    * @private 
    */
   preloadImages_() {
-    const figureEl = this.querySelector('figure');
     const imageEl = this.querySelector('img');
 
     imageEl.onload = () => {
-      figureEl.setAttribute(Attribute.READY, '');
+      imageEl.setAttribute(Attribute.READY, '');
       this.spinner_.stop();
       this.imagesLoaded_ = true;
     };
 
     window.setTimeout(() => {
-      if (!figureEl.hasAttribute(Attribute.READY)) {
+      if (!imageEl.hasAttribute(Attribute.READY)) {
         this.spinner_.spin();
         this.appendChild(this.spinner_.el);
       }
-    }, SPINNER_DELAY);
+    }, SPINNER_DELAY_MS);
   }
 }
 
