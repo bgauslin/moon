@@ -79,6 +79,7 @@ class App {
     this.eventHandler_.hijackLinks();
 
     this.initialUrl_();
+    this.renderFooterContent_();
   }
 
   /**
@@ -194,6 +195,18 @@ class App {
         el.classList.remove('today');
       }
     }); 
+  }
+
+  /**
+   * Renders text into the footer via JS to avoid a FOUC.
+   */
+  renderFooterContent_() {
+    const yearsEl = document.querySelector('.copyright__years');
+    const ownerEl = document.querySelector('.copyright__owner');
+    const yearStart = '2018';
+    const yearEnd = new Date().getFullYear().toString().substr(-2);
+    yearsEl.textContent = `© ${yearStart}–${yearEnd}`;
+    ownerEl.textContent = 'Ben Gauslin';
   }
 
   /** 
