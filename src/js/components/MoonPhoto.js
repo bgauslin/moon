@@ -28,17 +28,14 @@ class MoonPhoto extends HTMLElement {
   constructor() {
     super();
 
+    /** @private {boolean} */
+    this.imagesLoaded_ = false;
+
     /** @private {string} */
     this.percent_ = '';
 
     /** @private {string} */
     this.phase_ = '';
-
-    /** @private {Element} */
-    this.figureEl_ = null;
-
-    /** @private {Element} */
-    this.imageEl_ = null;
 
     /** @private {instance} */
     this.spinner_ = new Spinner(SpinnerOptions);
@@ -54,11 +51,10 @@ class MoonPhoto extends HTMLElement {
   }
 
   /** 
-   * Renders/updates photo of the current moon phase.
+   * Renders photo of the current moon phase. Subsequent attribute changes call
+   * this.update_().
    * @private
    */
-  // TODO(moon-photo): Only call render_() once; then call new update_() method
-  // thereafter that only modifies what it needs to.
   render_() {
     this.percent_ = this.getAttribute(Attribute.PERCENT);
     this.phase_ = this.getAttribute(Attribute.PHASE);
@@ -67,15 +63,15 @@ class MoonPhoto extends HTMLElement {
       return;
     }
 
-    // TODO(moon-photo): Provide a description in the 'alt' attribute.
-    // TODO(moon-photo): Remove 'ready' attribute from <figure> after preloader is wired up.
+    // TODO(moon-photo): Calculate percent visible and add it to 'alt' attribute.
+    const ready = this.imagesLoaded_ ? Attribute.READY : '';
     const html = `\      
       <div class="${this.className}__frame">\
-        <figure class="${this.className}__figure" ready>\
+        <figure class="${this.className}__figure" ${ready}>\
           <img class="${this.className}__image" \
                 src="${Image.PATH_1X}" \
                 srcset="${Image.PATH_1X} 1x, ${Image.PATH_2X} 2x" \
-                alt="" \
+                alt="${this.phase_}" \
                 frame="${this.imageNumber_()}">\
         </figure>\
       </div>\
@@ -83,10 +79,9 @@ class MoonPhoto extends HTMLElement {
     
     this.innerHTML = html.replace(/\s\s/g, '');
 
-    // TODO(moon-photo): Wire up spinner and preload_() method.
-    this.figureEl_ = this.querySelector('figure');
-    this.imageEl_ = this.querySelector('img');
-    // this.preload_();
+    if (!this.imagesLoaded_) {
+      this.preloadImages_();
+    }
   }
 
   /**
@@ -121,20 +116,22 @@ class MoonPhoto extends HTMLElement {
   }
 
   /**
-   * Attaches/removes a loading spinner based on whether or not
-   * an image's figure wrapper has a 'ready' attribute.
+   * Attaches/removes a loading spinner and 'ready' attribute based on whether
+   * or not images are fully loaded.
    * @private 
    */
-  preload_() {
-    let img = new Image();
-    img = this.imageEl_;
-    img.onload = () => {
-      this.figureEl_.setAttribute(Attribute.READY, '');
+  preloadImages_() {
+    const figureEl = this.querySelector('figure');
+    const imageEl = this.querySelector('img');
+
+    imageEl.onload = () => {
+      figureEl.setAttribute(Attribute.READY, '');
       this.spinner_.stop();
+      this.imagesLoaded_ = true;
     };
 
     window.setTimeout(() => {
-      if (!this.figureEl_.hasAttribute(Attribute.READY)) {
+      if (!figureEl.hasAttribute(Attribute.READY)) {
         this.spinner_.spin();
         this.appendChild(this.spinner_.el);
       }
