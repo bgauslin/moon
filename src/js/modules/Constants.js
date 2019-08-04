@@ -9,6 +9,7 @@ const Attribute = {
   LOCATION: 'location',
   PERCENT: 'percent',
   PHASE: 'phase',
+  READY: 'ready',
   RESTORE: 'restore',
   START: 'start',
 };

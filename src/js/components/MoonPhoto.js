@@ -1,4 +1,5 @@
 import { Attribute } from '../modules/Constants';
+import Spinner from 'spin';
 
 /** @enum {string} */
 const Image = {
@@ -10,6 +11,18 @@ const Image = {
 // NOTE: Keep value coordinated with loop in 'src/stylus/moon/photo.styl'
 const MOONPHASE_IMAGE_COUNT = 26;
 
+/** @const {number} */
+const SPINNER_DELAY = 1000;
+
+/** @const {Object} */
+const SpinnerOptions = {
+  color: '#fff',
+  length: 8,
+  lines: 12,
+  radius: 8,
+  width: 3,
+};
+
 /** @class */
 class MoonPhoto extends HTMLElement {
   constructor() {
@@ -20,6 +33,15 @@ class MoonPhoto extends HTMLElement {
 
     /** @private {string} */
     this.phase_ = '';
+
+    /** @private {Element} */
+    this.figureEl_ = null;
+
+    /** @private {Element} */
+    this.imageEl_ = null;
+
+    /** @private {instance} */
+    this.spinner_ = new Spinner(SpinnerOptions);
   }
 
   static get observedAttributes() {
@@ -35,6 +57,8 @@ class MoonPhoto extends HTMLElement {
    * Renders/updates photo of the current moon phase.
    * @private
    */
+  // TODO(moon-photo): Only call render_() once; then call new update_() method
+  // thereafter that only modifies what it needs to.
   render_() {
     this.percent_ = this.getAttribute(Attribute.PERCENT);
     this.phase_ = this.getAttribute(Attribute.PHASE);
@@ -44,8 +68,7 @@ class MoonPhoto extends HTMLElement {
     }
 
     // TODO(moon-photo): Provide a description in the 'alt' attribute.
-    // TODO(moon-photo): Attach <preloader> custom element and modify its attributes.
-    // TODO(moon-photo): Remove 'ready' attribute on figure after preloader is wired up.
+    // TODO(moon-photo): Remove 'ready' attribute from <figure> after preloader is wired up.
     const html = `\      
       <div class="${this.className}__frame">\
         <figure class="${this.className}__figure" ready>\
@@ -59,6 +82,11 @@ class MoonPhoto extends HTMLElement {
     `;
     
     this.innerHTML += html.replace(/\s\s/g, '');
+
+    // TODO(moon-photo): Wire up spinner and preload_() method.
+    this.figureEl_ = this.querySelector('figure');
+    this.imageEl_ = this.querySelector('img');
+    // this.preload_();
   }
 
   /**
@@ -90,6 +118,27 @@ class MoonPhoto extends HTMLElement {
         break;
     }
     return (imageNumber === 0) ? MOONPHASE_IMAGE_COUNT : imageNumber;
+  }
+
+  /**
+   * Attaches/removes a loading spinner based on whether or not
+   * an image's figure wrapper has a 'ready' attribute.
+   * @private 
+   */
+  preload_() {
+    let img = new Image();
+    img = this.imageEl_;
+    img.onload = () => {
+      this.figureEl_.setAttribute(Attribute.READY, '');
+      this.spinner_.stop();
+    };
+
+    window.setTimeout(() => {
+      if (!this.figureEl_.hasAttribute(Attribute.READY)) {
+        this.spinner_.spin();
+        this.appendChild(this.spinner_.el);
+      }
+    }, SPINNER_DELAY);
   }
 }
 
