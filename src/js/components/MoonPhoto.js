@@ -8,7 +8,7 @@ const Image = {
 };
 
 /**
- * NOTE: Keep value coordinated with loop in 'src/stylus/moon/photo.styl'
+ * NOTE: This value must stay coordinated with loop in 'src/stylus/moon/photo.styl'
  * @const {number}
  */
 const MOONPHASE_IMAGE_COUNT = 26;
@@ -31,7 +31,7 @@ class MoonPhoto extends HTMLElement {
     super();
 
     /** @private {boolean} */
-    this.imagesLoaded_ = false;
+    this.imageLoaded_ = false;
 
     /** @private {string} */
     this.percent_ = '';
@@ -53,8 +53,7 @@ class MoonPhoto extends HTMLElement {
   }
 
   /** 
-   * Renders photo of the current moon phase. Subsequent attribute changes call
-   * this.update_().
+   * Renders a photo of the current moon phase.
    * @private
    */
   render_() {
@@ -65,7 +64,7 @@ class MoonPhoto extends HTMLElement {
       return;
     }
 
-    const ready = this.imagesLoaded_ ? Attribute.READY : '';
+    const ready = this.imageLoaded_ ? Attribute.READY : '';
     const html = `\      
       <div class="${this.className}__frame">\
         <figure class="${this.className}__figure">\
@@ -81,13 +80,13 @@ class MoonPhoto extends HTMLElement {
     
     this.innerHTML = html.replace(/\s\s/g, '');
 
-    if (!this.imagesLoaded_) {
-      this.preloadImages_();
+    if (!this.imageLoaded_) {
+      this.preloadImage_();
     }
   }
 
   /**
-   * Returns moon phase photo sprite's position and the image's 'alt' attribute.
+   * Returns moon phase photo sprite's position.
    * @return {number}
    * @private
    */
@@ -118,7 +117,8 @@ class MoonPhoto extends HTMLElement {
   }
 
   /**
-   * Determines illumination based on percentage.
+   * Determines moon's illumination based on percentage.
+   * @return {string}
    * @private
    */
   illumination_() {
@@ -149,16 +149,16 @@ class MoonPhoto extends HTMLElement {
 
   /**
    * Attaches/removes a loading spinner and 'ready' attribute based on whether
-   * or not images are fully loaded.
+   * or not the image is fully loaded.
    * @private 
    */
-  preloadImages_() {
+  preloadImage_() {
     const imageEl = this.querySelector('img');
 
     imageEl.onload = () => {
       imageEl.setAttribute(Attribute.READY, '');
       this.spinner_.stop();
-      this.imagesLoaded_ = true;
+      this.imageLoaded_ = true;
     };
 
     window.setTimeout(() => {
