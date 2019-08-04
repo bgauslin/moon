@@ -73,17 +73,11 @@ class PrevNext extends HTMLElement {
     const date = ((this.direction_ === 'prev')
       ? this.dateTime_.prevDate()
       : this.dateTime_.nextDate());
+    const url = this.helpers_.makeUrl(date, location);
+    const title = `${this.dateTime_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
-    const { year, month, day } = date;
-    const month_ = this.helpers_.zeroPad(month);
-    const day_ = this.helpers_.zeroPad(day);
-    const location_ = this.helpers_.urlify(location);
-
-    const url = new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
     this.linkEl_.setAttribute('href', url);
-
-    const linkTitle = `${this.dateTime_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
-    this.linkEl_.setAttribute('title', linkTitle);
+    this.linkEl_.setAttribute('title', title);
   }
 }
 

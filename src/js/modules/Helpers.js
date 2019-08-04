@@ -1,6 +1,23 @@
 /** @class */
 class Helpers {
   /**
+   * Converts a Date object and a location string to a full URL.
+   * @param {Date} date
+   * @param {string} location
+   * @return {string} 
+   * @public
+   */
+  makeUrl(date, location) {
+    const { year, month, day } = date;
+    const month_ = this.zeroPad(month);
+    const day_ = this.zeroPad(day);
+    const location_ = this.urlify(location);
+    const url = new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
+
+    return url;
+  }
+
+  /**
    * Returns multiple words with first letter of each word capitalized.
    * @param {string} words
    * @return {string} 

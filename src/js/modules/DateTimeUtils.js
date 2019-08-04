@@ -17,12 +17,11 @@ const ApiYears = {
 /** @class */
 class DateTimeUtils {
   /** 
-   * Parses date from the URL, falls back to today if URL isn't valid, and
-   * returns a date object.
-   * @return {Date} The date object.
+   * Parses date from the URL and falls back to today if URL isn't valid.
+   * @return {Date}
    * @public
    */
-  currentDate() {
+  activeDate() {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
 
@@ -30,12 +29,79 @@ class DateTimeUtils {
     let month = parseInt(urlSegments[1]);
     let day = parseInt(urlSegments[2]);
 
-    // If URL isn't a valid date, get today and return that.
+    // If date part of URL isn't valid, return today.
     if (!this.validYear_(year) || !this.validMonth_(month) || !this.validDay_(year, month, day)) {
-      const now = new Date();
-      year = now.getFullYear();
-      month = now.getMonth() + 1;
-      day = now.getDate();
+      return this.todaysDate();
+    }
+
+    return { year, month, day };
+  }
+
+  /** 
+   * Today.
+   * @return {Date}
+   * @public
+   */
+  todaysDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+
+    return { year, month, day };
+  }
+
+  /**
+   * Date after the active date.
+   * @return {Date}
+   * @public
+   */
+  nextDate() {
+    let { year, month, day } = this.activeDate();
+
+    // Last day of the year.
+    if (day === 31 && month === 12) {
+      year += 1;
+      month = 1;
+      day = 1;
+    // Leap day.
+    } else if (this.isLeapYear_(year) && month === 2 && day === 29) { 
+      month = 3;
+      day = 1;
+    // Last day of the month.
+    } else if (day === DAYS_IN_MONTHS[month - 1]) {
+      month += 1;
+      day = 1;
+    } else {
+      day += 1;
+    }
+
+    return { year, month, day };
+  }
+
+  /**
+   * Date before the active date.
+   * @return {Date}
+   * @public
+   */
+  prevDate() {
+    let { year, month, day } = this.activeDate();
+
+    // First day of the year.
+    if (day === 1 && month === 1) {
+      year -= 1;
+      month = 12;
+      day = 31;
+    // Day before leap day.
+    } else if (this.isLeapYear_(year) && month === 3 && day === 1) {   
+      month = 2;
+      day = 29;
+    // First day of the month.
+    } else if (day === 1) {
+      month -= 1;
+      day = DAYS_IN_MONTHS[month - 1];
+    } else {
+      day -= 1;
     }
 
     return { year, month, day };
@@ -95,60 +161,6 @@ class DateTimeUtils {
     }
 
     return `${hours_}:${minutes}`;
-  }
-
-  /**
-   * @return {Date} Date after the current date.
-   * @public
-   */
-  nextDate() {
-    let { year, month, day } = this.currentDate();
-
-    // Last day of the year.
-    if (day === 31 && month === 12) {
-      year += 1;
-      month = 1;
-      day = 1;
-    // Leap day.
-    } else if (this.isLeapYear_(year) && month === 2 && day === 29) { 
-      month = 3;
-      day = 1;
-    // Last day of the month.
-    } else if (day === DAYS_IN_MONTHS[month - 1]) {
-      month += 1;
-      day = 1;
-    } else {
-      day += 1;
-    }
-
-    return { year, month, day };
-  }
-
-  /**
-   * @return {Date} Date before the current date.
-   * @public
-   */
-  prevDate() {
-    let { year, month, day } = this.currentDate();
-
-    // First day of the year.
-    if (day === 1 && month === 1) {
-      year -= 1;
-      month = 12;
-      day = 31;
-    // Day before leap day.
-    } else if (this.isLeapYear_(year) && month === 3 && day === 1) {   
-      month = 2;
-      day = 29;
-    // First day of the month.
-    } else if (day === 1) {
-      month -= 1;
-      day = DAYS_IN_MONTHS[month - 1];
-    } else {
-      day -= 1;
-    }
-
-    return { year, month, day };
   }
 
   /**

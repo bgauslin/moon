@@ -87,14 +87,17 @@ class App {
    * @private
    */
   initialUrl_() {
-    const { year, month, day } = this.dateTime_.currentDate();
-    const month_ = this.helpers_.zeroPad(month);
-    const day_ = this.helpers_.zeroPad(day);
-    const location = this.helpers_.urlify(this.location_);
-    const path = `/${year}/${month_}/${day_}/${location}`
+    const url = this.helpers_.makeUrl(this.dateTime_.activeDate(), this.location_);
+    history.replaceState(null, null, url);
+  }
 
-    this.headerLinkEl_.setAttribute('href', path);
-    history.replaceState(null, null, path);
+  /**
+   * Updates the header link to today.
+   * @private
+   */
+  setHeaderLink_() {
+    const url = this.helpers_.makeUrl(this.dateTime_.todaysDate(), this.location_);
+    this.headerLinkEl_.setAttribute('href', url);
   }
 
   /**
@@ -108,7 +111,7 @@ class App {
     document.body.setAttribute(Attribute.LOADING, '');
 
     // Get the date from the address bar.
-    this.date_ = this.dateTime_.currentDate();
+    this.date_ = this.dateTime_.activeDate();
 
     // Get location from custom element attribute.
     this.location_ = this.locationEl_.getAttribute(Attribute.LOCATION);
@@ -141,12 +144,13 @@ class App {
       el.setAttribute('location', this.location_);
     });
 
-    // Update the header and document title.
+    // Update the header, header link, and document title.
     this.headerLinkEl_.textContent = this.dateTime_.prettyDate(
       this.date_,
       document.documentElement.lang,
       'long'
     );
+    this.setHeaderLink_();
 
     this.updateDocumentTitle_({
       date: this.date_,
