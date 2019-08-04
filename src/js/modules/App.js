@@ -77,9 +77,8 @@ class App {
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
     this.eventHandler_.hijackLinks();
-
     this.initialUrl_();
-    this.renderFooterContent_();
+    this.renderFooterText_();
   }
 
   /**
@@ -92,7 +91,6 @@ class App {
     const month_ = this.helpers_.zeroPad(month);
     const day_ = this.helpers_.zeroPad(day);
     const location = this.helpers_.urlify(this.location_);
-
     const path = `/${year}/${month_}/${day_}/${location}`
 
     this.headerLinkEl_.setAttribute('href', path);
@@ -166,7 +164,7 @@ class App {
 
     // Disable the progress bar and send a new Analytics pageview.
     document.body.removeAttribute(Attribute.LOADING);
-    // this.eventHandler_.sendPageview(window.location.pathname, document.title);
+    this.eventHandler_.sendPageview(window.location.pathname, document.title);
   }
   
   /**
@@ -199,8 +197,9 @@ class App {
 
   /**
    * Renders text into the footer via JS to avoid a FOUC.
+   * @private
    */
-  renderFooterContent_() {
+  renderFooterText_() {
     const yearsEl = document.querySelector('.copyright__years');
     const ownerEl = document.querySelector('.copyright__owner');
     const yearStart = '2018';
