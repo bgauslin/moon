@@ -1,5 +1,6 @@
 import { Attribute } from '../modules/Constants';
 import { EventType } from '../modules/EventHandler';
+import { Helpers } from '../modules/Helpers';
 
 /** @const {number} */
 const GEOCODER_PROXIMITY = 100;
@@ -26,6 +27,9 @@ class UserLocation extends HTMLElement {
 
     /** @private {?Element} */ 
     this.input_ = null;
+
+    /** @private @instance */
+    this.helpers_ = new Helpers();
   }
 
   static get observedAttributes() {
@@ -40,6 +44,7 @@ class UserLocation extends HTMLElement {
 
     if (name === Attribute.LOCATION && !this.hasSetup_) {
       this.location_ = this.getAttribute(Attribute.LOCATION);
+      this.previousLocation_ = this.location_;
       this.render_();
       this.enableGeolocation_();
       this.addListeners_();
@@ -52,33 +57,32 @@ class UserLocation extends HTMLElement {
    * @private
    */
   addListeners_() {
-    // Get new location on submit and blur the input.
+    // Get new location on submit, blur the input, and update the attribute
+    // to trigger App.update().
     this.form_.addEventListener(EventType.SUBMIT, (e) => {
       e.preventDefault();
       const newLocation = this.input_.value;
       if (newLocation !== this.location_) {
-        this.previousLocation_ = this.location_; // Save the previous location in case there's no data for it.
         this.location_ = newLocation;
+        this.update_();
         this.input_.blur();
-        // TODO: update the location attribute, which will trigger App to call update()
-        // this.setAttribute(Attribute.LOCATION, this.location_);
       }
     });
 
-    // Clear input and focus it.
+    // Clear the input and focus it when the reset icon/button is clicked.
     this.form_.addEventListener(EventType.RESET, (e) => {
       e.preventDefault();
       this.input_.value = '';
       this.input_.focus();
     });
 
-    // Show geolocation button on input focus.
+    // Only show geolocation button on input focus.
     this.input_.addEventListener(EventType.FOCUS, () => {
       this.geolocationButton_.setAttribute(Attribute.ENABLED, '');
     });
 
     // Restore previous location if input is empty when blurred and hide
-    // geolocation button.
+    // the geolocation button.
     this.input_.addEventListener(EventType.BLUR, () => {
       if (this.input_.value === '') {
         this.restore_();
@@ -86,7 +90,7 @@ class UserLocation extends HTMLElement {
       this.geolocationButton_.removeAttribute(Attribute.ENABLED);
     });
 
-    // Geolocation button listener.
+    // Get user's location when geolocation button is clicked.
     this.geolocationButton_.addEventListener(EventType.CLICK, (e) => {
       e.preventDefault();
       this.getGeolocation_();
@@ -147,13 +151,8 @@ class UserLocation extends HTMLElement {
       // TODO(geolocation): Update lookup for city, state, country and display long-form name of country.
       const address = data.Response.View[0].Result[0].Location.Address;
       this.location_ = `${address.City}, ${address.State}`;
-
-      // Update input field, address bar, and 'location' attribute. Attribute 
-      // change will trigger App.update.
       this.input_.value = this.location_;
-      this.setAttribute(Attribute.LOCATION, this.location_);
-      // TODO: update address bar here...
-      // this.updateUrl_();
+      this.update_();
 
       document.body.removeAttribute(Attribute.LOADING);
     } catch (e) {
@@ -162,12 +161,17 @@ class UserLocation extends HTMLElement {
   }
 
   /**
-   * Updates previous location.
-   * @param {!string} location
-   * @public
+   * Updates the URL with new location and changes the 'location' attribute to
+   * trigger App.update().
+   * @private
    */
-  savePreviousLocation(location) {
-    this.previousLocation_ = location;
+  update_() {
+    const urlSegments = window.location.pathname.split('/');
+    urlSegments.splice(-1, 1);
+    urlSegments.push(this.helpers_.urlify(this.location_));
+    history.pushState(null, null, urlSegments.join('/'));
+
+    this.setAttribute(Attribute.LOCATION, this.location_);
   }
 
   /**
