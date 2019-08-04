@@ -65,7 +65,6 @@ class MoonPhoto extends HTMLElement {
       return;
     }
 
-    // TODO(moon-photo): Calculate percent visible and add it to 'alt' attribute.
     const ready = this.imagesLoaded_ ? Attribute.READY : '';
     const html = `\      
       <div class="${this.className}__frame">\
@@ -73,7 +72,7 @@ class MoonPhoto extends HTMLElement {
           <img class="${this.className}__image" \
                 src="${Image.PATH_1X}" \
                 srcset="${Image.PATH_1X} 1x, ${Image.PATH_2X} 2x" \
-                alt="${this.phase_}" \
+                alt="${this.phase_}${this.illumination_()}" \
                 frame="${this.imageNumber_()}"
                 ${ready}>\
         </figure>\
@@ -116,6 +115,36 @@ class MoonPhoto extends HTMLElement {
         break;
     }
     return (imageNumber === 0) ? MOONPHASE_IMAGE_COUNT : imageNumber;
+  }
+
+  /**
+   * Determines illumination based on percentage.
+   * @private
+   */
+  illumination_() {
+    let illumination;
+    switch (this.phase_.toUpperCase()) {
+      case 'NEW MOON':
+        illumination = 0;
+        break;
+      case 'WAXING CRESCENT':      
+      case 'WAXING GIBBOUS':
+        illumination = this.percent_ * 2;
+        break;
+      case 'FIRST QUARTER':
+      case 'LAST QUARTER':
+        illumination = 50;
+        break;
+      case 'FULL MOON':
+        illumination = 100;
+        break;
+      case 'WANING GIBBOUS':
+      case 'WANING CRESCENT':
+        illumination = (100 - this.percent_) * 2;
+        break;
+    }
+
+    return (illumination > 0) ? ` (${illumination}% illumination)` : '';
   }
 
   /**
