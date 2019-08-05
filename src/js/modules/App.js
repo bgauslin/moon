@@ -16,12 +16,6 @@ const HIGHLIGHTED = ['.header__title', '.info__phase', '.info__percent'];
 /** @class */
 class App {
   constructor(api) {
-    /** @private {string} */
-    this.baseTitle_ = document.title;
-
-    /** @private {Object} */
-    this.date_ = null;
-
     /**
      * On first run, location may or may not be set in localStorage. If not,
      * set it to the fallback. On all subsequent updates, location is pulled
@@ -29,6 +23,9 @@ class App {
      * @private {string}
      */
     this.location_ = localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
+    
+    /** @private {Object} */
+    this.date_ = null;
     
     /** @private {Element} */
     this.headerLinkEl_ = document.querySelector('.header__link');
@@ -74,11 +71,11 @@ class App {
    * @public
    */
   init() {
+    this.eventHandler_.hijackLinks();
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
-    this.eventHandler_.hijackLinks();
-    this.initialUrl_();
     this.renderFooterText_();
+    // this.initialUrl_();
   }
 
   /**
@@ -89,15 +86,6 @@ class App {
   initialUrl_() {
     const url = this.helpers_.makeUrl(this.dateTime_.activeDate(), this.location_);
     history.replaceState(null, null, url);
-  }
-
-  /**
-   * Updates the header link to today.
-   * @private
-   */
-  setHeaderLink_() {
-    const url = this.helpers_.makeUrl(this.dateTime_.todaysDate(), this.location_);
-    this.headerLinkEl_.setAttribute('href', url);
   }
 
   /**
@@ -144,14 +132,16 @@ class App {
       el.setAttribute('location', this.location_);
     });
 
-    // Update the header, header link, and document title.
+    // Update the header link.
+    const url = this.helpers_.makeUrl(this.dateTime_.todaysDate(), this.location_);
+    this.headerLinkEl_.setAttribute('href', url);
     this.headerLinkEl_.textContent = this.dateTime_.prettyDate(
       this.date_,
       document.documentElement.lang,
       'long'
     );
-    this.setHeaderLink_();
 
+    // Update the document title.
     this.updateDocumentTitle_({
       date: this.date_,
       locale: document.documentElement.lang,
@@ -224,7 +214,6 @@ class App {
     const dateLabel = this.dateTime_.prettyDate(date, locale, 'short');
 
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
-
     if (percent > 0) {
       pageTitle += ` ${TITLE_DIVIDER} ${percent}%`;
     }
