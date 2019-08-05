@@ -121,9 +121,7 @@ class App {
       el.setAttribute('location', this.location_);
     });
 
-    // Update the header link.
-    const url = this.helpers_.makeUrl(this.dateTime_.todaysDate(), this.location_);
-    this.headerLinkEl_.setAttribute('href', url);
+    // Update the date in the header.
     this.headerLinkEl_.textContent = this.dateTime_.prettyDate(
       this.date_,
       document.documentElement.lang,
