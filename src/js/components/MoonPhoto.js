@@ -92,7 +92,6 @@ class MoonPhoto extends HTMLElement {
    */
   imageNumber_() {
     let imageNumber;
-
     switch (this.phase_.toUpperCase()) {
       case 'WAXING CRESCENT':
       case 'WAXING GIBBOUS':
@@ -143,7 +142,6 @@ class MoonPhoto extends HTMLElement {
         illumination = (100 - this.percent_) * 2;
         break;
     }
-
     return (illumination > 0) ? ` (${illumination}% illumination)` : '';
   }
 

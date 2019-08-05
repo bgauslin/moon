@@ -34,7 +34,7 @@ class MoonInfo extends HTMLElement {
     this.percent_ = this.getAttribute(Attribute.PERCENT);
     this.phase_ = this.getAttribute(Attribute.PHASE);
 
-    if (this.percent_ === null || this.phase_ === null) {
+    if (!this.percent_ || !this.phase_) {
       return;
     }
 
