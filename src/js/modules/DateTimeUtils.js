@@ -25,9 +25,9 @@ class DateTimeUtils {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
 
-    let year = parseInt(urlSegments[0]);
-    let month = parseInt(urlSegments[1]);
-    let day = parseInt(urlSegments[2]);
+    const year = parseInt(urlSegments[0]);
+    const month = parseInt(urlSegments[1]);
+    const day = parseInt(urlSegments[2]);
 
     // If date part of URL isn't valid, return today.
     if (!this.validYear_(year) || !this.validMonth_(month) || !this.validDay_(year, month, day)) {
