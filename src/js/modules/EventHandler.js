@@ -22,7 +22,6 @@ class EventHandler {
     document.addEventListener(EventType.CLICK, (e) => {
       const target = e.target;
       const href = target.getAttribute('href');
-
       if (href) {
         const linkUrl = new URL(href, window.location.origin);
         if (linkUrl.hostname === window.location.hostname) {

@@ -2,8 +2,8 @@
 class Helpers {
   /**
    * Converts a Date object and a location string to a full URL.
-   * @param {Date} date
-   * @param {string} location
+   * @param {!Date} date
+   * @param {!string} location
    * @return {string} 
    * @public
    */
@@ -13,13 +13,12 @@ class Helpers {
     const day_ = this.zeroPad(day);
     const location_ = this.urlify(location);
     const url = new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
-
     return url;
   }
 
   /**
    * Returns multiple words with first letter of each word capitalized.
-   * @param {string} words
+   * @param {!string} words
    * @return {string} 
    * @public
    */
@@ -31,7 +30,7 @@ class Helpers {
 
   /**
    * Returns a URL-friendly lowercase string with each space replaced with a '+'.
-   * @param {string} value
+   * @param {!string} value
    * @return {string} 
    * @public
    */

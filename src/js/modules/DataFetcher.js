@@ -20,7 +20,7 @@ class DataFetcher {
   /**
    * Fetches data depending on the API, then processes and normalizes the
    * results before returning it in standardized format.
-   * @param {!Object} date
+   * @param {!Date} date
    * @param {!string} location
    * @async
    * @public
@@ -82,8 +82,8 @@ class DataFetcher {
       return;
     }
 
-    // Normalize all API data, put it in an object, and return it to App for
-    // setting attribute values on custom elements.
+    // Normalize all API data and put it in an object for setting attribute
+    // values on custom elements.
     const { sunrise, sunset } = this.sunriseSunset_();
     const { moonrise, moonset } = this.moonriseMoonset_();
 
@@ -99,7 +99,7 @@ class DataFetcher {
   }
 
   /**
-   * Sets the hemisphere based on the location's latitude.
+   * Sets the hemisphere based on location's latitude.
    * @return {string}
    * @private
    */
@@ -191,7 +191,7 @@ class DataFetcher {
   }
 
   /**
-   * Sets moonrise and moonset in military time.
+   * Converts moonrise and moonset times to military time.
    * @return {Object}
    * @private
    */

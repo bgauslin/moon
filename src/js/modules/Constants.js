@@ -14,8 +14,10 @@ const Attribute = {
   START: 'start',
 };
 
-/** @enum {number} */
-// NOTE: Keep values coordinated with 'Chart' enum in 'src/stylus/config/layout.styl'
+/**
+ * NOTE: Keep values coordinated with 'Chart' enum in 'src/stylus/config/layout.styl'
+ * @enum {number}
+ */
 const Chart = {
   LABEL_GAP: 8,
   MARGIN: 44,

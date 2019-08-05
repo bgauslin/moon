@@ -39,8 +39,7 @@ class DateTimeUtils {
   }
 
   /** 
-   * Today.
-   * @return {Date}
+   * @return {Date} Today.
    * @public
    */
   todaysDate() {
@@ -53,8 +52,7 @@ class DateTimeUtils {
   }
 
   /**
-   * Date after the active date.
-   * @return {Date}
+   * @return {Date} Date after the active date.
    * @public
    */
   nextDate() {
@@ -81,8 +79,7 @@ class DateTimeUtils {
   }
 
   /**
-   * Date before the active date.
-   * @return {Date}
+   * @return {Date} Date before the active date.
    * @public
    */
   prevDate() {
@@ -109,10 +106,7 @@ class DateTimeUtils {
   }
 
   /**
-   * @param {!Object} date
-   * @param {!number} date.year
-   * @param {!number} date.month
-   * @param {!number} date.day
+   * @param {!Date} date
    * @param {!string} locale
    * @param {!string} monthFormat
    * @return {string} Date formatted per the locale.
@@ -121,8 +115,8 @@ class DateTimeUtils {
   prettyDate(date, locale, monthFormat) {
     let { year, month, day } = date;
     month -= 1; // Adjust month for UTC format
-
     const date_ = new Date(Date.UTC(year, month, day));
+
     const formattedDate = date_.toLocaleDateString(locale, {
       day: 'numeric',
       month: monthFormat,
@@ -153,7 +147,6 @@ class DateTimeUtils {
     const minutes = time.split(' ')[0].split(':')[1];
 
     let hours_ = hours;
-   
     if (amPm === 'AM' && hours === 12) {
       hours_ = 0;
     }

@@ -36,7 +36,7 @@ document.addEventListener(EventType.READY, () => {
 }, { once: true } );
 
 /**
- * Updates UI via custom event dispatched by elements.
+ * Updates UI via custom event dispatched by selected elements.
  * @listens EventType.UPDATE
  */
 document.addEventListener(EventType.UPDATE, () => {

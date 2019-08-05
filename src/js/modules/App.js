@@ -162,7 +162,6 @@ class App {
       month: now.getMonth() + 1,
       day: now.getDate(),
     };
-
     const isToday = (date.year === dateNow.year && date.month === dateNow.month && date.day === dateNow.day);
 
     HIGHLIGHTED.forEach((selector) => {
@@ -201,12 +200,10 @@ class App {
   updateDocumentTitle_(settings) {
     const { date, locale, location, percent, phase } = settings;
     const dateLabel = this.dateTime_.prettyDate(date, locale, 'short');
-
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
     if (percent > 0) {
       pageTitle += ` ${TITLE_DIVIDER} ${percent}%`;
     }
-
     document.title = pageTitle;
   }
 }
