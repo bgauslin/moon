@@ -275,14 +275,14 @@ class DataFetcher {
    * @private
    */
   moonPhasePercent_() {
-    let percent;
-    let illumination;
+    // In order to calculate percent, we first need the moon's illumination.
 
+    let illumination;
     switch (this.api_) {
       case 'usno':
-        // If no fracillum (fraction of the moon's illumination) exists, it's a
-        // New Moon, and would be 'zero percent illumination.'
-        const fracillum = (this.data_.fracillum) ? this.data_.fracillum : '0%';
+        // For USNO data, if no fracillum (fraction of the moon's illumination)
+        // exists, it's a New Moon, which would be '0%'.
+        const fracillum = this.data_.fracillum ? this.data_.fracillum : '0%';
         illumination = parseInt(fracillum.replace('%', ''));
         break;
       case 'wwo':
@@ -293,6 +293,7 @@ class DataFetcher {
         break;
     }
     
+    let percent;
     switch (this.moonPhase_().toUpperCase()) {
       case 'NEW MOON':
         percent = 0;
@@ -315,7 +316,6 @@ class DataFetcher {
         percent = 75;
         break;
     }
-
     return Math.floor(percent);
   }
 }
