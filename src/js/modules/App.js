@@ -173,10 +173,7 @@ class App {
   
   /**
    * Adds/removes class if current date is today.
-   * @param {!Object} date
-   * @param {!number} date.year
-   * @param {!number} date.month
-   * @param {!number} date.day
+   * @param {!Date} date
    * @private
    */
   highlightToday_(date) {
@@ -215,10 +212,7 @@ class App {
   /** 
    * Updates document title with info about the current moon phase.
    * @param {!Object} settings
-   * @param {!Object} settings.date
-   * @param {!number} settings.date.year
-   * @param {!number} settings.date.month
-   * @param {!number} settings.date.day
+   * @param {!Date} settings.date
    * @param {!string} settings.locale
    * @param {!string} settings.location
    * @param {!string} settings.percent
