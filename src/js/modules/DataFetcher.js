@@ -247,18 +247,18 @@ class DataFetcher {
     
         // Fallback to moonrise on the day before, then day after if day before
         // is null.
-        if (moonriseData === null) {
+        if (!moonriseData) {
           const moonriseBefore = this.data_[0].moon.riseISO;
           const moonriseAfter = this.data_[2].moon.riseISO;
-          moonriseData = (moonriseBefore !== null) ? moonriseBefore : moonriseAfter;
+          moonriseData = moonriseBefore ? moonriseBefore : moonriseAfter;
         }
     
         // Fallback to moonset on the day before, then day after if day before
         // is null.
-        if (moonsetData === null) {
+        if (!moonsetData) {
           const moonsetBefore = this.data_[0].moon.setISO;
           const moonsetAfter = this.data_[2].moon.setISO;
-          moonsetData = (moonsetBefore !== null) ? moonsetBefore : moonsetAfter;
+          moonsetData = moonsetBefore ? moonsetBefore : moonsetAfter;
         }
 
         moonrise = this.dateTime_.militaryTime(moonriseData);
