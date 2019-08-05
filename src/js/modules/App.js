@@ -101,13 +101,14 @@ class App {
     }
 
     // Map local constants to API data.
-    const { hemisphere, moonrise, moonset, percent, phase, sunrise, sunset } = data;
+    const { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
 
     // Update custom element attributes so each component can update itself.
     this.moonInfoEl_.setAttribute('percent', percent);
     this.moonInfoEl_.setAttribute('phase', phase);
     
     this.moonPhotoEl_.setAttribute('hemisphere', hemisphere);
+    this.moonPhotoEl_.setAttribute('illumination', illumination);
     this.moonPhotoEl_.setAttribute('percent', percent);
     this.moonPhotoEl_.setAttribute('phase', phase);
 

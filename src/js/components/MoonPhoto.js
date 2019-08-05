@@ -34,6 +34,9 @@ class MoonPhoto extends HTMLElement {
     this.imageLoaded_ = false;
 
     /** @private {string} */
+    this.illumination_ = '';
+
+    /** @private {string} */
     this.percent_ = '';
 
     /** @private {string} */
@@ -44,7 +47,7 @@ class MoonPhoto extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [Attribute.PERCENT, Attribute.PHASE];
+    return [Attribute.ILLUMINATION, Attribute.PERCENT, Attribute.PHASE];
   }
 
   /** @callback */
@@ -57,10 +60,11 @@ class MoonPhoto extends HTMLElement {
    * @private
    */
   render_() {
+    this.illumination_ = this.getAttribute(Attribute.ILLUMINATION);
     this.percent_ = this.getAttribute(Attribute.PERCENT);
     this.phase_ = this.getAttribute(Attribute.PHASE);
 
-    if (!this.phase_ || !this.percent_) {
+    if (!this.illumination_ || !this.phase_ || !this.percent_) {
       return;
     }
 
@@ -71,7 +75,7 @@ class MoonPhoto extends HTMLElement {
           <img class="${this.className}__image" \
                 src="${Image.PATH_1X}" \
                 srcset="${Image.PATH_1X} 1x, ${Image.PATH_2X} 2x" \
-                alt="${this.phase_}${this.illumination_()}" \
+                alt="${this.phase_}${this.illuminationCaption_()}" \
                 frame="${this.imageNumber_()}"
                 ${ready}>\
         </figure>\
@@ -116,33 +120,12 @@ class MoonPhoto extends HTMLElement {
   }
 
   /**
-   * Determines moon's illumination based on percentage.
+   * Returns illumination value as text if it's greater than 0.
    * @return {string}
    * @private
    */
-  illumination_() {
-    let illumination;
-    switch (this.phase_.toUpperCase()) {
-      case 'NEW MOON':
-        illumination = 0;
-        break;
-      case 'WAXING CRESCENT':      
-      case 'WAXING GIBBOUS':
-        illumination = this.percent_ * 2;
-        break;
-      case 'FIRST QUARTER':
-      case 'LAST QUARTER':
-        illumination = 50;
-        break;
-      case 'FULL MOON':
-        illumination = 100;
-        break;
-      case 'WANING GIBBOUS':
-      case 'WANING CRESCENT':
-        illumination = (100 - this.percent_) * 2;
-        break;
-    }
-    return (illumination > 0) ? ` (${illumination}% illumination)` : '';
+  illuminationCaption_() {
+    return (this.illumination_ > 0) ? ` (${this.illumination_}% illumination)` : '';
   }
 
   /**

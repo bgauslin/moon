@@ -10,10 +10,10 @@ class DataFetcher {
     /** @private {!Object} */
     this.data_ = null;
 
-    /** @instance */
+    /** @private @instance */
     this.dateTime_ = new DateTimeUtils();
 
-    /** @instance */
+    /** @private @instance */
     this.helpers_ = new Helpers();
   }
 
@@ -89,6 +89,7 @@ class DataFetcher {
 
     return {
       hemisphere: this.hemisphere_(),
+      illumination: this.moonPhaseIllumination_(),
       moonrise,
       moonset,
       percent: this.moonPhasePercent_(),
@@ -270,28 +271,41 @@ class DataFetcher {
   }
 
   /**
-   * Returns moon cycle percentage as an integer.
+   * Returns moon phase illumination.
+   * @return {number} 
+   * @private
+   */
+  moonPhaseIllumination_() {
+    switch (this.api_) {
+      case 'usno':
+        switch (this.moonPhase_().toUpperCase()) {
+          case 'NEW MOON':
+            return 0;
+          case 'FIRST QUARTER':
+          case 'LAST QUARTER':
+            return 50;
+          case 'FULL MOON':
+            return 100;
+          default:
+            return parseInt(this.data_.fracillum.replace('%', ''));
+        }
+      case 'wwo':
+        return parseInt(this.data_.moon_illumination);
+      case 'aeris':
+        return this.data_.moon.phase.illum;
+    }
+  }
+
+  /**
+   * Returns moon cycle percentage as an integer. MoonPhoto needs this value
+   * in order to calculate which image to show.
+   * 0/100 = New Moon, 25 = First Quarter, 50 = Full Moon, 75 = Last Quarter.
    * @return {number} 
    * @private
    */
   moonPhasePercent_() {
     // In order to calculate percent, we first need the moon's illumination.
-
-    let illumination;
-    switch (this.api_) {
-      case 'usno':
-        // For USNO data, if no fracillum (fraction of the moon's illumination)
-        // exists, it's a New Moon, which would be '0%'.
-        const fracillum = this.data_.fracillum ? this.data_.fracillum : '0%';
-        illumination = parseInt(fracillum.replace('%', ''));
-        break;
-      case 'wwo':
-        illumination = parseInt(this.data_.moon_illumination);
-        break;
-      case 'aeris':
-        illumination = this.data_.moon.phase.illum;
-        break;
-    }
+    const illumination = this.moonPhaseIllumination_();
     
     let percent;
     switch (this.moonPhase_().toUpperCase()) {

@@ -5,6 +5,7 @@ const Attribute = {
   ENABLED: 'enabled',
   END: 'end',
   HIDDEN: 'hidden',
+  ILLUMINATION: 'illumination',
   LOADING: 'loading',
   LOCATION: 'location',
   PERCENT: 'percent',
