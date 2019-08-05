@@ -157,6 +157,7 @@ class UserLocation extends HTMLElement {
       // display long-form name of country.
       const address = data.Response.View[0].Result[0].Location.Address;
       this.location_ = `${address.City}, ${address.State}`;
+      this.previousLocation_ = this.location_;
       this.input_.value = this.location_;
       this.update_();
 
