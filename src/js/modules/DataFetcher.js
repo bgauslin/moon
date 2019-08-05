@@ -19,7 +19,7 @@ class DataFetcher {
 
   /**
    * Fetches data depending on the API, then processes and normalizes the
-   * results before returning it in a standardized format.
+   * results before returning it in standardized format.
    * @param {!Object} date
    * @param {!string} location
    * @async
@@ -140,7 +140,7 @@ class DataFetcher {
 
   /**
    * Converts sunrise and sunset times to military time.
-   * @returns {Object}
+   * @return {Object}
    * @private
    */
   sunriseSunset_() {
@@ -289,8 +289,7 @@ class DataFetcher {
         illumination = parseInt(this.data_.moon_illumination);
         break;
       case 'aeris':
-        // TODO(fetcher): Figure out how to get illumination from AerisWeather API data.
-        // illumination = parseInt(this.data_.illumination);
+        illumination = this.data_.moon.phase.illum;
         break;
     }
     
