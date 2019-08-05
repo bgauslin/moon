@@ -29,8 +29,9 @@ class DateTimeUtils {
     const month = parseInt(urlSegments[1]);
     const day = parseInt(urlSegments[2]);
 
-    // If date part of URL isn't valid, return today.
+    // If date part of URL isn't valid, replace URL with '/' and return today.
     if (!this.validYear_(year) || !this.validMonth_(month) || !this.validDay_(year, month, day)) {
+      history.replaceState(null, null, '/');
       return this.todaysDate();
     }
 

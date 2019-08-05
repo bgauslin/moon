@@ -75,17 +75,6 @@ class App {
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
     this.renderFooterText_();
-    // this.initialUrl_();
-  }
-
-  /**
-   * Replaces '/' or invalid URLs in the address bar with '/yyyy/mm/dd/location'
-   * URL for today.
-   * @private
-   */
-  initialUrl_() {
-    const url = this.helpers_.makeUrl(this.dateTime_.activeDate(), this.location_);
-    history.replaceState(null, null, url);
   }
 
   /**
