@@ -1,38 +1,31 @@
-import { DateTimeUtils } from './DateTimeUtils';
+import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { Helpers } from './Helpers';
 
 /** @class */
 class DataFetcher {
-  constructor(api) {
-    /** @private {!string} */
+  private api_: string;
+  private data_: any;
+  private dateTime_: any;
+  private helpers_: any;
+
+  constructor(api: string) {
     this.api_ = api;
-
-    /** @private {!Object} */
-    this.data_ = null;
-
-    /** @private @instance */
     this.dateTime_ = new DateTimeUtils();
-
-    /** @private @instance */
     this.helpers_ = new Helpers();
   }
 
   /**
    * Fetches data depending on the API, then processes and normalizes the
    * results before returning it in standardized format.
-   * @param {!Date} date
-   * @param {!string} location
-   * @async
-   * @public
    */
-  async fetch(date, location) {
+  public async fetch(date: AppDate, location: string): Promise<any> {
     const { year, month, day } = date;
     const month_ = this.helpers_.zeroPad(month);
     const day_ = this.helpers_.zeroPad(day);
     const location_ = this.helpers_.urlify(location);
 
     // Set up endpoint and query params based on the API.
-    let endpoint;
+    let endpoint: string;
     switch (this.api_) {
       case 'usno':
         endpoint = `${process.env.USNO_API}?date=${month_}/${day_}/${year}&loc=${location_}`;
@@ -75,6 +68,7 @@ class DataFetcher {
       alert('Currently unable to fetch data. :(');
     }
 
+    // TODO: Fix TS warning.
     // If no data is available, alert the user and restore previous location.
     if (!this.data_ || this.data_.error !== false) {
       alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
@@ -101,11 +95,9 @@ class DataFetcher {
 
   /**
    * Sets the hemisphere based on location's latitude.
-   * @return {string}
-   * @private
    */
-  hemisphere_() {
-    let latitude;
+  private hemisphere_(): string {
+    let latitude: string; // <= TODO: Confirm data type returned from API.
     switch (this.api_){
       case 'usno':
         latitude = this.data_.lat;
@@ -122,10 +114,8 @@ class DataFetcher {
 
   /**
    * Gets current moon phase name from API data.
-   * @return {string}
-   * @private
    */
-  moonPhase_() {
+  private moonPhase_(): string {
     switch (this.api_){
       case 'usno':
         // If there's no current phase in the API data, get the closest phase.
@@ -141,14 +131,12 @@ class DataFetcher {
 
   /**
    * Converts sunrise and sunset times to military time.
-   * @return {Object}
-   * @private
    */
-  sunriseSunset_() {
-    let sunriseData;
-    let sunsetData;
-    let sunrise;
-    let sunset;
+  private sunriseSunset_(): Object {
+    let sunriseData: any;
+    let sunsetData: any;
+    let sunrise: any;
+    let sunset: any;
 
     switch (this.api_) {
       case 'usno':
@@ -193,14 +181,12 @@ class DataFetcher {
 
   /**
    * Converts moonrise and moonset times to military time.
-   * @return {Object}
-   * @private
    */
-  moonriseMoonset_() {
-    let moonriseData;
-    let moonsetData;
-    let moonrise;
-    let moonset;
+  private moonriseMoonset_(): Object {
+    let moonriseData: any;
+    let moonsetData: any;
+    let moonrise: any;
+    let moonset: any;
 
     switch (this.api_) {
       case 'usno':
@@ -272,10 +258,8 @@ class DataFetcher {
 
   /**
    * Returns moon phase illumination.
-   * @return {number} 
-   * @private
    */
-  moonPhaseIllumination_() {
+  private moonPhaseIllumination_(): number {
     switch (this.api_) {
       case 'usno':
         switch (this.moonPhase_().toUpperCase()) {
@@ -300,14 +284,12 @@ class DataFetcher {
    * Returns moon cycle percentage as an integer. MoonPhoto needs this value
    * in order to calculate which image to show.
    * 0/100 = New Moon, 25 = First Quarter, 50 = Full Moon, 75 = Last Quarter.
-   * @return {number} 
-   * @private
    */
-  moonPhasePercent_() {
+  private moonPhasePercent_(): number {
     // In order to calculate percent, we first need the moon's illumination.
     const illumination = this.moonPhaseIllumination_();
     
-    let percent;
+    let percent: number;
     switch (this.moonPhase_().toUpperCase()) {
       case 'NEW MOON':
         percent = 0;
