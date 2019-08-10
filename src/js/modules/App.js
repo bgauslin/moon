@@ -75,6 +75,19 @@ class App {
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
     this.renderFooterText_();
+    // this.standaloneStartup_();
+  }
+
+  /**
+   * Redirects view to '/' if app is launched as a standalone app. Otherwise,
+   * a user may have saved the app with a full URL, which means they will start
+   * at that URL every time they launch the app instead of on the current day.
+   * @private
+   */
+  standaloneStartup_() {
+    if (window.navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
+      history.replaceState(null, null, '/');
+    }
   }
 
   /**
