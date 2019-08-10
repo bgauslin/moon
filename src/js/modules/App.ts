@@ -1,66 +1,60 @@
 import { Attribute } from './Constants';
 import { DataFetcher } from './DataFetcher';
-import { DateTimeUtils } from './DateTimeUtils';
+import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
-import { Helpers } from './Helpers';
 
-/** @const {string} */
-const TITLE_DIVIDER = '·';
+interface Settings {
+  date: AppDate,
+  locale: string,
+  location: string,
+  percent: number,
+  phase: string,
+}
 
-/** @const {string} */
-const DEFAULT_LOCATION = 'New York, NY';
+const TITLE_DIVIDER: string = '·';
+const DEFAULT_LOCATION: string = 'New York, NY';
 
-/** @const {Array<string>} */
-const HIGHLIGHTED = ['.header__title', '.info__phase', '.info__percent'];
+const HIGHLIGHTED: string[] = [
+  '.header__title',
+  '.info__phase',
+  '.info__percent',
+];
 
-/** @class */
 class App {
-  constructor(api) {
+  private dataFetcher_: any;
+  private date_: AppDate;
+  private dateTime_: any;
+  private eventHandler_: any;
+  private headerLinkEl_: Element;
+  private location_: string;
+  private locationEl_: Element;
+  private moonChartEl_: Element
+  private moonInfoEl_: Element;
+  private moonPhotoEl_: Element;
+  private navEls_: NodeList;
+  private sunChartEl_: Element
+  private observer_: MutationObserver;
+
+  constructor(api: string) {
     /**
      * On first run, location may or may not be set in localStorage. If not,
      * set it to the fallback. On all subsequent updates, location is pulled
      * from a custom element attribute since location can be user-defined.
-     * @private {string}
      */
     this.location_ = localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
     
-    /** @private {Object} */
-    this.date_ = null;
-    
-    /** @private {Element} */
     this.headerLinkEl_ = document.querySelector('.header__link');
-
-    /** @private {Element} */
     this.locationEl_ = document.querySelector('.location');
-
-    /** @private {Element} */
     this.moonChartEl_ = document.querySelector('[name=moon]');
-
-    /** @private {Element} */
     this.moonInfoEl_ = document.querySelector('.info');
-
-    /** @private {Element} */
     this.moonPhotoEl_ = document.querySelector('.photo');
-
-    /** @private {NodeList} */
     this.navEls_ = document.querySelectorAll('[direction]');
-
-    /** @private {Element} */
     this.sunChartEl_ = document.querySelector('[name=sun]');
 
-    /** @private @instance */
     this.dataFetcher_ = new DataFetcher(api);
-
-    /** @private @instance */
     this.dateTime_ = new DateTimeUtils();
-
-    /** @private @instance */
     this.eventHandler_ = new EventHandler();
 
-    /** @private @instance */
-    this.helpers_ = new Helpers();
-
-    /** @private {MutationObserver} */
     this.observer_ = new MutationObserver(() => this.update());
   }
 
@@ -68,9 +62,8 @@ class App {
    * Initializes UI on first run. Observing the 'location' element and setting
    * an attribute on it will trigger the 'update' method to fetch data and
    * populate the UI on initial page load.
-   * @public
    */
-  init() {
+  public init(): void {
     this.eventHandler_.hijackLinks();
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
@@ -82,10 +75,9 @@ class App {
    * Redirects view to '/' if app is launched as a standalone app. Otherwise,
    * a user may have saved the app with a full URL, which means they will start
    * at that URL every time they launch the app instead of on the current day.
-   * @private
    */
-  standaloneStartup_() {
-    if (window.navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
+  private standaloneStartup_(): void {
+    if ((<any>window).navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
       history.replaceState(null, null, '/');
     }
   }
@@ -93,10 +85,8 @@ class App {
   /**
    * Updates UI when URL changes: fetches API data, sets attributes on custom
    * elements with fetched data results, then updates the header and title.
-   * @async
-   * @public
    */
-  async update() {
+  public async update(): Promise<any> {
     // Enable progress bar while we fetch data.
     document.body.setAttribute(Attribute.LOADING, '');
 
@@ -131,15 +121,15 @@ class App {
     this.sunChartEl_.setAttribute('start', sunrise);
     this.sunChartEl_.setAttribute('end', sunset);
 
-    Array.from(this.navEls_).forEach((el) => {
-      el.setAttribute('location', this.location_);
+    this.navEls_.forEach((el) => {
+      (<Element>el).setAttribute('location', this.location_);
     });
 
     // Update the date in the header.
     this.headerLinkEl_.textContent = this.dateTime_.prettyDate(
       this.date_,
       document.documentElement.lang,
-      'long'
+      'long',
     );
 
     // Update the document title.
@@ -164,10 +154,8 @@ class App {
   
   /**
    * Adds/removes class if current date is today.
-   * @param {!Date} date
-   * @private
    */
-  highlightToday_(date) {
+  private highlightToday_(date: AppDate): void {
     const now = new Date();
     const dateNow = {
       year: now.getFullYear(),
@@ -188,9 +176,8 @@ class App {
 
   /**
    * Renders text into the footer via JS to avoid a FOUC.
-   * @private
    */
-  renderFooterText_() {
+  private renderFooterText_(): void {
     const yearsEl = document.querySelector('.copyright__years');
     const ownerEl = document.querySelector('.copyright__owner');
     const yearStart = '2018';
@@ -201,15 +188,8 @@ class App {
 
   /** 
    * Updates document title with info about the current moon phase.
-   * @param {!Object} settings
-   * @param {!Date} settings.date
-   * @param {!string} settings.locale
-   * @param {!string} settings.location
-   * @param {!string} settings.percent
-   * @param {!string} settings.phase
-   * @private
    */
-  updateDocumentTitle_(settings) {
+  private updateDocumentTitle_(settings: Settings): void {
     const { date, locale, location, percent, phase } = settings;
     const dateLabel = this.dateTime_.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
