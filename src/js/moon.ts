@@ -8,14 +8,9 @@ import { MoonPhoto } from './components/MoonPhoto';
 import { PrevNext } from './components/PrevNext';
 import { Tools } from './modules/Tools';
 import { UserLocation } from './components/UserLocation';
+import '../stylus/moon.styl'; // Stylesheet import for Webpack.
 
-// Stylesheet import for Webpack.
-import '../stylus/moon.styl'; 
-
-/** @instance */
 const app = new App('usno');
-
-/** @instance */
 const tools = new Tools();
 
 // Define all custom elements.
