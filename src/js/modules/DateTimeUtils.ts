@@ -1,27 +1,21 @@
-/**
- * @typedef {Object} Date
- * @property {number} year 
- * @property {number} month
- * @property {number} day
- */
+interface AppDate {
+  year: number,
+  month: number,
+  day: number,
+}
 
-/** @const {Array<number>} */
-const DAYS_IN_MONTHS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const DAYS_IN_MONTHS: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-/** @enum {number} */
-const ApiYears = {
-  MAX: 2100,
-  MIN: 1700,
+enum ApiYears {
+  MAX = 2100,
+  MIN = 1700,
 };
 
-/** @class */
 class DateTimeUtils {
   /** 
    * Parses date from the URL and falls back to today if URL isn't valid.
-   * @return {Date}
-   * @public
    */
-  activeDate() {
+  public activeDate(): AppDate {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
 
@@ -39,10 +33,9 @@ class DateTimeUtils {
   }
 
   /** 
-   * @return {Date} Today.
-   * @public
+   * Today.
    */
-  todaysDate() {
+  public todaysDate(): AppDate {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
@@ -52,10 +45,9 @@ class DateTimeUtils {
   }
 
   /**
-   * @return {Date} Date after the active date.
-   * @public
+   * Date after the active date.
    */
-  nextDate() {
+  public nextDate(): AppDate {
     let { year, month, day } = this.activeDate();
 
     // Last day of the year.
@@ -79,10 +71,9 @@ class DateTimeUtils {
   }
 
   /**
-   * @return {Date} Date before the active date.
-   * @public
+   * Date before the active date.
    */
-  prevDate() {
+  public prevDate(): AppDate {
     let { year, month, day } = this.activeDate();
 
     // First day of the year.
@@ -106,13 +97,9 @@ class DateTimeUtils {
   }
 
   /**
-   * @param {!Date} date
-   * @param {!string} locale
-   * @param {!string} monthFormat
-   * @return {string} Date formatted per the locale.
-   * @public
+   * Date formatted per the locale.
    */
-  prettyDate(date, locale, monthFormat) {
+  public prettyDate(date: AppDate, locale: string, monthFormat: string): string {
     let { year, month, day } = date;
     month -= 1; // Adjust month for UTC format
     const date_ = new Date(Date.UTC(year, month, day));
@@ -128,20 +115,16 @@ class DateTimeUtils {
   }
 
   /**
-   * @param {!number} year
-   * @return {boolean}
-   * @private
+   * Whether the year is a leap year.
    */
-  isLeapYear_(year) {
+  private isLeapYear_(year: number): boolean {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
   /**
-   * @param {!string} time - Time in HH:MM AM/PM format.
-   * @return {string} Time in HH:MM 24-hour format.
-   * @public
+   * Converts time in HH:MM AM/PM format to HH:MM 24-hour format.
    */
-  militaryTime(time) {
+  public militaryTime(time: string): string {
     const amPm = time.split(' ')[1].replace(/\./g, '').toUpperCase();
     const hours = parseInt(time.split(' ')[0].split(':')[0]);
     const minutes = time.split(' ')[0].split(':')[1];
@@ -158,13 +141,9 @@ class DateTimeUtils {
   }
 
   /**
-   * @param {!number} year
-   * @param {!number} month
-   * @param {!number} day
-   * @return {boolean}
-   * @private
+   * Whether the day is valid.
    */
-  validDay_(year, month, day) {
+  private validDay_(year: number, month: number, day: number): boolean {
     if (month < 1 || month > 12) {
       return;
     } else if (this.isLeapYear_(year) && month === 2 && day === 29) {
@@ -176,22 +155,18 @@ class DateTimeUtils {
   }
 
   /**
-   * @param {!number} month
-   * @return {boolean}
-   * @private
+   * Whether the month is valid.
    */
-  validMonth_(month) {
+  private validMonth_(month: number): boolean {
     return (month > 0 && month < 13);
   }
 
   /**
-   * @param {!number} year
-   * @return {boolean}
-   * @private
+   * Whether the year falls between the limits of the API.
    */
-  validYear_(year) {
+  private validYear_(year: number): boolean {
     return (year >= ApiYears.MIN && year <= ApiYears.MAX);
   }
 }
 
-export { DateTimeUtils };
+export { AppDate, DateTimeUtils };
