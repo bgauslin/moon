@@ -1,13 +1,14 @@
-/** @class */
+interface AppDate {
+  year: number,
+  month: number,
+  day: number,
+}
+
 class Helpers {
   /**
    * Converts a Date object and a location string to a full URL.
-   * @param {!Date} date
-   * @param {!string} location
-   * @return {string} 
-   * @public
    */
-  makeUrl(date, location) {
+  public makeUrl(date: AppDate, location: string): URL {
     const { year, month, day } = date;
     const month_ = this.zeroPad(month);
     const day_ = this.zeroPad(day);
@@ -18,11 +19,8 @@ class Helpers {
 
   /**
    * Returns multiple words with first letter of each word capitalized.
-   * @param {!string} words
-   * @return {string} 
-   * @public
    */
-  titleCase(words) {
+  public titleCase(words: string): string {
     const wordsArray = words.split(' ');
     const capitalized = wordsArray.map(word => word.charAt(0).toUpperCase() + word.slice(1));
     return capitalized.join(' ');
@@ -30,20 +28,15 @@ class Helpers {
 
   /**
    * Returns a URL-friendly lowercase string with each space replaced with a '+'.
-   * @param {!string} value
-   * @return {string} 
-   * @public
    */
-  urlify(value) {
+  public urlify(value: string): string {
     return value.toLowerCase().replace(/[\s]/g, '+')
   }
 
   /**
-   * @param {!number} n
-   * @return {string|number} Value with zero-padding if less than 10.
-   * @public
+   * Returns a value with zero-padding if value is less than 10.
    */
-  zeroPad(n) {
+  public zeroPad(n: number): string|number {
     return (n < 10) ? `0${n}` : n;
   }
 }
