@@ -1,70 +1,63 @@
 import { Attribute, Chart } from '../modules/Constants';
 
-/** 
- * @typedef {Object} Point
- * @property {number} x - x coordinate
- * @property {number} y - y coordinate
- */
+interface Point {
+  x: number,
+  y: number,
+}
 
-/** 
- * @typedef {Object} Arc
- * @property {number} sweep - arc length
- * @property {number} radius - arc radius 
- */
+interface Arc {
+ sweep: number,  // arc length
+ radius: number, // arc radius 
+}
 
-/** @const {number} */
-const AXIS_OFFSET = -90;
+interface LabelProps {
+  angle: number,
+  radius: number,
+  xOffset: number,
+  yOffset: number,
+}
 
-/** @class */
+const AXIS_OFFSET: number = -90;
+
 class DonutChart extends HTMLElement {
+  private circumference_: number;
+  private color_: string;
+  private cx_: number;
+  private cy_: number;
+  private end_: string;
+  private height_: number;
+  private radius_: number;
+  private radiusForLabels_: number;
+  private start_: string;
+  private width_: number;  
+  
   constructor() {
     super();
 
-    /** @private {string} */
+    // [1] 2πr
+    // [2] Gap from edge of chart's arc for label placement.
     this.color_ = this.getAttribute(Attribute.COLOR);
-
-    /** @private {string} */
-    this.start_ = '';
-
-    /** @private {string} */
-    this.end_ = '';
-
-    /** @private {number} */
     this.height_ = Chart.SIZE + (Chart.MARGIN * 2);
-
-    /** @private {number} */
     this.width_ = Chart.SIZE + (Chart.MARGIN * 2);
-
-    /** @private {number} */
     this.cx_ = this.height_ / 2;
-
-    /** @private {number} */
     this.cy_ = this.width_ / 2;
-
-    /** @private {number} */
     this.radius_ = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
-
-    /** @private {number} */
-    this.circumference_ = 2 * Math.PI * this.radius_; // 2πr
-
-    /** @private {!number} Gap from edge of chart's arc for label placement. */
-    this.radiusForLabels_ = (Chart.SIZE / 2) + Chart.LABEL_GAP;
+    this.circumference_ = 2 * Math.PI * this.radius_; // [1]
+    this.radiusForLabels_ = (Chart.SIZE / 2) + Chart.LABEL_GAP; // [2]
   }
 
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return [Attribute.START, Attribute.END];
   }
 
-  /** @callback */
-  attributeChangedCallback() {
+  attributeChangedCallback(): void {
     this.render_();
   }
 
   /**
    * Renders an SVG circle with an arc for the sun/moon chart.
-   * @private
    */
-  render_() {
+  private render_(): void {
     this.start_ = this.getAttribute(Attribute.START);
     this.end_ = this.getAttribute(Attribute.END);
 
@@ -116,7 +109,7 @@ class DonutChart extends HTMLElement {
 
     // Rendered chart HTML.
     const html = `
-      <svg viewBox="0 0 ${this.height_} ${this.width_}">\
+      <svg viewbox="0 0 ${this.height_} ${this.width_}">\
         <g>\
           <circle \
             cx="${this.cx_}" \
@@ -145,11 +138,8 @@ class DonutChart extends HTMLElement {
    * not upside-down. Also adjusts the chart radius since these numbers are
    * technically right-aligned, which means double-digit times on the left
    * side need a slight radius adjustment.
-   * @param {!number} degrees
-   * @return {Arc}
-   * @private
    */
-  labelPlacement_(degrees) {
+  private labelPlacement_(degrees: number): Arc {
     let sweep = degrees;
     let radius = this.radiusForLabels_;
     const leftSideStart = 180 + AXIS_OFFSET;
@@ -168,16 +158,9 @@ class DonutChart extends HTMLElement {
 
   /**
    * Returns adjusted x and y coordinates for a rotated label.
-   * @param {!Object} settings
-   * @param {!number} settings.radius
-   * @param {!number} settings.angle
-   * @param {!number} settings.xOffset
-   * @param {!number} settings.yOffset
-   * @return {Point}
-   * @private
    */
-  labelRotation_(settings) {
-    const { radius, angle, xOffset, yOffset } = settings;
+  private labelRotation_(props: LabelProps): Point {
+    const { angle, radius, xOffset, yOffset } = props;
     const degreesToRadians = this.degreesToRadians_(angle);
     const x = radius * Math.cos(degreesToRadians) + xOffset;
     const y = radius * Math.sin(degreesToRadians) + yOffset;
@@ -187,11 +170,8 @@ class DonutChart extends HTMLElement {
 
   /** 
    * Converts time to degrees of a circle.
-   * @param {!string} time
-   * @return {number}
-   * @private`
    */
-  timeToDegrees_(time) {
+  private timeToDegrees_(time: string): number {
     const hours = parseInt(time.split(' ')[0].split(':')[0]);
     const minutes = parseInt(time.split(' ')[0].split(':')[1]);
     const timeToDecimal = hours + (minutes / 60);
@@ -203,11 +183,8 @@ class DonutChart extends HTMLElement {
 
   /** 
    * Converts degrees to radians.
-   * @param {!number} angle
-   * @return {number}
-   * @private
    */
-  degreesToRadians_(angle) {
+  private degreesToRadians_(angle: number): number {
     return angle * (Math.PI / 180);
   }
 }
