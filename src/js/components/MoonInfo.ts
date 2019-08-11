@@ -3,16 +3,12 @@ import { Attribute } from '../modules/Constants';
 
 /** @class */
 class MoonInfo extends HTMLElement {
+  private helpers_: any;
+  private percent_: string;
+  private phase_: string;
+
   constructor() {
     super();
-
-    /** @private {string} */
-    this.percent_ = '';
-
-    /** @private {string} */
-    this.phase_ = '';
-
-    /** @private @instance */
     this.helpers_ = new Helpers();
   }
 
@@ -20,17 +16,15 @@ class MoonInfo extends HTMLElement {
     return [Attribute.PERCENT, Attribute.PHASE];
   }
 
-  /** @callback */
-  attributeChangedCallback() {
+  attributeChangedCallback(): void {
     this.render_();
   }
 
   /**
    * Displays current moon phase name and percentage, and makes the percent
    * element invisible if percentage is '0'.
-   * @private
    */
-  render_() {
+  private render_(): void {
     this.percent_ = this.getAttribute(Attribute.PERCENT);
     this.phase_ = this.getAttribute(Attribute.PHASE);
 
