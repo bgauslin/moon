@@ -2,50 +2,42 @@ import { Attribute } from '../modules/Constants';
 import { DateTimeUtils } from '../modules/DateTimeUtils';
 import { Helpers } from '../modules/Helpers';
 
-/** @enum {string} */
-const SvgPath = {
-  LEFT: 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822',
-  RIGHT: 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.06822',
+enum SvgPath {
+  LEFT = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822',
+  RIGHT = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.06822',
 };
 
-/** @class */
 class PrevNext extends HTMLElement {
+  private dateTime_: any;  
+  private direction_: string;
+  private helpers_: any;
+  private location_: string;
+  private linkEl_: HTMLElement;
+
   constructor() {
     super();
-
-    /** @private {string} */
-    this.direction_ = this.getAttribute(Attribute.DIRECTION);
-
-    /** @private {Element} */
-    this.linkEl_ = null;
-
-    /** @private @instance */
     this.dateTime_ = new DateTimeUtils();
-
-    /** @private @instance */
+    this.direction_ = this.getAttribute(Attribute.DIRECTION);
     this.helpers_ = new Helpers();
   }
 
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return [Attribute.LOCATION];
   }
 
-  /** @callback */
-  connectedCallback() {
+  connectedCallback(): void {
     this.render_();
     this.update_(this.location_);
   }
 
-  /** @callback */
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
     this.update_(newValue);
   }
 
   /**
    * Renders a nav link.
-   * @private
    */
-  render_() {
+  private render_(): void {
     const path = (this.direction_ === 'prev') ? SvgPath.LEFT : SvgPath.RIGHT;
     const html = `\
       <a class="nav__link" href="" title="">\
@@ -61,10 +53,8 @@ class PrevNext extends HTMLElement {
 
   /**
    * Updates link and title relative to current date and location.
-   * @param {?string} location
-   * @private
    */
-  update_(location) {
+  private update_(location?: string) {
     if (!location || !this.linkEl_) {
       return;
     }
