@@ -11,7 +11,7 @@ class MoonInfo extends HTMLElement {
     this.helpers_ = new Helpers();
   }
 
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return [Attribute.PERCENT, Attribute.PHASE];
   }
 
