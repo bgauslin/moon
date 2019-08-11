@@ -1,30 +1,19 @@
 import { Chart } from '../modules/Constants';
 
-/** @const {number} */
-const VIEWBOX = Chart.SIZE + (Chart.MARGIN * 2);
+// Container and centerpoint.
+const VIEWBOX: number = Chart.SIZE + (Chart.MARGIN * 2);
+const MIDPOINT: number = VIEWBOX / 2;
 
-/** @const {number} */
-const MIDPOINT = VIEWBOX / 2;
+// Top, left axis lines.
+const AXIS_FIRST_HALF_START: number = Chart.MARGIN;
+const AXIS_FIRST_HALF_END: number = Chart.MARGIN + Chart.SWEEP_WIDTH;
 
-// Top and left axis lines.
-/** @const {number} */
-const AXIS_FIRST_HALF_START = Chart.MARGIN;
+// Bottom, right axis lines.
+const AXIS_SECOND_HALF_START: number = MIDPOINT + ((Chart.SIZE / 2) - Chart.SWEEP_WIDTH)
+const AXIS_SECOND_HALF_END: number = VIEWBOX - Chart.MARGIN;
 
-/** @const {number} */
-const AXIS_FIRST_HALF_END = Chart.MARGIN + Chart.SWEEP_WIDTH;
-
-// Bottom and right axis lines.
-/** @const {number} */
-const AXIS_SECOND_HALF_START = MIDPOINT + ((Chart.SIZE / 2) - Chart.SWEEP_WIDTH)
-
-/** @const {number} */
-const AXIS_SECOND_HALF_END = VIEWBOX - Chart.MARGIN;
-
-/**
- * Values start at the top and go clockwise.
- * @const {Array<Object>}
- */
-const Axes = [
+// Axes values start at the top and go clockwise.
+const Axes: Array<Object> = [
   {
     x1: MIDPOINT, y1: AXIS_FIRST_HALF_START,
     x2: MIDPOINT, y2: AXIS_FIRST_HALF_END,
@@ -43,25 +32,16 @@ const Axes = [
   }
 ];
 
-// Top and left tick lines.
-/** @const {number} */
-const TICK_FIRST_HALF_START = 0;
+// Top, left tick lines.
+const TICK_FIRST_HALF_START: number = 0;
+const TICK_FIRST_HALF_END: number = Chart.MARGIN;
 
-/** @const {number} */
-const TICK_FIRST_HALF_END = Chart.MARGIN;
+// Bottom, right tick lines.
+const TICK_SECOND_HALF_START: number = VIEWBOX - Chart.MARGIN;
+const TICK_SECOND_HALF_END: number = VIEWBOX;
 
-// Bottom and right tick lines.
-/** @const {number} */
-const TICK_SECOND_HALF_START = VIEWBOX - Chart.MARGIN;
-
-/** @const {number} */
-const TICK_SECOND_HALF_END = VIEWBOX;
-
-/**
- * Values start at the top and go clockwise.
- * @const {Array<Object>}
- */
-const Ticks = [
+// Ticks values start at the top and go clockwise.
+const Ticks: Array<Object> = [
   { 
     x1: MIDPOINT, y1: TICK_FIRST_HALF_START,
     x2: MIDPOINT, y2: TICK_FIRST_HALF_END,
@@ -80,36 +60,40 @@ const Ticks = [
   }
 ];
 
+interface Coordinates {
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+}
+
 /**
  * This custom element doesn't do anything besides draw an SVG, but there's
  * enough math involved to make it its own custom element.
- * @class
  */
 class ChartAxes extends HTMLElement {
   constructor() {
     super();
   }
 
-  /** @callback */
-  connectedCallback() {
+  connectedCallback(): void {
     this.render_();
   }
 
   /**
    * Renders SVG element for chart axes and ticks.
-   * @private
    */
-  render_() {
-    let axisLines = '';
-    let tickLines = '';
+  private render_(): void {
+    let axisLines: string = '';
+    let tickLines: string = '';
 
-    Axes.forEach((axis) => {
+    Axes.forEach((axis: Coordinates) => {
       const { x1, y1, x2, y2 } = axis;
       const line = `<line class="axis" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
       axisLines += line;
     });
 
-    Ticks.forEach((tick) => {
+    Ticks.forEach((tick: Coordinates) => {
       const { x1, y1, x2, y2 } = tick;
       const line = `<line class="tick" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
       tickLines += line;
