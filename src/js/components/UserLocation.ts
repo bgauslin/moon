@@ -2,42 +2,33 @@ import { Attribute } from '../modules/Constants';
 import { EventType } from '../modules/EventHandler';
 import { Helpers } from '../modules/Helpers';
 
-/** @const {number} */
-const GEOCODER_PROXIMITY = 100;
+const GEOCODER_PROXIMITY: number = 100;
 
-/** @class */
+interface Coordinates {
+  lat: number, // User's latitude
+  lng: number, // User's longitude
+}
+
 class UserLocation extends HTMLElement {
+  private formEl_: HTMLFormElement;
+  private geolocationButtonEl_: HTMLButtonElement;
+  private hasSetup_: boolean;
+  private helpers_: any;
+  private inputEl_: HTMLInputElement;
+  private location_: string;
+  private previousLocation_: string;
+
   constructor() {
     super();
-
-    /** @private {boolean} */
-    this.hasSetup_ = false;
-
-    /** @private {!string} */ 
-    this.location_ = null;
-
-    /** @private {?string} */
-    this.previousLocation_ = null;
-    
-    /** @private {?Element} */ 
-    this.form_ = null;
-
-    /** @private {?Element} */ 
-    this.geolocationButton_ = null;
-
-    /** @private {?Element} */ 
-    this.input_ = null;
-
-    /** @private @instance */
     this.helpers_ = new Helpers();
+    this.hasSetup_ = false;
   }
 
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return [Attribute.LOCATION, Attribute.RESTORE];
   }
 
-  /** @callback */
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
     if (name === Attribute.RESTORE) {
       this.restore_();
     }
@@ -54,44 +45,43 @@ class UserLocation extends HTMLElement {
 
   /**
    * Updates location widget with user-provided location if it has changed.
-   * @private
    */
-  addListeners_() {
+  private addListeners_(): void {
     // Get new location on submit, blur the input, and update the attribute
     // to trigger App.update().
-    this.form_.addEventListener(EventType.SUBMIT, (e) => {
+    this.formEl_.addEventListener(EventType.SUBMIT, (e) => {
       e.preventDefault();
-      const newLocation = this.input_.value;
+      const newLocation = this.inputEl_.value;
       if (newLocation !== this.location_) {
         this.location_ = newLocation;
         this.update_();
-        this.input_.blur();
+        this.inputEl_.blur();
       }
     });
 
     // Clear the input and focus it when the reset icon/button is clicked.
-    this.form_.addEventListener(EventType.RESET, (e) => {
+    this.formEl_.addEventListener(EventType.RESET, (e) => {
       e.preventDefault();
-      this.input_.value = '';
-      this.input_.focus();
+      this.inputEl_.value = '';
+      this.inputEl_.focus();
     });
 
     // Only show geolocation button on input focus.
-    this.input_.addEventListener(EventType.FOCUS, () => {
-      this.geolocationButton_.setAttribute(Attribute.ENABLED, '');
+    this.inputEl_.addEventListener(EventType.FOCUS, () => {
+      this.geolocationButtonEl_.setAttribute(Attribute.ENABLED, '');
     });
 
     // Restore previous location if input is empty when blurred and hide
     // the geolocation button.
-    this.input_.addEventListener(EventType.BLUR, () => {
-      if (this.input_.value === '') {
+    this.inputEl_.addEventListener(EventType.BLUR, () => {
+      if (this.inputEl_.value === '') {
         this.restore_();
       }
-      this.geolocationButton_.removeAttribute(Attribute.ENABLED);
+      this.geolocationButtonEl_.removeAttribute(Attribute.ENABLED);
     });
 
     // Get user's location when geolocation button is clicked.
-    this.geolocationButton_.addEventListener(EventType.CLICK, (e) => {
+    this.geolocationButtonEl_.addEventListener(EventType.CLICK, (e) => {
       e.preventDefault();
       this.getGeolocation_();
     });
@@ -100,12 +90,10 @@ class UserLocation extends HTMLElement {
   /**
    * Fetches human-friendly location based on geo coordinates provided by the
    * Geolocation API.
-   * @async
-   * @private
    */
-  async getGeolocation_() {
+  private async getGeolocation_(): Promise<any> {
     document.body.setAttribute(Attribute.LOADING, '');
-    this.input_.value = 'Retrieving location...';
+    this.inputEl_.value = 'Retrieving location...';
 
     const options = {
       enableHighAccuracy: true,
@@ -115,9 +103,7 @@ class UserLocation extends HTMLElement {
   
     // Alert user and restore input with previous location.
     const error = () => {
-      alert(`Uh oh. We were unable to retrieve your location. :(\n\n
-        You may need to enable Location Services on your device before you \
-        can use this feature.`);
+      alert(`Uh oh. We were unable to retrieve your location. :(\n\nYou may need to enable Location Services on your device before you can use this feature.`);
       this.restore_();
       document.body.removeAttribute(Attribute.LOADING);
     }
@@ -136,13 +122,8 @@ class UserLocation extends HTMLElement {
 
   /**
    * Fetches human-friendly location based on geo coordinates via API.
-   * @param {!Object} coords
-   * @param {!number} coords.lat - User's latitude.
-   * @param {!number} coords.lng - User's longitude.
-   * @async
-   * @private
    */
-  async reverseGeocode_(coords) {
+  private async reverseGeocode_(coords: Coordinates): Promise<any> {
     const { lat, lng } = coords;
     const endpoint = (`${process.env.GEOCODER_API}?prox=${lat},${lng},\
       ${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&\
@@ -158,7 +139,7 @@ class UserLocation extends HTMLElement {
       const address = data.Response.View[0].Result[0].Location.Address;
       this.location_ = `${address.City}, ${address.State}`;
       this.previousLocation_ = this.location_;
-      this.input_.value = this.location_;
+      this.inputEl_.value = this.location_;
       this.update_();
 
       document.body.removeAttribute(Attribute.LOADING);
@@ -170,9 +151,8 @@ class UserLocation extends HTMLElement {
   /**
    * Updates the URL with new location and changes the 'location' attribute to
    * trigger App.update().
-   * @private
    */
-  update_() {
+  private update_(): void {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.splice(-1, 1);
     urlSegments.push(this.helpers_.urlify(this.location_));
@@ -183,29 +163,26 @@ class UserLocation extends HTMLElement {
 
   /**
    * Restores previous location.
-   * @private
    */
-  restore_() {
+  private restore_(): void {
     this.location_ = this.previousLocation_;
-    this.input_.value = this.previousLocation_;
+    this.inputEl_.value = this.previousLocation_;
   }
 
   /**
    * Shows geolocation button if browser supports Geolocation API.
-   * @private
    */
-  enableGeolocation_() {
+  private enableGeolocation_(): void {
     if (navigator.geolocation) {
-      this.geolocationButton_.removeAttribute(Attribute.HIDDEN);
+      this.geolocationButtonEl_.removeAttribute(Attribute.HIDDEN);
     }
   }
 
   /**
    * Renders HTML form element for user's location and sets references to
    * form elements.
-   * @private
    */
-  render_() {
+  private render_(): void {
     const html = `\      
       <form class="location__form">\
         <input name="location" value="${this.location_}" type="text" \
@@ -223,18 +200,17 @@ class UserLocation extends HTMLElement {
     `;
     this.innerHTML = html.replace(/\s\s/g, '');
 
-    this.form_ = this.querySelector('form');
-    this.input_ = this.querySelector('input');
-    this.geolocationButton_ = this.querySelector('button.geolocation');
+    this.formEl_ = this.querySelector('form');
+    this.inputEl_ = this.querySelector('input');
+    this.geolocationButtonEl_ = this.querySelector('button.geolocation');
   }
 
   /**
-   * Renders an inline SVG icon.
-   * @param {string} name
-   * @private
+   * Returns a rendered inline SVG icon.
    */
-  svgIcon_(name) {
-    let svgPath;
+  private svgIcon_(name: string): string {
+    let svgPath: string;
+
     switch (name) {
       case 'location':
         svgPath = `\
