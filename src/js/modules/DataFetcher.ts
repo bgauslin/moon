@@ -68,7 +68,6 @@ class DataFetcher {
       alert('Currently unable to fetch data. :(');
     }
 
-    // TODO: Fix TS warning.
     // If no data is available, alert the user and restore previous location.
     if (!this.data_ || this.data_.error !== false) {
       alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
@@ -97,7 +96,8 @@ class DataFetcher {
    * Sets the hemisphere based on location's latitude.
    */
   private hemisphere_(): string {
-    let latitude: string; // <= TODO: Confirm data type returned from API.
+    let latitude: number;
+
     switch (this.api_){
       case 'usno':
         latitude = this.data_.lat;
@@ -109,7 +109,7 @@ class DataFetcher {
         latitude = this.data_[0].loc.lat;
         break;
     }
-    return (parseInt(latitude) >= 0) ? 'northern' : 'southern';
+    return (latitude >= 0) ? 'northern' : 'southern';
   }
 
   /**
