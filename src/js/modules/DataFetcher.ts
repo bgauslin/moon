@@ -1,7 +1,16 @@
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { Helpers } from './Helpers';
 
-/** @class */
+interface MoonriseMoonset {
+  moonrise: string,
+  moonset: string,
+}
+
+interface SunriseSunset {
+  sunrise: string,
+  sunset: string,
+}
+
 class DataFetcher {
   private api_: string;
   private data_: any;
@@ -132,7 +141,7 @@ class DataFetcher {
   /**
    * Converts sunrise and sunset times to military time.
    */
-  private sunriseSunset_(): Object {
+  private sunriseSunset_(): SunriseSunset {
     let sunriseData: any;
     let sunsetData: any;
     let sunrise: any;
@@ -182,7 +191,7 @@ class DataFetcher {
   /**
    * Converts moonrise and moonset times to military time.
    */
-  private moonriseMoonset_(): Object {
+  private moonriseMoonset_(): MoonriseMoonset {
     let moonriseData: any;
     let moonsetData: any;
     let moonrise: any;
