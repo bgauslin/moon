@@ -14,9 +14,7 @@ enum Attribute {
   START = 'start',
 };
 
-/**
- * NOTE: Keep values coordinated with 'Chart' enum in 'src/stylus/config/layout.styl'
- */
+// Values are coordinated with 'Chart' enum in 'src/stylus/config/constants.styl'
 enum Chart {
   LABEL_GAP = 8,
   MARGIN = 44,

@@ -3,7 +3,7 @@ import { DataFetcher } from './DataFetcher';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
 
-interface Settings {
+interface TitleInfo {
   date: AppDate,
   locale: string,
   location: string,
@@ -11,9 +11,9 @@ interface Settings {
   phase: string,
 }
 
-const TITLE_DIVIDER: string = '·';
-
 const DEFAULT_LOCATION: string = 'New York, NY';
+
+const TITLE_DIVIDER: string = '·';
 
 const HIGHLIGHTED: string[] = [
   '.header__title',
@@ -190,8 +190,8 @@ class App {
   /** 
    * Updates document title with info about the current moon phase.
    */
-  private updateDocumentTitle_(settings: Settings): void {
-    const { date, locale, location, percent, phase } = settings;
+  private updateDocumentTitle_(info: TitleInfo): void {
+    const { date, locale, location, percent, phase } = info;
     const dateLabel = this.dateTime_.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
     if (percent > 0) {

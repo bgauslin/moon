@@ -1,8 +1,4 @@
-interface AppDate {
-  year: number,
-  month: number,
-  day: number,
-}
+import { AppDate } from './DateTimeUtils';
 
 class Helpers {
   /**

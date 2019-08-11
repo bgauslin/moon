@@ -1,5 +1,12 @@
 import { Chart } from '../modules/Constants';
 
+interface Coordinates {
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+}
+
 // Container and centerpoint.
 const VIEWBOX: number = Chart.SIZE + (Chart.MARGIN * 2);
 const MIDPOINT: number = VIEWBOX / 2;
@@ -13,7 +20,7 @@ const AXIS_SECOND_HALF_START: number = MIDPOINT + ((Chart.SIZE / 2) - Chart.SWEE
 const AXIS_SECOND_HALF_END: number = VIEWBOX - Chart.MARGIN;
 
 // Axes values start at the top and go clockwise.
-const Axes: Array<Object> = [
+const Axes: Coordinates[] = [
   {
     x1: MIDPOINT, y1: AXIS_FIRST_HALF_START,
     x2: MIDPOINT, y2: AXIS_FIRST_HALF_END,
@@ -41,7 +48,7 @@ const TICK_SECOND_HALF_START: number = VIEWBOX - Chart.MARGIN;
 const TICK_SECOND_HALF_END: number = VIEWBOX;
 
 // Ticks values start at the top and go clockwise.
-const Ticks: Array<Object> = [
+const Ticks: Coordinates[] = [
   { 
     x1: MIDPOINT, y1: TICK_FIRST_HALF_START,
     x2: MIDPOINT, y2: TICK_FIRST_HALF_END,
@@ -59,13 +66,6 @@ const Ticks: Array<Object> = [
     x2: TICK_FIRST_HALF_END, y2: MIDPOINT,
   }
 ];
-
-interface Coordinates {
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-}
 
 /**
  * This custom element doesn't do anything besides draw an SVG, but there's

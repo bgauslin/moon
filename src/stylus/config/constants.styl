@@ -1,9 +1,8 @@
 @import 'functions'
 
-// NOTE: Keep values coordinated with 'ChartDimensions' enum in
-// 'source/js/modules/donutChart.js'
+// Values are coordinated with 'Chart' enum in 'source/js/modules/Constants.js'
 // @type Hash
-ChartDimensions = {
+Chart = {
   SIZE: 320
   SWEEP_WIDTH: 72
   MARGIN: 44
@@ -19,7 +18,7 @@ BUTTON_SIZE = px_to_rem(32)
 CHART_MAX_WIDTH = px_to_rem(480)
 
 // @type Number
-CHART_SIZE_UNITS = ChartDimensions.SIZE + (ChartDimensions.MARGIN * 2)
+CHART_SIZE_UNITS = Chart.SIZE + (Chart.MARGIN * 2)
 
 // @type String
 CHART_SIZE = px_to_rem(CHART_SIZE_UNITS)
@@ -31,10 +30,10 @@ CONTROLS_SIZE = px_to_rem(48)
 LOCATION_HEIGHT = px_to_rem(32)
 
 // @type String
-LOCATION_MAX_WIDTH = px_to_rem(ChartDimensions.SIZE)
+LOCATION_MAX_WIDTH = px_to_rem(Chart.SIZE)
 
 // @type Number
-PHOTO_SIZE = ChartDimensions.SIZE - (ChartDimensions.SWEEP_WIDTH * 2)
+PHOTO_SIZE = Chart.SIZE - (Chart.SWEEP_WIDTH * 2)
 
 // @type String
 PHOTO_WIDTH = (PHOTO_SIZE / CHART_SIZE_UNITS) * 100%

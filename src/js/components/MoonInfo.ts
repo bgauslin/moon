@@ -1,7 +1,6 @@
-import { Helpers } from '../modules/Helpers';
 import { Attribute } from '../modules/Constants';
+import { Helpers } from '../modules/Helpers';
 
-/** @class */
 class MoonInfo extends HTMLElement {
   private helpers_: any;
   private percent_: string;

@@ -1,8 +1,9 @@
 import { Attribute } from '../modules/Constants';
 import Spinner from 'spin';
 
-// [1] Value is coordinated with loop value in 'src/stylus/moon/photo.styl'
-const MOONPHASE_IMAGE_COUNT: number = 26; // [1]
+// Value is coordinated with loop value in 'src/stylus/moon/photo.styl'
+const MOONPHASE_IMAGE_COUNT: number = 26;
+
 const SPINNER_DELAY_MS: number = 1000;
 
 enum Image {

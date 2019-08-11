@@ -1,13 +1,8 @@
 import { Attribute, Chart } from '../modules/Constants';
 
-interface Point {
-  x: number,
-  y: number,
-}
-
 interface Arc {
- sweep: number,  // arc length
- radius: number, // arc radius 
+  sweep: number,
+  radius: number,
 }
 
 interface LabelProps {
@@ -15,6 +10,11 @@ interface LabelProps {
   radius: number,
   xOffset: number,
   yOffset: number,
+}
+
+interface Point {
+  x: number,
+  y: number,
 }
 
 const AXIS_OFFSET: number = -90;

@@ -2,12 +2,12 @@ import { Attribute } from '../modules/Constants';
 import { EventType } from '../modules/EventHandler';
 import { Helpers } from '../modules/Helpers';
 
-const GEOCODER_PROXIMITY: number = 100;
-
-interface Coordinates {
-  lat: number, // User's latitude
-  lng: number, // User's longitude
+interface UserCoordinates {
+  lat: number,
+  lng: number,
 }
+
+const GEOCODER_PROXIMITY: number = 100;
 
 class UserLocation extends HTMLElement {
   private formEl_: HTMLFormElement;
@@ -123,7 +123,7 @@ class UserLocation extends HTMLElement {
   /**
    * Fetches human-friendly location based on geo coordinates via API.
    */
-  private async reverseGeocode_(coords: Coordinates): Promise<any> {
+  private async reverseGeocode_(coords: UserCoordinates): Promise<any> {
     const { lat, lng } = coords;
     const endpoint = (`${process.env.GEOCODER_API}?prox=${lat},${lng},\
       ${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&\
