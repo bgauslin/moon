@@ -12,6 +12,7 @@ interface Settings {
 }
 
 const TITLE_DIVIDER: string = '·';
+
 const DEFAULT_LOCATION: string = 'New York, NY';
 
 const HIGHLIGHTED: string[] = [
