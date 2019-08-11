@@ -1,23 +1,16 @@
 import { Attribute } from '../modules/Constants';
 import Spinner from 'spin';
 
-/** @enum {string} */
-const Image = {
-  PATH_1X: '/img/moon-phases-26-240.min.jpg',
-  PATH_2X: '/img/moon-phases-26-480.min.jpg',
+// [1] Value is coordinated with loop value in 'src/stylus/moon/photo.styl'
+const MOONPHASE_IMAGE_COUNT: number = 26; // [1]
+const SPINNER_DELAY_MS: number = 1000;
+
+enum Image {
+  PATH_1X = '/img/moon-phases-26-240.min.jpg',
+  PATH_2X = '/img/moon-phases-26-480.min.jpg',
 };
 
-/**
- * NOTE: This value must stay coordinated with loop value in 'src/stylus/moon/photo.styl'
- * @const {number}
- */
-const MOONPHASE_IMAGE_COUNT = 26;
-
-/** @const {number} */
-const SPINNER_DELAY_MS = 1000;
-
-/** @const {Object} */
-const SpinnerOptions = {
+const SpinnerOptions: {} = {
   color: '#fff',
   length: 8,
   lines: 12,
@@ -25,43 +18,33 @@ const SpinnerOptions = {
   width: 3,
 };
 
-/** @class */
 class MoonPhoto extends HTMLElement {
+  private imageLoaded_: boolean;
+  private illumination_: number;
+  private percent_: number;
+  private phase_: string;
+  private spinner_: any;
+
   constructor() {
     super();
-
-    /** @private {boolean} */
     this.imageLoaded_ = false;
-
-    /** @private {string} */
-    this.illumination_ = '';
-
-    /** @private {string} */
-    this.percent_ = '';
-
-    /** @private {string} */
-    this.phase_ = '';
-
-    /** @private {instance} */
     this.spinner_ = new Spinner(SpinnerOptions);
   }
 
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return [Attribute.ILLUMINATION, Attribute.PERCENT, Attribute.PHASE];
   }
 
-  /** @callback */
-  attributeChangedCallback() {
+  attributeChangedCallback(): void {
     this.render_();
   }
 
   /** 
    * Renders a photo of the current moon phase.
-   * @private
    */
-  render_() {
-    this.illumination_ = this.getAttribute(Attribute.ILLUMINATION);
-    this.percent_ = this.getAttribute(Attribute.PERCENT);
+  private render_(): void {
+    this.illumination_ = parseInt(this.getAttribute(Attribute.ILLUMINATION));
+    this.percent_ = parseInt(this.getAttribute(Attribute.PERCENT));
     this.phase_ = this.getAttribute(Attribute.PHASE);
 
     if (!this.illumination_ || !this.phase_ || !this.percent_) {
@@ -91,11 +74,10 @@ class MoonPhoto extends HTMLElement {
 
   /**
    * Returns moon phase photo sprite's position.
-   * @return {number}
-   * @private
    */
-  imageNumber_() {
-    let imageNumber;
+  private imageNumber_(): number {
+    let imageNumber: number;
+
     switch (this.phase_.toUpperCase()) {
       case 'WAXING CRESCENT':
       case 'WAXING GIBBOUS':
@@ -116,24 +98,22 @@ class MoonPhoto extends HTMLElement {
         imageNumber = MOONPHASE_IMAGE_COUNT;
         break;
     }
+
     return (imageNumber === 0) ? MOONPHASE_IMAGE_COUNT : imageNumber;
   }
 
   /**
    * Returns illumination value as text if it's greater than 0.
-   * @return {string}
-   * @private
    */
-  illuminationCaption_() {
+  private illuminationCaption_(): string {
     return (this.illumination_ > 0) ? ` (${this.illumination_}% illumination)` : '';
   }
 
   /**
    * Attaches/removes a loading spinner and 'ready' attribute based on whether
    * or not the image is fully loaded.
-   * @private 
    */
-  preloadImage_() {
+  private preloadImage_(): void {
     const imageEl = this.querySelector('img');
 
     imageEl.onload = () => {
