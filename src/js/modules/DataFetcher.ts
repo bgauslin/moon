@@ -40,7 +40,7 @@ class DataFetcher {
         endpoint = `${process.env.USNO_API}?date=${month_}/${day_}/${year}&loc=${location_}`;
         break;
       case 'wwo':
-        endpoint = `${process.env.WWO_API}?format=json&key=${process.env.WWO_KEY}&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes`;
+        endpoint = `${process.env.WWO_API}?format=json&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes&key=${process.env.WWO_KEY}`;
         break;
       case 'aeris':
         // Get the day before and after in case of null values.
@@ -77,12 +77,12 @@ class DataFetcher {
       alert('Currently unable to fetch data. :(');
     }
 
+    // TODO(fetcher): Return response status so that App can reset location.
     // If no data is available, alert the user and restore previous location.
-    if (!this.data_ || this.data_.error !== false) {
-      alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
-      // TODO(fetcher): Return response status so that App can reset location.
-      return;
-    }
+    // if (!this.data_) {
+    //   alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
+    //   return;
+    // }
 
     // Normalize all API data and put it in an object for setting attribute
     // values on custom elements.
@@ -112,7 +112,7 @@ class DataFetcher {
         latitude = this.data_.lat;
         break;
       case 'wwo':
-        latitude = this.data_.nearest_area[0].latitude;
+        latitude = this.data_.data.nearest_area[0].latitude;
         break;
       case 'aeris':
         latitude = this.data_[0].loc.lat;
@@ -132,7 +132,7 @@ class DataFetcher {
           ? this.data_.curphase
           : this.data_.closestphase.phase);
       case 'wwo':
-        return this.data_.moon_phase;
+        return this.data_.data.time_zone[0].moon_phase;
       case 'aeris':
         return this.data_[1].moon.phase.name;
     }
@@ -155,8 +155,8 @@ class DataFetcher {
         sunset = this.dateTime_.militaryTime(sunsetData.time);
         break;
       case 'wwo':
-        sunriseData = this.data_.time_zone[0].sunrise;
-        sunsetData = this.data_.time_zone[0].sunset;
+        sunriseData = this.data_.data.time_zone[0].sunrise;
+        sunsetData = this.data_.data.time_zone[0].sunset;
         sunrise = this.dateTime_.militaryTime(sunriseData);
         sunset = this.dateTime_.militaryTime(sunsetData);
         break;
@@ -215,8 +215,8 @@ class DataFetcher {
         break;
 
       case 'wwo':
-        moonriseData = this.data_.time_zone[0].moonrise;
-        moonsetData = this.data_.time_zone[0].moonset;
+        moonriseData = this.data_.data.time_zone[0].moonrise;
+        moonsetData = this.data_.data.time_zone[0].moonset;
 
         // Make another API call for previous date if moonrise or moonset start
         // with 'No' since we need start/end times to render the moon chart.
@@ -283,7 +283,7 @@ class DataFetcher {
             return parseInt(this.data_.fracillum.replace('%', ''));
         }
       case 'wwo':
-        return parseInt(this.data_.moon_illumination);
+        return parseInt(this.data_.data.time_zone[0].moon_illumination);
       case 'aeris':
         return this.data_.moon.phase.illum;
     }
@@ -297,9 +297,10 @@ class DataFetcher {
   private moonPhasePercent_(): number {
     // In order to calculate percent, we first need the moon's illumination.
     const illumination = this.moonPhaseIllumination_();
+    const phase = this.moonPhase_().toUpperCase();
     
     let percent: number;
-    switch (this.moonPhase_().toUpperCase()) {
+    switch (phase) {
       case 'NEW MOON':
         percent = 0;
         break;
