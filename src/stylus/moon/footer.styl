@@ -3,22 +3,27 @@
   border-top .5px solid rgba(white, .5)
   color rgba(white, .5)
   display flex
+  flex-direction column
+  font-size var(--fineprint)
   grid-area footer
   height var(--footer-height)
   justify-content center
   padding 0 px_to_rem(16)
+  text-align center
 
-.copyright
-  font-size var(--fineprint)
+.footer > p
   margin 0
   padding 0
-  text-align center
 
 .copyright__years
   margin-right px_to_em(4)
 
-.copyright__owner
+.footer .powered-by
+  font-size px_to_em(14)
+  margin-top px_to_rem(4)
+
+.footer a
   link(rgba(white, .7), rgba(white, .7), white, white)
 
-[no-touch] .copyright__owner
+[no-touch] .footer a
   transition var(--transition)

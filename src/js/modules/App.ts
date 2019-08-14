@@ -26,12 +26,13 @@ class App {
   private date_: AppDate;
   private dateTime_: any;
   private eventHandler_: any;
-  private headerLinkEl_: Element;
+  private footerEl_: HTMLElement;
+  private headerLinkEl_: HTMLElement;
   private location_: string;
-  private locationEl_: Element;
+  private locationEl_: HTMLElement;
   private moonChartEl_: Element
-  private moonInfoEl_: Element;
-  private moonPhotoEl_: Element;
+  private moonInfoEl_: HTMLElement;
+  private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
   private sunChartEl_: Element
   private observer_: MutationObserver;
@@ -44,6 +45,7 @@ class App {
      */
     this.location_ = localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
     
+    this.footerEl_ = document.querySelector('.footer');
     this.headerLinkEl_ = document.querySelector('.header__link');
     this.locationEl_ = document.querySelector('.location');
     this.moonChartEl_ = document.querySelector('[name=moon]');
@@ -68,7 +70,7 @@ class App {
     this.eventHandler_.hijackLinks();
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
-    this.renderFooterText_();
+    this.renderFooterText_('wwo');
     // this.standaloneStartup_();
   }
 
@@ -179,15 +181,24 @@ class App {
    * Renders text into the footer via JS to avoid a FOUC.
    */
   private renderFooterText_(api?: string): void {
-    const yearsEl = document.querySelector('.copyright__years');
-    const ownerEl = document.querySelector('.copyright__owner');
+    const yearsEl = this.footerEl_.querySelector('.copyright__years');
+    const ownerEl = this.footerEl_.querySelector('.copyright__owner');
     const yearStart = '2018';
     const yearEnd = new Date().getFullYear().toString().substr(-2);
     yearsEl.textContent = `© ${yearStart}–${yearEnd}`;
     ownerEl.textContent = 'Ben Gauslin';
 
     if (api === 'wwo') {
-      // TODO: Add 'Powered by' blurb and link to footer.
+      const linkback = `\
+        <p class="powered-by">\
+          Powered by <a \
+            href="https://www.worldweatheronline.com/" \
+            title="Astronomy API" \
+            target="_blank" \
+            rel="noopener">World Weather Online</a>\
+        </p>\
+      `;
+      this.footerEl_.innerHTML += linkback.replace(/\s\s/g, '');
     }
   }
 
