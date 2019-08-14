@@ -178,13 +178,17 @@ class App {
   /**
    * Renders text into the footer via JS to avoid a FOUC.
    */
-  private renderFooterText_(): void {
+  private renderFooterText_(api?: string): void {
     const yearsEl = document.querySelector('.copyright__years');
     const ownerEl = document.querySelector('.copyright__owner');
     const yearStart = '2018';
     const yearEnd = new Date().getFullYear().toString().substr(-2);
     yearsEl.textContent = `© ${yearStart}–${yearEnd}`;
     ownerEl.textContent = 'Ben Gauslin';
+
+    if (api === 'wwo') {
+      // TODO: Add 'Powered by' blurb and link to footer.
+    }
   }
 
   /** 

@@ -72,6 +72,9 @@ class DataFetcher {
     // Fetch data from the API.
     try {
       const response = await fetch(endpoint);
+
+      // TODO: For WWO, we need to return the response instead of setting
+      // this.data_ due to the need for a secondary fetch.
       this.data_ = await response.json();
     } catch (e) {
       alert('Currently unable to fetch data. :(');
@@ -200,16 +203,16 @@ class DataFetcher {
     switch (this.api_) {
       case 'usno':
         // If moonrise doesn't exist in 'moondata', get it from 'prevmoondata'.
-        moonriseData = this.data_.moondata.find(item => item.phen === 'R');
+        moonriseData = this.data_.moondata.find((item: any) => item.phen === 'R');
         if (!moonriseData) {
-          moonriseData = this.data_.prevmoondata.find(item => item.phen === 'R');
+          moonriseData = this.data_.prevmoondata.find((item: any) => item.phen === 'R');
         }
         moonrise = this.dateTime_.militaryTime(moonriseData.time);
 
         // If moonset doesn't exist in 'moondata', get it from 'nextmoondata'.
-        moonsetData = this.data_.moondata.find(item => item.phen === 'S');
+        moonsetData = this.data_.moondata.find((item: any) => item.phen === 'S');
         if (!moonsetData) {
-          moonsetData = this.data_.nextmoondata.find(item => item.phen === 'S');
+          moonsetData = this.data_.nextmoondata.find((item: any) => item.phen === 'S');
         }
         moonset = this.dateTime_.militaryTime(moonsetData.time);
         break;
@@ -218,20 +221,24 @@ class DataFetcher {
         moonriseData = this.data_.data.time_zone[0].moonrise;
         moonsetData = this.data_.data.time_zone[0].moonset;
 
+        // TODO: Refactor DataFetcher to make a secondary fetch for WWO API.
+
         // Make another API call for previous date if moonrise or moonset start
         // with 'No' since we need start/end times to render the moon chart.
         const prevDate = this.dateTime_.prevDate();
         
         if (moonriseData.startsWith('No')) {
+          console.log('Make a second fetch for moonriseData, please.');
           // const dataPrevDate = await this.fetchData_(prevDate);
-          moonrise = this.dateTime_.militaryTime(dataPrevDate.time_zone[0].moonrise);
+          // moonrise = this.dateTime_.militaryTime(dataPrevDate.time_zone[0].moonrise);
         } else {
           moonrise = this.dateTime_.militaryTime(moonriseData);
         }
 
         if (moonsetData.startsWith('No')) {
+          console.log('Make a second fetch for moonsetData, please.');
           // const dataPrevDate = await this.fetchData_(prevDate);
-          moonset = this.dateTime_.militaryTime(dataPrevDate.time_zone[0].moonset);
+          // moonset = this.dateTime_.militaryTime(dataPrevDate.time_zone[0].moonset);
         } else {
           moonset = this.dateTime_.militaryTime(moonsetData);
         }
