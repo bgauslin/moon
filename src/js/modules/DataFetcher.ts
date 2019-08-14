@@ -24,24 +24,19 @@ class DataFetcher {
   }
 
   /**
-   * Fetches data depending on the API, then processes and normalizes the
-   * results before returning it in standardized format.
+   * Sets up endpoint and query params based on the API.
    */
-  public async fetch(date: AppDate, location: string): Promise<any> {
+  private endpoint_(date: AppDate, location: string): string {
     const { year, month, day } = date;
     const month_ = this.helpers_.zeroPad(month);
     const day_ = this.helpers_.zeroPad(day);
     const location_ = this.helpers_.urlify(location);
-
-    // Set up endpoint and query params based on the API.
-    let endpoint: string;
+    
     switch (this.api_) {
       case 'usno':
-        endpoint = `${process.env.USNO_API}?date=${month_}/${day_}/${year}&loc=${location_}`;
-        break;
+        return `${process.env.USNO_API}?date=${month_}/${day_}/${year}&loc=${location_}`;
       case 'wwo':
-        endpoint = `${process.env.WWO_API}?format=json&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes&key=${process.env.WWO_KEY}`;
-        break;
+        return `${process.env.WWO_API}?format=json&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes&key=${process.env.WWO_KEY}`;
       case 'aeris':
         // Get the day before and after in case of null values.
         const prevDate = this.dateTime_.prevDate(date);
@@ -65,15 +60,19 @@ class DataFetcher {
         const fields = 'loc,sun.riseISO,sun.setISO,moon.riseISO,moon.setISO,moon.phase.phase,moon.phase.name';
       
         // Construct the endpoint query.
-        endpoint = `${process.env.AERIS_API}${location_}?from=${from}&to=${to}&p=${location_}&fields=${fields}&client_id=${process.env.AERIS_ACCESS_ID}&client_secret=${process.env.AERIS_SECRET_KEY}`;
-        break;
+        return `${process.env.AERIS_API}${location_}?from=${from}&to=${to}&p=${location_}&fields=${fields}&client_id=${process.env.AERIS_ACCESS_ID}&client_secret=${process.env.AERIS_SECRET_KEY}`;
     }
+  }
 
-    // Fetch data from the API.
+  /**
+   * Fetches data depending on the API, then processes and normalizes the
+   * results before returning it in standardized format.
+   */
+  public async fetch(date: AppDate, location: string): Promise<any> {
     try {
-      const response = await fetch(endpoint);
+      const response = await fetch(this.endpoint_(date, location));
 
-      // TODO: For WWO, we need to return the response instead of setting
+      // TODO(fetcher): For WWO, we need to return the response instead of setting
       // this.data_ due to the need for a secondary fetch.
       this.data_ = await response.json();
     } catch (e) {
@@ -221,7 +220,7 @@ class DataFetcher {
         moonriseData = this.data_.data.time_zone[0].moonrise;
         moonsetData = this.data_.data.time_zone[0].moonset;
 
-        // TODO: Refactor DataFetcher to make a secondary fetch for WWO API.
+        // TODO(fetcher): Refactor DataFetcher to make a secondary fetch for WWO API.
 
         // Make another API call for previous date if moonrise or moonset start
         // with 'No' since we need start/end times to render the moon chart.
