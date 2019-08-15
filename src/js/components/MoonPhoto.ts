@@ -6,17 +6,17 @@ const MOONPHASE_IMAGE_COUNT: number = 26;
 
 const SPINNER_DELAY_MS: number = 1000;
 
-enum Image {
-  PATH_1X = '/img/moon-phases-26-240.min.jpg',
-  PATH_2X = '/img/moon-phases-26-480.min.jpg',
-};
-
 const SpinnerOptions: {} = {
   color: '#fff',
   length: 8,
   lines: 12,
   radius: 8,
   width: 3,
+};
+
+enum Image {
+  PATH_1X = '/img/moon-phases-26-240.min.jpg',
+  PATH_2X = '/img/moon-phases-26-480.min.jpg',
 };
 
 class MoonPhoto extends HTMLElement {
