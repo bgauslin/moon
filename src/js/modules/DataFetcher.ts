@@ -1,6 +1,17 @@
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { Helpers } from './Helpers';
 
+interface AppData {
+  hemisphere: string,
+  illumination: number,
+  moonrise: string,
+  moonset: string,
+  percent: number,
+  phase: string,
+  sunrise: string,
+  sunset: string,
+}
+
 interface MoonriseMoonset {
   moonrise: string,
   moonset: string,
@@ -16,6 +27,7 @@ class DataFetcher {
   private data_: any;
   private dateTime_: any;
   private helpers_: any;
+  private location_: string;
 
   constructor(api: string) {
     this.api_ = api;
@@ -26,17 +38,18 @@ class DataFetcher {
   /**
    * Sets up endpoint and query params based on the API.
    */
-  private endpoint_(date: AppDate, location: string): string {
+  private endpoint_(date: AppDate, location?: string): string {
     const { year, month, day } = date;
     const month_ = this.helpers_.zeroPad(month);
     const day_ = this.helpers_.zeroPad(day);
-    const location_ = this.helpers_.urlify(location);
+
+    this.location_ = this.helpers_.urlify(location);
     
     switch (this.api_) {
       case 'usno':
-        return `${process.env.USNO_API}?date=${month_}/${day_}/${year}&loc=${location_}`;
+        return `${process.env.USNO_API}?date=${month_}/${day_}/${year}&loc=${this.location_}`;
       case 'wwo':
-        return `${process.env.WWO_API}?format=json&date=${year}-${month_}-${day_}&q=${location_}&includelocation=yes&key=${process.env.WWO_KEY}`;
+        return `${process.env.WWO_API}?format=json&date=${year}-${month_}-${day_}&q=${this.location_}&includelocation=yes&key=${process.env.WWO_KEY}`;
       case 'aeris':
         // Get the day before and after in case of null values.
         const prevDate = this.dateTime_.prevDate(date);
@@ -60,7 +73,7 @@ class DataFetcher {
         const fields = 'loc,sun.riseISO,sun.setISO,moon.riseISO,moon.setISO,moon.phase.phase,moon.phase.name';
       
         // Construct the endpoint query.
-        return `${process.env.AERIS_API}${location_}?from=${from}&to=${to}&p=${location_}&fields=${fields}&client_id=${process.env.AERIS_ACCESS_ID}&client_secret=${process.env.AERIS_SECRET_KEY}`;
+        return `${process.env.AERIS_API}?from=${from}&to=${to}&p=${this.location_}&fields=${fields}&client_id=${process.env.AERIS_ACCESS_ID}&client_secret=${process.env.AERIS_SECRET_KEY}`;
     }
   }
 
@@ -71,9 +84,6 @@ class DataFetcher {
   public async fetch(date: AppDate, location: string): Promise<any> {
     try {
       const response = await fetch(this.endpoint_(date, location));
-
-      // TODO(fetcher): For WWO, we need to return the response instead of setting
-      // this.data_ due to the need for a secondary fetch.
       this.data_ = await response.json();
     } catch (e) {
       alert('Currently unable to fetch data. :(');
@@ -156,12 +166,15 @@ class DataFetcher {
         sunrise = this.dateTime_.militaryTime(sunriseData.time);
         sunset = this.dateTime_.militaryTime(sunsetData.time);
         break;
+      
+      // TODO: Debug WWO sunrise/sunset data...
       case 'wwo':
         sunriseData = this.data_.data.time_zone[0].sunrise;
         sunsetData = this.data_.data.time_zone[0].sunset;
         sunrise = this.dateTime_.militaryTime(sunriseData);
         sunset = this.dateTime_.militaryTime(sunsetData);
         break;
+
       case 'aeris':
         sunriseData = this.data_[1].sun.riseISO;
         sunsetData = this.data_[1].sun.setISO;
@@ -219,28 +232,8 @@ class DataFetcher {
       case 'wwo':
         moonriseData = this.data_.data.time_zone[0].moonrise;
         moonsetData = this.data_.data.time_zone[0].moonset;
-
-        // TODO(fetcher): Refactor DataFetcher to make a secondary fetch for WWO API.
-
-        // Make another API call for previous date if moonrise or moonset start
-        // with 'No' since we need start/end times to render the moon chart.
-        const prevDate = this.dateTime_.prevDate();
-        
-        if (moonriseData.startsWith('No')) {
-          console.log('Make a second fetch for moonriseData, please.');
-          // const dataPrevDate = await this.fetchData_(prevDate);
-          // moonrise = this.dateTime_.militaryTime(dataPrevDate.time_zone[0].moonrise);
-        } else {
-          moonrise = this.dateTime_.militaryTime(moonriseData);
-        }
-
-        if (moonsetData.startsWith('No')) {
-          console.log('Make a second fetch for moonsetData, please.');
-          // const dataPrevDate = await this.fetchData_(prevDate);
-          // moonset = this.dateTime_.militaryTime(dataPrevDate.time_zone[0].moonset);
-        } else {
-          moonset = this.dateTime_.militaryTime(moonsetData);
-        }
+        moonrise = moonriseData.startsWith('No') ? null : this.dateTime_.militaryTime(moonriseData);
+        moonset = moonsetData.startsWith('No') ? null : this.dateTime_.militaryTime(moonsetData);
         break;
 
       case 'aeris':
@@ -332,4 +325,4 @@ class DataFetcher {
   }
 }
 
-export { DataFetcher };
+export { AppData, DataFetcher };

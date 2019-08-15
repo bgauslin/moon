@@ -1,5 +1,5 @@
 import { Attribute } from './Constants';
-import { DataFetcher } from './DataFetcher';
+import { AppData, DataFetcher } from './DataFetcher';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
 
@@ -22,6 +22,7 @@ const HIGHLIGHTED: string[] = [
 ];
 
 class App {
+  private api_: string;
   private dataFetcher_: any;
   private date_: AppDate;
   private dateTime_: any;
@@ -34,10 +35,12 @@ class App {
   private moonInfoEl_: HTMLElement;
   private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
+  private previousData_: AppData;
   private sunChartEl_: Element
   private observer_: MutationObserver;
 
   constructor(api: string) {
+    this.api_ = api;
     /**
      * On first run, location may or may not be set in localStorage. If not,
      * set it to the fallback. On all subsequent updates, location is pulled
@@ -70,7 +73,7 @@ class App {
     this.eventHandler_.hijackLinks();
     this.observer_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
-    this.renderFooterText_('wwo');
+    this.renderFooterText_();
     // this.standaloneStartup_();
   }
 
@@ -107,7 +110,43 @@ class App {
     }
 
     // Map local constants to API data.
-    const { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
+    let { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
+
+    // -------------------------------------------------------------------------
+    // TODO: Debug...
+    // /2019/08/22/new+york,+ny - Sunrise is 12:00 AM according to API response
+
+    // -------------------------------------------------------------------------
+    // Sometimes the WWW API doesn't have data for the moonrise or moonset, so
+    // save current data as previous data, and if need to be, make an additional
+    // fetch. For example: /2019/07/23/new+york,+ny
+
+    if (this.api_ === 'wwo') {
+      if (!moonrise) {
+        if (this.previousData_ === undefined) {
+          const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);
+          moonrise = previousDay.moonrise;
+          // data.moonrise = previousDay.moonrise; // TODO: Do we need this as well?
+        } else {
+          moonrise = this.previousData_.moonrise;
+          // data.moonrise = this.previousData_.moonrise; // TODO: Do we need this as well?
+        }
+      }
+
+      if (!moonset) {
+        if (this.previousData_ === undefined) {
+          const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);
+          moonset = previousDay.moonset;
+          // data.moonset = previousDay.moonset; // TODO: Do we need this as well?
+        } else {
+          moonset = this.previousData_.moonset;
+          // data.moonset = this.previousData_.moonset; // TODO: Do we need this as well?
+        }
+      }
+
+      this.previousData_ = data;
+    }
+    // -------------------------------------------------------------------------
 
     // Update custom element attributes so each component can update itself.
     this.moonInfoEl_.setAttribute('percent', percent);
@@ -180,7 +219,7 @@ class App {
   /**
    * Renders text into the footer via JS to avoid a FOUC.
    */
-  private renderFooterText_(api?: string): void {
+  private renderFooterText_(): void {
     const yearsEl = this.footerEl_.querySelector('.copyright__years');
     const ownerEl = this.footerEl_.querySelector('.copyright__owner');
     const yearStart = '2018';
@@ -188,7 +227,7 @@ class App {
     yearsEl.textContent = `© ${yearStart}–${yearEnd}`;
     ownerEl.textContent = 'Ben Gauslin';
 
-    if (api === 'wwo') {
+    if (this.api_ === 'wwo') {
       const linkback = `\
         <p class="powered-by">\
           Powered by <a \
