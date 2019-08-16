@@ -1,3 +1,4 @@
+// TODO: Fix fastclick warning.
 import fastclick from 'fastclick';
 
 const NO_TOUCH_ATTR: string = 'no-touch';
@@ -25,7 +26,6 @@ class Tools {
     }
   }
 
-  // TODO: Fix TS warning for fastclick.attach()
   /**
    * Adds 'no-touch' attribute if not a touch-enabled device.
    */
