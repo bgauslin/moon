@@ -305,20 +305,16 @@ class DataFetcher {
         break;
       case 'WAXING CRESCENT':      
       case 'WAXING GIBBOUS':
-        percent = illumination / 2;
-        break;
       case 'FIRST QUARTER':
-        percent = 25;
+        percent = illumination / 2;
         break;
       case 'FULL MOON':
         percent = 50;
         break;
       case 'WANING GIBBOUS':
       case 'WANING CRESCENT':
-        percent = 100 - (illumination / 2);
-        break;
       case 'LAST QUARTER':
-        percent = 75;
+        percent = 100 - (illumination / 2);
         break;
     }
     return Math.floor(percent);
