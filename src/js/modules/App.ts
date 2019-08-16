@@ -35,7 +35,6 @@ class App {
   private moonInfoEl_: HTMLElement;
   private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
-  private previousData_: AppData;
   private sunChartEl_: Element
   private observer_: MutationObserver;
 
@@ -113,21 +112,18 @@ class App {
     let { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
 
     // Sometimes the WWO API doesn't have data for the moonrise or moonset
-    // (e.g. /2019/07/23/new+york,+ny), so save the current data as previous
-    // data and use that. If there's no moonrise or moonset on initial page
-    // load, make an additional fetch since there's no previous data yet. 
+    // (e.g. /2019/07/23/new+york,+ny), so make an additional fetch for the
+    // previous day and just use that since it's close enough.
     if (this.api_ === 'wwo') {
       if (!moonrise || !moonset) {
-        if (this.previousData_ === undefined) {
-          const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);
-          if (!moonrise) moonrise = previousDay.moonrise;
-          if (!moonset) moonset = previousDay.moonset;
-        } else {
-          if (!moonrise) moonrise = this.previousData_.moonrise;
-          if (!moonset) moonset = this.previousData_.moonrise;
+        const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);
+        if (!moonrise) {
+          moonrise = previousDay.moonrise;
+        }
+        if (!moonset) {
+          moonset = previousDay.moonset;
         }
       }
-      this.previousData_ = data;
     }
 
     // Update custom element attributes so each component can update itself.
