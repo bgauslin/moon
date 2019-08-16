@@ -113,7 +113,7 @@ class App {
 
     // Sometimes the WWO API doesn't have data for the moonrise or moonset
     // (e.g. /2019/07/23/new+york,+ny), so make an additional fetch for the
-    // previous day and just use that since it's close enough.
+    // previous day and use that since it's close enough.
     if (this.api_ === 'wwo') {
       if (!moonrise || !moonset) {
         const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);

@@ -73,6 +73,7 @@ class MoonPhoto extends HTMLElement {
     }
   }
 
+  // TODO(photo): Adjust to make photo transitions less jumpy.
   /**
    * Returns moon phase photo sprite's position.
    */
