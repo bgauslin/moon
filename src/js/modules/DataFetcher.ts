@@ -91,10 +91,10 @@ class DataFetcher {
 
     // TODO(fetcher): Return response status so that App can reset location.
     // If no data is available, alert the user and restore previous location.
-    // if (!this.data_) {
-    //   alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
-    //   return;
-    // }
+    if (!this.data_) {
+      alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
+      return;
+    }
 
     // Normalize all API data and put it in an object for setting attribute
     // values on custom elements.
