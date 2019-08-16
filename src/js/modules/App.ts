@@ -112,41 +112,33 @@ class App {
     // Map local constants to API data.
     let { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
 
-    // -------------------------------------------------------------------------
-    // TODO: Debug...
-    // /2019/08/22/new+york,+ny - Sunrise is 12:00 AM according to API response
-
-    // -------------------------------------------------------------------------
-    // Sometimes the WWW API doesn't have data for the moonrise or moonset, so
-    // save current data as previous data, and if need to be, make an additional
-    // fetch. For example: /2019/07/23/new+york,+ny
-
+    // Sometimes the WWO API doesn't have data for the moonrise or moonset,
+    // so save the current data as previous data and use that. If there's no
+    // moonrise or moonset on initial page load, then make an additional fetch.
+    // For example: /2019/07/23/new+york,+ny
     if (this.api_ === 'wwo') {
+      const previousDayParams = [this.dateTime_.prevDate(), this.location_];
+
       if (!moonrise) {
         if (this.previousData_ === undefined) {
-          const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);
+          const previousDay = await this.dataFetcher_.fetch(...previousDayParams);
           moonrise = previousDay.moonrise;
-          // data.moonrise = previousDay.moonrise; // TODO: Do we need this as well?
         } else {
           moonrise = this.previousData_.moonrise;
-          // data.moonrise = this.previousData_.moonrise; // TODO: Do we need this as well?
         }
       }
 
       if (!moonset) {
         if (this.previousData_ === undefined) {
-          const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);
+          const previousDay = await this.dataFetcher_.fetch(...previousDayParams);
           moonset = previousDay.moonset;
-          // data.moonset = previousDay.moonset; // TODO: Do we need this as well?
         } else {
           moonset = this.previousData_.moonset;
-          // data.moonset = this.previousData_.moonset; // TODO: Do we need this as well?
         }
       }
 
       this.previousData_ = data;
     }
-    // -------------------------------------------------------------------------
 
     // Update custom element attributes so each component can update itself.
     this.moonInfoEl_.setAttribute('percent', percent);
