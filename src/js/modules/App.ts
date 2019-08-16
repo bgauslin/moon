@@ -112,31 +112,21 @@ class App {
     // Map local constants to API data.
     let { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
 
-    // Sometimes the WWO API doesn't have data for the moonrise or moonset,
-    // so save the current data as previous data and use that. If there's no
-    // moonrise or moonset on initial page load, then make an additional fetch.
-    // For example: /2019/07/23/new+york,+ny
+    // Sometimes the WWO API doesn't have data for the moonrise or moonset
+    // (e.g. /2019/07/23/new+york,+ny), so save the current data as previous
+    // data and use that. If there's no moonrise or moonset on initial page
+    // load, make an additional fetch since there's no previous data yet. 
     if (this.api_ === 'wwo') {
-      const previousDayParams = [this.dateTime_.prevDate(), this.location_];
-
-      if (!moonrise) {
+      if (!moonrise || !moonset) {
         if (this.previousData_ === undefined) {
-          const previousDay = await this.dataFetcher_.fetch(...previousDayParams);
-          moonrise = previousDay.moonrise;
+          const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);
+          if (!moonrise) moonrise = previousDay.moonrise;
+          if (!moonset) moonset = previousDay.moonset;
         } else {
-          moonrise = this.previousData_.moonrise;
+          if (!moonrise) moonrise = this.previousData_.moonrise;
+          if (!moonset) moonset = this.previousData_.moonrise;
         }
       }
-
-      if (!moonset) {
-        if (this.previousData_ === undefined) {
-          const previousDay = await this.dataFetcher_.fetch(...previousDayParams);
-          moonset = previousDay.moonset;
-        } else {
-          moonset = this.previousData_.moonset;
-        }
-      }
-
       this.previousData_ = data;
     }
 
