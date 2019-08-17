@@ -60,7 +60,7 @@ class MoonPhoto extends HTMLElement {
                 src="${Image.PATH_1X}" \
                 srcset="${Image.PATH_1X} 1x, ${Image.PATH_2X} 2x" \
                 alt="${this.phase_}${this.illuminationCaption_()}" \
-                frame="${this.imageNumber_()}"
+                frame="${this.spriteFrame_()}"
                 ${ready}>\
         </figure>\
       </div>\
@@ -73,35 +73,13 @@ class MoonPhoto extends HTMLElement {
     }
   }
 
-  // TODO(photo): Adjust to make photo transitions less jumpy.
   /**
-   * Returns moon phase photo sprite's position.
+   * Returns moon phase photo sprite's position based on percent relative to
+   * number of frames in the sprite.
    */
-  private imageNumber_(): number {
-    let imageNumber: number;
-
-    switch (this.phase_.toUpperCase()) {
-      case 'WAXING CRESCENT':
-      case 'WAXING GIBBOUS':
-      case 'WANING CRESCENT':
-      case 'WANING GIBBOUS':
-        imageNumber = Math.round((this.percent_ / 100) * MOONPHASE_IMAGE_COUNT);
-        break;
-      case 'FIRST QUARTER':
-        imageNumber = 6;
-        break;
-      case 'FULL MOON':
-        imageNumber = 13;
-        break;
-      case 'LAST QUARTER':
-        imageNumber = 18;
-        break;
-      case 'NEW MOON':
-        imageNumber = MOONPHASE_IMAGE_COUNT;
-        break;
-    }
-
-    return (imageNumber === 0) ? MOONPHASE_IMAGE_COUNT : imageNumber;
+  private spriteFrame_(): number {
+    let frame: number = Math.round((this.percent_ / 100) * MOONPHASE_IMAGE_COUNT);
+    return (frame === 0) ? MOONPHASE_IMAGE_COUNT : frame;
   }
 
   /**
