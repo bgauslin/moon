@@ -133,6 +133,8 @@ class DataFetcher {
     return (latitude >= 0) ? 'northern' : 'southern';
   }
 
+  // TODO(wwo): WWO occasionally returns the wrong phase, and this should be
+  // fixed if possible.
   /**
    * Gets current moon phase name from API data.
    */
@@ -166,8 +168,7 @@ class DataFetcher {
         sunrise = this.dateTime_.militaryTime(sunriseData.time);
         sunset = this.dateTime_.militaryTime(sunsetData.time);
         break;
-      
-      // TODO: Debug WWO sunrise/sunset data...
+
       case 'wwo':
         sunriseData = this.data_.data.time_zone[0].sunrise;
         sunsetData = this.data_.data.time_zone[0].sunset;
@@ -290,34 +291,33 @@ class DataFetcher {
 
   /**
    * Returns moon cycle percentage as an integer. MoonPhoto needs this value
-   * in order to calculate which image to show.
-   * 0/100 = New Moon, 25 = First Quarter, 50 = Full Moon, 75 = Last Quarter.
+   * in order to calculate which image to show. Percent is calculated via
+   * illumination (0-100) relative to phase.
    */
   private moonPhasePercent_(): number {
-    // In order to calculate percent, we first need the moon's illumination.
     const illumination = this.moonPhaseIllumination_();
     const phase = this.moonPhase_().toUpperCase();
-    
     let percent: number;
     switch (phase) {
       case 'NEW MOON':
         percent = 0;
         break;
-      case 'WAXING CRESCENT':      
-      case 'WAXING GIBBOUS':
-      case 'FIRST QUARTER':
-        percent = illumination / 2;
+      case 'WAXING CRESCENT': // = 1-24
+      case 'FIRST QUARTER':   // = 25
+      case 'WAXING GIBBOUS':  // = 26-49
+        percent = Math.floor(illumination / 2);
         break;
       case 'FULL MOON':
         percent = 50;
         break;
-      case 'WANING GIBBOUS':
-      case 'WANING CRESCENT':
-      case 'LAST QUARTER':
-        percent = 100 - (illumination / 2);
+      case 'WANING GIBBOUS':  // = 51-74
+      case 'LAST QUARTER':    // = 75
+      case 'WANING CRESCENT': // = 76-99
+        percent = Math.floor(100 - (illumination / 2));
         break;
     }
-    return Math.floor(percent);
+
+    return percent;
   }
 }
 
