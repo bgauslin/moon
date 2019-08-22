@@ -62,7 +62,7 @@ class App {
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
 
-    // this.apiObserver_ = new MutationObserver(() => this.update());
+    this.apiObserver_ = new MutationObserver(() => this.update());
     this.locationObserver_ = new MutationObserver(() => this.update());
   }
 
@@ -73,8 +73,8 @@ class App {
    */
   public init(): void {
     this.eventHandler_.hijackLinks();
+    this.apiObserver_.observe(this.appEl_, { attributes: true });
     this.locationObserver_.observe(this.locationEl_, { attributes: true });
-    // this.apiObserver_.observe(document.body, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
     this.renderFooterText_();
     // this.standaloneStartup_();
