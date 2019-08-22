@@ -29,10 +29,47 @@ class DataFetcher {
   private helpers_: any;
   private location_: string;
 
-  constructor(api: string) {
-    this.api_ = api;
+  constructor() {
     this.dateTime_ = new DateTimeUtils();
     this.helpers_ = new Helpers();
+  }
+
+  /**
+   * Fetches data depending on the API, then processes and normalizes the
+   * results before returning it in standardized format.
+   */
+  public async fetch(api: string, date: AppDate, location: string): Promise<any> {
+    this.api_ = api;
+
+    try {
+      const response = await fetch(this.endpoint_(date, location));
+      this.data_ = await response.json();
+    } catch (e) {
+      alert('Currently unable to fetch data. :(');
+    }
+
+    // TODO(fetcher): Return response status so that App can reset location.
+    // If no data is available, alert the user and restore previous location.
+    if (!this.data_) {
+      alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
+      return;
+    }
+
+    // Normalize all API data and put it in an object for setting attribute
+    // values on custom elements.
+    const { sunrise, sunset } = this.sunriseSunset_();
+    const { moonrise, moonset } = this.moonriseMoonset_();
+
+    return {
+      hemisphere: this.hemisphere_(),
+      illumination: this.moonPhaseIllumination_(),
+      moonrise,
+      moonset,
+      percent: this.moonPhasePercent_(),
+      phase: this.moonPhase_(),
+      sunrise,
+      sunset,
+    }
   }
 
   /**
@@ -74,42 +111,6 @@ class DataFetcher {
       
         // Construct the endpoint query.
         return `${process.env.AERIS_API}?from=${from}&to=${to}&p=${this.location_}&fields=${fields}&client_id=${process.env.AERIS_ACCESS_ID}&client_secret=${process.env.AERIS_SECRET_KEY}`;
-    }
-  }
-
-  /**
-   * Fetches data depending on the API, then processes and normalizes the
-   * results before returning it in standardized format.
-   */
-  public async fetch(date: AppDate, location: string): Promise<any> {
-    try {
-      const response = await fetch(this.endpoint_(date, location));
-      this.data_ = await response.json();
-    } catch (e) {
-      alert('Currently unable to fetch data. :(');
-    }
-
-    // TODO(fetcher): Return response status so that App can reset location.
-    // If no data is available, alert the user and restore previous location.
-    if (!this.data_) {
-      alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
-      return;
-    }
-
-    // Normalize all API data and put it in an object for setting attribute
-    // values on custom elements.
-    const { sunrise, sunset } = this.sunriseSunset_();
-    const { moonrise, moonset } = this.moonriseMoonset_();
-
-    return {
-      hemisphere: this.hemisphere_(),
-      illumination: this.moonPhaseIllumination_(),
-      moonrise,
-      moonset,
-      percent: this.moonPhasePercent_(),
-      phase: this.moonPhase_(),
-      sunrise,
-      sunset,
     }
   }
 

@@ -27,6 +27,7 @@ class App {
   private date_: AppDate;
   private dateTime_: any;
   private eventHandler_: any;
+  private appEl_: HTMLElement;
   private footerEl_: HTMLElement;
   private headerLinkEl_: HTMLElement;
   private location_: string;
@@ -36,10 +37,10 @@ class App {
   private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
   private sunChartEl_: Element
-  private observer_: MutationObserver;
+  private apiObserver_: MutationObserver;
+  private locationObserver_: MutationObserver;
 
-  constructor(api: string) {
-    this.api_ = api;
+  constructor() {
     /**
      * On first run, location may or may not be set in localStorage. If not,
      * set it to the fallback. On all subsequent updates, location is pulled
@@ -47,6 +48,7 @@ class App {
      */
     this.location_ = localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
     
+    this.appEl_ = document.querySelector('.app');
     this.footerEl_ = document.querySelector('.footer');
     this.headerLinkEl_ = document.querySelector('.header__link');
     this.locationEl_ = document.querySelector('.location');
@@ -56,11 +58,12 @@ class App {
     this.navEls_ = document.querySelectorAll('[direction]');
     this.sunChartEl_ = document.querySelector('[name=sun]');
 
-    this.dataFetcher_ = new DataFetcher(api);
+    this.dataFetcher_ = new DataFetcher();
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
 
-    this.observer_ = new MutationObserver(() => this.update());
+    // this.apiObserver_ = new MutationObserver(() => this.update());
+    this.locationObserver_ = new MutationObserver(() => this.update());
   }
 
   /**
@@ -70,7 +73,8 @@ class App {
    */
   public init(): void {
     this.eventHandler_.hijackLinks();
-    this.observer_.observe(this.locationEl_, { attributes: true });
+    this.locationObserver_.observe(this.locationEl_, { attributes: true });
+    // this.apiObserver_.observe(document.body, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
     this.renderFooterText_();
     // this.standaloneStartup_();
@@ -95,6 +99,9 @@ class App {
     // Enable progress bar while we fetch data.
     document.body.setAttribute(Attribute.LOADING, '');
 
+    // Get the API from body attribute.
+    this.api_ = this.appEl_.getAttribute('api');
+
     // Get the date from the address bar.
     this.date_ = this.dateTime_.activeDate();
 
@@ -102,7 +109,7 @@ class App {
     this.location_ = this.locationEl_.getAttribute(Attribute.LOCATION);
 
     // Fetch data (and bail if there's nothing).
-    const data = await this.dataFetcher_.fetch(this.date_, this.location_);
+    const data = await this.dataFetcher_.fetch(this.api_, this.date_, this.location_);
     if (!data) {
       document.body.removeAttribute(Attribute.LOADING);
       return;
@@ -161,6 +168,9 @@ class App {
       phase,
     });
 
+    // Add/remove the WWO link depending on the API we're using.
+    this.footerLink_();
+
     // Highlight elements if the UI is currently displaying info for today.
     this.highlightToday_(this.date_);
 
@@ -204,10 +214,24 @@ class App {
     const yearEnd = new Date().getFullYear().toString().substr(-2);
     yearsEl.textContent = `© ${yearStart}–${yearEnd}`;
     ownerEl.textContent = 'Ben Gauslin';
+  }
 
-    if (this.api_ === 'wwo') {
+  /**
+   * Adds/removes a WWO link in the footer (link is required per the WWO ToS).
+   */
+  private footerLink_(): void {
+    const linkClass = 'wwo';
+    const footerLink = this.footerEl_.querySelector(`.${linkClass}`);
+
+    // Remove the link.
+    if (footerLink && this.api_ !== 'wwo') {
+      footerLink.parentNode.removeChild(footerLink);
+    }
+
+    // Add the link.
+    if (!footerLink && this.api_ === 'wwo') {
       const linkback = `\
-        <p class="powered-by">\
+        <p class="${linkClass}">\
           Powered by <a \
             href="https://www.worldweatheronline.com/" \
             title="Astronomy API" \
@@ -218,7 +242,7 @@ class App {
       this.footerEl_.innerHTML += linkback.replace(/\s\s/g, '');
     }
   }
-
+  
   /** 
    * Updates document title with info about the current moon phase.
    */

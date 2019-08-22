@@ -10,7 +10,7 @@ import { Tools } from './modules/Tools';
 import { UserLocation } from './components/UserLocation';
 import '../stylus/moon.styl'; // Stylesheet import for Webpack.
 
-const app = new App('usno');
+const app = new App();
 const tools = new Tools();
 
 // Define all custom elements.
