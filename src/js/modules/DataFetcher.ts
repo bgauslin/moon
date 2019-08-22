@@ -296,28 +296,21 @@ class DataFetcher {
    */
   private moonPhasePercent_(): number {
     const illumination = this.moonPhaseIllumination_();
-    const phase = this.moonPhase_().toUpperCase();
-    let percent: number;
-    switch (phase) {
+    
+    switch (this.moonPhase_().toUpperCase()) {
       case 'NEW MOON':
-        percent = 0;
-        break;
-      case 'WAXING CRESCENT': // = 1-24
-      case 'FIRST QUARTER':   // = 25
-      case 'WAXING GIBBOUS':  // = 26-49
-        percent = Math.floor(illumination / 2);
-        break;
+        return 0;
+      case 'WAXING CRESCENT': // 1-24
+      case 'FIRST QUARTER':   // 25
+      case 'WAXING GIBBOUS':  // 26-49
+        return Math.floor(illumination / 2);
       case 'FULL MOON':
-        percent = 50;
-        break;
-      case 'WANING GIBBOUS':  // = 51-74
-      case 'LAST QUARTER':    // = 75
-      case 'WANING CRESCENT': // = 76-99
-        percent = Math.floor(100 - (illumination / 2));
-        break;
+        return 50;
+      case 'WANING GIBBOUS':  // 51-74
+      case 'LAST QUARTER':    // 75
+      case 'WANING CRESCENT': // 76-99
+        return Math.floor(100 - (illumination / 2));
     }
-
-    return percent;
   }
 }
 
