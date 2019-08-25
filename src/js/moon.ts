@@ -10,10 +10,9 @@ import { Tools } from './modules/Tools';
 import { UserLocation } from './components/UserLocation';
 import '../stylus/moon.styl'; // Stylesheet import for Webpack.
 
-const app = new App();
-const tools = new Tools();
-
-// Define all custom elements.
+/**
+ * Define all custom elements.
+ */ 
 customElements.define('chart-axes', ChartAxes);
 customElements.define('donut-chart', DonutChart);
 customElements.define('moon-info', MoonInfo);
@@ -22,8 +21,13 @@ customElements.define('prev-next', PrevNext);
 customElements.define('user-location', UserLocation);
 
 /**
- * Initializes app when DOM is ready.
- * @listens EventType.READY
+ * Create class instances.
+ */ 
+const app = new App();
+const tools = new Tools();
+
+/**
+ * Initialize app when DOM is ready.
  */
 document.addEventListener(EventType.READY, () => {
   app.init();
@@ -31,24 +35,21 @@ document.addEventListener(EventType.READY, () => {
 }, { once: true } );
 
 /**
- * Updates UI via custom event dispatched by selected elements.
- * @listens EventType.UPDATE
+ * Update UI via custom event dispatched by selected elements.
  */
 document.addEventListener(EventType.UPDATE, () => {
   app.update();
 });
 
 /**
- * Updates UI when URL changes via browser controls.
- * @listens EventType.POPSTATE
+ * Update UI when URL changes via browser controls.
  */
 window.addEventListener(EventType.POPSTATE, () => {
   app.update();
 }, false);
 
 /**
- * Updates 'vh' value when window is resized.
- * @listens EventType.RESIZE
+ * Update 'vh' value when window is resized.
  */
 window.addEventListener(EventType.RESIZE, () => {
   tools.viewportHeight();
