@@ -21,14 +21,15 @@
     "not dead"
   ],
   "dependencies": {
+    "@types/fastclick": "^1.0.28",
     "fastclick": "^1.0.6",
     "spin": "^0.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
     "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.5.0",
     "@babel/preset-typescript": "^7.3.3",
