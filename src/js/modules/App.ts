@@ -118,6 +118,15 @@ class App {
     // Map local constants to API data.
     let { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
 
+    if (document.body.hasAttribute('debug')) {
+      console.log('moonrise', moonrise);
+      console.log('moonset', moonset);
+      console.log('percent', percent);
+      console.log('phase', phase);
+      console.log('sunrise', sunrise);
+      console.log('sunset', sunset);
+    }
+
     // Sometimes the WWO API doesn't have data for the moonrise or moonset
     // (e.g. /2019/07/23/new+york,+ny), so make an additional fetch for the
     // previous day and use that since it's close enough.
