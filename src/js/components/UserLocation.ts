@@ -125,7 +125,7 @@ class UserLocation extends HTMLElement {
    */
   private async reverseGeocode_(coords: UserCoordinates): Promise<any> {
     const { lat, lng } = coords;
-    const endpoint = (`${process.env.GEOCODER_API}?prox=${lat},${lng},\
+    const endpoint = (`${process.env.REVERSE_GEOCODE_API}?prox=${lat},${lng},\
       ${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&\
       app_id=${process.env.GEOCODER_APP_ID}\
       &app_code=${process.env.GEOCODER_APP_CODE}`);
