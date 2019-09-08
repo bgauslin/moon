@@ -51,7 +51,7 @@ class DataFetcher {
     // TODO(fetcher): Return response status so that App can reset location.
     // If no data is available, alert the user and restore previous location.
     if (!this.data_) {
-      alert(`No data is available for ${location}.\n\nPlease try another location, or try entering a ZIP code.`);
+      alert(`No data is available for ${location}. Please try another location, or try entering a ZIP code.`);
       return;
     }
 
@@ -81,12 +81,10 @@ class DataFetcher {
     const day_ = this.helpers_.zeroPad(day);
 
     this.location_ = this.helpers_.urlify(location);
-    
+
     switch (this.api_) {
       case 'usno':
         return `${process.env.USNO_API}?date=${month_}/${day_}/${year}&loc=${this.location_}`;
-      case 'wwo':
-        return `${process.env.WWO_API}?format=json&date=${year}-${month_}-${day_}&q=${this.location_}&includelocation=yes&key=${process.env.WWO_KEY}`;
       case 'aeris':
         // Get the day before and after in case of null values.
         const prevDate = this.dateTime_.prevDate(date);
@@ -124,9 +122,6 @@ class DataFetcher {
       case 'usno':
         latitude = this.data_.lat;
         break;
-      case 'wwo':
-        latitude = this.data_.data.nearest_area[0].latitude;
-        break;
       case 'aeris':
         latitude = this.data_[0].loc.lat;
         break;
@@ -134,8 +129,6 @@ class DataFetcher {
     return (latitude >= 0) ? 'northern' : 'southern';
   }
 
-  // TODO(wwo): WWO occasionally returns the wrong phase, and this should be
-  // fixed if possible.
   /**
    * Gets current moon phase name from API data.
    */
@@ -146,8 +139,6 @@ class DataFetcher {
         return (this.data_.curphase
           ? this.data_.curphase
           : this.data_.closestphase.phase);
-      case 'wwo':
-        return this.data_.data.time_zone[0].moon_phase;
       case 'aeris':
         return this.data_[1].moon.phase.name;
     }
@@ -168,13 +159,6 @@ class DataFetcher {
         sunsetData = this.data_.sundata.find(item => item.phen === 'S');
         sunrise = this.dateTime_.militaryTime(sunriseData.time);
         sunset = this.dateTime_.militaryTime(sunsetData.time);
-        break;
-
-      case 'wwo':
-        sunriseData = this.data_.data.time_zone[0].sunrise;
-        sunsetData = this.data_.data.time_zone[0].sunset;
-        sunrise = this.dateTime_.militaryTime(sunriseData);
-        sunset = this.dateTime_.militaryTime(sunsetData);
         break;
 
       case 'aeris':
@@ -231,13 +215,6 @@ class DataFetcher {
         moonset = this.dateTime_.militaryTime(moonsetData.time);
         break;
 
-      case 'wwo':
-        moonriseData = this.data_.data.time_zone[0].moonrise;
-        moonsetData = this.data_.data.time_zone[0].moonset;
-        moonrise = moonriseData.startsWith('No') ? null : this.dateTime_.militaryTime(moonriseData);
-        moonset = moonsetData.startsWith('No') ? null : this.dateTime_.militaryTime(moonsetData);
-        break;
-
       case 'aeris':
         moonriseData = this.data_[1].moon.riseISO;
         moonsetData = this.data_[1].moon.setISO;
@@ -283,8 +260,6 @@ class DataFetcher {
           default:
             return parseInt(this.data_.fracillum.replace('%', ''));
         }
-      case 'wwo':
-        return parseInt(this.data_.data.time_zone[0].moon_illumination);
       case 'aeris':
         return this.data_.moon.phase.illum;
     }

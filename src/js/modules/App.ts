@@ -1,5 +1,5 @@
 import { Attribute } from './Constants';
-import { AppData, DataFetcher } from './DataFetcher';
+import { DataFetcher } from './DataFetcher';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
 
@@ -118,6 +118,7 @@ class App {
     // Map local constants to API data.
     let { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
 
+    // Log values to the console for debugging.
     if (document.body.hasAttribute('debug')) {
       console.log('moonrise', moonrise);
       console.log('moonset', moonset);
@@ -125,21 +126,6 @@ class App {
       console.log('phase', phase);
       console.log('sunrise', sunrise);
       console.log('sunset', sunset);
-    }
-
-    // Sometimes the WWO API doesn't have data for the moonrise or moonset
-    // (e.g. /2019/07/23/new+york,+ny), so make an additional fetch for the
-    // previous day and use that since it's close enough.
-    if (this.api_ === 'wwo') {
-      if (!moonrise || !moonset) {
-        const previousDay = await this.dataFetcher_.fetch(this.dateTime_.prevDate(), this.location_);
-        if (!moonrise) {
-          moonrise = previousDay.moonrise;
-        }
-        if (!moonset) {
-          moonset = previousDay.moonset;
-        }
-      }
     }
 
     // Update custom element attributes so each component can update itself.
@@ -176,9 +162,6 @@ class App {
       percent,
       phase,
     });
-
-    // Add/remove the WWO link depending on the API we're using.
-    this.footerLink_();
 
     // Highlight elements if the UI is currently displaying info for today.
     this.highlightToday_(this.date_);
@@ -225,33 +208,6 @@ class App {
     ownerEl.textContent = 'Ben Gauslin';
   }
 
-  /**
-   * Adds/removes a WWO link in the footer (link is required per the WWO ToS).
-   */
-  private footerLink_(): void {
-    const linkClass = 'wwo';
-    const footerLink = this.footerEl_.querySelector(`.${linkClass}`);
-
-    // Remove the link.
-    if (footerLink && this.api_ !== 'wwo') {
-      footerLink.parentNode.removeChild(footerLink);
-    }
-
-    // Add the link.
-    if (!footerLink && this.api_ === 'wwo') {
-      const linkback = `\
-        <p class="${linkClass}">\
-          Powered by <a \
-            href="https://www.worldweatheronline.com/" \
-            title="Astronomy API" \
-            target="_blank" \
-            rel="noopener">World Weather Online</a>\
-        </p>\
-      `;
-      this.footerEl_.innerHTML += linkback.replace(/\s\s/g, '');
-    }
-  }
-  
   /** 
    * Updates document title with info about the current moon phase.
    */
