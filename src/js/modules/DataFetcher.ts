@@ -46,6 +46,7 @@ class DataFetcher {
       this.data_ = await response.json();
     } catch (e) {
       alert('Currently unable to fetch data. :(');
+      return;
     }
 
     // TODO(fetcher): Return response status so that App can reset location.
