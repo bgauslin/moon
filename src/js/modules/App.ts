@@ -22,7 +22,6 @@ const HIGHLIGHTED: string[] = [
 ];
 
 class App {
-  private api_: string;
   private dataFetcher_: any;
   private date_: AppDate;
   private dateTime_: any;
@@ -37,7 +36,6 @@ class App {
   private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
   private sunChartEl_: Element
-  private apiObserver_: MutationObserver;
   private locationObserver_: MutationObserver;
 
   constructor() {
@@ -62,7 +60,6 @@ class App {
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
 
-    this.apiObserver_ = new MutationObserver(() => this.update());
     this.locationObserver_ = new MutationObserver(() => this.update());
   }
 
@@ -73,7 +70,6 @@ class App {
    */
   public init(): void {
     this.eventHandler_.hijackLinks();
-    this.apiObserver_.observe(this.appEl_, { attributes: true });
     this.locationObserver_.observe(this.locationEl_, { attributes: true });
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
     this.renderFooterText_();
@@ -99,9 +95,6 @@ class App {
     // Enable progress bar while we fetch data.
     document.body.setAttribute(Attribute.LOADING, '');
 
-    // Get the API from body attribute.
-    this.api_ = this.appEl_.getAttribute('api');
-
     // Get the date from the address bar.
     this.date_ = this.dateTime_.activeDate();
 
@@ -109,7 +102,7 @@ class App {
     this.location_ = this.locationEl_.getAttribute(Attribute.LOCATION);
 
     // Fetch data (and bail if there's nothing).
-    const data = await this.dataFetcher_.fetch(this.api_, this.date_, this.location_);
+    const data = await this.dataFetcher_.fetch(this.date_, this.location_);
     if (!data) {
       document.body.removeAttribute(Attribute.LOADING);
       return;
