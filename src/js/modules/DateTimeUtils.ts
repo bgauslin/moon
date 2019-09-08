@@ -121,23 +121,15 @@ class DateTimeUtils {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
+  // TODO: Rename militaryTime() method since it's no longer accurate.
+  // TODO: Add zero padding to minutes.
   /**
-   * Converts time in HH:MM AM/PM format to HH:MM 24-hour format.
+   * Extracts the hours and minutes from a Date object and returns them
+   * in HH:MM format;
    */
-  public militaryTime(time: string): string {
-    const amPm = time.split(' ')[1].replace(/\./g, '').toUpperCase();
-    const hours = parseInt(time.split(' ')[0].split(':')[0]);
-    const minutes = time.split(' ')[0].split(':')[1];
-
-    let hours_ = hours;
-    if (amPm === 'AM' && hours === 12) {
-      hours_ = 0;
-    }
-    if (amPm === 'PM' && hours < 12) {
-      hours_ += 12;
-    }
-
-    return `${hours_}:${minutes}`;
+  public militaryTime(date: Date): string {
+    const date_ = new Date(date);
+    return `${date_.getHours()}:${date_.getMinutes()}`;
   }
 
   /**
