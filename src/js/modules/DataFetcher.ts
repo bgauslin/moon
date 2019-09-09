@@ -37,8 +37,7 @@ class DataFetcher {
   }
 
   /**
-   * Fetches data depending on the API, then processes and normalizes the
-   * results before returning it in standardized format.
+   * Fetches location coordinates, then returns sun and moon data for rendering.
    */
   public async fetch(date: AppDate, location: string): Promise<any> {
     const location_ = this.helpers_.urlify(location)
@@ -84,7 +83,7 @@ class DataFetcher {
   }
 
   /**
-   * Converts sunrise and sunset times to military time.
+   * Converts sunrise and sunset times to 24-hour HH:MM format.
    */
   private sunriseSunset_(): SunriseSunset {
     const sunTimes = SunCalc.getTimes(this.date_, this.lat_, this.lng_);
@@ -94,7 +93,7 @@ class DataFetcher {
   }
 
   /**
-   * Converts moonrise and moonset times to military time.
+   * Converts moonrise and moonset times to 24-hour HH:MM format.
    */
   private moonriseMoonset_(): MoonriseMoonset {
     const moonTimes = SunCalc.getMoonTimes(this.date_, this.lat_, this.lng_);
@@ -131,7 +130,7 @@ class DataFetcher {
 
   // TODO: Update moonPhase_() values to ensure all phases display.
   /**
-   * Gets current moon phase.
+   * Returns current moon phase.
    */
   private moonPhase_(): string {
     const percent = this.moonPhasePercent_();
