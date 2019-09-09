@@ -1,3 +1,5 @@
+import { Helpers } from './Helpers';
+
 interface AppDate {
   year: number,
   month: number,
@@ -12,6 +14,12 @@ enum ApiYears {
 };
 
 class DateTimeUtils {
+  private helpers_: any;
+
+  constructor() {
+    this.helpers_ = new Helpers();
+  }
+
   /** 
    * Parses date from the URL and falls back to today if URL isn't valid.
    */
@@ -121,15 +129,13 @@ class DateTimeUtils {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
-  // TODO: Rename militaryTime() method since it's no longer accurate.
-  // TODO: Add zero padding to minutes.
   /**
    * Extracts the hours and minutes from a Date object and returns them
    * in HH:MM format;
    */
-  public militaryTime(date: Date): string {
+  public hoursMinutes(date: Date): string {
     const date_ = new Date(date);
-    return `${date_.getHours()}:${date_.getMinutes()}`;
+    return `${date_.getHours()}:${this.helpers_.zeroPad(date_.getMinutes())}`;
   }
 
   /**

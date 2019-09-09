@@ -14,25 +14,25 @@ interface AppData {
 }
 
 interface MoonriseMoonset {
-  moonrise: string,
-  moonset: string,
+  moonrise: Date,
+  moonset: Date,
 }
 
 interface SunriseSunset {
-  sunrise: string,
-  sunset: string,
+  sunrise: Date,
+  sunset: Date,
 }
 
 class DataFetcher {
-  private date_: any;
-  private dateTime_: any;
+  private date_: Date;
+  private dateTimeUtils_: any;
   private helpers_: any;
   private lat_: number;
   private lng_: number;
   private location_: string;
 
   constructor() {
-    this.dateTime_ = new DateTimeUtils();
+    this.dateTimeUtils_ = new DateTimeUtils();
     this.helpers_ = new Helpers();
   }
 
@@ -114,8 +114,8 @@ class DataFetcher {
    */
   private sunriseSunset_(): SunriseSunset {
     const sunTimes = SunCalc.getTimes(this.date_, this.lat_, this.lng_);
-    const sunrise = this.dateTime_.militaryTime(sunTimes.sunrise);
-    const sunset = this.dateTime_.militaryTime(sunTimes.sunset);
+    const sunrise = this.dateTimeUtils_.hoursMinutes(sunTimes.sunrise);
+    const sunset = this.dateTimeUtils_.hoursMinutes(sunTimes.sunset);
     return { sunrise, sunset };
   }
 
@@ -124,13 +124,31 @@ class DataFetcher {
    */
   private moonriseMoonset_(): MoonriseMoonset {
     const moonTimes = SunCalc.getMoonTimes(this.date_, this.lat_, this.lng_);
-    const moonrise = this.dateTime_.militaryTime(moonTimes.rise);
-    const moonset = this.dateTime_.militaryTime(moonTimes.set);
+    let moonrise = this.dateTimeUtils_.hoursMinutes(moonTimes.rise);
+    let moonset = this.dateTimeUtils_.hoursMinutes(moonTimes.set);
+
+    // If moonrise or moonset values have bad values, use day before instead.
+    if (moonrise.includes('NaN') || moonset.includes('NaN')) {
+      const { year, month, day } = this.dateTimeUtils_.prevDate();
+      const monthIndex = month - 1;
+      const prevDate = new Date(year, monthIndex, day);
+      const prevMoonTimes = SunCalc.getMoonTimes(prevDate, this.lat_, this.lng_);
+
+      if (moonrise.includes('NaN')) {
+        moonrise = this.dateTimeUtils_.hoursMinutes(prevMoonTimes.rise);
+      }
+
+      if (moonset.includes('NaN')) {
+        moonset = this.dateTimeUtils_.hoursMinutes(prevMoonTimes.set);
+      }
+    }
+
     return { moonrise, moonset };
   }
 
   /**
-   * Returns moon phase illumination as a percentage integer.
+   * Returns moon phase illumination as an integer of a percentage.
+   * e.g. .7123 => 71
    */
   private moonPhaseIllumination_(): number {
     const illumination = SunCalc.getMoonIllumination(this.date_);
@@ -145,18 +163,18 @@ class DataFetcher {
   private moonPhasePercent_(): number {
     const illumination = this.moonPhaseIllumination_();
     
-    switch (this.moonPhase_().toUpperCase()) {
-      case 'NEW MOON':
+    switch (this.moonPhase_()) {
+      case 'New Moon':
         return 0;
-      case 'WAXING CRESCENT': // 1-24
-      case 'FIRST QUARTER':   // 25
-      case 'WAXING GIBBOUS':  // 26-49
+      case 'Waxing Crescent': // 1-24
+      case 'First Quarter':   // 25
+      case 'Waxing Gibbous':  // 26-49
         return Math.floor(illumination / 2);
-      case 'FULL MOON':
+      case 'Full Moon':
         return 50;
-      case 'WANING GIBBOUS':  // 51-74
-      case 'LAST QUARTER':    // 75
-      case 'WANING CRESCENT': // 76-99
+      case 'Waning Gibbous':  // 51-74
+      case 'Last Quarter':    // 75
+      case 'Waning Crescent': // 76-99
         return Math.floor(100 - (illumination / 2));
     }
   }
