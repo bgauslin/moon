@@ -111,6 +111,7 @@ class App {
 
     // Log values to the console for debugging.
     if (document.body.hasAttribute('debug')) {
+      console.clear();
       console.log('hemisphere', hemisphere);  
       console.log('illumination', illumination);  
       console.log('moonrise', moonrise);
