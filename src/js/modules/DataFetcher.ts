@@ -129,17 +129,14 @@ class DataFetcher {
     return Math.floor(illumination.fraction * 100);
   }
 
-  // TODO: Update the moonPhase_() to display all phases.
+  // TODO: Update moonPhase_() values to ensure all phases display.
   /**
    * Gets current moon phase.
    */
   private moonPhase_(): string {
     const percent = this.moonPhasePercent_();
 
-    // console.clear();
-    // console.log('percent', percent);
-
-    if (percent <= 1) { // instead of === 0
+    if (percent === 0) {
       return 'New Moon';
     } else if (percent < 25) {
       return 'Waxing Crescent';
