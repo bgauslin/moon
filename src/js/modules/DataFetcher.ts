@@ -84,32 +84,6 @@ class DataFetcher {
   }
 
   /**
-   * Gets current moon phase.
-   */
-  private moonPhase_(): string {
-    const illumination = SunCalc.getMoonIllumination(this.date_);
-    const phase = illumination.phase;
-
-    if (phase === 0) {
-      return 'New Moon';
-    } else if (phase < .25) {
-      return 'Waxing Crescent';
-    } else if (phase === .25) {
-      return 'First Quarter';
-    } else if (phase < .5) {
-      return 'Waxing Gibbous';
-    } else if (phase === .5) {
-      return 'Full Moon';
-    } else if (phase < .75) {
-      return 'Waning Gibbous';
-    } else if (phase === .75) {
-      return 'Last Quarter';
-    } else if (phase < 1) {
-      return 'Waning Crescent'
-    }
-  }
-
-  /**
    * Converts sunrise and sunset times to military time.
    */
   private sunriseSunset_(): SunriseSunset {
@@ -155,28 +129,42 @@ class DataFetcher {
     return Math.floor(illumination.fraction * 100);
   }
 
+  // TODO: Update the moonPhase_() to display all phases.
+  /**
+   * Gets current moon phase.
+   */
+  private moonPhase_(): string {
+    const percent = this.moonPhasePercent_();
+
+    // console.clear();
+    // console.log('percent', percent);
+
+    if (percent <= 1) { // instead of === 0
+      return 'New Moon';
+    } else if (percent < 25) {
+      return 'Waxing Crescent';
+    } else if (percent <= 27) { // instead of === 25
+      return 'First Quarter';
+    } else if (percent < 50) {
+      return 'Waxing Gibbous';
+    } else if (percent <= 52) { // instead of === 50
+      return 'Full Moon';
+    } else if (percent < 75) {
+      return 'Waning Gibbous';
+    } else if (percent <= 77) { // instead of === 75
+      return 'Last Quarter';
+    } else if (percent < 100) {
+      return 'Waning Crescent'
+    }
+  }
+
   /**
    * Returns moon cycle percentage as an integer. MoonPhoto needs this value
-   * in order to calculate which image to show. Percent is calculated via
-   * illumination (0-100) relative to phase.
+   * in order to calculate which image to show.
    */
   private moonPhasePercent_(): number {
-    const illumination = this.moonPhaseIllumination_();
-    
-    switch (this.moonPhase_()) {
-      case 'New Moon':
-        return 0;
-      case 'Waxing Crescent': // 1-24
-      case 'First Quarter':   // 25
-      case 'Waxing Gibbous':  // 26-49
-        return Math.floor(illumination / 2);
-      case 'Full Moon':
-        return 50;
-      case 'Waning Gibbous':  // 51-74
-      case 'Last Quarter':    // 75
-      case 'Waning Crescent': // 76-99
-        return Math.floor(100 - (illumination / 2));
-    }
+    const illumination = SunCalc.getMoonIllumination(this.date_);
+    return Math.floor(illumination.phase * 100);
   }
 }
 
