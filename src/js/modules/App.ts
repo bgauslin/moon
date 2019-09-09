@@ -26,7 +26,6 @@ class App {
   private date_: AppDate;
   private dateTime_: any;
   private eventHandler_: any;
-  private appEl_: HTMLElement;
   private footerEl_: HTMLElement;
   private headerLinkEl_: HTMLElement;
   private location_: string;
@@ -46,7 +45,6 @@ class App {
      */
     this.location_ = localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
     
-    this.appEl_ = document.querySelector('.app');
     this.footerEl_ = document.querySelector('.footer');
     this.headerLinkEl_ = document.querySelector('.header__link');
     this.locationEl_ = document.querySelector('.location');
@@ -113,6 +111,8 @@ class App {
 
     // Log values to the console for debugging.
     if (document.body.hasAttribute('debug')) {
+      console.log('hemisphere', hemisphere);  
+      console.log('illumination', illumination);  
       console.log('moonrise', moonrise);
       console.log('moonset', moonset);
       console.log('percent', percent);
