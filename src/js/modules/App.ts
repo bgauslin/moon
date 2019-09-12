@@ -1,5 +1,6 @@
 import { Attribute } from './Constants';
 import { DataFetcher } from './DataFetcher';
+import { Helpers } from './Helpers';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
 
@@ -28,6 +29,7 @@ class App {
   private eventHandler_: any;
   private footerEl_: HTMLElement;
   private headerLinkEl_: HTMLElement;
+  private helpers_: any;
   private location_: string;
   private locationEl_: HTMLElement;
   private moonChartEl_: Element
@@ -38,13 +40,6 @@ class App {
   private locationObserver_: MutationObserver;
 
   constructor() {
-    /**
-     * On first run, location may or may not be set in localStorage. If not,
-     * set it to the fallback. On all subsequent updates, location is pulled
-     * from a custom element attribute since location can be user-defined.
-     */
-    this.location_ = localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
-    
     this.footerEl_ = document.querySelector('.footer');
     this.headerLinkEl_ = document.querySelector('.header__link');
     this.locationEl_ = document.querySelector('.location');
@@ -57,6 +52,7 @@ class App {
     this.dataFetcher_ = new DataFetcher();
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
+    this.helpers_ = new Helpers();
 
     this.locationObserver_ = new MutationObserver(() => this.update());
   }
@@ -69,9 +65,31 @@ class App {
   public init(): void {
     this.eventHandler_.hijackLinks();
     this.locationObserver_.observe(this.locationEl_, { attributes: true });
+
+    this.location_ = this.initialLocation_();
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
+
     this.renderFooterText_();
     // this.standaloneStartup_();
+  }
+
+    /**
+     * On first run, location may or may not be set. If not, check if there's a
+     * location in the address bar and de-urlify that. Then use localStorage, 
+     * and if that's not set, use fallback location. On all subsequent updates,
+     * location is pulled via a custom element attribute since location can be
+     * user-defined.
+     */
+  private initialLocation_(): string {
+    const urlSegments = window.location.pathname.split('/');
+    urlSegments.shift();
+    const locationSegment = this.helpers_.titleCase(urlSegments[3].replace(/[+]/g, ' '));
+
+    if (locationSegment) {
+      return locationSegment;
+    } else {
+      return localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
+    }
   }
 
   /**
