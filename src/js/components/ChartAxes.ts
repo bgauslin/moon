@@ -69,7 +69,7 @@ const Ticks: Coordinates[] = [
 
 /**
  * This custom element doesn't do anything besides draw an SVG, but there's
- * enough math involved to make it its own custom element.
+ * enough setup and simple math involved to make it worth it.
  */
 class ChartAxes extends HTMLElement {
   constructor() {

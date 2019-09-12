@@ -1,3 +1,4 @@
+// TODO(photo): Fix TS warning for spin.
 import { Attribute } from '../modules/Constants';
 import Spinner from 'spin';
 

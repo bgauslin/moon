@@ -128,7 +128,7 @@ class DataFetcher {
     return Math.floor(illumination.fraction * 100);
   }
 
-  // TODO: Update moonPhase_() values to ensure all phases display.
+  // TODO(fetcher): Update moonPhase_() values to ensure all phases display.
   /**
    * Returns current moon phase.
    */

@@ -32,7 +32,7 @@ const tools = new Tools();
 document.addEventListener(EventType.READY, () => {
   app.init();
   tools.init();
-}, { once: true } );
+}, { once: true });
 
 /**
  * Update UI via custom event dispatched by selected elements.

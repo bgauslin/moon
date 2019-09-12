@@ -1,8 +1,8 @@
 import { Attribute, Chart } from '../modules/Constants';
 
 interface Arc {
-  sweep: number,
   radius: number,
+  sweep: number,
 }
 
 interface LabelProps {
@@ -150,10 +150,7 @@ class DonutChart extends HTMLElement {
       radius += Chart.MARGIN - Chart.LABEL_GAP;
     }
 
-    return {
-      sweep: sweep,
-      radius: radius,
-    }
+    return { radius, sweep };
   }
 
   /**
