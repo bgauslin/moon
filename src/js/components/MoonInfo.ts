@@ -1,14 +1,11 @@
 import { Attribute } from '../modules/Constants';
-import { Helpers } from '../modules/Helpers';
 
 class MoonInfo extends HTMLElement {
-  private helpers_: any;
   private percent_: string;
   private phase_: string;
 
   constructor() {
     super();
-    this.helpers_ = new Helpers();
   }
 
   static get observedAttributes(): string[] {
@@ -34,7 +31,7 @@ class MoonInfo extends HTMLElement {
     const visibility = (this.percent_ === '0') ? 'invisible' : '';
     const html = `\
       <div class="${this.className}__phase">\
-        ${this.helpers_.titleCase(this.phase_)}\
+        ${this.phase_}\
       </div>\
       <div class="${this.className}__percent" ${visibility}>\
         ${this.percent_}%\

@@ -14,15 +14,6 @@ class Helpers {
   }
 
   /**
-   * Returns multiple words with first letter of each word capitalized.
-   */
-  public titleCase(words: string): string {
-    const wordsArray = words.split(' ');
-    const capitalized = wordsArray.map(word => word.charAt(0).toUpperCase() + word.slice(1));
-    return capitalized.join(' ');
-  }
-
-  /**
    * Returns a URL-friendly lowercase string with each space replaced with a '+'.
    */
   public urlify(value: string): string {
