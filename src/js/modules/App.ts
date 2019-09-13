@@ -1,6 +1,5 @@
 import { Attribute } from './Constants';
 import { DataFetcher } from './DataFetcher';
-import { Helpers } from './Helpers';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
 
@@ -29,7 +28,6 @@ class App {
   private eventHandler_: any;
   private footerEl_: HTMLElement;
   private headerLinkEl_: HTMLElement;
-  private helpers_: any;
   private location_: string;
   private locationEl_: HTMLElement;
   private moonChartEl_: Element
@@ -52,7 +50,6 @@ class App {
     this.dataFetcher_ = new DataFetcher();
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
-    this.helpers_ = new Helpers();
 
     this.locationObserver_ = new MutationObserver(() => this.update());
   }
@@ -75,18 +72,17 @@ class App {
 
     /**
      * On first run, location may or may not be set. If not, check if there's a
-     * location in the address bar and de-urlify that. Then use localStorage, 
-     * and if that's not set, use fallback location. On all subsequent updates,
-     * location is pulled via a custom element attribute since location can be
+     * location in the address bar and use that. Then check localStorage, and
+     * if that doesn't exist, use fallback location. On all subsequent updates,
+     * location is set via custom element attribute since location can also be
      * user-defined.
      */
   private initialLocation_(): string {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
-    const locationSegment = this.helpers_.titleCase(urlSegments[3].replace(/[+]/g, ' '));
 
-    if (locationSegment) {
-      return locationSegment;
+    if (urlSegments.length === 4) {
+      return urlSegments[3].replace(/[+]/g, ' ');
     } else {
       return localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
     }
