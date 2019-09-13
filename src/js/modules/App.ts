@@ -70,17 +70,18 @@ class App {
     this.standaloneStartup_();
   }
 
-    /**
-     * On first run, location may or may not be set. If not, check if there's a
-     * location in the address bar and use that. Then check localStorage, and
-     * if that doesn't exist, use fallback location. On all subsequent updates,
-     * location is set via custom element attribute since location can also be
-     * user-defined.
-     */
+  /**
+   * On first run, location may or may not be set. If not, check if there's a
+   * location in the address bar and use that. Then check localStorage, and
+   * if that doesn't exist, use fallback location. On all subsequent updates,
+   * location is set via custom element attribute since location can also be
+   * user-defined.
+   */
   private initialLocation_(): string {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
 
+    // 4 URL segments are year, month, day, location
     if (urlSegments.length === 4) {
       return urlSegments[3].replace(/[+]/g, ' ');
     } else {

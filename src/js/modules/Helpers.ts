@@ -21,7 +21,7 @@ class Helpers {
   }
 
   /**
-   * Returns a value with zero-padding if value is less than 10.
+   * Returns a value with zero padding if value is less than 10.
    */
   public zeroPad(n: number): string|number {
     return (n < 10) ? `0${n}` : n;

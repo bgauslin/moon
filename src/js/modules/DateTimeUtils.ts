@@ -104,17 +104,15 @@ class DateTimeUtils {
    */
   public prettyDate(date: AppDate, locale: string, monthFormat: string): string {
     let { year, month, day } = date;
-    month -= 1; // Adjust month for UTC format
+    month -= 1; // Adjust month for UTC format.
     const date_ = new Date(Date.UTC(year, month, day));
 
-    const formattedDate = date_.toLocaleDateString(locale, {
+    return date_.toLocaleDateString(locale, {
       day: 'numeric',
       month: monthFormat,
       year: 'numeric',
       timeZone: 'UTC',
     });
-
-    return formattedDate;
   }
 
   /**
@@ -126,7 +124,7 @@ class DateTimeUtils {
 
   /**
    * Extracts the hours and minutes from a Date object and returns them
-   * in HH:MM format;
+   * in HH:MM format.
    */
   public hoursMinutes(date: Date): string {
     const date_ = new Date(date);
