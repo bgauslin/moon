@@ -8,11 +8,6 @@ interface AppDate {
 
 const DAYS_IN_MONTHS: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-enum ApiYears {
-  MAX = 2100,
-  MIN = 1700,
-};
-
 class DateTimeUtils {
   private helpers_: any;
 
@@ -32,7 +27,7 @@ class DateTimeUtils {
     const day = parseInt(urlSegments[2]);
 
     // If date part of URL isn't valid, replace URL with '/' and return today.
-    if (!this.validYear_(year) || !this.validMonth_(month) || !this.validDay_(year, month, day)) {
+    if (!this.validMonth_(month) || !this.validDay_(year, month, day)) {
       history.replaceState(null, null, '/');
       return this.todaysDate();
     }
@@ -157,13 +152,6 @@ class DateTimeUtils {
    */
   private validMonth_(month: number): boolean {
     return (month > 0 && month < 13);
-  }
-
-  /**
-   * Whether the year falls between the limits of the API.
-   */
-  private validYear_(year: number): boolean {
-    return (year >= ApiYears.MIN && year <= ApiYears.MAX);
   }
 }
 
