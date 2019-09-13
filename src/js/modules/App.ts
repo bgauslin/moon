@@ -13,13 +13,15 @@ interface TitleInfo {
 
 const DEFAULT_LOCATION: string = 'New York, NY';
 
-const TITLE_DIVIDER: string = '·';
-
-const HIGHLIGHTED: string[] = [
+const SELECTORS_HIGHLIGHTED: string[] = [
   '.header__title',
   '.info__phase',
   '.info__percent',
 ];
+
+const TITLE_DIVIDER: string = '·';
+
+const TODAY_CLASSNAME: string = 'today';
 
 class App {
   private dataFetcher_: any;
@@ -193,14 +195,15 @@ class App {
       month: now.getMonth() + 1,
       day: now.getDate(),
     };
-    const isToday = (date.year === dateNow.year && date.month === dateNow.month && date.day === dateNow.day);
+    const isToday = (date.year === dateNow.year &&
+        date.month === dateNow.month && date.day === dateNow.day);
 
-    HIGHLIGHTED.forEach((selector) => {
+    SELECTORS_HIGHLIGHTED.forEach((selector) => {
       const el = document.querySelector(selector);
       if (isToday) {
-        el.classList.add('today');
+        el.classList.add(TODAY_CLASSNAME);
       } else {
-        el.classList.remove('today');
+        el.classList.remove(TODAY_CLASSNAME);
       }
     }); 
   }
