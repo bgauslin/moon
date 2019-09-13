@@ -97,24 +97,37 @@ class DataFetcher {
    */
   private moonriseMoonset_(): MoonriseMoonset {
     const moonTimes = SunCalc.getMoonTimes(this.date_, this.lat_, this.lng_);
-    let moonrise = this.dateTimeUtils_.hoursMinutes(moonTimes.rise);
-    let moonset = this.dateTimeUtils_.hoursMinutes(moonTimes.set);
 
-    // If moonrise or moonset values have bad values, use day before instead.
-    if (moonrise.includes('NaN') || moonset.includes('NaN')) {
-      const { year, month, day } = this.dateTimeUtils_.prevDate();
-      const monthIndex = month - 1;
-      const prevDate = new Date(year, monthIndex, day);
+    let moonrise = moonTimes.rise;
+    let moonset = moonTimes.set;
+
+    // If moonrise or moonset values are undefined, use the day before instead.
+    // If the day before is still undefined, use the day after. Ultimately, we
+    // just want to avoid console errors and broken chart rendering.
+    // For our purposes, "close enough" is preferred over "totally broken."
+    // For example: /2001/10/29/Reykjavik,+Iceland
+    if (moonrise === undefined || moonset === undefined) {
+      const { year: prevYear, month: prevMonth, day: prevDay } = this.dateTimeUtils_.prevDate();
+      const prevMonthIndex = prevMonth - 1;
+      const prevDate = new Date(prevYear, prevMonthIndex, prevDay);
       const prevMoonTimes = SunCalc.getMoonTimes(prevDate, this.lat_, this.lng_);
 
-      if (moonrise.includes('NaN')) {
-        moonrise = this.dateTimeUtils_.hoursMinutes(prevMoonTimes.rise);
+      const { year: nextYear, month: nextMonth, day: nextDay } = this.dateTimeUtils_.nextDate();
+      const nextMonthIndex = nextMonth - 1;
+      const nextDate = new Date(nextYear, nextMonthIndex, nextDay);
+      const nextMoonTimes = SunCalc.getMoonTimes(nextDate, this.lat_, this.lng_);
+
+      if (moonrise === undefined) {
+        moonrise = prevMoonTimes.rise !== undefined ? prevMoonTimes.rise : nextMoonTimes.rise;
       }
 
-      if (moonset.includes('NaN')) {
-        moonset = this.dateTimeUtils_.hoursMinutes(prevMoonTimes.set);
+      if (moonset === undefined) {
+        moonset = prevMoonTimes.set !== undefined ? prevMoonTimes.set : nextMoonTimes.set;
       }
     }
+
+    moonrise = this.dateTimeUtils_.hoursMinutes(moonrise);
+    moonset = this.dateTimeUtils_.hoursMinutes(moonset);
 
     return { moonrise, moonset };
   }
