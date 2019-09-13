@@ -27,7 +27,7 @@ class DateTimeUtils {
     const day = parseInt(urlSegments[2]);
 
     // If date part of URL isn't valid, replace URL with '/' and return today.
-    if (!this.validMonth_(month) || !this.validDay_(year, month, day)) {
+    if (!this.isValidMonth_(month) || !this.isValidDay_(year, month, day)) {
       history.replaceState(null, null, '/');
       return this.todaysDate();
     }
@@ -136,7 +136,7 @@ class DateTimeUtils {
   /**
    * Whether the day is valid.
    */
-  private validDay_(year: number, month: number, day: number): boolean {
+  private isValidDay_(year: number, month: number, day: number): boolean {
     if (month < 1 || month > 12) {
       return;
     } else if (this.isLeapYear_(year) && month === 2 && day === 29) {
@@ -150,7 +150,7 @@ class DateTimeUtils {
   /**
    * Whether the month is valid.
    */
-  private validMonth_(month: number): boolean {
+  private isValidMonth_(month: number): boolean {
     return (month > 0 && month < 13);
   }
 }
