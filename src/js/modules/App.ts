@@ -67,7 +67,7 @@ class App {
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
 
     this.renderFooterText_();
-    // this.standaloneStartup_();
+    this.standaloneStartup_();
   }
 
     /**
