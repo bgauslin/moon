@@ -1,4 +1,5 @@
 import SunCalc from 'suncalc';
+import tzlookup from 'tz-lookup';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { Helpers } from './Helpers';
 
@@ -30,6 +31,7 @@ class DataFetcher {
   private lat_: number;
   private lng_: number;
   private location_: string;
+  private timezone_: string;
 
   constructor() {
     this.dateTimeUtils_ = new DateTimeUtils();
@@ -51,6 +53,7 @@ class DataFetcher {
       this.lat_ = coords.Latitude;
       this.lng_ = coords.Longitude;
       this.location_ = location_;
+      this.timezone_ = tzlookup(this.lat_, this.lng_);
     }
 
     // Create a Date object from the date parameter for SunCalc.
@@ -87,8 +90,8 @@ class DataFetcher {
    */
   private sunriseSunset_(): SunriseSunset {
     const sunTimes = SunCalc.getTimes(this.date_, this.lat_, this.lng_);
-    const sunrise = this.dateTimeUtils_.hoursMinutes(sunTimes.sunrise);
-    const sunset = this.dateTimeUtils_.hoursMinutes(sunTimes.sunset);
+    const sunrise = this.dateTimeUtils_.militaryTime(sunTimes.sunrise, this.timezone_);
+    const sunset = this.dateTimeUtils_.militaryTime(sunTimes.sunset, this.timezone_);
     return { sunrise, sunset };
   }
 
@@ -126,8 +129,8 @@ class DataFetcher {
       }
     }
 
-    moonrise = this.dateTimeUtils_.hoursMinutes(moonrise);
-    moonset = this.dateTimeUtils_.hoursMinutes(moonset);
+    moonrise = this.dateTimeUtils_.militaryTime(moonrise, this.timezone_);
+    moonset = this.dateTimeUtils_.militaryTime(moonset, this.timezone_);
 
     return { moonrise, moonset };
   }

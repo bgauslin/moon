@@ -26,7 +26,8 @@
     "@types/suncalc": "^1.8.0",
     "fastclick": "^1.0.6",
     "spin": "^0.0.1",
-    "suncalc": "^1.8.0"
+    "suncalc": "^1.8.0",
+    "tz-lookup": "^6.1.24"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",

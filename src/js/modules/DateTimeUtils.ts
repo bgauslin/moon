@@ -1,5 +1,3 @@
-import { Helpers } from './Helpers';
-
 interface AppDate {
   year: number,
   month: number,
@@ -9,12 +7,6 @@ interface AppDate {
 const DAYS_IN_MONTHS: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 class DateTimeUtils {
-  private helpers_: any;
-
-  constructor() {
-    this.helpers_ = new Helpers();
-  }
-
   /** 
    * Parses date from the URL and falls back to today if URL isn't valid.
    */
@@ -123,12 +115,27 @@ class DateTimeUtils {
   }
 
   /**
-   * Extracts the hours and minutes from a Date object and returns them
-   * in HH:MM format.
+   * Converts a Date object to UTC time format relative to timezone, then
+   * converts the resulting time to 24-hour HH:MM format.
    */
-  public hoursMinutes(date: Date): string {
-    const date_ = new Date(date);
-    return `${date_.getHours()}:${this.helpers_.zeroPad(date_.getMinutes())}`;
+  public militaryTime(date: Date, timezone: string): string {
+    const locale = document.documentElement.lang;
+    const date_ = new Date(date).toLocaleString(locale, { timeZone: timezone });
+
+    const time = date_.split(' ')[1];
+    const amPm = date_.split(' ')[2];
+    let hours = parseInt(time.split(':')[0]);
+    const minutes = time.split(':')[1];
+    
+    if (hours === 12 && amPm === 'AM') {
+      hours = 0;
+    }
+
+    if (amPm === 'PM') {
+      hours += 12;
+    }
+
+    return `${hours}:${minutes}`;
   }
 
   /**
