@@ -1,5 +1,5 @@
 import SunCalc from 'suncalc';
-import tzlookup from 'tz-lookup';
+import tzLookup from 'tz-lookup';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { Helpers } from './Helpers';
 
@@ -53,7 +53,7 @@ class DataFetcher {
       this.lat_ = coords.Latitude;
       this.lng_ = coords.Longitude;
       this.location_ = location_;
-      this.timezone_ = tzlookup(this.lat_, this.lng_);
+      this.timezone_ = tzLookup(this.lat_, this.lng_);
     }
 
     // Create a Date object from the date parameter for SunCalc.
