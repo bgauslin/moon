@@ -13,12 +13,14 @@ import '../stylus/moon.styl'; // Stylesheet import for Webpack.
 /**
  * Define all custom elements.
  */ 
-customElements.define('chart-axes', ChartAxes);
-customElements.define('donut-chart', DonutChart);
-customElements.define('moon-info', MoonInfo);
-customElements.define('moon-photo', MoonPhoto);
-customElements.define('prev-next', PrevNext);
-customElements.define('user-location', UserLocation);
+const map = new Map();
+map.set(ChartAxes, 'chart-axes');
+map.set(DonutChart, 'donut-chart');
+map.set(MoonInfo, 'moon-info');
+map.set(MoonPhoto, 'moon-photo');
+map.set(PrevNext, 'prev-next');
+map.set(UserLocation, 'user-location');
+map.forEach((key, value) => customElements.define(key, value));
 
 /**
  * Create class instances.
