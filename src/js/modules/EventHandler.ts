@@ -8,7 +8,7 @@ enum EventType {
   RESIZE = 'resize',
   SUBMIT = 'submit',
   UPDATE = 'update',
-};
+}
 
 class EventHandler {
   /**

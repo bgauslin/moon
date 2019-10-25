@@ -17,7 +17,7 @@ const SpinnerOptions: {} = {
 enum Image {
   PATH_1X = '/img/moon-phases-26-240.min.jpg',
   PATH_2X = '/img/moon-phases-26-480.min.jpg',
-};
+}
 
 class MoonPhoto extends HTMLElement {
   private imageLoaded_: boolean;

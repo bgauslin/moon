@@ -5,7 +5,7 @@ import { Helpers } from '../modules/Helpers';
 enum SvgPath {
   LEFT = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822',
   RIGHT = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.06822',
-};
+}
 
 class PrevNext extends HTMLElement {
   private dateTime_: any;  
