@@ -11,8 +11,8 @@ class Utils {
   public init(): void {
     this.noTouch_();
     this.googleAnalytics_();
-    this.viewportHeight();
-    window.addEventListener(EventType.RESIZE, () => this.viewportHeight(), { passive: true });
+    this.viewportHeight_();
+    window.addEventListener(EventType.RESIZE, () => this.viewportHeight_(), { passive: true });
   }
 
   /**
@@ -63,7 +63,7 @@ class Utils {
    * Sets custom property for viewport height that updates 'vh' calculation due
    * to iOS Safari behavior where chrome appears and disappears when scrolling.
    */
-  public viewportHeight(): void {
+  private viewportHeight_(): void {
     const viewportUnit = window.innerHeight / 100;
     document.documentElement.style.setProperty('--viewport-unit', `${viewportUnit}px`);
   }
