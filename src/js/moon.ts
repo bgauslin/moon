@@ -39,16 +39,12 @@ document.addEventListener(EventType.READY, () => {
 /**
  * Update UI via custom event dispatched by selected elements.
  */
-document.addEventListener(EventType.UPDATE, () => {
-  app.update();
-});
+document.addEventListener(EventType.UPDATE, () => app.update());
 
 /**
  * Update UI when URL changes via browser controls.
  */
-window.addEventListener(EventType.POPSTATE, () => {
-  app.update();
-}, false);
+window.addEventListener(EventType.POPSTATE, () => app.update(), false);
 
 /**
  * Update 'vh' value when window is resized.
