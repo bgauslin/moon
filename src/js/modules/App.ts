@@ -2,6 +2,7 @@ import { Attribute } from './Constants';
 import { DataFetcher } from './DataFetcher';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
+import { Utils } from './Utils';
 
 interface TitleInfo {
   date: AppDate,
@@ -38,6 +39,7 @@ class App {
   private navEls_: NodeList;
   private sunChartEl_: Element
   private locationObserver_: MutationObserver;
+  private utils_: any;
 
   constructor() {
     this.footerEl_ = document.querySelector('.footer');
@@ -52,6 +54,7 @@ class App {
     this.dataFetcher_ = new DataFetcher();
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
+    this.utils_ = new Utils();
 
     this.locationObserver_ = new MutationObserver(() => this.update());
   }
@@ -62,6 +65,7 @@ class App {
    * populate the UI on initial page load.
    */
   public init(): void {
+    this.utils_.init();
     this.eventHandler_.hijackLinks();
     this.locationObserver_.observe(this.locationEl_, { attributes: true });
 

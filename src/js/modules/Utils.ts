@@ -1,15 +1,18 @@
 import fastclick from 'fastclick';
+import { AppDate } from './DateTimeUtils';
+import { EventType } from './EventHandler';
 
 const NO_TOUCH_ATTR: string = 'no-touch';
 
-class Tools {
+class Utils {
   /**
-   * Initializes all utility methods.
+   * Initializes site-wide utilities.
    */
   public init(): void {
     this.noTouch_();
-    this.viewportHeight();
     this.googleAnalytics_();
+    this.viewportHeight();
+    window.addEventListener(EventType.RESIZE, () => this.viewportHeight(), { passive: true });
   }
 
   /**
@@ -26,6 +29,18 @@ class Tools {
   }
 
   /**
+   * Converts a Date object and a location string to a full URL.
+   */
+  public makeUrl(date: AppDate, location: string): URL {
+    const { year, month, day } = date;
+    const month_ = this.zeroPad(month);
+    const day_ = this.zeroPad(day);
+    const location_ = this.urlify(location);
+    const url = new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
+    return url;
+  }
+
+  /**
    * Adds 'no-touch' attribute if not a touch-enabled device; attaches
    * FastClick otherwise.
    */
@@ -38,6 +53,13 @@ class Tools {
   }
 
   /**
+   * Returns a URL-friendly string with each space replaced with a '+'.
+   */
+  public urlify(value: string): string {
+    return value.replace(/[\s]/g, '+')
+  }
+
+  /**
    * Sets custom property for viewport height that updates 'vh' calculation due
    * to iOS Safari behavior where chrome appears and disappears when scrolling.
    */
@@ -45,6 +67,13 @@ class Tools {
     const viewportUnit = window.innerHeight / 100;
     document.documentElement.style.setProperty('--viewport-unit', `${viewportUnit}px`);
   }
+
+  /**
+   * Returns a value with zero padding if value is less than 10.
+   */
+  public zeroPad(n: number): string|number {
+    return (n < 10) ? `0${n}` : n;
+  }
 }
 
-export { Tools };
+export { Utils };

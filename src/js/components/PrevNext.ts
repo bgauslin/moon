@@ -1,6 +1,6 @@
 import { Attribute } from '../modules/Constants';
 import { DateTimeUtils } from '../modules/DateTimeUtils';
-import { Helpers } from '../modules/Helpers';
+import { Utils } from '../modules/Utils';
 
 enum SvgPath {
   LEFT = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822',
@@ -10,15 +10,15 @@ enum SvgPath {
 class PrevNext extends HTMLElement {
   private dateTime_: any;  
   private direction_: string;
-  private helpers_: any;
   private location_: string;
   private linkEl_: HTMLElement;
+  private utils_: any;
 
   constructor() {
     super();
     this.dateTime_ = new DateTimeUtils();
     this.direction_ = this.getAttribute(Attribute.DIRECTION);
-    this.helpers_ = new Helpers();
+    this.utils_ = new Utils();
   }
 
   static get observedAttributes(): string[] {
@@ -62,7 +62,7 @@ class PrevNext extends HTMLElement {
     const date = ((this.direction_ === 'prev')
       ? this.dateTime_.prevDate()
       : this.dateTime_.nextDate());
-    const url = this.helpers_.makeUrl(date, location);
+    const url = this.utils_.makeUrl(date, location);
     const title = `${this.dateTime_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
     this.linkEl_.setAttribute('href', url);
