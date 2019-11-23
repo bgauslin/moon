@@ -4,6 +4,6 @@ const merge = require('webpack-merge');
 module.exports = merge(common, {
   mode: 'production',
   output: {
-    filename: 'moon.[contenthash].js',
+    filename: '[name].[contenthash].js',
   },
 });
