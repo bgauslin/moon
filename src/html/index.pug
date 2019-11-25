@@ -1,13 +1,16 @@
+- const title = "Moonrise, Moonset, Moon Phase"
+- const description = "Location-based moon phase, moonrise, moonset, sunrise, and sunset."
+
 doctype html
 html(lang="en-GB")
   head
-    title Moonrise, Moonset, Moon Phase
+    title= title
     meta(charset="utf-8")
-    meta(name="description" content="Location-based moon phase, moonrise, moonset, sunrise, and sunset.")    
+    meta(name="description" content=description)    
     meta(name="viewport" content="width=device-width,initial-scale=1")
     meta(name="apple-mobile-web-app-capable" content="yes")
     meta(name="apple-mobile-web-app-title" content="Moon")
-    link(href="https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2" rel="preload" as="font" type="font/woff2" crossorigin="crossorigin")
+    link(rel="preload" href="https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2" as="font" type="font/woff2" crossorigin="crossorigin")
   body
     div.app
       div.progress-bar
