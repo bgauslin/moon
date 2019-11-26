@@ -4,6 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -23,6 +24,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/html/index.pug',
+    }),
+    new WorkboxPlugin.InjectManifest({
+      swSrc: 'src/js/sw.js',
+      swDest: 'sw.js',
+      exclude: [/\.htaccess$/, /robots\.txt$/],
     }),
   ],
   node: {

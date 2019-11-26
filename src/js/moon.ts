@@ -28,3 +28,10 @@ const app = new App('2018');
 document.addEventListener(EventType.READY, () => app.init(), { once: true });
 document.addEventListener(EventType.UPDATE, () => app.update());
 window.addEventListener(EventType.POPSTATE, () => app.update(), false);
+
+// Register the Service Worker.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}

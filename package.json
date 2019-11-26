@@ -5,7 +5,8 @@
   "license": "UNLICENSED",
   "repository": "https://github.com/bgauslin/moon",
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "test": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "http-server dist",
     "build": "webpack --config webpack.prod.js"
   },
   "postcss": {
@@ -43,6 +44,7 @@
     "dotenv-webpack": "^1.7.0",
     "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "http-server": "^0.11.1",
     "mini-css-extract-plugin": "^0.8.0",
     "postcss-loader": "^3.0.0",
     "pug-html-loader": "^1.1.5",
@@ -54,6 +56,7 @@
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2",
-    "webpack-merge": "^4.2.1"
+    "webpack-merge": "^4.2.1",
+    "workbox-webpack-plugin": "^4.3.1"
   }
 }
