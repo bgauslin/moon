@@ -8,7 +8,7 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: './src/js/moon.ts',
+    moon: './src/js/moon.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -19,6 +19,7 @@ module.exports = {
     new CopyPlugin([
       { from: 'src/root' },
       { from: 'src/img', to: 'img' },
+      { from: 'src/pwa', to: 'pwa' },
     ]),
     new Dotenv(),
     new HtmlWebpackPlugin({
@@ -28,7 +29,7 @@ module.exports = {
     new WorkboxPlugin.InjectManifest({
       swSrc: 'src/js/sw.js',
       swDest: 'sw.js',
-      exclude: [/\.htaccess$/, /robots\.txt$/],
+      exclude: [/\.htaccess$/, /robots\.txt$/, /\.DS_Store/],
     }),
   ],
   node: {
