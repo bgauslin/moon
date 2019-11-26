@@ -67,6 +67,7 @@ class PrevNext extends HTMLElement {
 
     this.linkEl_.setAttribute('href', url);
     this.linkEl_.setAttribute('title', title);
+    this.linkEl_.setAttribute('aria-label', title);
   }
 }
 
