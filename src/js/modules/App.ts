@@ -2,6 +2,7 @@ import { Attribute } from './Constants';
 import { DataFetcher } from './DataFetcher';
 import { AppDate, DateTimeUtils } from './DateTimeUtils';
 import { EventHandler } from './EventHandler';
+import { Templates } from './Templates';
 import { Utils } from './Utils';
 
 interface TitleInfo {
@@ -33,31 +34,26 @@ class App {
   private headerLinkEl_: HTMLElement;
   private location_: string;
   private locationEl_: HTMLElement;
+  private locationObserver_: MutationObserver;
   private moonChartEl_: Element
   private moonInfoEl_: HTMLElement;
   private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
   private startYear_: string;
   private sunChartEl_: Element
-  private locationObserver_: MutationObserver;
   private utils_: any;
+  private templates_: any;
 
   constructor(year: string) {
     this.startYear_ = year;
 
-    this.copyrightEl_ = document.querySelector('.copyright__years');
-    this.headerLinkEl_ = document.querySelector('.header__link');
-    this.locationEl_ = document.querySelector('.location');
-    this.moonChartEl_ = document.querySelector('[name=moon]');
-    this.moonInfoEl_ = document.querySelector('.info');
-    this.moonPhotoEl_ = document.querySelector('.photo');
-    this.navEls_ = document.querySelectorAll('[direction]');
-    this.sunChartEl_ = document.querySelector('[name=sun]');
+    this.templates_ = new Templates('.content');
+    this.utils_ = new Utils();
 
     this.dataFetcher_ = new DataFetcher();
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
-    this.utils_ = new Utils();
+    
 
     this.locationObserver_ = new MutationObserver(() => this.update());
   }
@@ -68,6 +64,8 @@ class App {
    * populate the UI on initial page load.
    */
   public init(): void {
+    this.updateDom_();
+
     this.utils_.init();
     this.eventHandler_.hijackLinks();
     this.locationObserver_.observe(this.locationEl_, { attributes: true });
@@ -77,6 +75,22 @@ class App {
 
     this.updateCopyright_();
     this.standaloneStartup_();
+  }
+
+  /**
+   * Renders app HTML, then creates references to its elements.
+   */
+  private updateDom_(): void {
+    this.templates_.init();
+
+    this.copyrightEl_ = document.querySelector('.copyright__years');
+    this.headerLinkEl_ = document.querySelector('.header__link');
+    this.locationEl_ = document.querySelector('.location');
+    this.moonChartEl_ = document.querySelector('[name=moon]');
+    this.moonInfoEl_ = document.querySelector('.info');
+    this.moonPhotoEl_ = document.querySelector('.photo');
+    this.navEls_ = document.querySelectorAll('[direction]');
+    this.sunChartEl_ = document.querySelector('[name=sun]');
   }
 
   /**
