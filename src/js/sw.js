@@ -1,12 +1,16 @@
 workbox.precaching.precacheAndRoute(self.__precacheManifest);
 
+workbox.routing.registerNavigationRoute(
+  workbox.precaching.getCacheKeyForURL('/index.html')
+);
+
 workbox.routing.registerRoute(
   /https:\/\/assets\.gauslin\.com\/fonts/,
   new workbox.strategies.NetworkFirst({
-    cacheName: 'webfonts',
+    cacheName: 'fonts',
     plugins: [
       new workbox.expiration.Plugin({
-        maxAgeSeconds: 10 * 60, // 10 minutes
+        maxAgeSeconds: 60 * 60, // 1 hour
       })
     ]
   })
