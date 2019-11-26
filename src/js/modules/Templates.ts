@@ -5,19 +5,32 @@ enum ChartColor {
 
 class Templates {
   private contentEl_: HTMLElement;
+  private headerEl_: HTMLElement;
 
-  constructor(selector: string) {
-    this.contentEl_ = document.querySelector(selector);
+  constructor(content: string, header: string) {
+    this.contentEl_ = document.querySelector(content);
+    this.headerEl_ = document.querySelector(header);
   }
 
   public init(): void {
+    this.renderUserLocation_();
     this.renderCharts_();
     this.renderInfo_();
     this.renderControls_();
+    this.renderProgressBar_();
   }
 
   /**
-   * Renders charts, axes, and photo elements.
+   * Renders user-location element into the header.
+   */
+  private renderUserLocation_(): void {
+    const userLocation = document.createElement('user-location');
+    userLocation.classList.add('location');
+    this.headerEl_.appendChild(userLocation);
+  }
+
+  /**
+   * Renders charts, axes, and photo elements into the content element.
    */
   private renderCharts_(): void {
     const html = `\
@@ -49,6 +62,15 @@ class Templates {
     nav.forEach((direction) => {
       this.contentEl_.innerHTML += `<prev-next class="nav" direction="${direction}"></prev-next>`;
     });
+  }
+
+  /**
+   * Renders progress bar as first child of the body element.
+   */
+  private renderProgressBar_(): void {
+    const div = document.createElement('div');
+    div.classList.add('progress-bar');
+    document.body.insertBefore(div, document.body.childNodes[0])
   }
 }
 

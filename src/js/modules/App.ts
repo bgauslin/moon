@@ -47,7 +47,7 @@ class App {
   constructor(year: string) {
     this.startYear_ = year;
 
-    this.templates_ = new Templates('.content');
+    this.templates_ = new Templates('.content', '.header');
     this.utils_ = new Utils();
 
     this.dataFetcher_ = new DataFetcher();
