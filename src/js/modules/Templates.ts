@@ -63,8 +63,7 @@ class Templates {
    * Renders info element.
    */
   private renderInfo_(): void {
-    const html = '<moon-info class="info"></moon-info>';
-    this.contentEl_.innerHTML += html.replace(/\s\s/g, '');
+    this.contentEl_.innerHTML += '<moon-info class="info"></moon-info>';
   }
 
   /**
