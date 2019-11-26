@@ -54,7 +54,6 @@ class App {
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
     
-
     this.locationObserver_ = new MutationObserver(() => this.update());
   }
 

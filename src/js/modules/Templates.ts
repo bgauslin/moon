@@ -13,7 +13,9 @@ class Templates {
   }
 
   public init(): void {
-    this.contentEl_.innerHTML = ''; // Clear out the content element first.
+    // Clear out the content element first.
+    this.contentEl_.innerHTML = '';
+    this.contentEl_.classList.remove('content--no-js');
 
     this.renderHeaderLink_();;
     this.renderUserLocation_();
