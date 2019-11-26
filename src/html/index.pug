@@ -12,27 +12,26 @@ html(lang="en-GB")
     meta(name="apple-mobile-web-app-title" content="Moon")
     link(rel="preload" href="https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2" as="font" type="font/woff2" crossorigin="crossorigin")
   body
-    div.app
-      div.progress-bar
-      header.header
-        h1.header__title
-          a.header__link(href="/" title="Today")
-        user-location.location
-      div.charts
-        div.charts__frame
-          chart-axes.chart
-          donut-chart.chart(name="sun" color="#f8c537")
-          donut-chart.chart(name="moon" color="#fff")
-          moon-photo.photo
-      moon-info.info
-      prev-next.nav(direction="prev")
-      prev-next.nav(direction="next")
-      footer.footer
-        p.copyright
-          span.copyright__years
-          a.copyright__owner(
-            href="https://gauslin.com",
-            title="Ben Gauslin’s Website",
-            target="_blank",
-            rel="noopener",
-          )
+    div.progress-bar
+    header.header
+      h1.header__title
+        a.header__link(href="/" title="Today")
+      user-location.location
+    div.charts
+      div.charts__frame
+        chart-axes.chart
+        donut-chart.chart(name="sun" color="#f8c537")
+        donut-chart.chart(name="moon" color="#fff")
+        moon-photo.photo
+    moon-info.info
+    prev-next.nav(direction="prev")
+    prev-next.nav(direction="next")
+    footer.footer
+      p.copyright
+        span.copyright__years
+        a.copyright__owner(
+          href="https://gauslin.com",
+          title="Ben Gauslin’s Website",
+          target="_blank",
+          rel="noopener",
+        )
