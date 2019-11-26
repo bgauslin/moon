@@ -23,7 +23,7 @@ map.forEach((key, value) => customElements.define(key, value));
 
 // Create app instance and initialize it; update app when custom event is
 // dispatched or when URL changes via browser controls.
-const app = new App();
+const app = new App('2018');
 
 document.addEventListener(EventType.READY, () => app.init(), { once: true });
 document.addEventListener(EventType.UPDATE, () => app.update());

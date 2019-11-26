@@ -1,5 +1,5 @@
 - const title = "Moonrise, Moonset, Moon Phase"
-- const description = "Location-based moon phase, moonrise, moonset, sunrise, and sunset."
+- const description = "Geolocation-based moon phase, moonrise, and moonset"
 
 doctype html
 html(lang="en-GB")
@@ -15,7 +15,7 @@ html(lang="en-GB")
     div.progress-bar
     header.header
       h1.header__title
-        a.header__link(href="/" title="Today")
+        a.header__link(href="/" title="Today")= title
       user-location.location
     main.content
       div.charts
@@ -29,10 +29,10 @@ html(lang="en-GB")
       prev-next.nav(direction="next")
     footer.footer
       p.copyright
-        span.copyright__years
+        span.copyright__years © 2018
         a.copyright__owner(
           href="https://gauslin.com",
           title="Ben Gauslin’s Website",
           target="_blank",
           rel="noopener",
-        )
+        ) Ben Gauslin

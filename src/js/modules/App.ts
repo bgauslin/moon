@@ -29,7 +29,7 @@ class App {
   private date_: AppDate;
   private dateTime_: any;
   private eventHandler_: any;
-  private footerEl_: HTMLElement;
+  private copyrightEl_: HTMLElement;
   private headerLinkEl_: HTMLElement;
   private location_: string;
   private locationEl_: HTMLElement;
@@ -37,12 +37,15 @@ class App {
   private moonInfoEl_: HTMLElement;
   private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
+  private startYear_: string;
   private sunChartEl_: Element
   private locationObserver_: MutationObserver;
   private utils_: any;
 
-  constructor() {
-    this.footerEl_ = document.querySelector('.footer');
+  constructor(year: string) {
+    this.startYear_ = year;
+
+    this.copyrightEl_ = document.querySelector('.copyright__years');
     this.headerLinkEl_ = document.querySelector('.header__link');
     this.locationEl_ = document.querySelector('.location');
     this.moonChartEl_ = document.querySelector('[name=moon]');
@@ -72,7 +75,7 @@ class App {
     this.location_ = this.initialLocation_();
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
 
-    this.renderFooterText_();
+    this.updateCopyright_();
     this.standaloneStartup_();
   }
 
@@ -213,15 +216,11 @@ class App {
   }
 
   /**
-   * Renders text into the footer via JS to avoid a FOUC.
+   * Updates copyright blurb with the current year.
    */
-  private renderFooterText_(): void {
-    const yearsEl = this.footerEl_.querySelector('.copyright__years');
-    const ownerEl = this.footerEl_.querySelector('.copyright__owner');
-    const yearStart = '2018';
-    const yearEnd = new Date().getFullYear().toString().substr(-2);
-    yearsEl.textContent = `© ${yearStart}–${yearEnd}`;
-    ownerEl.textContent = 'Ben Gauslin';
+  private updateCopyright_(): void {
+    const currentYear = new Date().getFullYear().toString().substr(-2);
+    this.copyrightEl_.textContent = `© ${this.startYear_}–${currentYear}`;
   }
 
   /** 
