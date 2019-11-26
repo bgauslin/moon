@@ -13,6 +13,8 @@ class Templates {
   }
 
   public init(): void {
+    this.contentEl_.innerHTML = ''; // Clear out the content element first.
+
     this.renderHeaderLink_();;
     this.renderUserLocation_();
     this.renderCharts_();
