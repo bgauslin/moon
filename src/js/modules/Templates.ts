@@ -13,11 +13,20 @@ class Templates {
   }
 
   public init(): void {
+    this.renderHeaderLink_();;
     this.renderUserLocation_();
     this.renderCharts_();
     this.renderInfo_();
     this.renderControls_();
     this.renderProgressBar_();
+  }
+
+  /**
+   * Renders the header link into the header.
+   */
+  private renderHeaderLink_() {
+    const heading = this.headerEl_.querySelector('h1');
+    heading.innerHTML = '<a class="header__link" href="/" title="today"></a>';
   }
 
   /**
