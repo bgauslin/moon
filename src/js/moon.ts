@@ -21,8 +21,10 @@ map.set(UserLocation, 'user-location');
 map.forEach((key, value) => customElements.define(key, value));
 
 // Create app instance and initialize it.
-const app = new App();
-app.init();
+document.addEventListener(EventType.READY, () => {
+  const app = new App();
+  app.init();
+}, { once: true });
 
 // Update UI via custom event dispatched by selected elements or when URL
 // changes via browser controls.
