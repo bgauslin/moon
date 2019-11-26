@@ -8,6 +8,7 @@ import { MoonInfo } from './components/MoonInfo';
 import { MoonPhoto } from './components/MoonPhoto';
 import { PrevNext } from './components/PrevNext';
 import { UserLocation } from './components/UserLocation';
+
 import '../stylus/moon.styl';
 
 // Define all custom elements.
@@ -20,13 +21,10 @@ map.set(PrevNext, 'prev-next');
 map.set(UserLocation, 'user-location');
 map.forEach((key, value) => customElements.define(key, value));
 
-// Create app instance and initialize it.
-document.addEventListener(EventType.READY, () => {
-  const app = new App();
-  app.init();
-}, { once: true });
+// Create app instance and initialize it; update app when custom event is
+// dispatched or when URL changes via browser controls.
+const app = new App();
 
-// Update UI via custom event dispatched by selected elements or when URL
-// changes via browser controls.
+document.addEventListener(EventType.READY, () => app.init(), { once: true });
 document.addEventListener(EventType.UPDATE, () => app.update());
 window.addEventListener(EventType.POPSTATE, () => app.update(), false);

@@ -30,7 +30,7 @@
     "tz-lookup": "^6.1.24"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.0",    
+    "@babel/core": "^7.5.0",
     "@babel/preset-typescript": "^7.3.3",
     "autoprefixer": "^9.6.1",
     "babel-loader": "^8.0.6",
@@ -43,6 +43,7 @@
     "dotenv-webpack": "^1.7.0",
     "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "postcss-loader": "^3.0.0",
     "pug-html-loader": "^1.1.5",
     "raw-loader": "^3.0.0",
