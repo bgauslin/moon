@@ -17,15 +17,16 @@ html(lang="en-GB")
       h1.header__title
         a.header__link(href="/" title="Today")
       user-location.location
-    div.charts
-      div.charts__frame
-        chart-axes.chart
-        donut-chart.chart(name="sun" color="#f8c537")
-        donut-chart.chart(name="moon" color="#fff")
-        moon-photo.photo
-    moon-info.info
-    prev-next.nav(direction="prev")
-    prev-next.nav(direction="next")
+    main.content
+      div.charts
+        div.charts__frame
+          chart-axes.chart
+          donut-chart.chart(name="sun" color="#f8c537")
+          donut-chart.chart(name="moon" color="#fff")
+          moon-photo.photo
+      moon-info.info
+      prev-next.nav(direction="prev")
+      prev-next.nav(direction="next")
     footer.footer
       p.copyright
         span.copyright__years

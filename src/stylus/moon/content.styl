@@ -1,0 +1,12 @@
+.content
+  display grid
+  grid-row 2
+  grid-template-areas 'charts charts charts'\
+                      'prev info next'
+  grid-template-columns CONTROLS_SIZE 1fr CONTROLS_SIZE
+  grid-template-rows 1fr auto
+
+  @media Breakpoint.SMALL
+    grid-template-areas 'prev charts next'\
+                        'info info info'
+    grid-template-columns minmax(CONTROLS_SIZE, 1fr) minmax(CHART_SIZE, CHART_MAX_WIDTH) minmax(CONTROLS_SIZE, 1fr)
