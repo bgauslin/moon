@@ -32,6 +32,9 @@ user-location
   text-overflow ellipsis
   transition background var(--transition)
 
+  &:focus
+    background rgba(white, .25)
+
   &:hover
     cursor pointer
     opacity .7
@@ -39,9 +42,6 @@ user-location
   &:focus:hover
     cursor text
     opacity 1
-
-  &:focus
-    background rgba(white, .25)
 
 [no-touch] [name=location]
   transition background var(--transition), opacity var(--transition)
