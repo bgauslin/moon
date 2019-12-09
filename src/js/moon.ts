@@ -25,7 +25,7 @@ map.forEach((key, value) => customElements.define(key, value));
 // dispatched or when URL changes via browser controls.
 const app = new App('2018');
 
-document.addEventListener(EventType.READY, () => app.init(), { once: true });
+document.addEventListener(EventType.READY, () => app.init());
 document.addEventListener(EventType.UPDATE, () => app.update());
 window.addEventListener(EventType.POPSTATE, () => app.update(), false);
 

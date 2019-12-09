@@ -12,7 +12,7 @@ class Utils {
     this.noTouch_();
     this.googleAnalytics_();
     this.viewportHeight_();
-    window.addEventListener(EventType.RESIZE, () => this.viewportHeight_(), { passive: true });
+    window.addEventListener(EventType.RESIZE, () => this.viewportHeight_());
   }
 
   /**
