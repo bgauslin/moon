@@ -1,6 +1,6 @@
-import { Attribute } from '../modules/Constants';
-import { EventType } from '../modules/EventHandler';
-import { Utils } from '../modules/Utils';
+import {Attribute} from '../modules/Constants';
+import {EventType} from '../modules/EventHandler';
+import {Utils} from '../modules/Utils';
 
 interface UserCoordinates {
   lat: number,
@@ -124,7 +124,7 @@ class UserLocation extends HTMLElement {
    * Fetches human-friendly location based on geo coordinates via API.
    */
   private async reverseGeocode_(coords: UserCoordinates): Promise<any> {
-    const { lat, lng } = coords;
+    const {lat, lng} = coords;
     const endpoint = (`${process.env.REVERSE_GEOCODE_API}?prox=${lat},${lng},\
       ${GEOCODER_PROXIMITY}&mode=retrieveAddresses&maxresults=1&gen=9&\
       app_id=${process.env.GEOCODER_APP_ID}\
@@ -226,4 +226,4 @@ class UserLocation extends HTMLElement {
   }
 }
 
-export { UserLocation };
+export {UserLocation};

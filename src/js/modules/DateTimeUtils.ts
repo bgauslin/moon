@@ -24,7 +24,7 @@ class DateTimeUtils {
       return this.todaysDate();
     }
 
-    return { year, month, day };
+    return {year, month, day};
   }
 
   /** 
@@ -36,14 +36,14 @@ class DateTimeUtils {
     const month = now.getMonth() + 1;
     const day = now.getDate();
 
-    return { year, month, day };
+    return {year, month, day};
   }
 
   /**
    * Date after the active date.
    */
   public nextDate(): AppDate {
-    let { year, month, day } = this.activeDate();
+    let {year, month, day} = this.activeDate();
 
     // Last day of the year.
     if (day === 31 && month === 12) {
@@ -62,14 +62,14 @@ class DateTimeUtils {
       day += 1;
     }
 
-    return { year, month, day };
+    return {year, month, day};
   }
 
   /**
    * Date before the active date.
    */
   public prevDate(): AppDate {
-    let { year, month, day } = this.activeDate();
+    let {year, month, day} = this.activeDate();
 
     // First day of the year.
     if (day === 1 && month === 1) {
@@ -88,14 +88,14 @@ class DateTimeUtils {
       day -= 1;
     }
 
-    return { year, month, day };
+    return {year, month, day};
   }
 
   /**
    * Date formatted per the locale.
    */
   public prettyDate(date: AppDate, locale: string, monthFormat: string): string {
-    let { year, month, day } = date;
+    let {year, month, day} = date;
     month -= 1; // Adjust month for UTC format.
     const date_ = new Date(Date.UTC(year, month, day));
 
@@ -120,7 +120,7 @@ class DateTimeUtils {
    */
   public militaryTime(date: Date, timezone: string): string {
     const locale = document.documentElement.lang;
-    const date_ = new Date(date).toLocaleString(locale, { timeZone: timezone });
+    const date_ = new Date(date).toLocaleString(locale, {timeZone: timezone});
 
     const time = date_.split(' ')[1];
     const amPm = date_.split(' ')[2];
@@ -160,4 +160,4 @@ class DateTimeUtils {
   }
 }
 
-export { AppDate, DateTimeUtils };
+export {AppDate, DateTimeUtils};

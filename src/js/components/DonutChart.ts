@@ -1,4 +1,4 @@
-import { Attribute, Chart } from '../modules/Constants';
+import {Attribute, Chart} from '../modules/Constants';
 
 interface Arc {
   radius: number,
@@ -150,19 +150,19 @@ class DonutChart extends HTMLElement {
       radius += Chart.MARGIN - Chart.LABEL_GAP;
     }
 
-    return { radius, sweep };
+    return {radius, sweep};
   }
 
   /**
    * Returns adjusted x and y coordinates for a rotated label.
    */
   private labelRotation_(props: LabelProps): Point {
-    const { angle, radius, xOffset, yOffset } = props;
+    const {angle, radius, xOffset, yOffset} = props;
     const degreesToRadians = this.degreesToRadians_(angle);
     const x = radius * Math.cos(degreesToRadians) + xOffset;
     const y = radius * Math.sin(degreesToRadians) + yOffset;
     
-    return { x, y };
+    return {x, y};
   }
 
   /** 
@@ -186,4 +186,4 @@ class DonutChart extends HTMLElement {
   }
 }
 
-export { Chart, DonutChart };
+export {Chart, DonutChart};

@@ -86,4 +86,4 @@ class Templates {
   }
 }
 
-export { Templates };
+export {Templates};

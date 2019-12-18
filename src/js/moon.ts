@@ -1,13 +1,13 @@
 require ('dotenv').config();
 
-import { App } from './modules/App';
-import { ChartAxes } from './components/ChartAxes';
-import { DonutChart } from './components/DonutChart';
-import { EventType } from './modules/EventHandler';
-import { MoonInfo } from './components/MoonInfo';
-import { MoonPhoto } from './components/MoonPhoto';
-import { PrevNext } from './components/PrevNext';
-import { UserLocation } from './components/UserLocation';
+import {App} from './modules/App';
+import {ChartAxes} from './components/ChartAxes';
+import {DonutChart} from './components/DonutChart';
+import {EventType} from './modules/EventHandler';
+import {MoonInfo} from './components/MoonInfo';
+import {MoonPhoto} from './components/MoonPhoto';
+import {PrevNext} from './components/PrevNext';
+import {UserLocation} from './components/UserLocation';
 
 import '../stylus/moon.styl';
 

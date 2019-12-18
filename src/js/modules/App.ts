@@ -1,9 +1,9 @@
-import { Attribute } from './Constants';
-import { DataFetcher } from './DataFetcher';
-import { AppDate, DateTimeUtils } from './DateTimeUtils';
-import { EventHandler } from './EventHandler';
-import { Templates } from './Templates';
-import { Utils } from './Utils';
+import {Attribute} from './Constants';
+import {DataFetcher} from './DataFetcher';
+import {AppDate, DateTimeUtils} from './DateTimeUtils';
+import {EventHandler} from './EventHandler';
+import {Templates} from './Templates';
+import {Utils} from './Utils';
 
 interface TitleInfo {
   date: AppDate,
@@ -67,7 +67,7 @@ class App {
 
     this.utils_.init();
     this.eventHandler_.hijackLinks();
-    this.locationObserver_.observe(this.locationEl_, { attributes: true });
+    this.locationObserver_.observe(this.locationEl_, {attributes: true});
 
     this.location_ = this.initialLocation_();
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
@@ -144,7 +144,7 @@ class App {
     }
 
     // Map local constants to API data.
-    let { hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset } = data;
+    let {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = data;
 
     // Log values to the console for debugging.
     if (document.body.hasAttribute('debug')) {
@@ -240,7 +240,7 @@ class App {
    * Updates document title with info about the current moon phase.
    */
   private updateDocumentTitle_(info: TitleInfo): void {
-    const { date, locale, location, percent, phase } = info;
+    const {date, locale, location, percent, phase} = info;
     const dateLabel = this.dateTime_.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
     if (percent > 0) {
@@ -250,4 +250,4 @@ class App {
   }
 }
 
-export { App };
+export {App};

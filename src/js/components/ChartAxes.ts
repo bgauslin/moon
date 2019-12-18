@@ -1,4 +1,4 @@
-import { Chart } from '../modules/Constants';
+import {Chart} from '../modules/Constants';
 
 interface Coordinates {
   x1: number,
@@ -49,7 +49,7 @@ const TICK_SECOND_HALF_END: number = VIEWBOX;
 
 // Ticks values start at the top and go clockwise.
 const Ticks: Coordinates[] = [
-  { 
+  {
     x1: MIDPOINT, y1: TICK_FIRST_HALF_START,
     x2: MIDPOINT, y2: TICK_FIRST_HALF_END,
   },
@@ -88,13 +88,13 @@ class ChartAxes extends HTMLElement {
     let tickLines: string = '';
 
     Axes.forEach((axis: Coordinates) => {
-      const { x1, y1, x2, y2 } = axis;
+      const {x1, y1, x2, y2} = axis;
       const line = `<line class="axis" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
       axisLines += line;
     });
 
     Ticks.forEach((tick: Coordinates) => {
-      const { x1, y1, x2, y2 } = tick;
+      const {x1, y1, x2, y2} = tick;
       const line = `<line class="tick" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
       tickLines += line;
     });
@@ -110,4 +110,4 @@ class ChartAxes extends HTMLElement {
   }
 }
 
-export { ChartAxes };
+export {ChartAxes};

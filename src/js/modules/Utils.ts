@@ -1,6 +1,6 @@
 import fastclick from 'fastclick';
-import { AppDate } from './DateTimeUtils';
-import { EventType } from './EventHandler';
+import {AppDate} from './DateTimeUtils';
+import {EventType} from './EventHandler';
 
 class Utils {
   /**
@@ -30,7 +30,7 @@ class Utils {
    * Converts a Date object and a location string to a full URL.
    */
   public makeUrl(date: AppDate, location: string): URL {
-    const { year, month, day } = date;
+    const {year, month, day} = date;
     const month_ = this.zeroPad(month);
     const day_ = this.zeroPad(day);
     const location_ = this.urlify(location);
@@ -72,4 +72,4 @@ class Utils {
   }
 }
 
-export { Utils };
+export {Utils};

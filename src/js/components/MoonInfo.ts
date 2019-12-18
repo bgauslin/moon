@@ -1,4 +1,4 @@
-import { Attribute } from '../modules/Constants';
+import {Attribute} from '../modules/Constants';
 
 class MoonInfo extends HTMLElement {
   private percent_: string;
@@ -41,4 +41,4 @@ class MoonInfo extends HTMLElement {
   }
 }
 
-export { MoonInfo };
+export {MoonInfo};

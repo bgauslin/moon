@@ -22,4 +22,4 @@ enum Chart {
   SWEEP_WIDTH = 72,
 }
 
-export { Attribute, Chart };
+export {Attribute, Chart};

@@ -1,4 +1,4 @@
-import { Attribute } from '../modules/Constants';
+import {Attribute} from '../modules/Constants';
 import Spinner from 'spin';
 
 // Value is coordinated with loop value in 'src/stylus/moon/photo.styl'
@@ -111,4 +111,4 @@ class MoonPhoto extends HTMLElement {
   }
 }
 
-export { MoonPhoto };
+export {MoonPhoto};

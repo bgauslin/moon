@@ -35,7 +35,7 @@ class EventHandler {
    */
   private sendUpdate_(): void {
     const event = new CustomEvent(EventType.UPDATE, {
-      detail: { update: true }
+      detail: {update: true}
     });
     document.dispatchEvent(event);
   }
@@ -54,4 +54,4 @@ class EventHandler {
   }
 }
 
-export { EventType, EventHandler };
+export {EventType, EventHandler};

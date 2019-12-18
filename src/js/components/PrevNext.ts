@@ -1,6 +1,6 @@
-import { Attribute } from '../modules/Constants';
-import { DateTimeUtils } from '../modules/DateTimeUtils';
-import { Utils } from '../modules/Utils';
+import {Attribute} from '../modules/Constants';
+import {DateTimeUtils} from '../modules/DateTimeUtils';
+import {Utils} from '../modules/Utils';
 
 enum SvgPath {
   LEFT = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822',
@@ -71,4 +71,4 @@ class PrevNext extends HTMLElement {
   }
 }
 
-export { PrevNext };
+export {PrevNext};
