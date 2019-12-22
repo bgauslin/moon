@@ -143,8 +143,9 @@ class UserLocation extends HTMLElement {
       this.update_();
 
       document.body.removeAttribute(Attribute.LOADING);
+
     } catch (e) {
-      alert('Currently unable to fetch data. :(');
+      console.warn('Currently unable to fetch data. :(');
     }
   }
 
