@@ -9,6 +9,7 @@ import {MoonPhoto} from './components/MoonPhoto';
 import {PrevNext} from './components/PrevNext';
 import {UserLocation} from './components/UserLocation';
 
+// Import styles for injecting into DOM.
 import '../stylus/moon.styl';
 
 // Define all custom elements.
@@ -21,11 +22,12 @@ map.set(PrevNext, 'prev-next');
 map.set(UserLocation, 'user-location');
 map.forEach((key, value) => customElements.define(key, value));
 
-// Create app instance and initialize it; update app when custom event is
-// dispatched or when URL changes via browser controls.
+// Create app instance and initialize it when DOM is ready.
 const app = new App('2018');
-
 document.addEventListener(EventType.READY, () => app.init());
+
+// Update app when custom event is dispatched or when URL changes via
+// browser controls.
 document.addEventListener(EventType.UPDATE, () => app.update());
 window.addEventListener(EventType.POPSTATE, () => app.update(), false);
 
