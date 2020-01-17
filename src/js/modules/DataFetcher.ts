@@ -46,7 +46,7 @@ class DataFetcher {
 
     // Get lat/lng via API based on location.
     if (location_ !== this.location_) {
-      const endpoint = (`${process.env.GEOCODE_API}?searchtext=${location_}&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`);
+      const endpoint = `${process.env.GEOCODE_API}?searchtext=${location_}&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`;
       const response = await fetch(endpoint);
       const data = await response.json();
       const coords = data.Response.View[0].Result[0].Location.DisplayPosition;

@@ -35,12 +35,12 @@ class App {
   private location_: string;
   private locationEl_: HTMLElement;
   private locationObserver_: MutationObserver;
-  private moonChartEl_: Element
+  private moonChartEl_: HTMLElement
   private moonInfoEl_: HTMLElement;
   private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
   private startYear_: string;
-  private sunChartEl_: Element
+  private sunChartEl_: HTMLElement
   private utils_: any;
   private templates_: any;
 
@@ -146,19 +146,6 @@ class App {
     // Map local constants to API data.
     let {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = data;
 
-    // Log values to the console for debugging.
-    if (document.body.hasAttribute('debug')) {
-      console.clear();
-      console.log('hemisphere', hemisphere);  
-      console.log('illumination', illumination);  
-      console.log('moonrise', moonrise);
-      console.log('moonset', moonset);
-      console.log('percent', percent);
-      console.log('phase', phase);
-      console.log('sunrise', sunrise);
-      console.log('sunset', sunset);
-    }
-
     // Update custom element attributes so each component can update itself.
     this.moonInfoEl_.setAttribute('percent', percent);
     this.moonInfoEl_.setAttribute('phase', phase);
@@ -174,8 +161,8 @@ class App {
     this.sunChartEl_.setAttribute('start', sunrise);
     this.sunChartEl_.setAttribute('end', sunset);
 
-    this.navEls_.forEach((el) => {
-      (<Element>el).setAttribute('location', this.location_);
+    this.navEls_.forEach((el: HTMLElement) => {
+      el.setAttribute('location', this.location_);
     });
 
     // Update the date in the header.
