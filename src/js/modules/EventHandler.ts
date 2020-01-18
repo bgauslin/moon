@@ -12,12 +12,12 @@ enum EventType {
 
 class EventHandler {
   /**
-   * Makes app an SPA via the history API when links with the app's hostname
-   * are clicked.
+   * Makes the app a single page application via the history API when links with
+   * the app's hostname are clicked.
    */
   public hijackLinks(): void {
-    document.addEventListener(EventType.CLICK, (e) => {
-      const target = e.target as HTMLElement;
+    document.addEventListener(EventType.CLICK, (e: Event) => {
+      const target = <HTMLElement>e.target;
       const href = target.getAttribute('href');
       if (href) {
         const linkUrl = new URL(href, window.location.origin);
