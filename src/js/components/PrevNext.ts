@@ -8,11 +8,11 @@ enum SvgPath {
 }
 
 class PrevNext extends HTMLElement {
-  private dateTime_: any;  
+  private dateTime_: DateTimeUtils;  
   private direction_: string;
   private location_: string;
   private linkEl_: HTMLElement;
-  private utils_: any;
+  private utils_: Utils;
 
   constructor() {
     super();
@@ -59,9 +59,7 @@ class PrevNext extends HTMLElement {
       return;
     }
 
-    const date = ((this.direction_ === 'prev')
-      ? this.dateTime_.prevDate()
-      : this.dateTime_.nextDate());
+    const date = ((this.direction_ === 'prev') ? this.dateTime_.prevDate() : this.dateTime_.nextDate());
     const url = this.utils_.makeUrl(date, location);
     const title = `${this.dateTime_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
