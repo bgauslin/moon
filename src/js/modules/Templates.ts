@@ -28,7 +28,7 @@ class Templates {
   /**
    * Renders the header link into the header.
    */
-  private renderHeaderLink_() {
+  private renderHeaderLink_(): void {
     const heading = this.headerEl_.querySelector('h1');
     heading.innerHTML = '<a class="header__link" href="/" title="today"></a>';
   }

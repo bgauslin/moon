@@ -54,7 +54,7 @@ class PrevNext extends HTMLElement {
   /**
    * Updates link and title relative to current date and location.
    */
-  private update_(location?: string) {
+  private update_(location?: string): void {
     if (!location || !this.linkEl_) {
       return;
     }
