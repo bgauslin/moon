@@ -68,8 +68,8 @@ class DonutChart extends HTMLElement {
     // Convert values to degrees for arc. 'sweep' start and end values are
     // adjusted since the default start for SVG circles is 3 o'clock and we
     // want arcs to start at 6 o'clock, which is midnight graphically.
-    let sweepStart = this.timeToDegrees_(this.start_) + AXIS_OFFSET;
-    let sweepEnd = this.timeToDegrees_(this.end_) + AXIS_OFFSET;
+    const sweepStart = this.timeToDegrees_(this.start_) + AXIS_OFFSET;
+    const sweepEnd = this.timeToDegrees_(this.end_) + AXIS_OFFSET;
 
     // 'sweep' = arc length with any negative values converted to positive
     // for cleaner math.
