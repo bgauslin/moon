@@ -16,7 +16,7 @@ class UserLocation extends HTMLElement {
   private inputEl_: HTMLInputElement;
   private location_: string;
   private previousLocation_: string;
-  private utils: any;
+  private utils: Utils;
 
   constructor() {
     super();
@@ -49,7 +49,7 @@ class UserLocation extends HTMLElement {
   private addListeners_(): void {
     // Get new location on submit, blur the input, and update the attribute
     // to trigger App.update().
-    this.formEl_.addEventListener(EventType.SUBMIT, (e) => {
+    this.formEl_.addEventListener(EventType.SUBMIT, (e: Event) => {
       e.preventDefault();
       const newLocation = this.inputEl_.value;
       if (newLocation !== this.location_) {
@@ -60,7 +60,7 @@ class UserLocation extends HTMLElement {
     });
 
     // Clear the input and focus it when the reset icon/button is clicked.
-    this.formEl_.addEventListener(EventType.RESET, (e) => {
+    this.formEl_.addEventListener(EventType.RESET, (e: Event) => {
       e.preventDefault();
       this.inputEl_.value = '';
       this.inputEl_.focus();
@@ -81,7 +81,7 @@ class UserLocation extends HTMLElement {
     });
 
     // Get user's location when geolocation button is clicked.
-    this.geolocationButtonEl_.addEventListener(EventType.CLICK, (e) => {
+    this.geolocationButtonEl_.addEventListener(EventType.CLICK, (e: Event) => {
       e.preventDefault();
       this.getGeolocation_();
     });
@@ -109,7 +109,7 @@ class UserLocation extends HTMLElement {
     }
 
     // Get user's location as city/state/country.
-    const success = (position) => {
+    const success = (position: any) => {
       this.reverseGeocode_({
         lat: position.coords.latitude,
         lng: position.coords.longitude,
@@ -144,7 +144,7 @@ class UserLocation extends HTMLElement {
 
       document.body.removeAttribute(Attribute.LOADING);
 
-    } catch (e) {
+    } catch (error) {
       console.warn('Currently unable to fetch data. :(');
     }
   }
@@ -157,8 +157,8 @@ class UserLocation extends HTMLElement {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.splice(-1, 1);
     urlSegments.push(this.utils.urlify(this.location_));
-    history.pushState(null, null, urlSegments.join('/'));
 
+    history.pushState(null, null, urlSegments.join('/'));
     this.setAttribute(Attribute.LOCATION, this.location_);
   }
 
