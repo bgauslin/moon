@@ -15,13 +15,13 @@ interface AppData {
 }
 
 interface MoonriseMoonset {
-  moonrise: Date,
-  moonset: Date,
+  moonrise: string,
+  moonset: string,
 }
 
 interface SunriseSunset {
-  sunrise: Date,
-  sunset: Date,
+  sunrise: string,
+  sunset: string,
 }
 
 class DataFetcher {
@@ -42,7 +42,7 @@ class DataFetcher {
    * Fetches location coordinates, then returns sun and moon data for rendering.
    */
   public async fetch(date: AppDate, location: string): Promise<AppData> {
-    const location_ = this.utils_.urlify(location)
+    const location_ = this.utils_.urlify(location);
 
     // Get lat/lng via API based on location.
     if (location_ !== this.location_) {
@@ -101,15 +101,15 @@ class DataFetcher {
   private moonriseMoonset_(): MoonriseMoonset {
     const moonTimes = SunCalc.getMoonTimes(this.date_, this.lat_, this.lng_);
 
-    let moonrise = moonTimes.rise;
-    let moonset = moonTimes.set;
+    let moonrise_: Date = moonTimes.rise;
+    let moonset_: Date = moonTimes.set;
 
     // If moonrise or moonset values are undefined, use the day before instead.
     // If the day before is still undefined, use the day after. Ultimately, we
     // just want to avoid console errors and broken chart rendering.
     // For our purposes, "close enough" is preferred over "totally broken."
     // For example: /2001/10/29/Reykjavik,+Iceland
-    if (moonrise === undefined || moonset === undefined) {
+    if (moonrise_ === undefined || moonset_ === undefined) {
       const {year: prevYear, month: prevMonth, day: prevDay} = this.dateTimeUtils_.prevDate();
       const prevMonthIndex = prevMonth - 1;
       const prevDate = new Date(prevYear, prevMonthIndex, prevDay);
@@ -120,17 +120,17 @@ class DataFetcher {
       const nextDate = new Date(nextYear, nextMonthIndex, nextDay);
       const nextMoonTimes = SunCalc.getMoonTimes(nextDate, this.lat_, this.lng_);
 
-      if (moonrise === undefined) {
-        moonrise = prevMoonTimes.rise !== undefined ? prevMoonTimes.rise : nextMoonTimes.rise;
+      if (moonrise_ === undefined) {
+        moonrise_ = prevMoonTimes.rise !== undefined ? prevMoonTimes.rise : nextMoonTimes.rise;
       }
 
-      if (moonset === undefined) {
-        moonset = prevMoonTimes.set !== undefined ? prevMoonTimes.set : nextMoonTimes.set;
+      if (moonset_ === undefined) {
+        moonset_ = prevMoonTimes.set !== undefined ? prevMoonTimes.set : nextMoonTimes.set;
       }
     }
 
-    moonrise = this.dateTimeUtils_.militaryTime(moonrise, this.timezone_);
-    moonset = this.dateTimeUtils_.militaryTime(moonset, this.timezone_);
+    const moonrise = this.dateTimeUtils_.militaryTime(moonrise_, this.timezone_);
+    const moonset = this.dateTimeUtils_.militaryTime(moonset_, this.timezone_);
 
     return {moonrise, moonset};
   }
