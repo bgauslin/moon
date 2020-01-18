@@ -24,7 +24,7 @@ class MoonPhoto extends HTMLElement {
   private illumination_: number;
   private percent_: number;
   private phase_: string;
-  private spinner_: any;
+  private spinner_: Spinner;
 
   constructor() {
     super();
@@ -78,7 +78,7 @@ class MoonPhoto extends HTMLElement {
    * number of frames in the sprite.
    */
   private spriteFrame_(): number {
-    let frame: number = Math.round((this.percent_ / 100) * MOONPHASE_IMAGE_COUNT);
+    const frame: number = Math.round((this.percent_ / 100) * MOONPHASE_IMAGE_COUNT);
     return (frame === 0) ? MOONPHASE_IMAGE_COUNT : frame;
   }
 
