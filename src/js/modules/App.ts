@@ -26,11 +26,11 @@ const TITLE_DIVIDER: string = '·';
 const TODAY_CLASSNAME: string = 'today';
 
 class App {
-  private dataFetcher_: any;
-  private date_: AppDate;
-  private dateTime_: any;
-  private eventHandler_: any;
   private copyrightEl_: HTMLElement;
+  private dataFetcher_: DataFetcher;
+  private date_: AppDate;
+  private dateTime_: DateTimeUtils;
+  private eventHandler_: EventHandler;
   private headerLinkEl_: HTMLElement;
   private location_: string;
   private locationEl_: HTMLElement;
@@ -41,20 +41,17 @@ class App {
   private navEls_: NodeList;
   private startYear_: string;
   private sunChartEl_: HTMLElement
-  private utils_: any;
-  private templates_: any;
+  private templates_: Templates;
+  private utils_: Utils;
 
   constructor(year: string) {
-    this.startYear_ = year;
-
-    this.templates_ = new Templates('.content', '.header');
-    this.utils_ = new Utils();
-
     this.dataFetcher_ = new DataFetcher();
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
-    
     this.locationObserver_ = new MutationObserver(() => this.update());
+    this.startYear_ = year;
+    this.templates_ = new Templates('.content', '.header');
+    this.utils_ = new Utils();
   }
 
   /**
@@ -68,7 +65,6 @@ class App {
     this.utils_.init();
     this.eventHandler_.hijackLinks();
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
-
     this.location_ = this.initialLocation_();
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
 
