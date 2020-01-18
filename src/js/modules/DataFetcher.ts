@@ -26,12 +26,12 @@ interface SunriseSunset {
 
 class DataFetcher {
   private date_: Date;
-  private dateTimeUtils_: any;
+  private dateTimeUtils_: DateTimeUtils;
   private lat_: number;
   private lng_: number;
   private location_: string;
   private timezone_: string;
-  private utils_: any;
+  private utils_: Utils;
 
   constructor() {
     this.dateTimeUtils_ = new DateTimeUtils();
@@ -41,7 +41,7 @@ class DataFetcher {
   /**
    * Fetches location coordinates, then returns sun and moon data for rendering.
    */
-  public async fetch(date: AppDate, location: string): Promise<any> {
+  public async fetch(date: AppDate, location: string): Promise<AppData> {
     const location_ = this.utils_.urlify(location)
 
     // Get lat/lng via API based on location.
