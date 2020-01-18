@@ -34,8 +34,7 @@ class Utils {
     const month_ = this.zeroPad(month);
     const day_ = this.zeroPad(day);
     const location_ = this.urlify(location);
-    const url = new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
-    return url;
+    return new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
   }
 
   /**
@@ -65,10 +64,10 @@ class Utils {
   }
 
   /**
-   * Returns a value with zero padding if value is less than 10.
+   * Returns a value with zero padding if its value is less than 10.
    */
-  public zeroPad(n: number): string|number {
-    return (n < 10) ? `0${n}` : n;
+  public zeroPad(n: number): string {
+    return (n < 10) ? `0${n}` : `${n}`;
   }
 }
 
