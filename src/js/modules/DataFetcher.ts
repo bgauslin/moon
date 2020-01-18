@@ -121,11 +121,11 @@ class DataFetcher {
       const nextMoonTimes = SunCalc.getMoonTimes(nextDate, this.lat_, this.lng_);
 
       if (moonrise_ === undefined) {
-        moonrise_ = prevMoonTimes.rise !== undefined ? prevMoonTimes.rise : nextMoonTimes.rise;
+        moonrise_ = (prevMoonTimes.rise !== undefined) ? prevMoonTimes.rise : nextMoonTimes.rise;
       }
 
       if (moonset_ === undefined) {
-        moonset_ = prevMoonTimes.set !== undefined ? prevMoonTimes.set : nextMoonTimes.set;
+        moonset_ = (prevMoonTimes.set !== undefined) ? prevMoonTimes.set : nextMoonTimes.set;
       }
     }
 
