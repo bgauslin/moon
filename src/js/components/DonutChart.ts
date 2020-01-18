@@ -51,7 +51,7 @@ class DonutChart extends HTMLElement {
     const cx: number = height / 2;
     const cy: number = width / 2;
     const radius: number = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
-    const circumference: number = 2 * Math.PI * radius; // [1]
+    const circumference: number = 2 * Math.PI * radius;
     
     // Convert values to degrees for arc. 'sweep' start and end values are
     // adjusted since the default start for SVG circles is 3 o'clock and we
