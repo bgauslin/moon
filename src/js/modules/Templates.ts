@@ -82,7 +82,7 @@ class Templates {
   private renderProgressBar_(): void {
     const div = document.createElement('div');
     div.classList.add('progress-bar');
-    document.body.insertBefore(div, document.body.childNodes[0])
+    document.body.insertBefore(div, document.body.childNodes[0]);
   }
 }
 
