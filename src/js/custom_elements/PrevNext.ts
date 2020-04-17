@@ -17,7 +17,6 @@ class PrevNext extends HTMLElement {
   constructor() {
     super();
     this.dateTime_ = new DateTimeUtils();
-    this.direction_ = this.getAttribute(Attribute.DIRECTION);
     this.utils_ = new Utils();
   }
 
@@ -26,6 +25,7 @@ class PrevNext extends HTMLElement {
   }
 
   connectedCallback(): void {
+    this.direction_ = this.getAttribute(Attribute.DIRECTION);
     this.render_();
     this.update_(this.location_);
   }
