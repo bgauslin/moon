@@ -2,16 +2,14 @@ import {Attribute} from '../modules/Constants';
 import {DateTimeUtils} from '../modules/DateTimeUtils';
 import {Utils} from '../modules/Utils';
 
-enum SvgPath {
-  LEFT = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822',
-  RIGHT = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.06822',
-}
+const SVG_PATH_LEFT: string = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822';
+const SVG_PATH_RIGHT: string = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.06822';
 
 class PrevNext extends HTMLElement {
   private dateTime_: DateTimeUtils;  
   private direction_: string;
-  private location_: string;
   private linkEl_: HTMLElement;
+  private location_: string;
   private utils_: Utils;
 
   constructor() {
@@ -38,7 +36,7 @@ class PrevNext extends HTMLElement {
    * Renders a nav link.
    */
   private render_(): void {
-    const path = (this.direction_ === 'prev') ? SvgPath.LEFT : SvgPath.RIGHT;
+    const path = (this.direction_ === 'prev') ? SVG_PATH_LEFT : SVG_PATH_RIGHT;
     const html = `\
       <a class="nav__link" href="" title="">\
         <svg class="nav__icon" viewBox="0 0 32 32">\

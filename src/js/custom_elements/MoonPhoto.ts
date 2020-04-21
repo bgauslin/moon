@@ -1,9 +1,10 @@
 import {Attribute} from '../modules/Constants';
 import Spinner from 'spin';
 
-// Value is coordinated with loop value in 'src/stylus/moon/photo.styl'
+// Note: MOONPHASE_IMAGE_COUNT value is same as loop value in 'src/stylus/moon/photo.styl'
+const IMAGE_PATH_1X: string = '/img/moon-phases-26-240.min.jpg';
+const IMAGE_PATH_2X: string = '/img/moon-phases-26-480.min.jpg';
 const MOONPHASE_IMAGE_COUNT: number = 26;
-
 const SPINNER_DELAY_MS: number = 1000;
 
 const SpinnerOptions: {} = {
@@ -14,14 +15,9 @@ const SpinnerOptions: {} = {
   width: 3,
 };
 
-enum Image {
-  PATH_1X = '/img/moon-phases-26-240.min.jpg',
-  PATH_2X = '/img/moon-phases-26-480.min.jpg',
-}
-
 class MoonPhoto extends HTMLElement {
-  private imageLoaded_: boolean;
   private illumination_: number;
+  private imageLoaded_: boolean;
   private percent_: number;
   private phase_: string;
   private spinner_: Spinner;
@@ -57,8 +53,8 @@ class MoonPhoto extends HTMLElement {
       <div class="${this.className}__frame">\
         <figure class="${this.className}__figure">\
           <img class="${this.className}__image" \
-                src="${Image.PATH_1X}" \
-                srcset="${Image.PATH_1X} 1x, ${Image.PATH_2X} 2x" \
+                src="${IMAGE_PATH_1X}" \
+                srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x" \
                 alt="${this.phase_}${this.illuminationCaption_()}" \
                 frame="${this.spriteFrame_()}"
                 ${ready}>\

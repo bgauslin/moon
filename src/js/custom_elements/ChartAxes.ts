@@ -11,16 +11,16 @@ interface Coordinates {
 const VIEWBOX: number = Chart.SIZE + (Chart.MARGIN * 2);
 const MIDPOINT: number = VIEWBOX / 2;
 
-// Top, left axis lines.
+// Top and left axis lines.
 const AXIS_FIRST_HALF_START: number = Chart.MARGIN;
 const AXIS_FIRST_HALF_END: number = Chart.MARGIN + Chart.SWEEP_WIDTH;
 
-// Bottom, right axis lines.
+// Bottom and right axis lines.
 const AXIS_SECOND_HALF_START: number = MIDPOINT + ((Chart.SIZE / 2) - Chart.SWEEP_WIDTH)
 const AXIS_SECOND_HALF_END: number = VIEWBOX - Chart.MARGIN;
 
 // Axes values start at the top and go clockwise.
-const Axes: Coordinates[] = [
+const AXES: Coordinates[] = [
   {
     x1: MIDPOINT, y1: AXIS_FIRST_HALF_START,
     x2: MIDPOINT, y2: AXIS_FIRST_HALF_END,
@@ -36,19 +36,19 @@ const Axes: Coordinates[] = [
   {
     x1: AXIS_FIRST_HALF_START, y1: MIDPOINT,
     x2: AXIS_FIRST_HALF_END, y2: MIDPOINT,
-  }
+  },
 ];
 
-// Top, left tick lines.
+// Top and left tick lines.
 const TICK_FIRST_HALF_START: number = 0;
 const TICK_FIRST_HALF_END: number = Chart.MARGIN;
 
-// Bottom, right tick lines.
+// Bottom and right tick lines.
 const TICK_SECOND_HALF_START: number = VIEWBOX - Chart.MARGIN;
 const TICK_SECOND_HALF_END: number = VIEWBOX;
 
 // Ticks values start at the top and go clockwise.
-const Ticks: Coordinates[] = [
+const TICKS: Coordinates[] = [
   {
     x1: MIDPOINT, y1: TICK_FIRST_HALF_START,
     x2: MIDPOINT, y2: TICK_FIRST_HALF_END,
@@ -64,7 +64,7 @@ const Ticks: Coordinates[] = [
   {
     x1: TICK_FIRST_HALF_START, y1: MIDPOINT,
     x2: TICK_FIRST_HALF_END, y2: MIDPOINT,
-  }
+  },
 ];
 
 /**
@@ -87,13 +87,13 @@ class ChartAxes extends HTMLElement {
     let axisLines: string = '';
     let tickLines: string = '';
 
-    Axes.forEach((axis: Coordinates) => {
+    AXES.forEach((axis: Coordinates) => {
       const {x1, y1, x2, y2} = axis;
       const line = `<line class="axis" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
       axisLines += line;
     });
 
-    Ticks.forEach((tick: Coordinates) => {
+    TICKS.forEach((tick: Coordinates) => {
       const {x1, y1, x2, y2} = tick;
       const line = `<line class="tick" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
       tickLines += line;
