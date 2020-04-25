@@ -10,6 +10,9 @@ enum EventType {
   UPDATE = 'update',
 }
 
+/**
+ * Class for handling user-provided events and custom events.
+ */
 class EventHandler {
   /**
    * Makes the app a single page application via the history API when links with

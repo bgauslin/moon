@@ -2,6 +2,9 @@ import fastclick from 'fastclick';
 import {AppDate} from './DateTimeUtils';
 import {EventType} from './EventHandler';
 
+/**
+ * Adds site-wide features for enhancing a website's UX.
+ */
 class Utils {
   /**
    * Initializes site-wide utilities.

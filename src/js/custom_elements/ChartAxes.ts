@@ -68,8 +68,8 @@ const TICKS: Coordinates[] = [
 ];
 
 /**
- * This custom element doesn't do anything besides draw an SVG, but there's
- * enough setup and simple math involved to make it worth it.
+ * Custom element that renders an SVG with vertical and horizontal ticks for
+ * time axes (i.e., 12AM, 6AM, 12PM, 6PM).
  */
 class ChartAxes extends HTMLElement {
   constructor() {

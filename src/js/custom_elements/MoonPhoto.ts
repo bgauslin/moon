@@ -15,6 +15,11 @@ const SpinnerOptions: {} = {
   width: 3,
 };
 
+/**
+ * Custom element that renders a photo for the current moon phase. The image
+ * is a reponsive sprite containing all of the moon phases and the custom
+ * element adjusts the vertical position of the sprite to show the moon phase.
+ */
 class MoonPhoto extends HTMLElement {
   private illumination_: number;
   private imageLoaded_: boolean;

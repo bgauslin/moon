@@ -5,6 +5,10 @@ import {Utils} from '../modules/Utils';
 const SVG_PATH_LEFT: string = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822';
 const SVG_PATH_RIGHT: string = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.06822';
 
+/**
+ * Custom element that renders 'previous' and 'next' navigation links for
+ * showing the moon phase for the next or previous day.
+ */
 class PrevNext extends HTMLElement {
   private dateTime_: DateTimeUtils;  
   private direction_: string;
@@ -41,8 +45,8 @@ class PrevNext extends HTMLElement {
       <a class="nav__link" href="" title="">\
         <svg class="nav__icon" viewBox="0 0 32 32">\
           <path class="nav__icon__path" d="${path}" />\
-        </svg>
-      </a>
+        </svg>\
+      </a>\
     `;
     this.innerHTML = html.replace(/\s\s/g, '');
 
@@ -58,7 +62,7 @@ class PrevNext extends HTMLElement {
     }
 
     const date = ((this.direction_ === 'prev') ? this.dateTime_.prevDate() : this.dateTime_.nextDate());
-    const url = this.utils_.makeUrl(date, location);
+    const url = String(this.utils_.makeUrl(date, location));
     const title = `${this.dateTime_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
     this.linkEl_.setAttribute('href', url);

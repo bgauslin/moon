@@ -1,5 +1,9 @@
 import {Attribute} from '../modules/Constants';
 
+/**
+ * Custom element that renders text for the moon phase and its percentage
+ * relative to a full moon phase cycle.
+ */
 class MoonInfo extends HTMLElement {
   private percent_: string;
   private phase_: string;

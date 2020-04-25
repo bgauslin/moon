@@ -3,6 +3,9 @@ enum ChartColor {
   MOON = '#fff',
 }
 
+/**
+ * Class that provides all HTML templates required by the app.
+ */
 class Templates {
   private contentEl_: HTMLElement;
   private headerEl_: HTMLElement;

@@ -24,6 +24,10 @@ interface SunriseSunset {
   sunset: string,
 }
 
+/**
+ * Class that gets lat/lng coordinates from a geocoding API to then
+ * determine moon and sun rise/set times based on that geolocation.
+ */
 class DataFetcher {
   private date_: Date;
   private dateTimeUtils_: DateTimeUtils;

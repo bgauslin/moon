@@ -25,6 +25,9 @@ const TITLE_DIVIDER: string = '·';
 
 const TODAY_CLASSNAME: string = 'today';
 
+/**
+ * Primary class that controls the entire application.
+ */
 class App {
   private copyrightEl_: HTMLElement;
   private dataFetcher_: DataFetcher;
@@ -143,12 +146,12 @@ class App {
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = data;
 
     // Update custom element attributes so each component can update itself.
-    this.moonInfoEl_.setAttribute('percent', percent);
+    this.moonInfoEl_.setAttribute('percent', String(percent));
     this.moonInfoEl_.setAttribute('phase', phase);
     
     this.moonPhotoEl_.setAttribute('hemisphere', hemisphere);
-    this.moonPhotoEl_.setAttribute('illumination', illumination);
-    this.moonPhotoEl_.setAttribute('percent', percent);
+    this.moonPhotoEl_.setAttribute('illumination', String(illumination));
+    this.moonPhotoEl_.setAttribute('percent', String(percent));
     this.moonPhotoEl_.setAttribute('phase', phase);
 
     this.moonChartEl_.setAttribute('start', moonrise);

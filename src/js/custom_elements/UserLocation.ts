@@ -9,6 +9,11 @@ interface UserCoordinates {
 
 const GEOCODER_PROXIMITY: number = 100;
 
+/**
+ * Custom element that gets the user's location either via text input or via
+ * the Geolocation API and a reverse geocoding API to convert lat/lng
+ * coordinates to a named location.
+ */
 class UserLocation extends HTMLElement {
   private formEl_: HTMLFormElement;
   private geolocationButtonEl_: HTMLButtonElement;
