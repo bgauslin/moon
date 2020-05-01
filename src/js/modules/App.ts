@@ -19,23 +19,19 @@ const TITLE_DIVIDER: string = '·';
  * Primary class that controls the entire application.
  */
 class App {
-  private dataFetcher_: DataFetcher;
   private date_: AppDate;
   private dateTime_: DateTimeUtils;
   private location_: string;
   private locationEl_: HTMLElement;
   private locationObserver_: MutationObserver;
   private popstateListener_: any;
-  private startYear_: string;
   private updateListener_: any;
   private utils_: Utils;
 
-  constructor(year: string) {
-    this.dataFetcher_ = new DataFetcher();
+  constructor() {
     this.dateTime_ = new DateTimeUtils();
     this.locationObserver_ = new MutationObserver(() => this.update_());
     this.popstateListener_ = this.update_.bind(this);
-    this.startYear_ = year;
     this.updateListener_ = this.update_.bind(this);
     this.utils_ = new Utils();
   }
@@ -47,17 +43,10 @@ class App {
    */
   public init(): void {
     this.utils_.init();
-
-    // Set up listeners.
     window.addEventListener('popstate', this.popstateListener_, false);
     document.addEventListener('update', this.updateListener_);
-
-    // Set up location.
     this.locationEl_ = document.querySelector('.location');
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
-
-    // Update the DOM.
-    this.updateCopyright_();
     this.update_();
   }
 
@@ -71,7 +60,7 @@ class App {
     // Get date and location, then fetch data.
     this.date_ = this.dateTime_.activeDate();
     this.location_ = this.locationEl_.getAttribute(LOCATION_ATTR);
-    const moonData = await this.dataFetcher_.fetch(this.date_, this.location_);
+    const moonData = await new DataFetcher().fetch(this.date_, this.location_);
     if (!moonData) {
       document.body.removeAttribute(LOADING_ATTR);
       return;
@@ -133,15 +122,6 @@ class App {
       const [selector, attribute, value] = item;
       document.querySelector(selector).setAttribute(attribute, value);
     });
-  }
-
-  /**
-   * Updates copyright blurb with the current year.
-   */
-  private updateCopyright_(): void {
-    const copyright = document.querySelector('.copyright__years');
-    const currentYear = new Date().getFullYear().toString().substr(-2);
-    copyright.textContent = `© ${this.startYear_}–${currentYear}`;
   }
 
   /** 

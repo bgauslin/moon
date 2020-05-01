@@ -27,7 +27,7 @@ map.forEach((key, value) => customElements.define(key, value));
 document.addEventListener('DOMContentLoaded', () => {
   document.body.removeAttribute('no-js');
   document.body.querySelector('noscript').remove();
-  new App('2018').init();
+  new App().init();
 });
 
 // Register the Service Worker.

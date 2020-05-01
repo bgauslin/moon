@@ -3,6 +3,7 @@
 - const shortTitle = "Moon"
 - const moonColor = '#fff'
 - const sunColor = '#f8c537'
+- const currentYear = new Date().getFullYear().toString().substr(-2)
 
 doctype html
 html(lang="en-GB")
@@ -37,7 +38,7 @@ html(lang="en-GB")
       app-today(selector=".header__title,.info__phase,.info__percent")
     footer.footer
       p.copyright
-        span.copyright__years © 2018
+        span.copyright__years © 2018–#{currentYear}
         a.copyright__owner(
           href="https://gauslin.com",
           title="Ben Gauslin’s Website",
