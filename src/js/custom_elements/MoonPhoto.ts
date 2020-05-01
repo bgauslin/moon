@@ -1,7 +1,6 @@
 import Spinner from 'spin';
 
-// [1] MOONPHASE_IMAGE_COUNT value is same as loop value
-// in 'src/stylus/moon/photo.styl'
+// [1] MOONPHASE_IMAGE_COUNT value is same as loop value in 'photo.styl'
 
 const ILLUMINATION_ATTR: string = 'illumination';
 const IMAGE_PATH_1X: string = '/img/moon-phases-26-240.min.jpg';
