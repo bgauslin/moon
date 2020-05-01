@@ -1,13 +1,3 @@
-enum EventType {
-  BLUR = 'blur',
-  CLICK = 'click',
-  FOCUS = 'focus',
-  RESET = 'reset',
-  RESIZE = 'resize',
-  SUBMIT = 'submit',
-  UPDATE = 'update',
-}
-
 /**
  * Class for handling user-provided events and custom events.
  */
@@ -17,7 +7,7 @@ class EventHandler {
    * the app's hostname are clicked.
    */
   public hijackLinks(): void {
-    document.addEventListener(EventType.CLICK, (e: Event) => {
+    document.addEventListener('click', (e: Event) => {
       const target = <HTMLElement>e.target;
       const href = target.getAttribute('href');
       if (href) {
@@ -25,20 +15,14 @@ class EventHandler {
         if (linkUrl.hostname === window.location.hostname) {
           e.preventDefault();
           history.pushState(null, null, href);
-          this.sendUpdate_();
+
+          const event = new CustomEvent('update', {
+            detail: {update: true}
+          });
+          document.dispatchEvent(event);
         }
       }
     });
-  }
-
-  /**
-   * Dispatches custom event for the document to intercept.
-   */
-  private sendUpdate_(): void {
-    const event = new CustomEvent(EventType.UPDATE, {
-      detail: {update: true}
-    });
-    document.dispatchEvent(event);
   }
 
   /**
@@ -55,4 +39,4 @@ class EventHandler {
   }
 }
 
-export {EventType, EventHandler};
+export {EventHandler};

@@ -1,7 +1,7 @@
 import {Attribute} from './Constants';
 import {DataFetcher} from './DataFetcher';
 import {AppDate, DateTimeUtils} from './DateTimeUtils';
-import {EventHandler, EventType} from './EventHandler';
+import {EventHandler} from './EventHandler';
 import {Templates} from './Templates';
 import {Utils} from './Utils';
 
@@ -78,7 +78,7 @@ class App {
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
 
     window.addEventListener('popstate', this.popstateListener_, false);
-    document.addEventListener(EventType.UPDATE, this.updateListener_);
+    document.addEventListener('update', this.updateListener_);
 
     this.updateCopyright_();
     this.standaloneStartup_();

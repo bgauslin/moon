@@ -1,6 +1,5 @@
 import fastclick from 'fastclick';
 import {AppDate} from './DateTimeUtils';
-import {EventType} from './EventHandler';
 
 /**
  * Adds site-wide features for enhancing a website's UX.
@@ -13,7 +12,7 @@ class Utils {
     this.touchEnabled_();
     this.googleAnalytics_();
     this.setViewportHeight_();
-    window.addEventListener(EventType.RESIZE, () => this.setViewportHeight_());
+    window.addEventListener('resize', this.setViewportHeight_);
   }
 
   /**

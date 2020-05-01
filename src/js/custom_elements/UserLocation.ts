@@ -1,5 +1,4 @@
 import {Attribute} from '../modules/Constants';
-import {EventType} from '../modules/EventHandler';
 import {Utils} from '../modules/Utils';
 
 interface UserCoordinates {
@@ -54,7 +53,7 @@ class UserLocation extends HTMLElement {
   private addListeners_(): void {
     // Get new location on submit, blur the input, and update the attribute
     // to trigger App.update().
-    this.formEl_.addEventListener(EventType.SUBMIT, (e: Event) => {
+    this.formEl_.addEventListener('submit', (e: Event) => {
       e.preventDefault();
       const newLocation = this.inputEl_.value;
       if (newLocation !== this.location_) {
@@ -65,20 +64,20 @@ class UserLocation extends HTMLElement {
     });
 
     // Clear the input and focus it when the reset icon/button is clicked.
-    this.formEl_.addEventListener(EventType.RESET, (e: Event) => {
+    this.formEl_.addEventListener('reset', (e: Event) => {
       e.preventDefault();
       this.inputEl_.value = '';
       this.inputEl_.focus();
     });
 
     // Only show geolocation button on input focus.
-    this.inputEl_.addEventListener(EventType.FOCUS, () => {
+    this.inputEl_.addEventListener('focus', () => {
       this.geolocationButtonEl_.setAttribute(Attribute.ENABLED, '');
     });
 
     // Restore previous location if input is empty when blurred and hide
     // the geolocation button.
-    this.inputEl_.addEventListener(EventType.BLUR, () => {
+    this.inputEl_.addEventListener('blur', () => {
       if (this.inputEl_.value === '') {
         this.restore_();
       }
@@ -86,7 +85,7 @@ class UserLocation extends HTMLElement {
     });
 
     // Get user's location when geolocation button is clicked.
-    this.geolocationButtonEl_.addEventListener(EventType.CLICK, (e: Event) => {
+    this.geolocationButtonEl_.addEventListener('click', (e: Event) => {
       e.preventDefault();
       this.getGeolocation_();
     });
