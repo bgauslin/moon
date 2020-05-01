@@ -3,7 +3,7 @@ import tzLookup from 'tz-lookup';
 import {AppDate, DateTimeUtils} from './DateTimeUtils';
 import {Utils} from './Utils';
 
-interface AppData {
+interface MoonData {
   hemisphere: string,
   illumination: number,
   moonrise: string,
@@ -45,7 +45,7 @@ class DataFetcher {
   /**
    * Fetches location coordinates, then returns sun and moon data for rendering.
    */
-  public async fetch(date: AppDate, location: string): Promise<AppData> {
+  public async fetch(date: AppDate, location: string): Promise<MoonData> {
     const location_ = this.utils_.urlify(location);
 
     // Get lat/lng via API based on location.
@@ -184,4 +184,4 @@ class DataFetcher {
   }
 }
 
-export {AppData, DataFetcher};
+export {DataFetcher, MoonData};

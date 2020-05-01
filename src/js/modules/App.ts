@@ -1,4 +1,4 @@
-import {DataFetcher} from './DataFetcher';
+import {DataFetcher, MoonData} from './DataFetcher';
 import {AppDate, DateTimeUtils} from './DateTimeUtils';
 import {Utils} from './Utils';
 
@@ -13,6 +13,7 @@ interface TitleInfo {
 const DEFAULT_LOCATION: string = 'New York, NY';
 const LOADING_ATTR: string = 'loading';
 const LOCATION_ATTR: string = 'location';
+const LOCAL_STORAGE_ITEM: string = 'location';
 
 // TODO: Refactor as custom element wrapped around these elements.
 const SELECTORS_HIGHLIGHTED: string[] = [
@@ -63,24 +64,9 @@ class App {
    * populate the UI on initial page load.
    */
   public init(): void {
-    this.updateDom_();
-
     this.utils_.init();
-    this.locationObserver_.observe(this.locationEl_, {attributes: true});
-    this.location_ = this.initialLocation_();
-    this.locationEl_.setAttribute(LOCATION_ATTR, this.location_);
 
-    window.addEventListener('popstate', this.popstateListener_, false);
-    document.addEventListener('update', this.updateListener_);
-
-    this.updateCopyright_();
-    this.standaloneStartup_();
-  }
-
-  /**
-   * Removes 'no-js' class, then creates references to all app elements.
-   */
-  private updateDom_(): void {
+    // Create references to all app elements.
     this.copyrightEl_ = document.querySelector('.copyright__years');
     this.headerLinkEl_ = document.querySelector('.header__link');
     this.locationEl_ = document.querySelector('.location');
@@ -89,6 +75,19 @@ class App {
     this.moonPhotoEl_ = document.querySelector('.photo');
     this.navEls_ = document.querySelectorAll('[direction]');
     this.sunChartEl_ = document.querySelector('[name=sun]');
+
+    // Set up listeners.
+    window.addEventListener('popstate', this.popstateListener_, false);
+    document.addEventListener('update', this.updateListener_);
+
+    // Set up location.
+    this.locationObserver_.observe(this.locationEl_, {attributes: true});
+    this.location_ = this.initialLocation_();
+    this.locationEl_.setAttribute(LOCATION_ATTR, this.location_);
+
+    // Update copyright and set up initial view for standalone app.
+    this.updateCopyright_();
+    this.standaloneStartup_();
   }
 
   /**
@@ -106,7 +105,7 @@ class App {
     if (urlSegments.length === 4) {
       return urlSegments[3].replace(/[+]/g, ' ');
     } else {
-      return localStorage.getItem(LOCATION_ATTR) || DEFAULT_LOCATION; // TODO: Rename this to LOCAL_STORAGE const.
+      return localStorage.getItem(LOCAL_STORAGE_ITEM) || DEFAULT_LOCATION;
     }
   }
 
@@ -136,16 +135,50 @@ class App {
     this.location_ = this.locationEl_.getAttribute(LOCATION_ATTR);
 
     // Fetch data (and bail if there's nothing).
-    const data = await this.dataFetcher_.fetch(this.date_, this.location_);
-    if (!data) {
+    const moonData = await this.dataFetcher_.fetch(this.date_, this.location_);
+    if (!moonData) {
       document.body.removeAttribute(LOADING_ATTR);
       return;
     }
 
-    // Map local constants to API data.
-    const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = data;
+    // Update custom element attributes to they can update themselves.
+    this.updateElements_(moonData);
 
-    // Update custom element attributes so each component can update itself.
+    // Update the date in the header.
+    this.headerLinkEl_.textContent = this.dateTime_.prettyDate(
+      this.date_,
+      document.documentElement.lang,
+      'long',
+    );
+
+    // Update the document title.
+    this.updateDocumentTitle_({
+      date: this.date_,
+      locale: document.documentElement.lang,
+      location: this.location_,
+      percent: moonData.percent,
+      phase: moonData.phase,
+    });
+
+    // TODO: Remove/refactor this call via new custom element.
+    // Highlight elements if the UI is currently displaying info for today.
+    this.highlightToday_(this.date_);
+
+    // Save new location to localStorage.
+    localStorage.setItem(LOCAL_STORAGE_ITEM, this.location_);
+
+    // Disable the progress bar and send a new Analytics pageview.
+    document.body.removeAttribute(LOADING_ATTR);
+    this.utils_.sendPageview(window.location.pathname, document.title);
+  }
+  
+  /**
+   * Updates attributes on all custom elements with moon data for the current
+   * date and location so they can then update themselves.
+   */
+  private updateElements_(moonData: MoonData): void {
+    const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
+
     this.moonInfoEl_.setAttribute('percent', String(percent));
     this.moonInfoEl_.setAttribute('phase', phase);
     
@@ -163,35 +196,7 @@ class App {
     this.navEls_.forEach((el: HTMLElement) => {
       el.setAttribute('location', this.location_);
     });
-
-    // Update the date in the header.
-    this.headerLinkEl_.textContent = this.dateTime_.prettyDate(
-      this.date_,
-      document.documentElement.lang,
-      'long',
-    );
-
-    // Update the document title.
-    this.updateDocumentTitle_({
-      date: this.date_,
-      locale: document.documentElement.lang,
-      location: this.location_,
-      percent,
-      phase,
-    });
-
-    // TODO: Remove/refactor this call via new custom element.
-    // Highlight elements if the UI is currently displaying info for today.
-    this.highlightToday_(this.date_);
-
-    // Save new location to localStorage.
-    localStorage.setItem(LOCATION_ATTR, this.location_);
-
-    // Disable the progress bar and send a new Analytics pageview.
-    document.body.removeAttribute(LOADING_ATTR);
-    this.utils_.sendPageview(window.location.pathname, document.title);
   }
-  
 
   // TODO: Refactor as custom element wrapped around the relevant elements.
   /**
