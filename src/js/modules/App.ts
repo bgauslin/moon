@@ -1,7 +1,6 @@
 import {Attribute} from './Constants';
 import {DataFetcher} from './DataFetcher';
 import {AppDate, DateTimeUtils} from './DateTimeUtils';
-import {EventHandler} from './EventHandler';
 import {Templates} from './Templates';
 import {Utils} from './Utils';
 
@@ -35,7 +34,6 @@ class App {
   private dataFetcher_: DataFetcher;
   private date_: AppDate;
   private dateTime_: DateTimeUtils;
-  private eventHandler_: EventHandler;
   private headerLinkEl_: HTMLElement;
   private location_: string;
   private locationEl_: HTMLElement;
@@ -54,7 +52,6 @@ class App {
   constructor(year: string) {
     this.dataFetcher_ = new DataFetcher();
     this.dateTime_ = new DateTimeUtils();
-    this.eventHandler_ = new EventHandler();
     this.locationObserver_ = new MutationObserver(() => this.update_());
     this.popstateListener_ = this.update_.bind(this);
     this.startYear_ = year;
@@ -72,7 +69,6 @@ class App {
     this.updateDom_();
 
     this.utils_.init();
-    this.eventHandler_.hijackLinks();
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
     this.location_ = this.initialLocation_();
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
@@ -198,7 +194,7 @@ class App {
 
     // Disable the progress bar and send a new Analytics pageview.
     document.body.removeAttribute(Attribute.LOADING);
-    this.eventHandler_.sendPageview(window.location.pathname, document.title);
+    this.utils_.sendPageview(window.location.pathname, document.title);
   }
   
 

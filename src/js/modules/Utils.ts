@@ -9,6 +9,7 @@ class Utils {
    * Initializes site-wide utilities.
    */
   public init(): void {
+    this.hijackLinks_();
     this.touchEnabled_();
     this.googleAnalytics_();
     this.setViewportHeight_();
@@ -29,6 +30,29 @@ class Utils {
   }
 
   /**
+   * Makes the app a single page application via the history API when links with
+   * the app's hostname are clicked.
+   */
+  private hijackLinks_(): void {
+    document.addEventListener('click', (e: Event) => {
+      const target = <HTMLElement>e.target;
+      const href = target.getAttribute('href');
+      if (href) {
+        const linkUrl = new URL(href, window.location.origin);
+        if (linkUrl.hostname === window.location.hostname) {
+          e.preventDefault();
+          history.pushState(null, null, href);
+
+          const event = new CustomEvent('update', {
+            detail: {update: true}
+          });
+          document.dispatchEvent(event);
+        }
+      }
+    });
+  }
+
+  /**
    * Converts a Date object and a location string to a full URL.
    */
   public makeUrl(date: AppDate, location: string): URL {
@@ -37,6 +61,27 @@ class Utils {
     const day_ = this.zeroPad(day);
     const location_ = this.urlify(location);
     return new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
+  }
+
+  /**
+   * Gets global Google Analytics object and sends a new pageview with the
+   * current page's path and title.
+   */
+  public sendPageview(path: string, title: string): void {
+    const ga = (<any>window).ga;
+    if (ga) {
+      ga('set', 'page', path);
+      ga('set', 'title', title);
+      ga('send', 'pageview');
+    }
+  }
+
+  /**
+   * Sets custom property for viewport height that updates 'vh' calculation due
+   * to iOS Safari behavior where chrome appears and disappears when scrolling.
+   */
+  private setViewportHeight_(): void {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
   }
 
   /**
@@ -54,14 +99,6 @@ class Utils {
    */
   public urlify(value: string): string {
     return value.replace(/[\s]/g, '+')
-  }
-
-  /**
-   * Sets custom property for viewport height that updates 'vh' calculation due
-   * to iOS Safari behavior where chrome appears and disappears when scrolling.
-   */
-  private setViewportHeight_(): void {
-    document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
   }
 
   /**
