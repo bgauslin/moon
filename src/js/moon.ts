@@ -24,6 +24,7 @@ map.forEach((key, value) => customElements.define(key, value));
 // Create app instance and initialize it when DOM is ready.
 document.addEventListener('DOMContentLoaded', () => {
   document.body.removeAttribute('no-js');
+  document.body.querySelector('noscript').remove();
   new App('2018').init();
 });
 
