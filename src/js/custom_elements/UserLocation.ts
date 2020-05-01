@@ -12,6 +12,11 @@ const LOADING_ATTR: string = 'loading';
 const LOCATION_ATTR: string = 'location';
 const RESTORE_ATTR: string = 'restore';
 
+const ICONS = new Map();
+ICONS.set('location', 'M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z');
+ICONS.set('reset', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z');
+ICONS.set('submit', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z');
+
 /**
  * Custom element that gets the user's location either via text input or via
  * the Geolocation API and a reverse geocoding API to convert lat/lng
@@ -218,17 +223,11 @@ class UserLocation extends HTMLElement {
    * Returns a rendered inline SVG icon.
    */
   private svgIcon_(name: string): string {
-    const iconMap = new Map();
-    iconMap.set('location', 'M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z');
-    iconMap.set('reset', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z');
-    iconMap.set('submit', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z');
-
     const html = `\
       <svg class="icon icon--${name}" viewBox="0 0 24 24">\
-        <path d="${iconMap.get(name)}"/>\
+        <path d="${ICONS.get(name)}"/>\
       </svg>\
     `;
-
     return html.replace(/\s\s/g, '');
   }
 }
