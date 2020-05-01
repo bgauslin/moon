@@ -14,14 +14,6 @@ const DEFAULT_LOCATION: string = 'New York, NY';
 const LOADING_ATTR: string = 'loading';
 const LOCATION_ATTR: string = 'location';
 const LOCAL_STORAGE_ITEM: string = 'location';
-
-// TODO: Refactor as custom element wrapped around these elements.
-const SELECTORS_HIGHLIGHTED: string[] = [
-  '.header__title',
-  '.info__phase',
-  '.info__percent',
-];
-
 const TITLE_DIVIDER: string = '·';
 const TODAY_CLASSNAME: string = 'today';
 
@@ -30,21 +22,14 @@ const TODAY_CLASSNAME: string = 'today';
  * Primary class that controls the entire application.
  */
 class App {
-  private copyrightEl_: HTMLElement;
   private dataFetcher_: DataFetcher;
   private date_: AppDate;
   private dateTime_: DateTimeUtils;
-  private headerLinkEl_: HTMLElement;
   private location_: string;
   private locationEl_: HTMLElement;
   private locationObserver_: MutationObserver;
-  private moonChartEl_: HTMLElement
-  private moonInfoEl_: HTMLElement;
-  private moonPhotoEl_: HTMLElement;
-  private navEls_: NodeList;
   private popstateListener_: any;
   private startYear_: string;
-  private sunChartEl_: HTMLElement
   private updateListener_: any;
   private utils_: Utils;
 
@@ -66,21 +51,12 @@ class App {
   public init(): void {
     this.utils_.init();
 
-    // Create references to all app elements.
-    this.copyrightEl_ = document.querySelector('.copyright__years');
-    this.headerLinkEl_ = document.querySelector('.header__link');
-    this.locationEl_ = document.querySelector('.location');
-    this.moonChartEl_ = document.querySelector('[name=moon]');
-    this.moonInfoEl_ = document.querySelector('.info');
-    this.moonPhotoEl_ = document.querySelector('.photo');
-    this.navEls_ = document.querySelectorAll('[direction]');
-    this.sunChartEl_ = document.querySelector('[name=sun]');
-
     // Set up listeners.
     window.addEventListener('popstate', this.popstateListener_, false);
     document.addEventListener('update', this.updateListener_);
 
     // Set up location.
+    this.locationEl_ = document.querySelector('.location');
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
     this.location_ = this.initialLocation_();
     this.locationEl_.setAttribute(LOCATION_ATTR, this.location_);
@@ -109,6 +85,7 @@ class App {
     }
   }
 
+  // TODO: Relocate this method to Utils.
   /**
    * Redirects view to '/' if app is launched as a standalone app. Otherwise,
    * a user may have saved the app with a full URL, which means they will start
@@ -128,10 +105,8 @@ class App {
     // Enable progress bar while we fetch data.
     document.body.setAttribute(LOADING_ATTR, '');
 
-    // Get the date from the address bar.
+    // Get the date and location.
     this.date_ = this.dateTime_.activeDate();
-
-    // Get location from custom element attribute.
     this.location_ = this.locationEl_.getAttribute(LOCATION_ATTR);
 
     // Fetch data (and bail if there's nothing).
@@ -141,11 +116,13 @@ class App {
       return;
     }
 
-    // Update custom element attributes to they can update themselves.
+    // Update custom element attributes so they can update themselves.
     this.updateElements_(moonData);
 
+    // TODO: Move this to a custom element.
     // Update the date in the header.
-    this.headerLinkEl_.textContent = this.dateTime_.prettyDate(
+    const headerLink = document.querySelector('.header__link');
+    headerLink.textContent = this.dateTime_.prettyDate(
       this.date_,
       document.documentElement.lang,
       'long',
@@ -179,22 +156,24 @@ class App {
   private updateElements_(moonData: MoonData): void {
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
 
-    this.moonInfoEl_.setAttribute('percent', String(percent));
-    this.moonInfoEl_.setAttribute('phase', phase);
-    
-    this.moonPhotoEl_.setAttribute('hemisphere', hemisphere);
-    this.moonPhotoEl_.setAttribute('illumination', String(illumination));
-    this.moonPhotoEl_.setAttribute('percent', String(percent));
-    this.moonPhotoEl_.setAttribute('phase', phase);
+    const items = [
+      ['.info', 'percent', String(percent)],
+      ['.info', 'phase', String(phase)],
+      ['.photo', 'hemisphere', hemisphere],
+      ['.photo', 'illumination', String(illumination)],
+      ['.photo', 'percent', String(percent)],
+      ['.photo', 'phase', phase],
+      ['[name=moon]', 'start', moonrise],
+      ['[name=moon]', 'end', moonset],
+      ['[name=sun]', 'start', sunrise],
+      ['[name=sun]', 'end', sunset],
+      ['[direction=next]', 'location', this.location_],
+      ['[direction=prev]', 'location', this.location_],
+    ];
 
-    this.moonChartEl_.setAttribute('start', moonrise);
-    this.moonChartEl_.setAttribute('end', moonset);
-
-    this.sunChartEl_.setAttribute('start', sunrise);
-    this.sunChartEl_.setAttribute('end', sunset);
-
-    this.navEls_.forEach((el: HTMLElement) => {
-      el.setAttribute('location', this.location_);
+    items.forEach((item) => {
+      const [selector, attribute, value] = item;
+      document.querySelector(selector).setAttribute(attribute, value);
     });
   }
 
@@ -203,6 +182,11 @@ class App {
    * Adds/removes class if current date is today.
    */
   private highlightToday_(date: AppDate): void {
+    const selectors: string[] = [
+      '.header__title',
+      '.info__phase',
+      '.info__percent',
+    ];
     const now = new Date();
     const dateNow = {
       year: now.getFullYear(),
@@ -212,7 +196,7 @@ class App {
     const isToday = (date.year === dateNow.year &&
         date.month === dateNow.month && date.day === dateNow.day);
 
-    SELECTORS_HIGHLIGHTED.forEach((selector) => {
+    selectors.forEach((selector) => {
       const el = document.querySelector(selector);
       if (isToday) {
         el.classList.add(TODAY_CLASSNAME);
@@ -226,8 +210,9 @@ class App {
    * Updates copyright blurb with the current year.
    */
   private updateCopyright_(): void {
+    const copyright = document.querySelector('.copyright__years');
     const currentYear = new Date().getFullYear().toString().substr(-2);
-    this.copyrightEl_.textContent = `© ${this.startYear_}–${currentYear}`;
+    copyright.textContent = `© ${this.startYear_}–${currentYear}`;
   }
 
   /** 
