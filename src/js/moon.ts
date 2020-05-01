@@ -6,6 +6,7 @@ import {DonutChart} from './custom_elements/DonutChart';
 import {MoonInfo} from './custom_elements/MoonInfo';
 import {MoonPhoto} from './custom_elements/MoonPhoto';
 import {PrevNext} from './custom_elements/PrevNext';
+import {TodayHighlighter} from './custom_elements/TodayHighlighter';
 import {UserLocation} from './custom_elements/UserLocation';
 
 // Import styles for injecting into DOM.
@@ -18,6 +19,7 @@ map.set(DonutChart, 'donut-chart');
 map.set(MoonInfo, 'moon-info');
 map.set(MoonPhoto, 'moon-photo');
 map.set(PrevNext, 'prev-next');
+map.set(TodayHighlighter, 'app-today');
 map.set(UserLocation, 'user-location');
 map.forEach((key, value) => customElements.define(key, value));
 

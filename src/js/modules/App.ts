@@ -13,7 +13,6 @@ interface TitleInfo {
 const LOADING_ATTR: string = 'loading';
 const LOCATION_ATTR: string = 'location';
 const TITLE_DIVIDER: string = '·';
-const TODAY_CLASSNAME: string = 'today';
 
 // TODO: Refactor App class as a custom element.
 /**
@@ -102,10 +101,6 @@ class App {
       phase: moonData.phase,
     });
 
-    // TODO: Remove/refactor this call via new custom element.
-    // Highlight elements if the UI is currently displaying info for today.
-    this.highlightToday_(this.date_);
-
     // Disable the progress bar and send a new Analytics pageview.
     document.body.removeAttribute(LOADING_ATTR);
     this.utils_.sendPageview(window.location.pathname, document.title);
@@ -131,41 +126,13 @@ class App {
       ['[name=sun]', 'end', sunset],
       ['[direction=next]', 'location', this.location_],
       ['[direction=prev]', 'location', this.location_],
+      ['app-today', 'update', ''],
     ];
 
     items.forEach((item) => {
       const [selector, attribute, value] = item;
       document.querySelector(selector).setAttribute(attribute, value);
     });
-  }
-
-  // TODO: Refactor as custom element wrapped around the relevant elements.
-  /**
-   * Adds/removes class if current date is today.
-   */
-  private highlightToday_(date: AppDate): void {
-    const selectors: string[] = [
-      '.header__title',
-      '.info__phase',
-      '.info__percent',
-    ];
-    const now = new Date();
-    const dateNow = {
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
-      day: now.getDate(),
-    };
-    const isToday = (date.year === dateNow.year &&
-        date.month === dateNow.month && date.day === dateNow.day);
-
-    selectors.forEach((selector) => {
-      const el = document.querySelector(selector);
-      if (isToday) {
-        el.classList.add(TODAY_CLASSNAME);
-      } else {
-        el.classList.remove(TODAY_CLASSNAME);
-      }
-    }); 
   }
 
   /**
