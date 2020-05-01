@@ -23,10 +23,10 @@ class Utils {
   private googleAnalytics_(): void {
     if (process.env.NODE_ENV === 'production') {
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*<any>new Date();a=s.createElement(o),
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*(new Date() as any);a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      (<any>window).ga('create', process.env.GA_ID, 'auto');
+      (window as any).ga('create', process.env.GA_ID, 'auto');
     }
   }
 
@@ -36,7 +36,7 @@ class Utils {
    */
   private hijackLinks_(): void {
     document.addEventListener('click', (e: Event) => {
-      const target = <HTMLElement>e.target;
+      const target = e.target as HTMLElement;
       const href = target.getAttribute('href');
       if (href) {
         const linkUrl = new URL(href, window.location.origin);
@@ -69,7 +69,7 @@ class Utils {
    * current page's path and title.
    */
   public sendPageview(path: string, title: string): void {
-    const ga = (<any>window).ga;
+    const ga = (window as any).ga;
     if (ga) {
       ga('set', 'page', path);
       ga('set', 'title', title);
@@ -91,7 +91,7 @@ class Utils {
    * at that URL every time they launch the app instead of on the current day.
    */
   private standaloneStartup_(): void {
-    if ((<any>window).navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
+    if ((window as any).navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
       history.replaceState(null, null, '/');
     }
   }
@@ -100,7 +100,7 @@ class Utils {
    * Removes 'no-touch' attribute and adds fastclick if device is touch-enabled.
    */
   private touchEnabled_(): void {
-    if ('ontouchstart' in window || (<any>window).DocumentTouch) {
+    if ('ontouchstart' in window || (window as any).DocumentTouch) {
       document.body.removeAttribute('no-touch');
       fastclick['attach'](document.body);
     }
