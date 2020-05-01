@@ -10,10 +10,8 @@ interface TitleInfo {
   phase: string,
 }
 
-const DEFAULT_LOCATION: string = 'New York, NY';
 const LOADING_ATTR: string = 'loading';
 const LOCATION_ATTR: string = 'location';
-const LOCAL_STORAGE_ITEM: string = 'location';
 const TITLE_DIVIDER: string = '·';
 const TODAY_CLASSNAME: string = 'today';
 
@@ -58,30 +56,10 @@ class App {
     // Set up location.
     this.locationEl_ = document.querySelector('.location');
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
-    this.location_ = this.initialLocation_();
-    this.locationEl_.setAttribute(LOCATION_ATTR, this.location_);
 
     // Update copyright.
     this.updateCopyright_();
-  }
-
-  /**
-   * On first run, location may or may not be set. If not, check if there's a
-   * location in the address bar and use that. Then check localStorage, and
-   * if that doesn't exist, use fallback location. On all subsequent updates,
-   * location is set via custom element attribute since location can also be
-   * user-defined.
-   */
-  private initialLocation_(): string {
-    const urlSegments = window.location.pathname.split('/');
-    urlSegments.shift();
-
-    // 4 URL segments are year, month, day, location
-    if (urlSegments.length === 4) {
-      return urlSegments[3].replace(/[+]/g, ' ');
-    } else {
-      return localStorage.getItem(LOCAL_STORAGE_ITEM) || DEFAULT_LOCATION;
-    }
+    this.update_();
   }
 
   /**
@@ -127,9 +105,6 @@ class App {
     // TODO: Remove/refactor this call via new custom element.
     // Highlight elements if the UI is currently displaying info for today.
     this.highlightToday_(this.date_);
-
-    // Save new location to localStorage.
-    localStorage.setItem(LOCAL_STORAGE_ITEM, this.location_);
 
     // Disable the progress bar and send a new Analytics pageview.
     document.body.removeAttribute(LOADING_ATTR);

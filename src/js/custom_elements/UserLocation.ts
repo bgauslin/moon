@@ -5,10 +5,12 @@ interface UserCoordinates {
   lng: number,
 }
 
+const DEFAULT_LOCATION: string = 'New York, NY';
 const ENABLED_ATTR: string = 'enabled';
 const GEOCODER_PROXIMITY: number = 100;
 const HIDDEN_ATTR: string = 'hidden';
 const LOADING_ATTR: string = 'loading';
+const LOCAL_STORAGE_ITEM: string = 'location';
 const LOCATION_ATTR: string = 'location';
 const RESTORE_ATTR: string = 'restore';
 
@@ -39,6 +41,10 @@ class UserLocation extends HTMLElement {
 
   static get observedAttributes(): string[] {
     return [LOCATION_ATTR, RESTORE_ATTR];
+  }
+
+  connectedCallback(): void {
+    this.setAttribute(LOCATION_ATTR, this.initialLocation_());
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
@@ -98,6 +104,25 @@ class UserLocation extends HTMLElement {
       e.preventDefault();
       this.getGeolocation_();
     });
+  }
+
+  /**
+   * On first run, location may or may not be set. If not, check if there's a
+   * location in the address bar and use that. Then check localStorage, and
+   * if that doesn't exist, use fallback location. On all subsequent updates,
+   * location is set via custom element attribute since location can also be
+   * user-defined.
+   */
+  private initialLocation_(): string {
+    const urlSegments = window.location.pathname.split('/');
+    urlSegments.shift();
+
+    // 4 URL segments are year, month, day, location
+    if (urlSegments.length === 4) {
+      return urlSegments[3].replace(/[+]/g, ' ');
+    } else {
+      return localStorage.getItem(LOCAL_STORAGE_ITEM) || DEFAULT_LOCATION;
+    }
   }
 
   /**
@@ -173,6 +198,9 @@ class UserLocation extends HTMLElement {
 
     history.pushState(null, null, urlSegments.join('/'));
     this.setAttribute(LOCATION_ATTR, this.location_);
+
+    // Save new location to localStorage.
+    localStorage.setItem(LOCAL_STORAGE_ITEM, this.location_);
   }
 
   /**
