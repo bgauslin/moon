@@ -5,7 +5,7 @@ interface UserCoordinates {
   lng: number,
 }
 
-const DEFAULT_LOCATION: string = 'New York, NY';
+const DEFAULT_ATTR: string = 'default';
 const ENABLED_ATTR: string = 'enabled';
 const GEOCODER_PROXIMITY: number = 100;
 const HIDDEN_ATTR: string = 'hidden';
@@ -25,6 +25,7 @@ ICONS.set('submit', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z');
  * coordinates to a named location.
  */
 class UserLocation extends HTMLElement {
+  private defaultLocation_: string;
   private formEl_: HTMLFormElement;
   private geolocationButtonEl_: HTMLButtonElement;
   private hasSetup_: boolean;
@@ -44,6 +45,8 @@ class UserLocation extends HTMLElement {
   }
 
   connectedCallback(): void {
+    this.defaultLocation_ = this.getAttribute(DEFAULT_ATTR);
+    this.removeAttribute(DEFAULT_ATTR);
     this.setAttribute(LOCATION_ATTR, this.initialLocation_());
   }
 
@@ -121,7 +124,7 @@ class UserLocation extends HTMLElement {
     if (urlSegments.length === 4) {
       return urlSegments[3].replace(/[+]/g, ' ');
     } else {
-      return localStorage.getItem(LOCAL_STORAGE_ITEM) || DEFAULT_LOCATION;
+      return localStorage.getItem(LOCAL_STORAGE_ITEM) || this.defaultLocation_;
     }
   }
 
