@@ -81,8 +81,6 @@ class App {
    * Removes 'no-js' class, then creates references to all app elements.
    */
   private updateDom_(): void {
-    document.querySelector('.content').classList.remove('no-js');
-
     this.copyrightEl_ = document.querySelector('.copyright__years');
     this.headerLinkEl_ = document.querySelector('.header__link');
     this.locationEl_ = document.querySelector('.location');
