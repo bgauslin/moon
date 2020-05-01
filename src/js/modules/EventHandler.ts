@@ -2,8 +2,6 @@ enum EventType {
   BLUR = 'blur',
   CLICK = 'click',
   FOCUS = 'focus',
-  POPSTATE = 'popstate',
-  READY = 'DOMContentLoaded',
   RESET = 'reset',
   RESIZE = 'resize',
   SUBMIT = 'submit',

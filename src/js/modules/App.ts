@@ -1,7 +1,7 @@
 import {Attribute} from './Constants';
 import {DataFetcher} from './DataFetcher';
 import {AppDate, DateTimeUtils} from './DateTimeUtils';
-import {EventHandler} from './EventHandler';
+import {EventHandler, EventType} from './EventHandler';
 import {Templates} from './Templates';
 import {Utils} from './Utils';
 
@@ -15,6 +15,7 @@ interface TitleInfo {
 
 const DEFAULT_LOCATION: string = 'New York, NY';
 
+// TODO: Refactor as custom element wrapped around these elements.
 const SELECTORS_HIGHLIGHTED: string[] = [
   '.header__title',
   '.info__phase',
@@ -25,6 +26,7 @@ const TITLE_DIVIDER: string = '·';
 
 const TODAY_CLASSNAME: string = 'today';
 
+// TODO: Refactor App class as a custom element.
 /**
  * Primary class that controls the entire application.
  */
@@ -42,18 +44,22 @@ class App {
   private moonInfoEl_: HTMLElement;
   private moonPhotoEl_: HTMLElement;
   private navEls_: NodeList;
+  private popstateListener_: any;
   private startYear_: string;
   private sunChartEl_: HTMLElement
   private templates_: Templates;
+  private updateListener_: any;
   private utils_: Utils;
 
   constructor(year: string) {
     this.dataFetcher_ = new DataFetcher();
     this.dateTime_ = new DateTimeUtils();
     this.eventHandler_ = new EventHandler();
-    this.locationObserver_ = new MutationObserver(() => this.update());
+    this.locationObserver_ = new MutationObserver(() => this.update_());
+    this.popstateListener_ = this.update_.bind(this);
     this.startYear_ = year;
     this.templates_ = new Templates('.content', '.header');
+    this.updateListener_ = this.update_.bind(this);
     this.utils_ = new Utils();
   }
 
@@ -70,6 +76,9 @@ class App {
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
     this.location_ = this.initialLocation_();
     this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
+
+    window.addEventListener('popstate', this.popstateListener_, false);
+    document.addEventListener(EventType.UPDATE, this.updateListener_);
 
     this.updateCopyright_();
     this.standaloneStartup_();
@@ -125,7 +134,7 @@ class App {
    * Updates UI when URL changes: fetches API data, sets attributes on custom
    * elements with fetched data results, then updates the header and title.
    */
-  public async update(): Promise<any> {
+  private async update_(): Promise<any> {
     // Enable progress bar while we fetch data.
     document.body.setAttribute(Attribute.LOADING, '');
 
@@ -180,6 +189,7 @@ class App {
       phase,
     });
 
+    // TODO: Remove/refactor this call via new custom element.
     // Highlight elements if the UI is currently displaying info for today.
     this.highlightToday_(this.date_);
 
@@ -191,6 +201,8 @@ class App {
     this.eventHandler_.sendPageview(window.location.pathname, document.title);
   }
   
+
+  // TODO: Refactor as custom element wrapped around the relevant elements.
   /**
    * Adds/removes class if current date is today.
    */

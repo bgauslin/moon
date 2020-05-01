@@ -3,7 +3,6 @@ require ('dotenv').config();
 import {App} from './modules/App';
 import {ChartAxes} from './custom_elements/ChartAxes';
 import {DonutChart} from './custom_elements/DonutChart';
-import {EventType} from './modules/EventHandler';
 import {MoonInfo} from './custom_elements/MoonInfo';
 import {MoonPhoto} from './custom_elements/MoonPhoto';
 import {PrevNext} from './custom_elements/PrevNext';
@@ -23,13 +22,7 @@ map.set(UserLocation, 'user-location');
 map.forEach((key, value) => customElements.define(key, value));
 
 // Create app instance and initialize it when DOM is ready.
-const app = new App('2018');
-document.addEventListener(EventType.READY, () => app.init());
-
-// Update app when custom event is dispatched or when URL changes via
-// browser controls.
-document.addEventListener(EventType.UPDATE, () => app.update());
-window.addEventListener(EventType.POPSTATE, () => app.update(), false);
+document.addEventListener('DOMContentLoaded', () => new App('2018'));
 
 // Register the Service Worker.
 if ('serviceWorker' in navigator) {
