@@ -13,6 +13,7 @@ class Utils {
     this.touchEnabled_();
     this.googleAnalytics_();
     this.setViewportHeight_();
+    this.standaloneStartup_();
     window.addEventListener('resize', this.setViewportHeight_);
   }
 
@@ -82,6 +83,17 @@ class Utils {
    */
   private setViewportHeight_(): void {
     document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
+  }
+
+  /**
+   * Redirects view to '/' if app is launched as a standalone app. Otherwise,
+   * a user may have saved the app with a full URL, which means they will start
+   * at that URL every time they launch the app instead of on the current day.
+   */
+  private standaloneStartup_(): void {
+    if ((<any>window).navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
+      history.replaceState(null, null, '/');
+    }
   }
 
   /**

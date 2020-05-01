@@ -61,9 +61,8 @@ class App {
     this.location_ = this.initialLocation_();
     this.locationEl_.setAttribute(LOCATION_ATTR, this.location_);
 
-    // Update copyright and set up initial view for standalone app.
+    // Update copyright.
     this.updateCopyright_();
-    this.standaloneStartup_();
   }
 
   /**
@@ -82,18 +81,6 @@ class App {
       return urlSegments[3].replace(/[+]/g, ' ');
     } else {
       return localStorage.getItem(LOCAL_STORAGE_ITEM) || DEFAULT_LOCATION;
-    }
-  }
-
-  // TODO: Relocate this method to Utils.
-  /**
-   * Redirects view to '/' if app is launched as a standalone app. Otherwise,
-   * a user may have saved the app with a full URL, which means they will start
-   * at that URL every time they launch the app instead of on the current day.
-   */
-  private standaloneStartup_(): void {
-    if ((<any>window).navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
-      history.replaceState(null, null, '/');
     }
   }
 
