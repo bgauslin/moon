@@ -56,43 +56,30 @@ class App {
     this.locationEl_ = document.querySelector('.location');
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
 
-    // Update copyright.
+    // Update the DOM.
     this.updateCopyright_();
     this.update_();
   }
 
   /**
-   * Updates UI when URL changes: fetches API data, sets attributes on custom
-   * elements with fetched data results, then updates the header and title.
+   * Updates UI when URL changes.
    */
   private async update_(): Promise<any> {
-    // Enable progress bar while we fetch data.
+    // Enable progress bar.
     document.body.setAttribute(LOADING_ATTR, '');
 
-    // Get the date and location.
+    // Get date and location, then fetch data.
     this.date_ = this.dateTime_.activeDate();
     this.location_ = this.locationEl_.getAttribute(LOCATION_ATTR);
-
-    // Fetch data (and bail if there's nothing).
     const moonData = await this.dataFetcher_.fetch(this.date_, this.location_);
     if (!moonData) {
       document.body.removeAttribute(LOADING_ATTR);
       return;
     }
 
-    // Update custom element attributes so they can update themselves.
+    // Update the DOM and send a pageview.
+    this.updateHeader_();
     this.updateElements_(moonData);
-
-    // TODO: Move this to a custom element.
-    // Update the date in the header.
-    const headerLink = document.querySelector('.header__link');
-    headerLink.textContent = this.dateTime_.prettyDate(
-      this.date_,
-      document.documentElement.lang,
-      'long',
-    );
-
-    // Update the document title.
     this.updateDocumentTitle_({
       date: this.date_,
       locale: document.documentElement.lang,
@@ -100,10 +87,23 @@ class App {
       percent: moonData.percent,
       phase: moonData.phase,
     });
-
-    // Disable the progress bar and send a new Analytics pageview.
-    document.body.removeAttribute(LOADING_ATTR);
+    
     this.utils_.sendPageview(window.location.pathname, document.title);
+    
+    // Disable the progress bar.
+    document.body.removeAttribute(LOADING_ATTR);
+  }
+  
+  /**
+   * Updates the date in the header.
+   */
+  private updateHeader_(): void {
+    const headerLink = document.querySelector('.header__link');
+    headerLink.textContent = this.dateTime_.prettyDate(
+      this.date_,
+      document.documentElement.lang,
+      'long',
+    );
   }
   
   /**
