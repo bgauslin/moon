@@ -1,6 +1,5 @@
 import {DataFetcher} from './DataFetcher';
 import {AppDate, DateTimeUtils} from './DateTimeUtils';
-import {Templates} from './Templates';
 import {Utils} from './Utils';
 
 interface TitleInfo {
@@ -14,12 +13,14 @@ interface TitleInfo {
 const DEFAULT_LOCATION: string = 'New York, NY';
 const LOADING_ATTR: string = 'loading';
 const LOCATION_ATTR: string = 'location';
+
 // TODO: Refactor as custom element wrapped around these elements.
 const SELECTORS_HIGHLIGHTED: string[] = [
   '.header__title',
   '.info__phase',
   '.info__percent',
 ];
+
 const TITLE_DIVIDER: string = '·';
 const TODAY_CLASSNAME: string = 'today';
 
@@ -43,7 +44,6 @@ class App {
   private popstateListener_: any;
   private startYear_: string;
   private sunChartEl_: HTMLElement
-  private templates_: Templates;
   private updateListener_: any;
   private utils_: Utils;
 
@@ -53,7 +53,6 @@ class App {
     this.locationObserver_ = new MutationObserver(() => this.update_());
     this.popstateListener_ = this.update_.bind(this);
     this.startYear_ = year;
-    this.templates_ = new Templates('.content', '.header');
     this.updateListener_ = this.update_.bind(this);
     this.utils_ = new Utils();
   }
@@ -79,10 +78,10 @@ class App {
   }
 
   /**
-   * Renders app HTML, then creates references to its elements.
+   * Removes 'no-js' class, then creates references to all app elements.
    */
   private updateDom_(): void {
-    this.templates_.init();
+    document.querySelector('.content').classList.remove('no-js');
 
     this.copyrightEl_ = document.querySelector('.copyright__years');
     this.headerLinkEl_ = document.querySelector('.header__link');

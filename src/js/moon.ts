@@ -22,11 +22,13 @@ map.set(UserLocation, 'user-location');
 map.forEach((key, value) => customElements.define(key, value));
 
 // Create app instance and initialize it when DOM is ready.
-document.addEventListener('DOMContentLoaded', () => new App('2018'));
+document.addEventListener('DOMContentLoaded', () => new App('2018').init());
 
 // Register the Service Worker.
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
-  });
+if (process.env.NODE_ENV === 'production') {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  }
 }

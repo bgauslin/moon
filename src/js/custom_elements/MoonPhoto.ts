@@ -1,10 +1,12 @@
 import Spinner from 'spin';
 
-const ILLUMINATION_ATTR: string = 'illumnination';
-// Note: MOONPHASE_IMAGE_COUNT value is same as loop value in 'src/stylus/moon/photo.styl'
+// [1] MOONPHASE_IMAGE_COUNT value is same as loop value
+// in 'src/stylus/moon/photo.styl'
+
+const ILLUMINATION_ATTR: string = 'illumination';
 const IMAGE_PATH_1X: string = '/img/moon-phases-26-240.min.jpg';
 const IMAGE_PATH_2X: string = '/img/moon-phases-26-480.min.jpg';
-const MOONPHASE_IMAGE_COUNT: number = 26;
+const MOONPHASE_IMAGE_COUNT: number = 26; // [1]
 const PERCENT_ATTR: string = 'percent';
 const PHASE_ATTR: string = 'phase';
 const READY_ATTR: string = 'ready';

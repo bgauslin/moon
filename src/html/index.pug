@@ -1,6 +1,8 @@
 - const title = "Moonrise, Moonset, Moon Phase"
 - const description = "Geolocation-based moon phase, moonrise, and moonset"
 - const shortTitle = "Moon"
+- const moonColor = '#fff'
+- const sunColor = '#f8c537'
 
 doctype html
 html(lang="en-GB")
@@ -16,10 +18,22 @@ html(lang="en-GB")
     link(rel="apple-touch-icon" href="/apple-touch-icon.png")
     link(rel="manifest" href="/pwa/manifest.json")
   body(no-touch)
+    div.progress-bar
     header.header
-      h1.header__title= shortTitle
-    main.content.content--no-js
+      h1.header__title
+        a.header__link(href="/" title="Today")= shortTitle
+      user-location.location
+    main.content.no-js
       noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.
+      div.charts
+        div.charts__frame
+          chart-axes.chart
+          donut-chart.chart(name="sun" color=sunColor)
+          donut-chart.chart(name="moon" color=moonColor)
+          moon-photo.photo
+      moon-info.info
+      prev-next.nav(direction="prev")
+      prev-next.nav(direction="next")
     footer.footer
       p.copyright
         span.copyright__years © 2018
