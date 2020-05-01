@@ -1,4 +1,3 @@
-import {Attribute} from './Constants';
 import {DataFetcher} from './DataFetcher';
 import {AppDate, DateTimeUtils} from './DateTimeUtils';
 import {Templates} from './Templates';
@@ -13,16 +12,15 @@ interface TitleInfo {
 }
 
 const DEFAULT_LOCATION: string = 'New York, NY';
-
+const LOADING_ATTR: string = 'loading';
+const LOCATION_ATTR: string = 'location';
 // TODO: Refactor as custom element wrapped around these elements.
 const SELECTORS_HIGHLIGHTED: string[] = [
   '.header__title',
   '.info__phase',
   '.info__percent',
 ];
-
 const TITLE_DIVIDER: string = '·';
-
 const TODAY_CLASSNAME: string = 'today';
 
 // TODO: Refactor App class as a custom element.
@@ -71,7 +69,7 @@ class App {
     this.utils_.init();
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
     this.location_ = this.initialLocation_();
-    this.locationEl_.setAttribute(Attribute.LOCATION, this.location_);
+    this.locationEl_.setAttribute(LOCATION_ATTR, this.location_);
 
     window.addEventListener('popstate', this.popstateListener_, false);
     document.addEventListener('update', this.updateListener_);
@@ -111,7 +109,7 @@ class App {
     if (urlSegments.length === 4) {
       return urlSegments[3].replace(/[+]/g, ' ');
     } else {
-      return localStorage.getItem(Attribute.LOCATION) || DEFAULT_LOCATION;
+      return localStorage.getItem(LOCATION_ATTR) || DEFAULT_LOCATION; // TODO: Rename this to LOCAL_STORAGE const.
     }
   }
 
@@ -132,18 +130,18 @@ class App {
    */
   private async update_(): Promise<any> {
     // Enable progress bar while we fetch data.
-    document.body.setAttribute(Attribute.LOADING, '');
+    document.body.setAttribute(LOADING_ATTR, '');
 
     // Get the date from the address bar.
     this.date_ = this.dateTime_.activeDate();
 
     // Get location from custom element attribute.
-    this.location_ = this.locationEl_.getAttribute(Attribute.LOCATION);
+    this.location_ = this.locationEl_.getAttribute(LOCATION_ATTR);
 
     // Fetch data (and bail if there's nothing).
     const data = await this.dataFetcher_.fetch(this.date_, this.location_);
     if (!data) {
-      document.body.removeAttribute(Attribute.LOADING);
+      document.body.removeAttribute(LOADING_ATTR);
       return;
     }
 
@@ -190,10 +188,10 @@ class App {
     this.highlightToday_(this.date_);
 
     // Save new location to localStorage.
-    localStorage.setItem(Attribute.LOCATION, this.location_);
+    localStorage.setItem(LOCATION_ATTR, this.location_);
 
     // Disable the progress bar and send a new Analytics pageview.
-    document.body.removeAttribute(Attribute.LOADING);
+    document.body.removeAttribute(LOADING_ATTR);
     this.utils_.sendPageview(window.location.pathname, document.title);
   }
   

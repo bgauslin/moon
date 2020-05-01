@@ -1,4 +1,4 @@
-import {Attribute, Chart} from '../modules/Constants';
+import {Chart} from '../modules/Constants';
 
 interface Arc {
   radius: number,
@@ -18,6 +18,9 @@ interface Point {
 }
 
 const AXIS_OFFSET: number = -90;
+const COLOR_ATTR: string = 'color';
+const END_ATTR: string = 'end';
+const START_ATTR: string = 'start';
 
 /**
  * Custom element that renders a partial donut chart whose start and end
@@ -31,7 +34,7 @@ class DonutChart extends HTMLElement {
   }
 
   static get observedAttributes(): string[] {
-    return [Attribute.START, Attribute.END];
+    return [START_ATTR, END_ATTR];
   }
 
   attributeChangedCallback(): void {
@@ -44,8 +47,8 @@ class DonutChart extends HTMLElement {
   private render_(): void {
     // Bail if both 'start' and 'end' attributes are missing since we can't
     // make the chart without them.
-    const start = this.getAttribute(Attribute.START);
-    const end = this.getAttribute(Attribute.END);
+    const start = this.getAttribute(START_ATTR);
+    const end = this.getAttribute(END_ATTR);
 
     if (!start || !end) {
       return;
@@ -102,7 +105,7 @@ class DonutChart extends HTMLElement {
     const setTransform = `rotate(${setSweep.sweep}, ${setRotation.x}, ${setRotation.y})`;
 
     // Get color for the rendered arc.
-    const color = this.getAttribute(Attribute.COLOR);
+    const color = this.getAttribute(COLOR_ATTR);
 
     // Rendered chart HTML.
     const html = `

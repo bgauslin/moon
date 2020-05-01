@@ -1,7 +1,8 @@
-import {Attribute} from '../modules/Constants';
 import {DateTimeUtils} from '../modules/DateTimeUtils';
 import {Utils} from '../modules/Utils';
 
+const DIRECTION_ATTR: string = 'direction';
+const LOCATION_ATTR: string = 'location';
 const SVG_PATH_LEFT: string = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822';
 const SVG_PATH_RIGHT: string = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.06822';
 
@@ -23,11 +24,11 @@ class PrevNext extends HTMLElement {
   }
 
   static get observedAttributes(): string[] {
-    return [Attribute.LOCATION];
+    return [LOCATION_ATTR];
   }
 
   connectedCallback(): void {
-    this.direction_ = this.getAttribute(Attribute.DIRECTION);
+    this.direction_ = this.getAttribute(DIRECTION_ATTR);
     this.render_();
     this.update_(this.location_);
   }

@@ -1,4 +1,3 @@
-import {Attribute} from '../modules/Constants';
 import {Utils} from '../modules/Utils';
 
 interface UserCoordinates {
@@ -6,7 +5,12 @@ interface UserCoordinates {
   lng: number,
 }
 
+const ENABLED_ATTR: string = 'enabled';
 const GEOCODER_PROXIMITY: number = 100;
+const HIDDEN_ATTR: string = 'hidden';
+const LOADING_ATTR: string = 'loading';
+const LOCATION_ATTR: string = 'location';
+const RESTORE_ATTR: string = 'restore';
 
 /**
  * Custom element that gets the user's location either via text input or via
@@ -29,16 +33,16 @@ class UserLocation extends HTMLElement {
   }
 
   static get observedAttributes(): string[] {
-    return [Attribute.LOCATION, Attribute.RESTORE];
+    return [LOCATION_ATTR, RESTORE_ATTR];
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
-    if (name === Attribute.RESTORE) {
+    if (name === RESTORE_ATTR) {
       this.restore_();
     }
 
-    if (name === Attribute.LOCATION && !this.hasSetup_) {
-      this.location_ = this.getAttribute(Attribute.LOCATION);
+    if (name === LOCATION_ATTR && !this.hasSetup_) {
+      this.location_ = this.getAttribute(LOCATION_ATTR);
       this.previousLocation_ = this.location_;
       this.render_();
       this.enableGeolocation_();
@@ -72,7 +76,7 @@ class UserLocation extends HTMLElement {
 
     // Only show geolocation button on input focus.
     this.inputEl_.addEventListener('focus', () => {
-      this.geolocationButtonEl_.setAttribute(Attribute.ENABLED, '');
+      this.geolocationButtonEl_.setAttribute(ENABLED_ATTR, '');
     });
 
     // Restore previous location if input is empty when blurred and hide
@@ -81,7 +85,7 @@ class UserLocation extends HTMLElement {
       if (this.inputEl_.value === '') {
         this.restore_();
       }
-      this.geolocationButtonEl_.removeAttribute(Attribute.ENABLED);
+      this.geolocationButtonEl_.removeAttribute(ENABLED_ATTR);
     });
 
     // Get user's location when geolocation button is clicked.
@@ -96,7 +100,7 @@ class UserLocation extends HTMLElement {
    * Geolocation API.
    */
   private async getGeolocation_(): Promise<any> {
-    document.body.setAttribute(Attribute.LOADING, '');
+    document.body.setAttribute(LOADING_ATTR, '');
     this.inputEl_.value = 'Retrieving location...';
 
     const options = {
@@ -109,7 +113,7 @@ class UserLocation extends HTMLElement {
     const error = () => {
       alert(`Uh oh. We were unable to retrieve your location. :(\n\nYou may need to enable Location Services on your device before you can use this feature.`);
       this.restore_();
-      document.body.removeAttribute(Attribute.LOADING);
+      document.body.removeAttribute(LOADING_ATTR);
     }
 
     // Get user's location as city/state/country.
@@ -146,7 +150,7 @@ class UserLocation extends HTMLElement {
       this.inputEl_.value = this.location_;
       this.update_();
 
-      document.body.removeAttribute(Attribute.LOADING);
+      document.body.removeAttribute(LOADING_ATTR);
 
     } catch (error) {
       console.warn('Currently unable to fetch data. :(');
@@ -163,7 +167,7 @@ class UserLocation extends HTMLElement {
     urlSegments.push(this.utils_.urlify(this.location_));
 
     history.pushState(null, null, urlSegments.join('/'));
-    this.setAttribute(Attribute.LOCATION, this.location_);
+    this.setAttribute(LOCATION_ATTR, this.location_);
   }
 
   /**
@@ -179,7 +183,7 @@ class UserLocation extends HTMLElement {
    */
   private enableGeolocation_(): void {
     if (navigator.geolocation) {
-      this.geolocationButtonEl_.removeAttribute(Attribute.HIDDEN);
+      this.geolocationButtonEl_.removeAttribute(HIDDEN_ATTR);
     }
   }
 

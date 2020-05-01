@@ -1,7 +1,5 @@
-enum ChartColor {
-  SUN = '#f8c537',
-  MOON = '#fff',
-}
+const MOON_COLOR: string = '#fff';
+const SUN_COLOR: string = '#f8c537';
 
 /**
  * Class that provides all HTML templates required by the app.
@@ -53,8 +51,8 @@ class Templates {
       <div class="charts">\
         <div class="charts__frame">\
           <chart-axes class="chart"></chart-axes>\
-          <donut-chart class="chart" name="sun" color="${ChartColor.SUN}"></donut-chart>\
-          <donut-chart class="chart" name="moon" color="${ChartColor.MOON}"></donut-chart>\
+          <donut-chart class="chart" name="sun" color="${SUN_COLOR}"></donut-chart>\
+          <donut-chart class="chart" name="moon" color="${MOON_COLOR}"></donut-chart>\
           <moon-photo class="photo"></moon-photo>\
         </div>\
       </div>\

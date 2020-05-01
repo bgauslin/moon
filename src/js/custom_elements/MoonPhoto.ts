@@ -1,10 +1,13 @@
-import {Attribute} from '../modules/Constants';
 import Spinner from 'spin';
 
+const ILLUMINATION_ATTR: string = 'illumnination';
 // Note: MOONPHASE_IMAGE_COUNT value is same as loop value in 'src/stylus/moon/photo.styl'
 const IMAGE_PATH_1X: string = '/img/moon-phases-26-240.min.jpg';
 const IMAGE_PATH_2X: string = '/img/moon-phases-26-480.min.jpg';
 const MOONPHASE_IMAGE_COUNT: number = 26;
+const PERCENT_ATTR: string = 'percent';
+const PHASE_ATTR: string = 'phase';
+const READY_ATTR: string = 'ready';
 const SPINNER_DELAY_MS: number = 1000;
 
 const SpinnerOptions: {} = {
@@ -34,7 +37,7 @@ class MoonPhoto extends HTMLElement {
   }
 
   static get observedAttributes(): string[] {
-    return [Attribute.ILLUMINATION, Attribute.PERCENT, Attribute.PHASE];
+    return [ILLUMINATION_ATTR, PERCENT_ATTR, PHASE_ATTR];
   }
 
   attributeChangedCallback(): void {
@@ -45,15 +48,15 @@ class MoonPhoto extends HTMLElement {
    * Renders a photo of the current moon phase.
    */
   private render_(): void {
-    this.illumination_ = parseInt(this.getAttribute(Attribute.ILLUMINATION));
-    this.percent_ = parseInt(this.getAttribute(Attribute.PERCENT));
-    this.phase_ = this.getAttribute(Attribute.PHASE);
+    this.illumination_ = parseInt(this.getAttribute(ILLUMINATION_ATTR));
+    this.percent_ = parseInt(this.getAttribute(PERCENT_ATTR));
+    this.phase_ = this.getAttribute(PHASE_ATTR);
 
     if (!this.illumination_ || !this.phase_ || !this.percent_) {
       return;
     }
 
-    const ready = this.imageLoaded_ ? Attribute.READY : '';
+    const ready = this.imageLoaded_ ? READY_ATTR : '';
     const html = `\      
       <div class="${this.className}__frame">\
         <figure class="${this.className}__figure">\
@@ -98,13 +101,13 @@ class MoonPhoto extends HTMLElement {
     const imageEl = this.querySelector('img');
 
     imageEl.onload = () => {
-      imageEl.setAttribute(Attribute.READY, '');
+      imageEl.setAttribute(READY_ATTR, '');
       this.spinner_.stop();
       this.imageLoaded_ = true;
     };
 
     window.setTimeout(() => {
-      if (!imageEl.hasAttribute(Attribute.READY)) {
+      if (!imageEl.hasAttribute(READY_ATTR)) {
         this.spinner_.spin();
         this.appendChild(this.spinner_.el);
       }
