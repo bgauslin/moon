@@ -1,7 +1,6 @@
 import SunCalc from 'suncalc';
 import tzLookup from 'tz-lookup';
 import {AppDate, DateTimeUtils} from './DateTimeUtils';
-import {Utils} from './Utils';
 
 interface MoonData {
   hemisphere: string,
@@ -35,18 +34,16 @@ class DataFetcher {
   private lng_: number;
   private location_: string;
   private timezone_: string;
-  private utils_: Utils;
 
   constructor() {
     this.dateTimeUtils_ = new DateTimeUtils();
-    this.utils_ = new Utils();
   }
 
   /**
    * Fetches location coordinates, then returns sun and moon data for rendering.
    */
   public async fetch(date: AppDate, location: string): Promise<MoonData> {
-    const location_ = this.utils_.urlify(location);
+    const location_ = this.dateTimeUtils_.urlify(location);
 
     // Get lat/lng via API based on location.
     if (location_ !== this.location_) {

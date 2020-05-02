@@ -1,5 +1,4 @@
 import {DateTimeUtils} from '../modules/DateTimeUtils';
-import {Utils} from '../modules/Utils';
 
 const DIRECTION_ATTR: string = 'direction';
 const LOCATION_ATTR: string = 'location';
@@ -14,12 +13,10 @@ class PrevNext extends HTMLElement {
   private dateTimeUtils_: DateTimeUtils;  
   private direction_: string;
   private link_: HTMLElement;
-  private utils_: Utils;
 
   constructor() {
     super();
     this.dateTimeUtils_ = new DateTimeUtils();
-    this.utils_ = new Utils();
   }
 
   static get observedAttributes(): string[] {
@@ -60,7 +57,7 @@ class PrevNext extends HTMLElement {
       const date = (this.direction_ === 'prev') ? this.dateTimeUtils_.prevDate() : this.dateTimeUtils_.nextDate();
       const location = this.getAttribute(LOCATION_ATTR);
 
-      const url = String(this.utils_.makeUrl(date, location));
+      const url = String(this.dateTimeUtils_.makeUrl(date, location));
       const title = `${this.dateTimeUtils_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
       const attributes = {

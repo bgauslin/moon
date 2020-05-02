@@ -119,6 +119,38 @@ class DateTimeUtils {
   }
 
   /**
+   * Whether the day is valid.
+   */
+  private isValidDay_(year: number, month: number, day: number): boolean {
+    if (month < 1 || month > 12) {
+      return;
+    } else if (this.isLeapYear_(year) && month === 2 && day === 29) {
+      return true;
+    } else {
+      const lastDay = DAYS_IN_MONTHS[month - 1];
+      return (day >= 1 && day <= lastDay);
+    }
+  }
+
+  /**
+   * Whether the month is valid.
+   */
+  private isValidMonth_(month: number): boolean {
+    return (month > 0 && month < 13);
+  }
+
+  /**
+   * Converts a Date object and a location string to a full URL.
+   */
+  public makeUrl(date: AppDate, location: string): URL {
+    const {year, month, day} = date;
+    const month_ = this.zeroPad_(month);
+    const day_ = this.zeroPad_(day);
+    const location_ = this.urlify(location);
+    return new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
+  }
+
+  /**
    * Converts a Date object to UTC time format relative to timezone, then
    * converts the resulting time to 24-hour HH:MM format.
    */
@@ -140,27 +172,20 @@ class DateTimeUtils {
     }
 
     return `${hours}:${minutes}`;
+  }  
+
+  /**
+   * Returns a URL-friendly string with each space replaced with a '+'.
+   */
+  public urlify(value: string): string {
+    return value.replace(/[\s]/g, '+')
   }
 
   /**
-   * Whether the day is valid.
+   * Returns a value with zero padding if its value is less than 10.
    */
-  private isValidDay_(year: number, month: number, day: number): boolean {
-    if (month < 1 || month > 12) {
-      return;
-    } else if (this.isLeapYear_(year) && month === 2 && day === 29) {
-      return true;
-    } else {
-      const lastDay = DAYS_IN_MONTHS[month - 1];
-      return (day >= 1 && day <= lastDay);
-    }
-  }
-
-  /**
-   * Whether the month is valid.
-   */
-  private isValidMonth_(month: number): boolean {
-    return (month > 0 && month < 13);
+  private zeroPad_(n: number): string {
+    return (n < 10) ? `0${n}` : `${n}`;
   }
 }
 

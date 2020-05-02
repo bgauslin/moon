@@ -1,5 +1,4 @@
 import fastclick from 'fastclick';
-import {AppDate} from './DateTimeUtils';
 
 /**
  * Adds site-wide features for enhancing a website's UX.
@@ -27,17 +26,6 @@ class Utils {
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       (window as any).ga('create', process.env.GA_ID, 'auto');
     }
-  }
-
-  /**
-   * Converts a Date object and a location string to a full URL.
-   */
-  public makeUrl(date: AppDate, location: string): URL {
-    const {year, month, day} = date;
-    const month_ = this.zeroPad(month);
-    const day_ = this.zeroPad(day);
-    const location_ = this.urlify(location);
-    return new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
   }
 
   /**
@@ -80,20 +68,6 @@ class Utils {
       document.body.removeAttribute('no-touch');
       fastclick['attach'](document.body);
     }
-  }
-
-  /**
-   * Returns a URL-friendly string with each space replaced with a '+'.
-   */
-  public urlify(value: string): string {
-    return value.replace(/[\s]/g, '+')
-  }
-
-  /**
-   * Returns a value with zero padding if its value is less than 10.
-   */
-  public zeroPad(n: number): string {
-    return (n < 10) ? `0${n}` : `${n}`;
   }
 }
 
