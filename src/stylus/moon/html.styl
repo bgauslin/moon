@@ -10,15 +10,6 @@ body
   -webkit-tap-highlight-color transparent
   text-size-adjust none
 
-body
-  display grid
-  grid-template-rows auto 1fr auto
-  min-height 100vh // fallback
-  min-height calc(var(--vh, 1vh) * 100)
-
-  @media Breakpoint.SMALL
-    grid-template-rows 1fr auto 1fr
-
 *
   box-sizing border-box
 
@@ -29,8 +20,8 @@ body[loading] *
 a
   text-decoration none
 
-  &:focus
-    outline none
+a:focus
+  outline none
 
 input
 button
@@ -39,8 +30,9 @@ button
   border 0
   outline none
 
-  &:focus
-    outline none
+input:focus
+button:focus
+  outline none
 
 button:hover
   cursor pointer
@@ -55,13 +47,6 @@ svg
   vertical-align middle
   width 100%
 
-[hidden]
-  display none !important
-  pointer-events none !important
-
-// Styles for elements if current date is also today.
-app-today
-  display none
-
-.today
-  webfont_weight(600)
+// [hidden]
+//   display none !important
+//   pointer-events none !important

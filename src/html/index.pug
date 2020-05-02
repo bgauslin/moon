@@ -20,28 +20,29 @@ html(lang="en-GB")
     link(rel="manifest" href="/pwa/manifest.json")
   body(no-touch no-js)
     div.progress-bar
-    header.header
-      h1.header__title
-        a.header__link(href="/" title="Today")= shortTitle
-      user-location.location(default="New York, NY")
-    main.content
-      noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.
-      div.charts
-        div.charts__frame
-          chart-axes.chart
-          donut-chart.chart(name="sun" color=sunColor)
-          donut-chart.chart(name="moon" color=moonColor)
-          moon-photo.photo
-      moon-info.info
-      prev-next.nav(direction="prev")
-      prev-next.nav(direction="next")
-      app-today(selector=".header__title,.info__phase,.info__percent")
-    footer.footer
-      p.copyright
-        span.copyright__years © 2018–#{currentYear}
-        a.copyright__owner(
-          href="https://gauslin.com",
-          title="Ben Gauslin’s Website",
-          target="_blank",
-          rel="noopener",
-        ) Ben Gauslin
+    moon-app.app
+      header.header
+        h1.header__title
+          a.header__link(href="/" title="Today")= shortTitle
+        user-location.location(default="New York, NY")
+      main.content
+        noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.
+        div.charts
+          div.charts__frame
+            chart-axes.chart
+            donut-chart.chart(name="sun" color=sunColor)
+            donut-chart.chart(name="moon" color=moonColor)
+            moon-photo.photo
+        moon-info.info
+        prev-next.nav(direction="prev")
+        prev-next.nav(direction="next")
+        app-today(selector=".header__title,.info__phase,.info__percent")
+      footer.footer
+        p.copyright
+          span.copyright__years © 2018–#{currentYear}
+          a.copyright__owner(
+            href="https://gauslin.com",
+            title="Ben Gauslin’s Website",
+            target="_blank",
+            rel="noopener",
+          ) Ben Gauslin

@@ -1,6 +1,6 @@
 require ('dotenv').config();
 
-import {App} from './modules/App';
+import {App} from './custom_elements/App';
 import {ChartAxes} from './custom_elements/ChartAxes';
 import {DonutChart} from './custom_elements/DonutChart';
 import {MoonInfo} from './custom_elements/MoonInfo';
@@ -14,6 +14,7 @@ import '../stylus/moon.styl';
 
 // Define all custom elements.
 const map = new Map();
+map.set(App, 'moon-app');
 map.set(ChartAxes, 'chart-axes');
 map.set(DonutChart, 'donut-chart');
 map.set(MoonInfo, 'moon-info');
@@ -22,13 +23,6 @@ map.set(PrevNext, 'prev-next');
 map.set(TodayHighlighter, 'app-today');
 map.set(UserLocation, 'user-location');
 map.forEach((key, value) => customElements.define(key, value));
-
-// Create app instance and initialize it when DOM is ready.
-document.addEventListener('DOMContentLoaded', () => {
-  document.body.removeAttribute('no-js');
-  document.body.querySelector('noscript').remove();
-  new App().init();
-});
 
 // Register the Service Worker.
 if (process.env.NODE_ENV === 'production') {

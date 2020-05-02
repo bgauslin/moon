@@ -1,6 +1,6 @@
-import {DataFetcher, MoonData} from './DataFetcher';
-import {AppDate, DateTimeUtils} from './DateTimeUtils';
-import {Utils} from './Utils';
+import {DataFetcher, MoonData} from '../modules/DataFetcher';
+import {AppDate, DateTimeUtils} from '../modules/DateTimeUtils';
+import {Utils} from '../modules/Utils';
 
 interface TitleInfo {
   date: AppDate,
@@ -14,39 +14,49 @@ const LOADING_ATTR: string = 'loading';
 const LOCATION_ATTR: string = 'location';
 const TITLE_DIVIDER: string = '·';
 
-// TODO: Refactor App class as a custom element.
 /**
- * Primary class that controls the entire application.
+ * Custom element that controls the application.
  */
-class App {
-  private utils_: Utils;
-  private clickListener_: any;
+class App extends HTMLElement {
   private date_: AppDate;
   private dateTimeUtils_: DateTimeUtils;
   private location_: string;
   private locationEl_: HTMLElement;
   private locationObserver_: MutationObserver;
   private popstateListener_: any;
+  private utils_: Utils;
 
   constructor() {
+    super();
     this.dateTimeUtils_ = new DateTimeUtils();
-    this.clickListener_ = this.handleClick_.bind(this);
-    this.popstateListener_ = this.update_.bind(this);
     this.locationObserver_ = new MutationObserver(() => this.update_());
     this.utils_ = new Utils();
+    this.popstateListener_ = this.update_.bind(this);
+    this.addEventListener('click', this.handleClick_);
+    window.addEventListener('popstate', this.popstateListener_, false);
   }
 
   /**
    * Initializes the app when it first loads.
    */
-  public init(): void {
-    this.utils_.init();
-    document.addEventListener('click', this.clickListener_);
-    window.addEventListener('popstate', this.popstateListener_, false);
-
-    this.locationEl_ = document.querySelector('.location');
+  connectedCallback(): void {
+    this.setupDom_();
+    this.locationEl_ = this.querySelector('.location');
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
-    this.update_();
+    this.utils_.init();
+  }
+
+  disconnectedCallback(): void {
+    this.removeEventListener('click', this.handleClick_);
+    window.removeEventListener('popstate', this.popstateListener_, false);
+  }
+
+  /**
+   * Remove 'no JS' attribute and element from the DOM.
+   */
+  private setupDom_(): void {
+    document.body.removeAttribute('no-js');
+    document.body.querySelector('noscript').remove();
   }
 
   /**
@@ -86,7 +96,7 @@ class App {
    * Updates an element with the current date in human-friendly format.
    */
   private updateHeader_(): void {
-    const currentDateElement = document.querySelector('.header__link');
+    const currentDateElement = this.querySelector('.header__link');
     currentDateElement.textContent = this.dateTimeUtils_.prettyDate(
       this.date_,
       document.documentElement.lang,
@@ -119,7 +129,7 @@ class App {
 
     items.forEach((item) => {
       const [selector, attribute, value] = item;
-      document.querySelector(selector).setAttribute(attribute, value);
+      this.querySelector(selector).setAttribute(attribute, value);
     });
   }
 
