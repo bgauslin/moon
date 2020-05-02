@@ -11,15 +11,15 @@ const SVG_PATH_RIGHT: string = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.
  * showing the moon phase for the next or previous day.
  */
 class PrevNext extends HTMLElement {
-  private dateTime_: DateTimeUtils;  
+  private dateTimeUtils_: DateTimeUtils;  
   private direction_: string;
-  private linkEl_: HTMLElement;
+  private link_: HTMLElement;
   private location_: string;
   private utils_: Utils;
 
   constructor() {
     super();
-    this.dateTime_ = new DateTimeUtils();
+    this.dateTimeUtils_ = new DateTimeUtils();
     this.utils_ = new Utils();
   }
 
@@ -51,24 +51,28 @@ class PrevNext extends HTMLElement {
     `;
     this.innerHTML = html.replace(/\s\s/g, '');
 
-    this.linkEl_ = this.querySelector('a');
+    this.link_ = this.querySelector('a');
   }
 
   /**
    * Updates link and title relative to current date and location.
    */
   private update_(location?: string): void {
-    if (!location || !this.linkEl_) {
-      return;
+    if (this.link_ && location) {
+      const date = (this.direction_ === 'prev') ? this.dateTimeUtils_.prevDate() : this.dateTimeUtils_.nextDate();
+      const url = String(this.utils_.makeUrl(date, location));
+      const title = `${this.dateTimeUtils_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
+
+      const attributes = {
+        'href': url,
+        'title': title,
+        'aria-label': title,
+      }
+
+      for (const property in attributes) {
+        this.link_.setAttribute(property, attributes[property]);
+      }
     }
-
-    const date = ((this.direction_ === 'prev') ? this.dateTime_.prevDate() : this.dateTime_.nextDate());
-    const url = String(this.utils_.makeUrl(date, location));
-    const title = `${this.dateTime_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
-
-    this.linkEl_.setAttribute('href', url);
-    this.linkEl_.setAttribute('title', title);
-    this.linkEl_.setAttribute('aria-label', title);
   }
 }
 
