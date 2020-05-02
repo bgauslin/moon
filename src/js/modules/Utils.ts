@@ -9,12 +9,11 @@ class Utils {
    * Initializes site-wide utilities.
    */
   public init(): void {
-    this.hijackLinks_();
     this.touchEnabled_();
-    this.googleAnalytics_();
-    this.setViewportHeight_();
     this.standaloneStartup_();
-    window.addEventListener('resize', this.setViewportHeight_);
+    this.viewportHeight_();
+    this.googleAnalytics_();
+    window.addEventListener('resize', this.viewportHeight_);
   }
 
   /**
@@ -28,29 +27,6 @@ class Utils {
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       (window as any).ga('create', process.env.GA_ID, 'auto');
     }
-  }
-
-  /**
-   * Makes the app a single page application via the history API when links with
-   * the app's hostname are clicked.
-   */
-  private hijackLinks_(): void {
-    document.addEventListener('click', (e: Event) => {
-      const target = e.target as HTMLElement;
-      const href = target.getAttribute('href');
-      if (href) {
-        const linkUrl = new URL(href, window.location.origin);
-        if (linkUrl.hostname === window.location.hostname) {
-          e.preventDefault();
-          history.pushState(null, null, href);
-
-          const event = new CustomEvent('update', {
-            detail: {update: true}
-          });
-          document.dispatchEvent(event);
-        }
-      }
-    });
   }
 
   /**
@@ -81,7 +57,7 @@ class Utils {
    * Sets custom property for viewport height that updates 'vh' calculation due
    * to iOS Safari behavior where chrome appears and disappears when scrolling.
    */
-  private setViewportHeight_(): void {
+  private viewportHeight_(): void {
     document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
   }
 

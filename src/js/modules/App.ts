@@ -19,46 +19,45 @@ const TITLE_DIVIDER: string = '·';
  * Primary class that controls the entire application.
  */
 class App {
+  private utils_: Utils;
+  private clickListener_: any;
   private date_: AppDate;
-  private dateTime_: DateTimeUtils;
+  private dateTimeUtils_: DateTimeUtils;
   private location_: string;
   private locationEl_: HTMLElement;
   private locationObserver_: MutationObserver;
   private popstateListener_: any;
-  private updateListener_: any;
-  private utils_: Utils;
 
   constructor() {
-    this.dateTime_ = new DateTimeUtils();
-    this.locationObserver_ = new MutationObserver(() => this.update_());
+    this.dateTimeUtils_ = new DateTimeUtils();
+    this.clickListener_ = this.handleClick_.bind(this);
     this.popstateListener_ = this.update_.bind(this);
-    this.updateListener_ = this.update_.bind(this);
+    this.locationObserver_ = new MutationObserver(() => this.update_());
     this.utils_ = new Utils();
   }
 
   /**
-   * Initializes UI on first run. Observing the 'location' element and setting
-   * an attribute on it will trigger the 'update' method to fetch data and
-   * populate the UI on initial page load.
+   * Initializes the app when it first loads.
    */
   public init(): void {
     this.utils_.init();
+    document.addEventListener('click', this.clickListener_);
     window.addEventListener('popstate', this.popstateListener_, false);
-    document.addEventListener('update', this.updateListener_);
+
     this.locationEl_ = document.querySelector('.location');
     this.locationObserver_.observe(this.locationEl_, {attributes: true});
     this.update_();
   }
 
   /**
-   * Updates UI when URL changes.
+   * Updates the app when the URL changes.
    */
   private async update_(): Promise<any> {
     // Enable progress bar.
     document.body.setAttribute(LOADING_ATTR, '');
 
     // Get date and location, then fetch data.
-    this.date_ = this.dateTime_.activeDate();
+    this.date_ = this.dateTimeUtils_.activeDate();
     this.location_ = this.locationEl_.getAttribute(LOCATION_ATTR);
     const moonData = await new DataFetcher().fetch(this.date_, this.location_);
     if (!moonData) {
@@ -84,11 +83,11 @@ class App {
   }
   
   /**
-   * Updates the date in the header.
+   * Updates an element with the current date in human-friendly format.
    */
   private updateHeader_(): void {
-    const headerLink = document.querySelector('.header__link');
-    headerLink.textContent = this.dateTime_.prettyDate(
+    const currentDateElement = document.querySelector('.header__link');
+    currentDateElement.textContent = this.dateTimeUtils_.prettyDate(
       this.date_,
       document.documentElement.lang,
       'long',
@@ -96,8 +95,8 @@ class App {
   }
   
   /**
-   * Updates attributes on all custom elements with moon data for the current
-   * date and location so they can then update themselves.
+   * Updates attributes on all custom elements so they can then update
+   * themselves.
    */
   private updateElements_(moonData: MoonData): void {
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
@@ -129,12 +128,28 @@ class App {
    */
   private updateDocumentTitle_(info: TitleInfo): void {
     const {date, locale, location, percent, phase} = info;
-    const dateLabel = this.dateTime_.prettyDate(date, locale, 'short');
+    const dateLabel = this.dateTimeUtils_.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
     if (percent > 0) {
       pageTitle += ` ${TITLE_DIVIDER} ${percent}%`;
     }
     document.title = pageTitle;
+  }
+
+  /**
+   * Adds SPA behavior to clicked links.
+   */
+  private handleClick_(e: Event): void {
+    const target = e.target as HTMLElement;
+    const href = target.getAttribute('href');
+    if (href) {
+      const linkUrl = new URL(href, window.location.origin);
+      if (linkUrl.hostname === window.location.hostname) {
+        e.preventDefault();
+        history.pushState(null, null, href);
+        this.update_();
+      }
+    }
   }
 }
 
