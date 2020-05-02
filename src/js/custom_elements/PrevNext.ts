@@ -14,7 +14,6 @@ class PrevNext extends HTMLElement {
   private dateTimeUtils_: DateTimeUtils;  
   private direction_: string;
   private link_: HTMLElement;
-  private location_: string;
   private utils_: Utils;
 
   constructor() {
@@ -30,11 +29,10 @@ class PrevNext extends HTMLElement {
   connectedCallback(): void {
     this.direction_ = this.getAttribute(DIRECTION_ATTR);
     this.render_();
-    this.update_(this.location_);
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
-    this.update_(newValue);
+  attributeChangedCallback(): void {
+    this.update_();
   }
 
   /**
@@ -57,9 +55,11 @@ class PrevNext extends HTMLElement {
   /**
    * Updates link and title relative to current date and location.
    */
-  private update_(location?: string): void {
-    if (this.link_ && location) {
+  private update_(): void {
+    if (this.link_) {
       const date = (this.direction_ === 'prev') ? this.dateTimeUtils_.prevDate() : this.dateTimeUtils_.nextDate();
+      const location = this.getAttribute(LOCATION_ATTR);
+
       const url = String(this.utils_.makeUrl(date, location));
       const title = `${this.dateTimeUtils_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
