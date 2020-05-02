@@ -1,12 +1,15 @@
-[no-js]
+[no-js] .app
   display grid
   grid-template-columns 1fr
   grid-template-rows auto 1fr auto
 
+  @media Breakpoint.SMALL
+    grid-template-rows 1fr 2fr 1fr
+
 [no-js] .content
   align-items center
-  grid-template-columns 1fr
-  grid-template-rows 1fr
+  grid-template-columns 1fr  !important
+  grid-template-rows 1fr  !important
   text-align center
 
 [no-js] .content a
