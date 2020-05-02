@@ -1,4 +1,4 @@
-import {DateTimeUtils} from '../modules/DateTimeUtils';
+import {DateUtils} from '../modules/DateUtils';
 
 const DIRECTION_ATTR: string = 'direction';
 const LOCATION_ATTR: string = 'location';
@@ -10,13 +10,13 @@ const SVG_PATH_RIGHT: string = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.
  * showing the moon phase for the next or previous day.
  */
 class PrevNext extends HTMLElement {
-  private dateTimeUtils_: DateTimeUtils;  
+  private dateUtils_: DateUtils;  
   private direction_: string;
   private link_: HTMLElement;
 
   constructor() {
     super();
-    this.dateTimeUtils_ = new DateTimeUtils();
+    this.dateUtils_ = new DateUtils();
   }
 
   static get observedAttributes(): string[] {
@@ -54,11 +54,11 @@ class PrevNext extends HTMLElement {
    */
   private update_(): void {
     if (this.link_) {
-      const date = (this.direction_ === 'prev') ? this.dateTimeUtils_.prevDate() : this.dateTimeUtils_.nextDate();
+      const date = (this.direction_ === 'prev') ? this.dateUtils_.prevDate() : this.dateUtils_.nextDate();
       const location = this.getAttribute(LOCATION_ATTR);
 
-      const url = String(this.dateTimeUtils_.makeUrl(date, location));
-      const title = `${this.dateTimeUtils_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
+      const url = String(this.dateUtils_.makeUrl(date, location));
+      const title = `${this.dateUtils_.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
       const attributes = {
         'href': url,

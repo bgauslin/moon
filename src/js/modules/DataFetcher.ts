@@ -1,6 +1,6 @@
 import SunCalc from 'suncalc';
 import tzLookup from 'tz-lookup';
-import {AppDate, DateTimeUtils} from './DateTimeUtils';
+import {AppDate, DateUtils} from './DateUtils';
 
 interface MoonData {
   hemisphere: string,
@@ -29,21 +29,21 @@ interface SunriseSunset {
  */
 class DataFetcher {
   private date_: Date;
-  private dateTimeUtils_: DateTimeUtils;
+  private dateUtils_: DateUtils;
   private lat_: number;
   private lng_: number;
   private location_: string;
   private timezone_: string;
 
   constructor() {
-    this.dateTimeUtils_ = new DateTimeUtils();
+    this.dateUtils_ = new DateUtils();
   }
 
   /**
    * Fetches location coordinates, then returns sun and moon data for rendering.
    */
   public async fetch(date: AppDate, location: string): Promise<MoonData> {
-    const location_ = this.dateTimeUtils_.urlify(location);
+    const location_ = this.dateUtils_.urlify(location);
 
     // Get lat/lng via API based on location.
     if (location_ !== this.location_) {
@@ -91,8 +91,8 @@ class DataFetcher {
    */
   private sunriseSunset_(): SunriseSunset {
     const sunTimes = SunCalc.getTimes(this.date_, this.lat_, this.lng_);
-    const sunrise = this.dateTimeUtils_.militaryTime(sunTimes.sunrise, this.timezone_);
-    const sunset = this.dateTimeUtils_.militaryTime(sunTimes.sunset, this.timezone_);
+    const sunrise = this.dateUtils_.militaryTime(sunTimes.sunrise, this.timezone_);
+    const sunset = this.dateUtils_.militaryTime(sunTimes.sunset, this.timezone_);
     return {sunrise, sunset};
   }
 
@@ -111,12 +111,12 @@ class DataFetcher {
     // For our purposes, "close enough" is preferred over "totally broken."
     // For example: /2001/10/29/Reykjavik,+Iceland
     if (moonrise_ === undefined || moonset_ === undefined) {
-      const {year: prevYear, month: prevMonth, day: prevDay} = this.dateTimeUtils_.prevDate();
+      const {year: prevYear, month: prevMonth, day: prevDay} = this.dateUtils_.prevDate();
       const prevMonthIndex = prevMonth - 1;
       const prevDate = new Date(prevYear, prevMonthIndex, prevDay);
       const prevMoonTimes = SunCalc.getMoonTimes(prevDate, this.lat_, this.lng_);
 
-      const {year: nextYear, month: nextMonth, day: nextDay} = this.dateTimeUtils_.nextDate();
+      const {year: nextYear, month: nextMonth, day: nextDay} = this.dateUtils_.nextDate();
       const nextMonthIndex = nextMonth - 1;
       const nextDate = new Date(nextYear, nextMonthIndex, nextDay);
       const nextMoonTimes = SunCalc.getMoonTimes(nextDate, this.lat_, this.lng_);
@@ -130,8 +130,8 @@ class DataFetcher {
       }
     }
 
-    const moonrise = this.dateTimeUtils_.militaryTime(moonrise_, this.timezone_);
-    const moonset = this.dateTimeUtils_.militaryTime(moonset_, this.timezone_);
+    const moonrise = this.dateUtils_.militaryTime(moonrise_, this.timezone_);
+    const moonset = this.dateUtils_.militaryTime(moonset_, this.timezone_);
 
     return {moonrise, moonset};
   }

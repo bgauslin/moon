@@ -1,5 +1,5 @@
 import {DataFetcher, MoonData} from '../modules/DataFetcher';
-import {AppDate, DateTimeUtils} from '../modules/DateTimeUtils';
+import {AppDate, DateUtils} from '../modules/DateUtils';
 import {Utils} from '../modules/Utils';
 
 interface TitleInfo {
@@ -19,7 +19,7 @@ const TITLE_DIVIDER: string = '·';
  */
 class App extends HTMLElement {
   private date_: AppDate;
-  private dateTimeUtils_: DateTimeUtils;
+  private dateUtils_: DateUtils;
   private location_: string;
   private popstateListener_: any;
   private userLocation_: HTMLElement;
@@ -28,7 +28,7 @@ class App extends HTMLElement {
 
   constructor() {
     super();
-    this.dateTimeUtils_ = new DateTimeUtils();
+    this.dateUtils_ = new DateUtils();
     this.userLocationObserver_ = new MutationObserver(() => this.update_());
     this.utils_ = new Utils();
     this.popstateListener_ = this.update_.bind(this);
@@ -67,7 +67,7 @@ class App extends HTMLElement {
     document.body.setAttribute(LOADING_ATTR, '');
 
     // Get date and location, then fetch data.
-    this.date_ = this.dateTimeUtils_.activeDate();
+    this.date_ = this.dateUtils_.activeDate();
     this.location_ = this.userLocation_.getAttribute(LOCATION_ATTR);
     const moonData = await new DataFetcher().fetch(this.date_, this.location_);
     if (!moonData) {
@@ -97,7 +97,7 @@ class App extends HTMLElement {
    */
   private updateCurrentDate_(): void {
     const currentDateElement = this.querySelector('.header__link');
-    currentDateElement.textContent = this.dateTimeUtils_.prettyDate(
+    currentDateElement.textContent = this.dateUtils_.prettyDate(
       this.date_,
       document.documentElement.lang,
       'long',
@@ -138,7 +138,7 @@ class App extends HTMLElement {
    */
   private updateDocumentTitle_(info: TitleInfo): void {
     const {date, locale, location, percent, phase} = info;
-    const dateLabel = this.dateTimeUtils_.prettyDate(date, locale, 'short');
+    const dateLabel = this.dateUtils_.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
     if (percent > 0) {
       pageTitle += ` ${TITLE_DIVIDER} ${percent}%`;

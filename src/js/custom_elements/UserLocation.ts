@@ -1,4 +1,4 @@
-import {DateTimeUtils} from '../modules/DateTimeUtils';
+import {DateUtils} from '../modules/DateUtils';
 
 interface UserCoordinates {
   lat: number,
@@ -25,7 +25,7 @@ ICONS.set('submit', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z');
  * coordinates to a named location.
  */
 class UserLocation extends HTMLElement {
-  private dateTimeUtils_: DateTimeUtils;
+  private dateUtils_: DateUtils;
   private defaultLocation_: string;
   private formEl_: HTMLFormElement;
   private geolocationButtonEl_: HTMLButtonElement;
@@ -37,7 +37,7 @@ class UserLocation extends HTMLElement {
   constructor() {
     super();
     this.hasSetup_ = false;
-    this.dateTimeUtils_ = new DateTimeUtils();
+    this.dateUtils_ = new DateUtils();
   }
 
   static get observedAttributes(): string[] {
@@ -197,7 +197,7 @@ class UserLocation extends HTMLElement {
   private update_(): void {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.splice(-1, 1);
-    urlSegments.push(this.dateTimeUtils_.urlify(this.location_));
+    urlSegments.push(this.dateUtils_.urlify(this.location_));
 
     history.pushState(null, null, urlSegments.join('/'));
     this.setAttribute(LOCATION_ATTR, this.location_);

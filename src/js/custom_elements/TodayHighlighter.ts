@@ -1,4 +1,4 @@
-import {DateTimeUtils} from '../modules/DateTimeUtils';
+import {DateUtils} from '../modules/DateUtils';
 
 const SELECTOR_ATTR: string = 'selector';
 const TODAY_CLASSNAME: string = 'today';
@@ -9,12 +9,12 @@ const UPDATE_ATTR: string = 'update';
  * info for today.
  */
 class TodayHighlighter extends HTMLElement {
-  private date_: DateTimeUtils;
+  private date_: DateUtils;
   private selectors_: string[];
 
   constructor() {
     super();
-    this.date_ = new DateTimeUtils();
+    this.date_ = new DateUtils();
   }
 
   static get observedAttributes(): string[] {
