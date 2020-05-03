@@ -3,11 +3,11 @@
   justify-self center
 
 .nav[direction=prev]
-  animation slideInLeft var(--transition-intro) ease
+  animation slideInLeft TRANSITION_INTRO ease
   grid-area prev
 
 .nav[direction=next]
-  animation slideInRight var(--transition-intro) ease
+  animation slideInRight TRANSITION_INTRO ease
   grid-area next
   text-align right
 
@@ -22,7 +22,7 @@
 .nav__icon
   height auto
   flex 0 0 rem(32)
-  transition transform var(--transition)
+  transition transform TRANSITION
 
 .nav__link:active .nav__icon
   transform scale(.8)
@@ -30,7 +30,7 @@
 .nav__icon__path
   fill none
   stroke-width 4
-  transition stroke var(--transition)
+  transition stroke TRANSITION
 
 .nav__link:link .nav__icon__path
 .nav__link:visited .nav__icon__path

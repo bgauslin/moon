@@ -30,7 +30,7 @@ user-location
   padding 0 rem(32)
   text-align center
   text-overflow ellipsis
-  transition background var(--transition)
+  transition background TRANSITION
 
   &:focus
     background rgba(white, .25)
@@ -44,7 +44,7 @@ user-location
     opacity 1
 
 [no-touch] [name=location]
-  transition background var(--transition), opacity var(--transition)
+  transition background TRANSITION, opacity TRANSITION
 
 // ------------------------------
 // All buttons - inherited.
@@ -59,16 +59,16 @@ user-location
   padding 0
   position absolute
   top 0
-  transition background var(--transition)
+  transition background TRANSITION
   width BUTTON_SIZE
 
 // ------------------------------
 // All icons - inherited.
 .icon > path
-  transition fill var(--transition)
+  transition fill TRANSITION
 
 svg.icon
-  transition background var(--transition)
+  transition background TRANSITION
 
 // ------------------------------
 // Reset button and icon.
