@@ -30,8 +30,8 @@ html(lang="en-GB")
         div.charts
           div.charts__frame
             chart-axes.chart
-            donut-chart.chart(name="sun" color=sunColor)
-            donut-chart.chart(name="moon" color=moonColor)
+            donut-chart.chart.chart--sun(name="sun" color=sunColor)
+            donut-chart.chart.chart--moon(name="moon" color=moonColor)
             moon-photo.photo
         moon-info.info
         prev-next.nav.nav--prev(direction="prev")

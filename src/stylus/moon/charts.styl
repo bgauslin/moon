@@ -16,17 +16,17 @@
   position absolute
   width 100%
 
-.chart[name=sun]
+.chart--sun
   z-index 1
 
-.chart[name=moon]
+.chart--moon
   z-index 2
 
 chart-axes
   z-index 3
 
 // Blend moon arc with sun arc where they overlap.
-.chart[name=moon] circle
+.chart--moon circle
   opacity .5
 
 // SVG chart axes and ticks.
