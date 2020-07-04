@@ -5,7 +5,7 @@ user-location
 // Location container and form.
 .location
 .location__form
-[name=location]
+.location__input
   height LOCATION_HEIGHT
   width 100%
 
@@ -15,12 +15,12 @@ user-location
   position relative
 
 .location__form
-[name=location]
+.location__input
   position absolute
 
 // ------------------------------
 // Location text input.
-[name=location]
+.location__input
   align-items center
   background rgba(white, 0)
   border-radius (LOCATION_HEIGHT / 2)
@@ -43,12 +43,12 @@ user-location
     cursor text
     opacity 1
 
-[no-touch] [name=location]
+[no-touch] .location__input
   transition background TRANSITION, opacity TRANSITION
 
 // ------------------------------
-// All buttons - inherited.
-.location button
+// All buttons and icons.
+.location__button
   align-items center
   background 0
   border-radius 50%
@@ -62,8 +62,6 @@ user-location
   transition background TRANSITION
   width BUTTON_SIZE
 
-// ------------------------------
-// All icons - inherited.
 .icon > path
   transition fill TRANSITION
 
@@ -72,7 +70,7 @@ svg.icon
 
 // ------------------------------
 // Reset button and icon.
-button[type=reset]
+.location__button--reset
   padding 2px
   right 0
 
@@ -85,7 +83,7 @@ button[type=reset]
 .icon--reset > path:first-child
   fill black
 
-[name=location]:focus ~ button[type=reset]
+.location__input:focus ~ .location__button--reset
   & > .icon--reset
     background rgba(white, .7)
 
@@ -93,29 +91,27 @@ button[type=reset]
   &:focus > .icon--reset
     background rgba(white, 1)
 
-// ------------------------------
-// Submit button.
-button[type=submit]
+.location__button--submit
   visibility hidden
 
 // ------------------------------
 // Geolocation button and icon.
-.geolocation
+.location__button--geolocation
   left 0
   z-index 1
 
-.geolocation[enabled]
+.location__button--geolocation[enabled]
   background rgba(white, 0)
 
   &:hover
   &:focus
     background rgba(white, .25)
 
-.icon--location
+.icon--geolocation
   width 24px
 
-.icon--location > path
+.icon--geolocation > path
   fill rgba(white, 0)
 
-.geolocation[enabled] .icon--location > path:last-child
+.location__button--geolocation[enabled] .icon--geolocation > path:last-child
   fill rgba(white, 1)

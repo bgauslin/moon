@@ -230,32 +230,41 @@ class UserLocation extends HTMLElement {
   private render_(): void {
     const html = `\      
       <form class="location__form">\
-        <input name="location" value="${this.location_}" type="text" \
-          aria-label="Type a new location" required>\
-        <button type="submit" role="button" aria-label="Update location">\
+        <input class="location__input" \
+          type="text" \  
+          name="location" \
+          value="${this.location_}" \
+          aria-label="Type a new location" \
+          required>\
+        <button class="location__button location__button--submit" \
+          type="submit" \
+          aria-label="Update location">\
           ${this.svgIcon_('submit')}\
         </button>\
-        <button type="reset" role="button" aria-label="Clear location">\
+        <button class="location__button location__button--reset" \
+          type="reset" \
+          aria-label="Clear location">\
           ${this.svgIcon_('reset')}\
       </form>\
-      <button class="geolocation" role="button" \
-        aria-label="Find my location" hidden>\
-        ${this.svgIcon_('location')}\
+      <button class="location__button location__button--geolocation" \
+        aria-label="Find my location" \
+        hidden>\
+        ${this.svgIcon_('location', 'geolocation')}\
       </button>\
     `;
     this.innerHTML = html.replace(/\s\s/g, '');
 
     this.formEl_ = this.querySelector('form');
     this.inputEl_ = this.querySelector('input');
-    this.geolocationButtonEl_ = this.querySelector('button.geolocation');
+    this.geolocationButtonEl_ = this.querySelector('.location__button--geolocation');
   }
 
   /**
    * Returns a rendered inline SVG icon.
    */
-  private svgIcon_(name: string): string {
+  private svgIcon_(name: string, modifier: string = name): string {
     const html = `\
-      <svg class="icon icon--${name}" viewBox="0 0 24 24">\
+      <svg class="icon icon--${modifier}" viewBox="0 0 24 24">\
         <path d="${ICONS.get(name)}"/>\
       </svg>\
     `;
