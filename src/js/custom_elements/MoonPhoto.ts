@@ -65,7 +65,7 @@ class MoonPhoto extends HTMLElement {
                 src="${IMAGE_PATH_1X}" \
                 srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x" \
                 alt="${this.phase_}${this.illuminationCaption_()}" \
-                frame="${this.spriteFrame_()}"
+                frame="${this.spriteFrame_()}" \
                 ${ready}>\
         </figure>\
       </div>\
