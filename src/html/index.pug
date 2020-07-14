@@ -10,14 +10,14 @@ html(lang="en-GB")
   head
     title= title
     meta(charset="utf-8")
-    meta(name="description" content=description)    
-    meta(name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover")
-    meta(name="theme-color" content="#000")
     meta(name="apple-mobile-web-app-capable" content="yes")
     meta(name="apple-mobile-web-app-title" content=shortTitle)
-    link(rel="preload" href="https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2" as="font" type="font/woff2" crossorigin="crossorigin")
+    meta(name="description" content=description)
+    meta(name="theme-color" content="#000")
+    meta(name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover")
     link(rel="apple-touch-icon" href="/apple-touch-icon.png")
     link(rel="manifest" href="/pwa/manifest.json")
+    link(rel="preload" href="https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2" as="font" type="font/woff2" crossorigin="crossorigin")
   body(no-touch no-js)
     div.progress-bar
     moon-app.app
