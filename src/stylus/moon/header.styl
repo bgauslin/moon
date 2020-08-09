@@ -1,6 +1,6 @@
 .header
   align-self center
-  animation slideInDown TRANSITION_INTRO ease
+  animation slideInDown transition-intro ease
   grid-row 1
   padding rem(8) rem(16)
 
@@ -13,11 +13,11 @@
   link(white, white, rgba(white, .7), rgba(white, .7))
   display inline-block
   padding rem(8)
-  transition transform TRANSITION
+  transition transform transition
   white-space nowrap
 
 .header__link:active
   transform scale(.8)
 
 [no-touch] .header__link
-  transition color TRANSITION, transform TRANSITION
+  transition color transition, transform transition

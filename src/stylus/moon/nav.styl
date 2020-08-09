@@ -3,26 +3,26 @@
   justify-self center
 
 .nav--prev
-  animation slideInLeft TRANSITION_INTRO ease
+  animation slideInLeft transition-intro ease
   grid-area prev
 
 .nav--next
-  animation slideInRight TRANSITION_INTRO ease
+  animation slideInRight transition-intro ease
   grid-area next
   text-align right
 
 .nav__link
   align-items center
   display flex
-  height CONTROLS_SIZE
+  height controls-size
   justify-content center
-  width CONTROLS_SIZE
+  width controls-size
 
 // SVG icons.
 .nav__icon
   flex 0 0 rem(32)
   height auto
-  transition transform TRANSITION
+  transition transform transition
 
 .nav__link:active .nav__icon
   transform scale(.8)
@@ -30,7 +30,7 @@
 .nav__icon__path
   fill none
   stroke-width 4
-  transition stroke TRANSITION
+  transition stroke transition
 
 .nav__link:link .nav__icon__path
 .nav__link:visited .nav__icon__path

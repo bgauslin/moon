@@ -1,50 +1,36 @@
 @import 'functions'
 
-// Values are coordinated with 'Chart' enum in 'src/js/modules/Constants.js'
-// @type Hash
-Chart = {
-  SIZE: 320
-  SWEEP_WIDTH: 72
-  MARGIN: 44
+// -----------------------------------------------------------------------------
+// Dimensions.
+
+// Values below are coordinated with 'Chart' enum in 'src/js/modules/Constants.js'
+chart = {
+  margin: 44
+  size: 320
+  sweep-width: 72
 }
 
-// @type String
-AXIS_LABEL_SIZE = rem(32)
+chart-size-units = chart.size + (chart.margin * 2)
 
-// @type String
-BUTTON_SIZE = rem(32)
+axis-label-size = rem(32)
+button-size = rem(32)
+chart-max-width = rem(480)
+chart-size = rem(chart-size-units)
+controls-size = rem(48)
+location-height = rem(32)
+location-max-width = rem(chart.size)
+photo-size = chart.size - (chart.sweep-width * 2)
+photo-width = (photo-size / chart-size-units) * 100%
 
-// @type String
-CHART_MAX_WIDTH = rem(480)
+// -----------------------------------------------------------------------------
+// Transitions.
 
-// @type Number
-CHART_SIZE_UNITS = Chart.SIZE + (Chart.MARGIN * 2)
+transition = .3s
+transition-intro = 1s
 
-// @type String
-CHART_SIZE = rem(CHART_SIZE_UNITS)
+// -----------------------------------------------------------------------------
+// Breakpoints.
 
-// @type String
-CONTROLS_SIZE = rem(48)
-
-// @type String
-LOCATION_HEIGHT = rem(32)
-
-// @type String
-LOCATION_MAX_WIDTH = rem(Chart.SIZE)
-
-// @type Number
-PHOTO_SIZE = Chart.SIZE - (Chart.SWEEP_WIDTH * 2)
-
-// @type String
-PHOTO_WIDTH = (PHOTO_SIZE / CHART_SIZE_UNITS) * 100%
-
-// @type String
-TRANSITION = .3s
-
-// @type String
-TRANSITION_INTRO = 1s
-
-// @type Hash
-Breakpoint = {
-  SMALL: 'screen and (min-width: %s)' % (CHART_SIZE + (AXIS_LABEL_SIZE + CONTROLS_SIZE * 2))
+breakpoint = {
+  small: 'screen and (min-width: %s)' % (chart-size + (axis-label-size + controls-size * 2))
 }
