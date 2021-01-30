@@ -8,13 +8,13 @@ const UPDATE_ATTR: string = 'update';
  * Custom element that highlights elements if the UI is currently displaying
  * info for today.
  */
-class TodayHighlighter extends HTMLElement {
-  private date_: DateUtils;
-  private selectors_: string[];
+export class TodayHighlighter extends HTMLElement {
+  private date: DateUtils;
+  private selectors: string[];
 
   constructor() {
     super();
-    this.date_ = new DateUtils();
+    this.date = new DateUtils();
   }
 
   static get observedAttributes(): string[] {
@@ -22,22 +22,22 @@ class TodayHighlighter extends HTMLElement {
   }
 
   connectedCallback(): void {
-    this.selectors_ = this.getAttribute(SELECTOR_ATTR).split(',');
+    this.selectors = this.getAttribute(SELECTOR_ATTR).split(',');
     this.removeAttribute(SELECTOR_ATTR);
   }
 
   attributeChangedCallback(): void {
     if (this.hasAttribute(UPDATE_ATTR)) {
-      this.update_();
+      this.update();
     }
   }
 
-  private update_(): void {
-    const active = this.date_.activeDate();
-    const today = this.date_.todaysDate();
+  private update(): void {
+    const active = this.date.activeDate();
+    const today = this.date.todaysDate();
     const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
 
-    this.selectors_.forEach((selector) => {
+    this.selectors.forEach((selector) => {
       const element = document.querySelector(selector);
       if (isToday) {
         element.classList.add(TODAY_CLASSNAME);
@@ -49,5 +49,3 @@ class TodayHighlighter extends HTMLElement {
     this.removeAttribute(UPDATE_ATTR);
   }
 }
-
-export {TodayHighlighter};

@@ -1,15 +1,15 @@
 import Spinner from 'spin';
 
-// [1] MOONPHASE_IMAGE_COUNT value is same as loop value in 'photo.styl'
+// [1] MOONPHASEIMAGE_COUNT value is same as loop value in 'photo.styl'
 
 const ILLUMINATION_ATTR: string = 'illumination';
 const IMAGE_PATH_1X: string = '/img/moon-phases-26-240.min.jpg';
 const IMAGE_PATH_2X: string = '/img/moon-phases-26-480.min.jpg';
-const MOONPHASE_IMAGE_COUNT: number = 26; // [1]
+const MOONPHASEIMAGE_COUNT: number = 26; // [1]
 const PERCENT_ATTR: string = 'percent';
 const PHASE_ATTR: string = 'phase';
 const READY_ATTR: string = 'ready';
-const SPINNER_DELAY_MS: number = 1000;
+const SPINNERDELAY_MS: number = 1000;
 
 const SpinnerOptions: {} = {
   color: '#fff',
@@ -24,17 +24,17 @@ const SpinnerOptions: {} = {
  * is a reponsive sprite containing all of the moon phases and the custom
  * element adjusts the vertical position of the sprite to show the moon phase.
  */
-class MoonPhoto extends HTMLElement {
-  private illumination_: number;
-  private imageLoaded_: boolean;
-  private percent_: number;
-  private phase_: string;
-  private spinner_: Spinner;
+export class MoonPhoto extends HTMLElement {
+  private illumination: number;
+  private imageLoaded: boolean;
+  private percent: number;
+  private phase: string;
+  private spinner: Spinner;
 
   constructor() {
     super();
-    this.imageLoaded_ = false;
-    this.spinner_ = new Spinner(SpinnerOptions);
+    this.imageLoaded = false;
+    this.spinner = new Spinner(SpinnerOptions);
   }
 
   static get observedAttributes(): string[] {
@@ -42,30 +42,30 @@ class MoonPhoto extends HTMLElement {
   }
 
   attributeChangedCallback(): void {
-    this.render_();
+    this.render();
   }
 
   /** 
    * Renders a photo of the current moon phase.
    */
-  private render_(): void {
-    this.illumination_ = parseInt(this.getAttribute(ILLUMINATION_ATTR));
-    this.percent_ = parseInt(this.getAttribute(PERCENT_ATTR));
-    this.phase_ = this.getAttribute(PHASE_ATTR);
+  private render(): void {
+    this.illumination = parseInt(this.getAttribute(ILLUMINATION_ATTR));
+    this.percent = parseInt(this.getAttribute(PERCENT_ATTR));
+    this.phase = this.getAttribute(PHASE_ATTR);
 
-    if (!this.illumination_ || !this.phase_ || !this.percent_) {
+    if (!this.illumination || !this.phase || !this.percent) {
       return;
     }
 
-    const ready = this.imageLoaded_ ? READY_ATTR : '';
+    const ready = this.imageLoaded ? READY_ATTR : '';
     const html = `\      
       <div class="${this.className}__frame">\
         <figure class="${this.className}__figure">\
           <img class="${this.className}__image" \
                 src="${IMAGE_PATH_1X}" \
                 srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x" \
-                alt="${this.phase_}${this.illuminationCaption_()}" \
-                frame="${this.spriteFrame_()}" \
+                alt="${this.phase}${this.illuminationCaption()}" \
+                frame="${this.spriteFrame()}" \
                 ${ready}>\
         </figure>\
       </div>\
@@ -73,8 +73,8 @@ class MoonPhoto extends HTMLElement {
     
     this.innerHTML = html.replace(/\s\s/g, '');
 
-    if (!this.imageLoaded_) {
-      this.preloadImage_();
+    if (!this.imageLoaded) {
+      this.preloadImage();
     }
   }
 
@@ -82,38 +82,36 @@ class MoonPhoto extends HTMLElement {
    * Returns moon phase photo sprite's position based on percent relative to
    * number of frames in the sprite.
    */
-  private spriteFrame_(): number {
-    const frame: number = Math.round((this.percent_ / 100) * MOONPHASE_IMAGE_COUNT);
-    return (frame === 0) ? MOONPHASE_IMAGE_COUNT : frame;
+  private spriteFrame(): number {
+    const frame: number = Math.round((this.percent / 100) * MOONPHASEIMAGE_COUNT);
+    return (frame === 0) ? MOONPHASEIMAGE_COUNT : frame;
   }
 
   /**
    * Returns illumination value as text if it's greater than 0.
    */
-  private illuminationCaption_(): string {
-    return (this.illumination_ > 0) ? ` (${this.illumination_}% illumination)` : '';
+  private illuminationCaption(): string {
+    return (this.illumination > 0) ? ` (${this.illumination}% illumination)` : '';
   }
 
   /**
    * Attaches/removes a loading spinner and 'ready' attribute based on whether
    * or not the image is fully loaded.
    */
-  private preloadImage_(): void {
+  private preloadImage(): void {
     const imageEl = this.querySelector('img');
 
     imageEl.onload = () => {
       imageEl.setAttribute(READY_ATTR, '');
-      this.spinner_.stop();
-      this.imageLoaded_ = true;
+      this.spinner.stop();
+      this.imageLoaded = true;
     };
 
     window.setTimeout(() => {
       if (!imageEl.hasAttribute(READY_ATTR)) {
-        this.spinner_.spin();
-        this.appendChild(this.spinner_.el);
+        this.spinner.spin();
+        this.appendChild(this.spinner.el);
       }
-    }, SPINNER_DELAY_MS);
+    }, SPINNERDELAY_MS);
   }
 }
-
-export {MoonPhoto};

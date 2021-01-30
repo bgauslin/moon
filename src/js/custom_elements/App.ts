@@ -17,44 +17,44 @@ const TITLE_DIVIDER: string = '·';
 /**
  * Custom element that controls the application.
  */
-class App extends HTMLElement {
-  private date_: AppDate;
-  private dateUtils_: DateUtils;
-  private location_: string;
-  private popstateListener_: any;
-  private userLocation_: HTMLElement;
-  private userLocationObserver_: MutationObserver;
-  private utils_: Utils;
+export class App extends HTMLElement {
+  private date: AppDate;
+  private dateUtils: DateUtils;
+  private location: string;
+  private popstateListener: any;
+  private userLocation: HTMLElement;
+  private userLocationObserver: MutationObserver;
+  private utils: Utils;
 
   constructor() {
     super();
-    this.dateUtils_ = new DateUtils();
-    this.userLocationObserver_ = new MutationObserver(() => this.update_());
-    this.utils_ = new Utils();
-    this.popstateListener_ = this.update_.bind(this);
-    this.addEventListener('click', this.handleClick_);
-    window.addEventListener('popstate', this.popstateListener_, false);
+    this.dateUtils = new DateUtils();
+    this.userLocationObserver = new MutationObserver(() => this.update());
+    this.utils = new Utils();
+    this.popstateListener = this.update.bind(this);
+    this.addEventListener('click', this.handleClick);
+    window.addEventListener('popstate', this.popstateListener, false);
   }
 
   /**
    * Initializes the app when it first loads.
    */
   connectedCallback(): void {
-    this.setupDom_();
-    this.userLocation_ = this.querySelector('user-location');
-    this.userLocationObserver_.observe(this.userLocation_, {attributes: true});
-    this.utils_.init();
+    this.setup();
+    this.userLocation = this.querySelector('user-location');
+    this.userLocationObserver.observe(this.userLocation, {attributes: true});
+    this.utils.init();
   }
 
   disconnectedCallback(): void {
-    this.removeEventListener('click', this.handleClick_);
-    window.removeEventListener('popstate', this.popstateListener_, false);
+    this.removeEventListener('click', this.handleClick);
+    window.removeEventListener('popstate', this.popstateListener, false);
   }
 
   /**
    * Remove 'no JS' attribute and element from the DOM.
    */
-  private setupDom_(): void {
+  private setup(): void {
     document.body.removeAttribute('no-js');
     document.body.querySelector('noscript').remove();
   }
@@ -62,31 +62,31 @@ class App extends HTMLElement {
   /**
    * Updates the app when the URL changes.
    */
-  private async update_(): Promise<any> {
+  private async update(): Promise<any> {
     // Enable progress bar.
     document.body.setAttribute(LOADING_ATTR, '');
 
     // Get date and location, then fetch data.
-    this.date_ = this.dateUtils_.activeDate();
-    this.location_ = this.userLocation_.getAttribute(LOCATION_ATTR);
-    const moonData = await new DataFetcher().fetch(this.date_, this.location_);
+    this.date = this.dateUtils.activeDate();
+    this.location = this.userLocation.getAttribute(LOCATION_ATTR);
+    const moonData = await new DataFetcher().fetch(this.date, this.location);
     if (!moonData) {
       document.body.removeAttribute(LOADING_ATTR);
       return;
     }
 
     // Update the DOM and send a pageview.
-    this.updateCurrentDate_();
-    this.updateElements_(moonData);
-    this.updateDocumentTitle_({
-      date: this.date_,
+    this.updateCurrentDate();
+    this.updateElements(moonData);
+    this.updateDocumentTitle({
+      date: this.date,
       locale: document.documentElement.lang,
-      location: this.location_,
+      location: this.location,
       percent: moonData.percent,
       phase: moonData.phase,
     });
     
-    this.utils_.sendPageview(window.location.pathname, document.title);
+    this.utils.sendPageview(window.location.pathname, document.title);
     
     // Disable the progress bar.
     document.body.removeAttribute(LOADING_ATTR);
@@ -95,10 +95,10 @@ class App extends HTMLElement {
   /**
    * Updates an element with the current date in human-friendly format.
    */
-  private updateCurrentDate_(): void {
+  private updateCurrentDate(): void {
     const currentDateElement = this.querySelector('.header__link');
-    currentDateElement.textContent = this.dateUtils_.prettyDate(
-      this.date_,
+    currentDateElement.textContent = this.dateUtils.prettyDate(
+      this.date,
       document.documentElement.lang,
       'long',
     );
@@ -108,7 +108,7 @@ class App extends HTMLElement {
    * Updates attributes on all custom elements so they can then update
    * themselves.
    */
-  private updateElements_(moonData: MoonData): void {
+  private updateElements(moonData: MoonData): void {
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
 
     const items = [
@@ -122,8 +122,8 @@ class App extends HTMLElement {
       ['donut-chart[name=moon]', 'end', moonset],
       ['donut-chart[name=sun]', 'start', sunrise],
       ['donut-chart[name=sun]', 'end', sunset],
-      ['prev-next[direction=next]', 'location', this.location_],
-      ['prev-next[direction=prev]', 'location', this.location_],
+      ['prev-next[direction=next]', 'location', this.location],
+      ['prev-next[direction=prev]', 'location', this.location],
       ['app-today', 'update', ''],
     ];
 
@@ -136,9 +136,9 @@ class App extends HTMLElement {
   /** 
    * Updates document title with info about the current moon phase.
    */
-  private updateDocumentTitle_(info: TitleInfo): void {
+  private updateDocumentTitle(info: TitleInfo): void {
     const {date, locale, location, percent, phase} = info;
-    const dateLabel = this.dateUtils_.prettyDate(date, locale, 'short');
+    const dateLabel = this.dateUtils.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
     if (percent > 0) {
       pageTitle += ` ${TITLE_DIVIDER} ${percent}%`;
@@ -149,7 +149,7 @@ class App extends HTMLElement {
   /**
    * Adds SPA behavior to clicked links.
    */
-  private handleClick_(e: Event): void {
+  private handleClick(e: Event): void {
     const target = e.target as HTMLElement;
     const href = target.getAttribute('href');
     if (href) {
@@ -157,10 +157,8 @@ class App extends HTMLElement {
       if (linkUrl.hostname === window.location.hostname) {
         e.preventDefault();
         history.pushState(null, null, href);
-        this.update_();
+        this.update();
       }
     }
   }
 }
-
-export {App};

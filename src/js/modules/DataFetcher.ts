@@ -2,7 +2,7 @@ import SunCalc from 'suncalc';
 import tzLookup from 'tz-lookup';
 import {AppDate, DateUtils} from './DateUtils';
 
-interface MoonData {
+export interface MoonData {
   hemisphere: string,
   illumination: number,
   moonrise: string,
@@ -27,53 +27,53 @@ interface SunriseSunset {
  * Class that gets lat/lng coordinates from a geocoding API to then
  * determine moon and sun rise/set times based on that geolocation.
  */
-class DataFetcher {
-  private date_: Date;
-  private dateUtils_: DateUtils;
-  private lat_: number;
-  private lng_: number;
-  private location_: string;
-  private timezone_: string;
+export class DataFetcher {
+  private date: Date;
+  private dateUtils: DateUtils;
+  private lat: number;
+  private lng: number;
+  private location: string;
+  private timezone: string;
 
   constructor() {
-    this.dateUtils_ = new DateUtils();
+    this.dateUtils = new DateUtils();
   }
 
   /**
    * Fetches location coordinates, then returns sun and moon data for rendering.
    */
   public async fetch(date: AppDate, location: string): Promise<MoonData> {
-    const location_ = this.dateUtils_.urlify(location);
+    const newLocation = this.dateUtils.urlify(location);
 
     // Get lat/lng via API based on location.
-    if (location_ !== this.location_) {
-      const endpoint = `${process.env.GEOCODE_API}?searchtext=${location_}&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`;
+    if (newLocation !== this.location) {
+      const endpoint = `${process.env.GEOCODE_API}?searchtext=${newLocation}&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`;
       const response = await fetch(endpoint);
       const data = await response.json();
       const coords = data.Response.View[0].Result[0].Location.DisplayPosition;
-      this.lat_ = coords.Latitude;
-      this.lng_ = coords.Longitude;
-      this.location_ = location_;
-      this.timezone_ = tzLookup(this.lat_, this.lng_);
+      this.lat = coords.Latitude;
+      this.lng = coords.Longitude;
+      this.location = newLocation;
+      this.timezone = tzLookup(this.lat, this.lng);
     }
 
     // Create a Date object from the date parameter for SunCalc.
     const {year, month, day} = date;
     const monthIndex = month - 1;
-    this.date_ = new Date(year, monthIndex, day);
+    this.date = new Date(year, monthIndex, day);
 
     // Normalize all API data and put it in an object for setting attribute
     // values on custom elements.
-    const {sunrise, sunset} = this.sunriseSunset_();
-    const {moonrise, moonset} = this.moonriseMoonset_();
+    const {sunrise, sunset} = this.sunriseSunset();
+    const {moonrise, moonset} = this.moonriseMoonset();
 
     return {
-      hemisphere: this.hemisphere_(),
-      illumination: this.moonPhaseIllumination_(),
+      hemisphere: this.hemisphere(),
+      illumination: this.moonPhaseIllumination(),
       moonrise,
       moonset,
-      percent: this.moonPhasePercent_(),
-      phase: this.moonPhase_(),
+      percent: this.moonPhasePercent(),
+      phase: this.moonPhase(),
       sunrise,
       sunset,
     }
@@ -82,25 +82,25 @@ class DataFetcher {
   /**
    * Sets the hemisphere based on location's latitude.
    */
-  private hemisphere_(): string {
-    return (this.lat_ >= 0) ? 'northern' : 'southern';
+  private hemisphere(): string {
+    return (this.lat >= 0) ? 'northern' : 'southern';
   }
 
   /**
    * Converts sunrise and sunset times to 24-hour HH:MM format.
    */
-  private sunriseSunset_(): SunriseSunset {
-    const sunTimes = SunCalc.getTimes(this.date_, this.lat_, this.lng_);
-    const sunrise = this.dateUtils_.militaryTime(sunTimes.sunrise, this.timezone_);
-    const sunset = this.dateUtils_.militaryTime(sunTimes.sunset, this.timezone_);
+  private sunriseSunset(): SunriseSunset {
+    const sunTimes = SunCalc.getTimes(this.date, this.lat, this.lng);
+    const sunrise = this.dateUtils.militaryTime(sunTimes.sunrise, this.timezone);
+    const sunset = this.dateUtils.militaryTime(sunTimes.sunset, this.timezone);
     return {sunrise, sunset};
   }
 
   /**
    * Converts moonrise and moonset times to 24-hour HH:MM format.
    */
-  private moonriseMoonset_(): MoonriseMoonset {
-    const moonTimes = SunCalc.getMoonTimes(this.date_, this.lat_, this.lng_);
+  private moonriseMoonset(): MoonriseMoonset {
+    const moonTimes = SunCalc.getMoonTimes(this.date, this.lat, this.lng);
 
     let moonrise_: Date = moonTimes.rise;
     let moonset_: Date = moonTimes.set;
@@ -111,15 +111,15 @@ class DataFetcher {
     // For our purposes, "close enough" is preferred over "totally broken."
     // For example: /2001/10/29/Reykjavik,+Iceland
     if (moonrise_ === undefined || moonset_ === undefined) {
-      const {year: prevYear, month: prevMonth, day: prevDay} = this.dateUtils_.prevDate();
+      const {year: prevYear, month: prevMonth, day: prevDay} = this.dateUtils.prevDate();
       const prevMonthIndex = prevMonth - 1;
       const prevDate = new Date(prevYear, prevMonthIndex, prevDay);
-      const prevMoonTimes = SunCalc.getMoonTimes(prevDate, this.lat_, this.lng_);
+      const prevMoonTimes = SunCalc.getMoonTimes(prevDate, this.lat, this.lng);
 
-      const {year: nextYear, month: nextMonth, day: nextDay} = this.dateUtils_.nextDate();
+      const {year: nextYear, month: nextMonth, day: nextDay} = this.dateUtils.nextDate();
       const nextMonthIndex = nextMonth - 1;
       const nextDate = new Date(nextYear, nextMonthIndex, nextDay);
-      const nextMoonTimes = SunCalc.getMoonTimes(nextDate, this.lat_, this.lng_);
+      const nextMoonTimes = SunCalc.getMoonTimes(nextDate, this.lat, this.lng);
 
       if (moonrise_ === undefined) {
         moonrise_ = (prevMoonTimes.rise !== undefined) ? prevMoonTimes.rise : nextMoonTimes.rise;
@@ -130,8 +130,8 @@ class DataFetcher {
       }
     }
 
-    const moonrise = this.dateUtils_.militaryTime(moonrise_, this.timezone_);
-    const moonset = this.dateUtils_.militaryTime(moonset_, this.timezone_);
+    const moonrise = this.dateUtils.militaryTime(moonrise_, this.timezone);
+    const moonset = this.dateUtils.militaryTime(moonset_, this.timezone);
 
     return {moonrise, moonset};
   }
@@ -140,17 +140,17 @@ class DataFetcher {
    * Returns moon phase illumination as an integer of a percentage.
    * e.g. .7123 => 71
    */
-  private moonPhaseIllumination_(): number {
-    const illumination = SunCalc.getMoonIllumination(this.date_);
+  private moonPhaseIllumination(): number {
+    const illumination = SunCalc.getMoonIllumination(this.date);
     return Math.floor(illumination.fraction * 100);
   }
 
-  // TODO(fetcher): Update moonPhase_() values to ensure all phases display.
+  // TODO(fetcher): Update moonPhase() values to ensure all phases display.
   /**
    * Returns current moon phase.
    */
-  private moonPhase_(): string {
-    const percent = this.moonPhasePercent_();
+  private moonPhase(): string {
+    const percent = this.moonPhasePercent();
 
     if (percent === 0) {
       return 'New Moon';
@@ -175,10 +175,8 @@ class DataFetcher {
    * Returns moon cycle percentage as an integer. MoonPhoto needs this value
    * in order to calculate which image to show.
    */
-  private moonPhasePercent_(): number {
-    const illumination = SunCalc.getMoonIllumination(this.date_);
+  private moonPhasePercent(): number {
+    const illumination = SunCalc.getMoonIllumination(this.date);
     return Math.floor(illumination.phase * 100);
   }
 }
-
-export {DataFetcher, MoonData};

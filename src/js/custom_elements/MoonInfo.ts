@@ -5,9 +5,9 @@ const PHASE_ATTR: string = 'phase';
  * Custom element that renders text for the moon phase and its percentage
  * relative to a full moon phase cycle.
  */
-class MoonInfo extends HTMLElement {
-  private percent_: string;
-  private phase_: string;
+export class MoonInfo extends HTMLElement {
+  private percent: string;
+  private phase: string;
 
   constructor() {
     super();
@@ -18,32 +18,30 @@ class MoonInfo extends HTMLElement {
   }
 
   attributeChangedCallback(): void {
-    this.render_();
+    this.render();
   }
 
   /**
    * Displays current moon phase name and percentage, and makes the percent
    * element invisible if percentage is '0'.
    */
-  private render_(): void {
-    this.percent_ = this.getAttribute(PERCENT_ATTR);
-    this.phase_ = this.getAttribute(PHASE_ATTR);
+  private render(): void {
+    this.percent = this.getAttribute(PERCENT_ATTR);
+    this.phase = this.getAttribute(PHASE_ATTR);
 
-    if (!this.percent_ || !this.phase_) {
+    if (!this.percent || !this.phase) {
       return;
     }
 
-    const visibility = (this.percent_ === '0') ? 'invisible' : '';
+    const visibility = (this.percent === '0') ? 'invisible' : '';
     const html = `\
       <div class="${this.className}__phase">\
-        ${this.phase_}\
+        ${this.phase}\
       </div>\
       <div class="${this.className}__percent" ${visibility}>\
-        ${this.percent_}%\
+        ${this.percent}%\
       </div>\
     `;
     this.innerHTML = html.replace(/\s\s/g, '');
   }
 }
-
-export {MoonInfo};

@@ -71,19 +71,19 @@ const TICKS: Coordinates[] = [
  * Custom element that renders an SVG with vertical and horizontal ticks for
  * time axes (i.e., 12AM, 6AM, 12PM, 6PM).
  */
-class ChartAxes extends HTMLElement {
+export class ChartAxes extends HTMLElement {
   constructor() {
     super();
   }
 
   connectedCallback(): void {
-    this.render_();
+    this.render();
   }
 
   /**
    * Renders SVG element for chart axes and ticks.
    */
-  private render_(): void {
+  private render(): void {
     let axisLines: string = '';
     let tickLines: string = '';
 
@@ -109,5 +109,3 @@ class ChartAxes extends HTMLElement {
     this.innerHTML = html.replace(/\s\s/g, '');
   }
 }
-
-export {ChartAxes};

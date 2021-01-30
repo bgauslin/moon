@@ -1,4 +1,4 @@
-interface AppDate {
+export interface AppDate {
   year: number,
   month: number,
   day: number,
@@ -10,7 +10,7 @@ const DAYS_IN_MONTHS: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
  * Class with handy date/time utilities for determing current date, previous
  * date, and next date, as well as human-friendly date formatting.
  */
-class DateUtils {
+export class DateUtils {
   /** 
    * Parses date from the URL and falls back to today if URL isn't valid.
    */
@@ -23,7 +23,7 @@ class DateUtils {
     const day = parseInt(urlSegments[2]);
 
     // If date part of URL isn't valid, replace URL with '/' and return today.
-    if (!this.isValidMonth_(month) || !this.isValidDay_(year, month, day)) {
+    if (!this.isValidMonth(month) || !this.isValidDay(year, month, day)) {
       history.replaceState(null, null, '/');
       return this.todaysDate();
     }
@@ -55,7 +55,7 @@ class DateUtils {
       month = 1;
       day = 1;
     // Leap day.
-    } else if (this.isLeapYear_(year) && month === 2 && day === 29) { 
+    } else if (this.isLeapYear(year) && month === 2 && day === 29) { 
       month = 3;
       day = 1;
     // Last day of the month.
@@ -81,7 +81,7 @@ class DateUtils {
       month = 12;
       day = 31;
     // Day before leap day.
-    } else if (this.isLeapYear_(year) && month === 3 && day === 1) {   
+    } else if (this.isLeapYear(year) && month === 3 && day === 1) {   
       month = 2;
       day = 29;
     // First day of the month.
@@ -114,17 +114,17 @@ class DateUtils {
   /**
    * Whether the year is a leap year.
    */
-  private isLeapYear_(year: number): boolean {
+  private isLeapYear(year: number): boolean {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
   /**
    * Whether the day is valid.
    */
-  private isValidDay_(year: number, month: number, day: number): boolean {
+  private isValidDay(year: number, month: number, day: number): boolean {
     if (month < 1 || month > 12) {
       return;
-    } else if (this.isLeapYear_(year) && month === 2 && day === 29) {
+    } else if (this.isLeapYear(year) && month === 2 && day === 29) {
       return true;
     } else {
       const lastDay = DAYS_IN_MONTHS[month - 1];
@@ -135,7 +135,7 @@ class DateUtils {
   /**
    * Whether the month is valid.
    */
-  private isValidMonth_(month: number): boolean {
+  private isValidMonth(month: number): boolean {
     return (month > 0 && month < 13);
   }
 
@@ -144,8 +144,8 @@ class DateUtils {
    */
   public makeUrl(date: AppDate, location: string): URL {
     const {year, month, day} = date;
-    const month_ = this.zeroPad_(month);
-    const day_ = this.zeroPad_(day);
+    const month_ = this.zeroPad(month);
+    const day_ = this.zeroPad(day);
     const location_ = this.urlify(location);
     return new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
   }
@@ -184,9 +184,7 @@ class DateUtils {
   /**
    * Returns a value with zero padding if its value is less than 10.
    */
-  private zeroPad_(n: number): string {
+  private zeroPad(n: number): string {
     return (n < 10) ? `0${n}` : `${n}`;
   }
 }
-
-export {AppDate, DateUtils};

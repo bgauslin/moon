@@ -28,7 +28,7 @@ const START_ATTR: string = 'start';
  * and the custom element also renders the start and end time labels with
  * rotation adjustments for which vertical half of the app the time lable is on.
  */
-class DonutChart extends HTMLElement {
+export class DonutChart extends HTMLElement {
   constructor() {
     super();
   }
@@ -38,13 +38,13 @@ class DonutChart extends HTMLElement {
   }
 
   attributeChangedCallback(): void {
-    this.render_();
+    this.render();
   }
 
   /**
    * Renders an SVG circle with an arc for the sun/moon chart.
    */
-  private render_(): void {
+  private render(): void {
     // Bail if both 'start' and 'end' attributes are missing since we can't
     // make the chart without them.
     const start = this.getAttribute(START_ATTR);
@@ -65,8 +65,8 @@ class DonutChart extends HTMLElement {
     // Convert values to degrees for arc. 'sweep' start and end values are
     // adjusted since the default start for SVG circles is 3 o'clock and we
     // want arcs to start at 6 o'clock, which is midnight graphically.
-    const sweepStart = this.timeToDegrees_(start) + AXIS_OFFSET;
-    const sweepEnd = this.timeToDegrees_(end) + AXIS_OFFSET;
+    const sweepStart = this.timeToDegrees(start) + AXIS_OFFSET;
+    const sweepEnd = this.timeToDegrees(end) + AXIS_OFFSET;
 
     // 'sweep' = arc length with any negative values converted to positive
     // for cleaner math.
@@ -84,8 +84,8 @@ class DonutChart extends HTMLElement {
 
     // Label for 'rise' time.
     const riseTime = start;
-    const riseSweep = this.labelPlacement_(sweepStart);
-    const riseRotation = this.labelRotation_({
+    const riseSweep = this.labelPlacement(sweepStart);
+    const riseRotation = this.labelRotation({
       radius: riseSweep.radius,
       angle: sweepStart,
       xOffset: cx,
@@ -95,8 +95,8 @@ class DonutChart extends HTMLElement {
 
     // Label for 'set' time.
     const setTime = end;
-    const setSweep = this.labelPlacement_(sweepEnd);
-    const setRotation = this.labelRotation_({
+    const setSweep = this.labelPlacement(sweepEnd);
+    const setRotation = this.labelRotation({
       radius: setSweep.radius,
       angle: sweepEnd,
       xOffset: cx,
@@ -139,7 +139,7 @@ class DonutChart extends HTMLElement {
    * technically right-aligned, which means double-digit times on the left
    * side need a slight radius adjustment.
    */
-  private labelPlacement_(degrees: number): Arc {
+  private labelPlacement(degrees: number): Arc {
     // Gap from edge of chart's arc for label placement.
     let radiusForLabels = (Chart.SIZE / 2) + Chart.LABEL_GAP;
     let sweep = degrees;
@@ -158,9 +158,9 @@ class DonutChart extends HTMLElement {
   /**
    * Returns adjusted x and y coordinates for a rotated label.
    */
-  private labelRotation_(props: LabelProps): Point {
+  private labelRotation(props: LabelProps): Point {
     const {angle, radius, xOffset, yOffset} = props;
-    const degreesToRadians = this.degreesToRadians_(angle);
+    const degreesToRadians = this.degreesToRadians(angle);
     const x = radius * Math.cos(degreesToRadians) + xOffset;
     const y = radius * Math.sin(degreesToRadians) + yOffset;
     
@@ -170,7 +170,7 @@ class DonutChart extends HTMLElement {
   /** 
    * Converts time to degrees of a circle.
    */
-  private timeToDegrees_(time: string): number {
+  private timeToDegrees(time: string): number {
     const hours = parseInt(time.split(' ')[0].split(':')[0]);
     const minutes = parseInt(time.split(' ')[0].split(':')[1]);
     const timeToDecimal = hours + (minutes / 60);
@@ -183,9 +183,7 @@ class DonutChart extends HTMLElement {
   /** 
    * Converts degrees to radians.
    */
-  private degreesToRadians_(angle: number): number {
+  private degreesToRadians(angle: number): number {
     return angle * (Math.PI / 180);
   }
 }
-
-export {Chart, DonutChart};
