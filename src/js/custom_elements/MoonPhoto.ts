@@ -41,14 +41,14 @@ export class MoonPhoto extends HTMLElement {
     return [ILLUMINATION_ATTR, PERCENT_ATTR, PHASE_ATTR];
   }
 
-  attributeChangedCallback(): void {
+  attributeChangedCallback() {
     this.render();
   }
 
   /** 
    * Renders a photo of the current moon phase.
    */
-  private render(): void {
+  private render() {
     this.illumination = parseInt(this.getAttribute(ILLUMINATION_ATTR));
     this.percent = parseInt(this.getAttribute(PERCENT_ATTR));
     this.phase = this.getAttribute(PHASE_ATTR);
@@ -98,7 +98,7 @@ export class MoonPhoto extends HTMLElement {
    * Attaches/removes a loading spinner and 'ready' attribute based on whether
    * or not the image is fully loaded.
    */
-  private preloadImage(): void {
+  private preloadImage() {
     const imageEl = this.querySelector('img');
 
     imageEl.onload = () => {

@@ -37,14 +37,14 @@ export class DonutChart extends HTMLElement {
     return [START_ATTR, END_ATTR];
   }
 
-  attributeChangedCallback(): void {
+  attributeChangedCallback() {
     this.render();
   }
 
   /**
    * Renders an SVG circle with an arc for the sun/moon chart.
    */
-  private render(): void {
+  private render() {
     // Bail if both 'start' and 'end' attributes are missing since we can't
     // make the chart without them.
     const start = this.getAttribute(START_ATTR);

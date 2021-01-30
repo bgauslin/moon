@@ -17,7 +17,7 @@ export class MoonInfo extends HTMLElement {
     return [PERCENT_ATTR, PHASE_ATTR];
   }
 
-  attributeChangedCallback(): void {
+  attributeChangedCallback() {
     this.render();
   }
 
@@ -25,7 +25,7 @@ export class MoonInfo extends HTMLElement {
    * Displays current moon phase name and percentage, and makes the percent
    * element invisible if percentage is '0'.
    */
-  private render(): void {
+  private render() {
     this.percent = this.getAttribute(PERCENT_ATTR);
     this.phase = this.getAttribute(PHASE_ATTR);
 

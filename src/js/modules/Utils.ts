@@ -7,7 +7,7 @@ class Utils {
   /**
    * Initializes site-wide utilities.
    */
-  public init(): void {
+  public init() {
     this.touchEnabled_();
     this.standaloneStartup_();
     this.viewportHeight_();
@@ -18,7 +18,7 @@ class Utils {
   /**
    * Initializes Google Analytics tracking.
    */
-  private googleAnalytics_(): void {
+  private googleAnalytics_() {
     if (process.env.NODE_ENV === 'production') {
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*(new Date() as any);a=s.createElement(o),
@@ -32,7 +32,7 @@ class Utils {
    * Gets global Google Analytics object and sends a new pageview with the
    * current page's path and title.
    */
-  public sendPageview(path: string, title: string): void {
+  public sendPageview(path: string, title: string) {
     const ga = (window as any).ga;
     if (ga) {
       ga('set', 'page', path);
@@ -45,7 +45,7 @@ class Utils {
    * Sets custom property for viewport height that updates 'vh' calculation due
    * to iOS Safari behavior where chrome appears and disappears when scrolling.
    */
-  private viewportHeight_(): void {
+  private viewportHeight_() {
     document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
   }
 
@@ -54,7 +54,7 @@ class Utils {
    * a user may have saved the app with a full URL, which means they will start
    * at that URL every time they launch the app instead of on the current day.
    */
-  private standaloneStartup_(): void {
+  private standaloneStartup_() {
     if ((window as any).navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
       history.replaceState(null, null, '/');
     }
@@ -63,7 +63,7 @@ class Utils {
   /**
    * Removes 'no-touch' attribute and adds fastclick if device is touch-enabled.
    */
-  private touchEnabled_(): void {
+  private touchEnabled_() {
     if ('ontouchstart' in window || (window as any).DocumentTouch) {
       document.body.removeAttribute('no-touch');
       fastclick['attach'](document.body);

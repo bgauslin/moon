@@ -39,14 +39,14 @@ export class App extends HTMLElement {
   /**
    * Initializes the app when it first loads.
    */
-  connectedCallback(): void {
+  connectedCallback() {
     this.setup();
     this.userLocation = this.querySelector('user-location');
     this.userLocationObserver.observe(this.userLocation, {attributes: true});
     this.utils.init();
   }
 
-  disconnectedCallback(): void {
+  disconnectedCallback() {
     this.removeEventListener('click', this.handleClick);
     window.removeEventListener('popstate', this.popstateListener, false);
   }
@@ -54,7 +54,7 @@ export class App extends HTMLElement {
   /**
    * Remove 'no JS' attribute and element from the DOM.
    */
-  private setup(): void {
+  private setup() {
     document.body.removeAttribute('no-js');
     document.body.querySelector('noscript').remove();
   }
@@ -95,7 +95,7 @@ export class App extends HTMLElement {
   /**
    * Updates an element with the current date in human-friendly format.
    */
-  private updateCurrentDate(): void {
+  private updateCurrentDate() {
     const currentDateElement = this.querySelector('.header__link');
     currentDateElement.textContent = this.dateUtils.prettyDate(
       this.date,
@@ -108,7 +108,7 @@ export class App extends HTMLElement {
    * Updates attributes on all custom elements so they can then update
    * themselves.
    */
-  private updateElements(moonData: MoonData): void {
+  private updateElements(moonData: MoonData) {
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
 
     const items = [
@@ -136,7 +136,7 @@ export class App extends HTMLElement {
   /** 
    * Updates document title with info about the current moon phase.
    */
-  private updateDocumentTitle(info: TitleInfo): void {
+  private updateDocumentTitle(info: TitleInfo) {
     const {date, locale, location, percent, phase} = info;
     const dateLabel = this.dateUtils.prettyDate(date, locale, 'short');
     let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
@@ -149,7 +149,7 @@ export class App extends HTMLElement {
   /**
    * Adds SPA behavior to clicked links.
    */
-  private handleClick(e: Event): void {
+  private handleClick(e: Event) {
     const target = e.target as HTMLElement;
     const href = target.getAttribute('href');
     if (href) {

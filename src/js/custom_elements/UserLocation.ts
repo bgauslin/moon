@@ -44,13 +44,13 @@ export class UserLocation extends HTMLElement {
     return [LOCATION_ATTR, RESTORE_ATTR];
   }
 
-  connectedCallback(): void {
+  connectedCallback() {
     this.defaultLocation = this.getAttribute(DEFAULT_ATTR);
     this.removeAttribute(DEFAULT_ATTR);
     this.setAttribute(LOCATION_ATTR, this.initialLocation());
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === RESTORE_ATTR) {
       this.restore();
     }
@@ -68,7 +68,7 @@ export class UserLocation extends HTMLElement {
   /**
    * Updates location widget with user-provided location if it has changed.
    */
-  private addListeners_(): void {
+  private addListeners_() {
     // Get new location on submit, blur the input, and update the attribute
     // to trigger App.update().
     this.formEl.addEventListener('submit', (e: Event) => {
@@ -194,7 +194,7 @@ export class UserLocation extends HTMLElement {
    * Updates the URL with new location and changes the 'location' attribute to
    * trigger App.update().
    */
-  private update(): void {
+  private update() {
     const urlSegments = window.location.pathname.split('/');
     urlSegments.splice(-1, 1);
     urlSegments.push(this.dateUtils.urlify(this.location));
@@ -209,7 +209,7 @@ export class UserLocation extends HTMLElement {
   /**
    * Restores previous location.
    */
-  private restore(): void {
+  private restore() {
     this.location = this.previousLocation;
     this.inputEl.value = this.previousLocation;
   }
@@ -217,7 +217,7 @@ export class UserLocation extends HTMLElement {
   /**
    * Shows geolocation button if browser supports Geolocation API.
    */
-  private enableGeolocation(): void {
+  private enableGeolocation() {
     if (navigator.geolocation) {
       this.geolocationButtonEl.removeAttribute(HIDDEN_ATTR);
     }
@@ -227,7 +227,7 @@ export class UserLocation extends HTMLElement {
    * Renders HTML form element for user's location and sets references to
    * form elements.
    */
-  private render(): void {
+  private render() {
     const html = `\      
       <form class="location__form">\
         <input class="location__input" \

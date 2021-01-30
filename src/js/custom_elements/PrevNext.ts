@@ -23,19 +23,19 @@ export class PrevNext extends HTMLElement {
     return [LOCATION_ATTR];
   }
 
-  connectedCallback(): void {
+  connectedCallback() {
     this.direction = this.getAttribute(DIRECTION_ATTR);
     this.render();
   }
 
-  attributeChangedCallback(): void {
+  attributeChangedCallback() {
     this.update();
   }
 
   /**
    * Renders a nav link.
    */
-  private render(): void {
+  private render() {
     const path = (this.direction === 'prev') ? SVG_PATH_LEFT : SVG_PATH_RIGHT;
     const html = `\
       <a class="nav__link" href="" title="">\
@@ -52,7 +52,7 @@ export class PrevNext extends HTMLElement {
   /**
    * Updates link and title relative to current date and location.
    */
-  private update(): void {
+  private update() {
     if (this.link) {
       const date = (this.direction === 'prev') ? this.dateUtils.prevDate() : this.dateUtils.nextDate();
       const location = this.getAttribute(LOCATION_ATTR);

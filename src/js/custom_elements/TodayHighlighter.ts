@@ -21,18 +21,18 @@ export class TodayHighlighter extends HTMLElement {
     return [UPDATE_ATTR];
   }
 
-  connectedCallback(): void {
+  connectedCallback() {
     this.selectors = this.getAttribute(SELECTOR_ATTR).split(',');
     this.removeAttribute(SELECTOR_ATTR);
   }
 
-  attributeChangedCallback(): void {
+  attributeChangedCallback() {
     if (this.hasAttribute(UPDATE_ATTR)) {
       this.update();
     }
   }
 
-  private update(): void {
+  private update() {
     const active = this.date.activeDate();
     const today = this.date.todaysDate();
     const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;

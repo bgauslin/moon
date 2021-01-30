@@ -76,14 +76,14 @@ export class ChartAxes extends HTMLElement {
     super();
   }
 
-  connectedCallback(): void {
+  connectedCallback() {
     this.render();
   }
 
   /**
    * Renders SVG element for chart axes and ticks.
    */
-  private render(): void {
+  private render() {
     let axisLines: string = '';
     let tickLines: string = '';
 
