@@ -35,10 +35,10 @@ export class MoonInfo extends HTMLElement {
 
     const visibility = (this.percent === '0') ? 'invisible' : '';
     const html = `\
-      <div class="${this.className}__phase">\
+      <div class="info__phase">\
         ${this.phase}\
       </div>\
-      <div class="${this.className}__percent" ${visibility}>\
+      <div class="info__percent" ${visibility}>\
         ${this.percent}%\
       </div>\
     `;

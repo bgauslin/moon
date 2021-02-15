@@ -59,9 +59,9 @@ export class MoonPhoto extends HTMLElement {
 
     const ready = this.imageLoaded ? READY_ATTR : '';
     const html = `\      
-      <div class="${this.className}__frame">\
-        <figure class="${this.className}__figure">\
-          <img class="${this.className}__image" \
+      <div class="photo__frame">\
+        <figure class="photo__figure">\
+          <img class="photo__image" \
                 src="${IMAGE_PATH_1X}" \
                 srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x" \
                 alt="${this.phase}${this.illuminationCaption()}" \
