@@ -89,20 +89,20 @@ export class ChartAxes extends HTMLElement {
 
     AXES.forEach((axis: Coordinates) => {
       const {x1, y1, x2, y2} = axis;
-      const line = `<line class="axis" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
+      const line = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
       axisLines += line;
     });
 
     TICKS.forEach((tick: Coordinates) => {
       const {x1, y1, x2, y2} = tick;
-      const line = `<line class="tick" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
+      const line = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
       tickLines += line;
     });
 
     const html = `\
       <svg viewbox="0 0 ${VIEWBOX} ${VIEWBOX}">\
-        <g>${axisLines}</g>\
-        <g>${tickLines}</g>\
+        <g id="axes">${axisLines}</g>\
+        <g id="ticks">${tickLines}</g>\
       </svg>\
     `;
 

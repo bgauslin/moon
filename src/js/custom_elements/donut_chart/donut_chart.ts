@@ -121,11 +121,15 @@ export class DonutChart extends HTMLElement {
             stroke-dasharray="${circumference}" \
             stroke-dashoffset="${strokeDashOffset}" \
             transform="${transform}"></circle>\
-          <text class="chart__label" fill="${color}" \
-            x="${riseRotation.x}" y="${riseRotation.y}" \
+          <text \
+            fill="${color}" \
+            x="${riseRotation.x}" \
+            y="${riseRotation.y}" \
             transform="${riseTransform}">${riseTime}</text>\
-          <text class="chart__label" fill="${color}" \
-            x="${setRotation.x}" y="${setRotation.y}" \
+          <text \
+            fill="${color}" \
+            x="${setRotation.x}" \
+            y="${setRotation.y}" \
             transform="${setTransform}">${setTime}</text>\
         </g>\
       </svg>\
