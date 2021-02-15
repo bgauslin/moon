@@ -1,0 +1,27 @@
+- const moonColor = '#fff'
+- const sunColor = '#f8c537'
+
+mixin line(coordinates)
+  line(
+    x1=coordinates.x1
+    y1=coordinates.y1
+    x2=coordinates.x2
+    y2=coordinates.y2
+  )
+
+mixin chartAxes(groups, viewbox)
+  svg(
+    class="polar-coordinates"
+    viewbox=`0 0 ${viewbox} ${viewbox}`
+    aria-hidden="true"
+  )
+    each group in groups
+      g(id=group.id)
+        each line in group.lines
+          +line(line)
+
+div
+  +chartAxes(groups, viewbox)
+  donut-chart(name="sun" color=sunColor)
+  donut-chart(name="moon" color=moonColor)
+  moon-photo.photo

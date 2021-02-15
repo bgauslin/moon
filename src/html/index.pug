@@ -1,8 +1,6 @@
 - const title = "Moonrise, Moonset, Moon Phase"
 - const description = "Geolocation-based moon phase, moonrise, and moonset"
 - const shortTitle = "Moon"
-- const moonColor = '#fff'
-- const sunColor = '#f8c537'
 - const currentYear = new Date().getFullYear().toString().substr(-2)
 
 doctype html
@@ -33,12 +31,7 @@ html(lang="en-GB")
         user-location(default="New York, NY")
       main
         noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.
-        div.charts
-          div.charts__frame
-            chart-axes
-            donut-chart(name="sun" color=sunColor)
-            donut-chart(name="moon" color=moonColor)
-            moon-photo.photo
+        moon-charts
         moon-info
         prev-next(direction="prev")
         prev-next(direction="next")
