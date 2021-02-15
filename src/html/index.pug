@@ -43,15 +43,13 @@ html(lang="en-GB")
         prev-next(direction="prev")
         prev-next(direction="next")
         app-today(selector=".header__title,.info__phase,.info__percent")
-      footer.footer
-        p.footer__blurb.footer__blurb--copyright
-          span.footer__years © 2020–#{currentYear}
-          a.footer__link(
-            href="https://gauslin.com"
-            title="Visit Ben Gauslin’s Website"
-          ) Ben Gauslin
-        p.footer__blurb.footer__blurb--repo
-          a.footer__link(
-            href="https://github.com/bgauslin/moon"
-            title="View source code on GitHub"
-          ) GitHub
+      footer
+        span © 2020–#{currentYear}
+        a(
+          href="https://gauslin.com"
+          title="Visit Ben Gauslin’s Website"
+        ) Ben Gauslin
+        a(
+          href="https://github.com/bgauslin/moon"
+          title="View source code on GitHub"
+        ) GitHub
