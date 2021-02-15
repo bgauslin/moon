@@ -1,4 +1,4 @@
-.info
+moon-info
   align-self center
   animation slideInUp transition-intro ease
   font-size em(14)
@@ -7,15 +7,15 @@
   text-align center
   white-space nowrap
 
-.info__phase
-  color white
+  [no-js] &
+    display none
 
-.info__percent
-  color rgba(white, .7)
-  margin-top rem(8)
+  [id=phase]
+    color white
 
-.info__percent[invisible]
-  visibility hidden
+  [id=percent]
+    color rgba(white, .7)
+    margin-top rem(8)
 
-[no-js] .info
-  display none
+  [id=percent][invisible]
+    visibility hidden
