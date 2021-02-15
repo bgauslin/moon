@@ -1,10 +1,7 @@
 import Spinner from 'spin';
 
 // [1] MOONPHASEIMAGE_COUNT value is same as loop value in 'photo.styl'
-
 const ILLUMINATION_ATTR: string = 'illumination';
-const IMAGE_PATH_1X: string = '/img/moon-phases-26-240.min.jpg';
-const IMAGE_PATH_2X: string = '/img/moon-phases-26-480.min.jpg';
 const MOONPHASEIMAGE_COUNT: number = 26; // [1]
 const PERCENT_ATTR: string = 'percent';
 const PHASE_ATTR: string = 'phase';
@@ -25,16 +22,15 @@ const SpinnerOptions: {} = {
  * element adjusts the vertical position of the sprite to show the moon phase.
  */
 export class MoonPhoto extends HTMLElement {
-  private illumination: number;
   private imageLoaded: boolean;
-  private percent: number;
-  private phase: string;
   private spinner: Spinner;
+  private template: any;
 
   constructor() {
     super();
     this.imageLoaded = false;
     this.spinner = new Spinner(SpinnerOptions);
+    this.template = require('./photo.pug');
   }
 
   static get observedAttributes(): string[] {
@@ -49,29 +45,21 @@ export class MoonPhoto extends HTMLElement {
    * Renders a photo of the current moon phase.
    */
   private render() {
-    this.illumination = parseInt(this.getAttribute(ILLUMINATION_ATTR));
-    this.percent = parseInt(this.getAttribute(PERCENT_ATTR));
-    this.phase = this.getAttribute(PHASE_ATTR);
+    const illumination = parseInt(this.getAttribute(ILLUMINATION_ATTR));
+    const percent = parseInt(this.getAttribute(PERCENT_ATTR));
+    const phase = this.getAttribute(PHASE_ATTR);
 
-    if (!this.illumination || !this.phase || !this.percent) {
-      return;
+    if (illumination && percent && phase) {
+      const currentFrame = Math.round((percent / 100) * MOONPHASEIMAGE_COUNT);
+      const frame = currentFrame === 0 ? MOONPHASEIMAGE_COUNT : currentFrame;
+
+      this.innerHTML = this.template({
+        frame,
+        illumination,
+        phase,
+        ready: this.imageLoaded
+      });
     }
-
-    const ready = this.imageLoaded ? READY_ATTR : '';
-    const html = `\      
-      <div class="photo__frame">\
-        <figure class="photo__figure">\
-          <img class="photo__image" \
-                src="${IMAGE_PATH_1X}" \
-                srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x" \
-                alt="${this.phase}${this.illuminationCaption()}" \
-                frame="${this.spriteFrame()}" \
-                ${ready}>\
-        </figure>\
-      </div>\
-    `;
-    
-    this.innerHTML = html.replace(/\s\s/g, '');
 
     if (!this.imageLoaded) {
       this.preloadImage();
@@ -79,40 +67,26 @@ export class MoonPhoto extends HTMLElement {
   }
 
   /**
-   * Returns moon phase photo sprite's position based on percent relative to
-   * number of frames in the sprite.
-   */
-  private spriteFrame(): number {
-    const frame: number = Math.round((this.percent / 100) * MOONPHASEIMAGE_COUNT);
-    return (frame === 0) ? MOONPHASEIMAGE_COUNT : frame;
-  }
-
-  /**
-   * Returns illumination value as text if it's greater than 0.
-   */
-  private illuminationCaption(): string {
-    return (this.illumination > 0) ? ` (${this.illumination}% illumination)` : '';
-  }
-
-  /**
    * Attaches/removes a loading spinner and 'ready' attribute based on whether
    * or not the image is fully loaded.
    */
   private preloadImage() {
-    const imageEl = this.querySelector('img');
+    const image = this.querySelector('img');
 
-    imageEl.onload = () => {
-      imageEl.setAttribute(READY_ATTR, '');
-      this.spinner.stop();
-      this.imageLoaded = true;
-    };
+    if (image) {
+      image.onload = () => {
+        image.setAttribute(READY_ATTR, '');
+        this.spinner.stop();
+        this.imageLoaded = true;
+      };
 
-    window.setTimeout(() => {
-      if (!imageEl.hasAttribute(READY_ATTR)) {
-        this.spinner.spin();
-        this.appendChild(this.spinner.el);
-      }
-    }, SPINNERDELAY_MS);
+      window.setTimeout(() => {
+        if (!image.hasAttribute(READY_ATTR)) {
+          this.spinner.spin();
+          this.appendChild(this.spinner.el);
+        }
+      }, SPINNERDELAY_MS);
+    }
   }
 }
 
