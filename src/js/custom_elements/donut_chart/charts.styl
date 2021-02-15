@@ -4,41 +4,11 @@
   grid-area charts
   padding rem(8)
 
+  [no-js] &
+    display none
+
 .charts__frame
   margin 0 auto
   max-width chart-max-width
   padding 0 0 100%
   position relative
-
-// Sun and moon SVG charts.
-.chart
-  height 100%
-  position absolute
-  width 100%
-
-.chart--sun
-  z-index 1
-
-.chart--moon
-  z-index 2
-
-chart-axes
-  z-index 3
-
-// Blend moon arc with sun arc where they overlap.
-.chart--moon circle
-  opacity .5
-
-// SVG chart axes and ticks.
-.axis
-  stroke black
-
-.tick
-  stroke rgba(white, .7)
-
-// SVG chart 'rise' and 'set' time labels. Sizes scale with SVG, so value varies.
-.chart__label
-  font-size em(13)
-
-[no-js] .charts
-  display none

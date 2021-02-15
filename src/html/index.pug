@@ -35,9 +35,9 @@ html(lang="en-GB")
         noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.
         div.charts
           div.charts__frame
-            chart-axes.chart
-            donut-chart.chart.chart--sun(name="sun" color=sunColor)
-            donut-chart.chart.chart--moon(name="moon" color=moonColor)
+            chart-axes
+            donut-chart(name="sun" color=sunColor)
+            donut-chart(name="moon" color=moonColor)
             moon-photo.photo
         moon-info.info
         prev-next(direction="prev")

@@ -1,0 +1,14 @@
+donut-chart
+  height 100%
+  position absolute
+  width 100%
+
+  &[name=sun]
+    z-index 1
+
+  &[name=moon]
+    z-index 2
+
+  // Blend moon arc with sun arc where they overlap.
+  &[name=moon] circle
+    opacity .5
