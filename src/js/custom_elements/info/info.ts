@@ -6,11 +6,11 @@ const PHASE_ATTR: string = 'phase';
  * relative to a full moon phase cycle.
  */
 export class MoonInfo extends HTMLElement {
-  private percent: string;
-  private phase: string;
+  private template: any;
 
   constructor() {
     super();
+    this.template = require('./info.pug');
   }
 
   static get observedAttributes(): string[] {
@@ -18,27 +18,11 @@ export class MoonInfo extends HTMLElement {
   }
 
   attributeChangedCallback() {
-    this.render();
-  }
-
-  /**
-   * Displays current moon phase name and percentage, and makes the percent
-   * element invisible if percentage is '0'.
-   */
-  private render() {
-    this.percent = this.getAttribute(PERCENT_ATTR);
-    this.phase = this.getAttribute(PHASE_ATTR);
-
-    if (!this.percent || !this.phase) {
-      return;
+    const percent = this.getAttribute(PERCENT_ATTR);
+    const phase = this.getAttribute(PHASE_ATTR);
+    if (percent && phase) {
+      this.innerHTML = this.template({percent, phase});
     }
-
-    const visibility = (this.percent === '0') ? 'invisible' : '';
-    const html = `\
-      <div id="phase">${this.phase}</div>\
-      <div id="percent" ${visibility}>${this.percent}%</div>\
-    `;
-    this.innerHTML = html.replace(/\s\s/g, '');
   }
 }
 
