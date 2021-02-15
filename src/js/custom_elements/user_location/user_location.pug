@@ -5,39 +5,32 @@
 
 mixin icon(name)
   svg(
-    class=`icon icon--${name}`
     viewBox="0 0 24 24"
+    aria-hidden="true"
   )
     path(d=`${ICONS.get(name)}`)
 
 //-  Rendered template.
-form(class="location__form")
+form
   input(
-    class="location__input"
     type="text"
     name="location"
     value=location
-    aria-label="Type a new location"
+    aria-label="Enter a new location"
     required
   )
   button(
-    id="update"
-    class="location__button location__button--submit"
     type="submit"
     aria-label="Update location"
   )
     +icon('submit')
   button(
-    id="clear"
-    class="location__button location__button--reset"
     type="reset"
     aria-label="Clear location"
   )
     +icon('reset')
-
 button(
   id="find"
-  class="location__button location__button--geolocation"
   aria-label="Find my location"
   hidden
 )

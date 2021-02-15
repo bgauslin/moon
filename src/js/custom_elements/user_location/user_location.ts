@@ -228,7 +228,7 @@ export class UserLocation extends HTMLElement {
 
     this.form = this.querySelector('form');
     this.input = this.querySelector('input');
-    this.geolocationButton = this.querySelector('.location__button--geolocation');
+    this.geolocationButton = this.querySelector('#find');
   }
 }
 

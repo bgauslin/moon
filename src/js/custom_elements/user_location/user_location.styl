@@ -1,0 +1,108 @@
+user-location
+  display block
+  margin 0 auto
+  max-width location-max-width
+  position relative
+
+  &
+  form
+  input
+    height location-height
+    width 100%
+
+  form
+  input
+    position absolute
+
+  input
+    align-items center
+    background rgba(white, 0)
+    border-radius (location-height / 2)
+    color white
+    display inline-flex
+    font-size 1em
+    padding 0 rem(32)
+    text-align center
+    text-overflow ellipsis
+    transition background transition
+
+    &:focus
+      background rgba(white, .25)
+
+    &:hover
+      cursor pointer
+      opacity .7
+
+    &:focus:hover
+      cursor text
+      opacity 1
+
+    [no-touch] &
+      transition background transition, opacity transition
+
+  button
+    align-items center
+    background 0
+    border-radius 50%
+    display inline-flex
+    height button-size
+    justify-content center
+    overflow hidden
+    padding 0
+    position absolute
+    top 0
+    transition background transition
+    width button-size
+
+  svg
+    transition background transition
+
+  path
+    transition fill transition
+
+  // Hide the submit button and capture the event on Enter/Go.
+  button[type=submit]
+    visibility hidden
+
+  // Reset button and icon styles.
+  button[type=reset]
+    padding 2px
+    right 0
+
+    svg
+      border-radius 50%
+      overflow hidden
+      padding 2px
+      width 16px
+
+    path:first-child
+      fill black
+
+  input:focus ~ button[type=reset]
+    svg
+      background rgba(white, .7)
+
+    &:hover svg
+    &:focus svg
+      background rgba(white, 1)
+
+  // 'Find my location' button and icon styles.
+  button[id=find]
+    left 0
+    z-index 1
+
+    svg
+      width 24px
+
+    path
+      fill rgba(white, 0)
+
+    &[enabled]
+      background rgba(white, 0)
+
+      &:hover
+      &:focus
+        background rgba(white, .25)
+
+    &[enabled] path:last-child
+      fill rgba(white, 1)
