@@ -2,8 +2,6 @@ import {DateUtils} from '../../modules/DateUtils';
 
 const DIRECTION_ATTR: string = 'direction';
 const LOCATION_ATTR: string = 'location';
-const SVG_PATH_LEFT: string = 'm21.08768,26.09236l-10.17537,-10.1165l10.12708,-10.06822';
-const SVG_PATH_RIGHT: string = 'm10.91231,5.90764l10.17537,10.1165l-10.12708,10.06822';
 
 /**
  * Custom element that renders 'previous' and 'next' navigation links for
@@ -36,16 +34,8 @@ export class PrevNext extends HTMLElement {
    * Renders a nav link.
    */
   private render() {
-    const path = (this.direction === 'prev') ? SVG_PATH_LEFT : SVG_PATH_RIGHT;
-    const html = `\
-      <a class="nav__link" href="" title="">\
-        <svg class="nav__icon" viewBox="0 0 32 32">\
-          <path class="nav__icon__path" d="${path}" />\
-        </svg>\
-      </a>\
-    `;
-    this.innerHTML = html.replace(/\s\s/g, '');
-
+    const template = require('./prev_next.pug');
+    this.innerHTML = template({direction: this.direction});
     this.link = this.querySelector('a');
   }
 
@@ -54,14 +44,12 @@ export class PrevNext extends HTMLElement {
    */
   private update() {
     if (this.link) {
-      const date = (this.direction === 'prev') ? this.dateUtils.prevDate() : this.dateUtils.nextDate();
+      const date = this.direction === 'prev' ? this.dateUtils.prevDate() : this.dateUtils.nextDate();
       const location = this.getAttribute(LOCATION_ATTR);
-
-      const url = String(this.dateUtils.makeUrl(date, location));
       const title = `${this.dateUtils.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
       const attributes = {
-        'href': url,
+        'href': String(this.dateUtils.makeUrl(date, location)),
         'title': title,
         'aria-label': title,
       }
