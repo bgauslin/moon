@@ -1,6 +1,7 @@
 - const moonColor = '#fff'
 - const sunColor = '#f8c537'
 
+//- Mixins.
 mixin line(coordinates)
   line(
     x1=coordinates.x1
@@ -11,7 +12,6 @@ mixin line(coordinates)
 
 mixin chartAxes(groups, viewbox)
   svg(
-    class="polar-coordinates"
     viewbox=`0 0 ${viewbox} ${viewbox}`
     aria-hidden="true"
   )
@@ -20,8 +20,8 @@ mixin chartAxes(groups, viewbox)
         each line in group.lines
           +line(line)
 
-div
-  +chartAxes(groups, viewbox)
-  donut-chart(name="sun" color=sunColor)
-  donut-chart(name="moon" color=moonColor)
-  moon-photo.photo
+//- Rendered template.
+donut-chart(name="sun" color=sunColor)
+donut-chart(name="moon" color=moonColor)
++chartAxes(groups, viewbox)
+moon-photo.photo
