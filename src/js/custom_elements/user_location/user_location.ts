@@ -1,4 +1,4 @@
-import {DateUtils} from '../modules/DateUtils';
+import {DateUtils} from '../../modules/DateUtils';
 
 interface UserCoordinates {
   lat: number,

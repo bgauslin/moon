@@ -1,4 +1,4 @@
-import {DateUtils} from '../modules/DateUtils';
+import {DateUtils} from '../../modules/DateUtils';
 
 const SELECTOR_ATTR: string = 'selector';
 const TODAY_CLASSNAME: string = 'today';
@@ -8,7 +8,7 @@ const UPDATE_ATTR: string = 'update';
  * Custom element that highlights elements if the UI is currently displaying
  * info for today.
  */
-export class TodayHighlighter extends HTMLElement {
+export class Highlighter extends HTMLElement {
   private date: DateUtils;
   private selectors: string[];
 
@@ -50,4 +50,4 @@ export class TodayHighlighter extends HTMLElement {
   }
 }
 
-customElements.define('app-today', TodayHighlighter);
+customElements.define('app-today', Highlighter);

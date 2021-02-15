@@ -1,4 +1,4 @@
-import {DateUtils} from '../modules/DateUtils';
+import {DateUtils} from '../../modules/DateUtils';
 
 const DIRECTION_ATTR: string = 'direction';
 const LOCATION_ATTR: string = 'location';

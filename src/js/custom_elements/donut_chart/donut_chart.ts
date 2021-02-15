@@ -1,4 +1,4 @@
-import {Chart} from '../modules/Constants';
+import {Chart} from '../../modules/Constants';
 
 interface Arc {
   radius: number,

@@ -1,6 +1,6 @@
-import {DataFetcher, MoonData} from '../modules/DataFetcher';
-import {AppDate, DateUtils} from '../modules/DateUtils';
-import {Utils} from '../modules/Utils';
+import {DataFetcher, MoonData} from '../../modules/DataFetcher';
+import {AppDate, DateUtils} from '../../modules/DateUtils';
+import {Utils} from '../../modules/Utils';
 
 interface TitleInfo {
   date: AppDate,
