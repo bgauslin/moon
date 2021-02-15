@@ -8,11 +8,8 @@ import './custom_elements/photo/photo';
 import './custom_elements/prev_next/prev_next';
 import './custom_elements/highlighter/highlighter';
 import './custom_elements/user_location/user_location';
+import '../stylus/index.styl';
 
-// Import styles for injecting into DOM.
-import '../stylus/moon.styl';
-
-// Register the Service Worker.
 if (process.env.NODE_ENV === 'production') {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
