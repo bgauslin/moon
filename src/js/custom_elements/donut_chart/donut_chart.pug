@@ -1,0 +1,25 @@
+svg(viewbox=`0 0 ${height} ${width}`)
+  g
+    circle(
+      cx=cx
+      cy=cy
+      r=radius
+      fill="transparent"
+      stroke=color
+      stroke-width=strokeWidth
+      stroke-dasharray=circumference
+      stroke-dashoffset=strokeDashOffset
+      transform=transform
+    )
+    text(
+      fill=color
+      x=riseRotation.x
+      y=riseRotation.y
+      transform=riseTransform
+    )= riseTime
+    text(
+      fill=color
+      x=setRotation.x
+      y=setRotation.y
+      transform=setTransform
+    )= setTime

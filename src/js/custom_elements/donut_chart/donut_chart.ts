@@ -29,8 +29,11 @@ const START_ATTR: string = 'start';
  * rotation adjustments for which vertical half of the app the time lable is on.
  */
 export class DonutChart extends HTMLElement {
+  private template: any;
+
   constructor() {
     super();
+    this.template = require('./donut_chart.pug');
   }
 
   static get observedAttributes(): string[] {
@@ -55,12 +58,12 @@ export class DonutChart extends HTMLElement {
     }
 
     // Set up the math for drawing arc sweeps.
-    const height: number = Chart.SIZE + (Chart.MARGIN * 2);
-    const width: number = Chart.SIZE + (Chart.MARGIN * 2);
-    const cx: number = height / 2;
-    const cy: number = width / 2;
-    const radius: number = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
-    const circumference: number = 2 * Math.PI * radius;
+    const height = Chart.SIZE + (Chart.MARGIN * 2);
+    const width = Chart.SIZE + (Chart.MARGIN * 2);
+    const cx = height / 2;
+    const cy = width / 2;
+    const radius = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
+    const circumference = 2 * Math.PI * radius;
     
     // Convert values to degrees for arc. 'sweep' start and end values are
     // adjusted since the default start for SVG circles is 3 o'clock and we
@@ -78,9 +81,6 @@ export class DonutChart extends HTMLElement {
     // Calculate arc stroke values for SVG.
     const strokeOffset = (sweep / 360) * circumference;
     const strokeDashOffset = circumference - strokeOffset;
-
-    // Arc stroke rotation based on sweep's 'start' value
-    const transform = `rotate(${sweepStart}, ${cx}, ${cy})`;
 
     // Label for 'rise' time.
     const riseTime = start;
@@ -104,37 +104,25 @@ export class DonutChart extends HTMLElement {
     });
     const setTransform = `rotate(${setSweep.sweep}, ${setRotation.x}, ${setRotation.y})`;
 
-    // Get color for the rendered arc.
-    const color = this.getAttribute(COLOR_ATTR);
-
-    // Rendered chart HTML.
-    const html = `
-      <svg viewbox="0 0 ${height} ${width}">\
-        <g>\
-          <circle \
-            cx="${cx}" \
-            cy="${cy}" \
-            r="${radius}" \
-            fill="transparent" \
-            stroke="${color}" \
-            stroke-width="${Chart.SWEEP_WIDTH}" \
-            stroke-dasharray="${circumference}" \
-            stroke-dashoffset="${strokeDashOffset}" \
-            transform="${transform}"></circle>\
-          <text \
-            fill="${color}" \
-            x="${riseRotation.x}" \
-            y="${riseRotation.y}" \
-            transform="${riseTransform}">${riseTime}</text>\
-          <text \
-            fill="${color}" \
-            x="${setRotation.x}" \
-            y="${setRotation.y}" \
-            transform="${setTransform}">${setTime}</text>\
-        </g>\
-      </svg>\
-    `;
-    this.innerHTML = html.replace(/\s\s/g, '');
+    // Render the chart.
+    this.innerHTML = this.template({
+      circumference,
+      color: this.getAttribute(COLOR_ATTR),
+      cx,
+      cy,
+      height,
+      radius,
+      riseRotation,
+      riseTime,
+      riseTransform,
+      setRotation,
+      setTime,
+      setTransform,
+      strokeDashOffset,
+      strokeWidth: Chart.SWEEP_WIDTH,
+      transform: `rotate(${sweepStart}, ${cx}, ${cy})`,
+      width,
+    });
   }
 
   /** 
