@@ -24,14 +24,14 @@ html(lang="en-GB")
       type="font/woff2"
       crossorigin="crossorigin"
     )
-  body(no-touch no-js)
+  body(no-js no-touch)
     div.progress-bar
     moon-app.app
       header.header
         h1.header__title
           a.header__link(href="/" title="Today")= shortTitle
         user-location(default="New York, NY")
-      main.content
+      main
         noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.
         div.charts
           div.charts__frame

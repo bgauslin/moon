@@ -1,0 +1,28 @@
+main
+  display grid
+  grid-row 2
+  grid-template-areas:
+    'charts charts charts'\
+    'prev info next'
+  grid-template-columns controls-size 1fr controls-size
+  grid-template-rows 1fr auto
+
+  @media breakpoint.small
+    grid-template-areas:
+      'prev charts next'\
+      'info info info'
+    grid-template-columns minmax(controls-size, 1fr) minmax(chart-size, chart-max-width) minmax(controls-size, 1fr)
+
+[no-js] main
+  align-items center
+  grid-template-columns 1fr  !important
+  grid-template-rows 1fr  !important
+  text-align center
+
+  a
+    color white
+    opacity .5
+
+    &:hover
+    &:focus
+      opacity 1
