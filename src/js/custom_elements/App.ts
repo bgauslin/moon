@@ -162,3 +162,5 @@ export class App extends HTMLElement {
     }
   }
 }
+
+customElements.define('moon-app', App);

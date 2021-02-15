@@ -187,3 +187,5 @@ export class DonutChart extends HTMLElement {
     return angle * (Math.PI / 180);
   }
 }
+
+customElements.define('donut-chart', DonutChart);

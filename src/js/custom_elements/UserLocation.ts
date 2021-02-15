@@ -271,3 +271,5 @@ export class UserLocation extends HTMLElement {
     return html.replace(/\s\s/g, '');
   }
 }
+
+customElements.define('user-location', UserLocation);

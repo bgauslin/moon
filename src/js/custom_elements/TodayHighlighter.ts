@@ -49,3 +49,5 @@ export class TodayHighlighter extends HTMLElement {
     this.removeAttribute(UPDATE_ATTR);
   }
 }
+
+customElements.define('app-today', TodayHighlighter);

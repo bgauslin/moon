@@ -109,3 +109,5 @@ export class ChartAxes extends HTMLElement {
     this.innerHTML = html.replace(/\s\s/g, '');
   }
 }
+
+customElements.define('chart-axes', ChartAxes);

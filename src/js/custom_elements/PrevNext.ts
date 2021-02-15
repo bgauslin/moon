@@ -72,3 +72,5 @@ export class PrevNext extends HTMLElement {
     }
   }
 }
+
+customElements.define('prev-next', PrevNext);

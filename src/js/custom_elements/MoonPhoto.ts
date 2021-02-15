@@ -115,3 +115,5 @@ export class MoonPhoto extends HTMLElement {
     }, SPINNERDELAY_MS);
   }
 }
+
+customElements.define('moon-photo', MoonPhoto);

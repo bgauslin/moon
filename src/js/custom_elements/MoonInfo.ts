@@ -45,3 +45,5 @@ export class MoonInfo extends HTMLElement {
     this.innerHTML = html.replace(/\s\s/g, '');
   }
 }
+
+customElements.define('moon-info', MoonInfo);
