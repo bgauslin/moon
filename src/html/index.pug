@@ -17,7 +17,13 @@ html(lang="en-GB")
     meta(name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover")
     link(rel="apple-touch-icon" href="/apple-touch-icon.png")
     link(rel="manifest" href="/pwa/manifest.json")
-    link(rel="preload" href="https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2" as="font" type="font/woff2" crossorigin="crossorigin")
+    link(
+      rel="preload"
+      href="https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="crossorigin"
+    )
   body(no-touch no-js)
     div.progress-bar
     moon-app.app
@@ -34,22 +40,18 @@ html(lang="en-GB")
             donut-chart.chart.chart--moon(name="moon" color=moonColor)
             moon-photo.photo
         moon-info.info
-        prev-next.nav.nav--prev(direction="prev")
-        prev-next.nav.nav--next(direction="next")
+        prev-next(direction="prev")
+        prev-next(direction="next")
         app-today(selector=".header__title,.info__phase,.info__percent")
       footer.footer
         p.footer__blurb.footer__blurb--copyright
-          span.footer__years © 2020
+          span.footer__years © 2020–#{currentYear}
           a.footer__link(
-            href="https://gauslin.com",
-            title="Visit Ben Gauslin’s Website",
-            target="_blank",
-            rel="noopener",
+            href="https://gauslin.com"
+            title="Visit Ben Gauslin’s Website"
           ) Ben Gauslin
         p.footer__blurb.footer__blurb--repo
           a.footer__link(
-            href="https://github.com/bgauslin/moon",
-            title="View source code on GitHub",
-            target="_blank",
-            rel="noopener",
+            href="https://github.com/bgauslin/moon"
+            title="View source code on GitHub"
           ) GitHub
