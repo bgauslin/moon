@@ -67,6 +67,12 @@ const TICKS: Coordinates[] = [
   },
 ];
 
+// Single array of objects for passing into a template.
+const GROUPS = [
+  {id: 'axes', lines: AXES},
+  {id: 'ticks', lines: TICKS},
+];
+
 /**
  * Custom element that renders an SVG with vertical and horizontal ticks for
  * time axes (i.e., 12AM, 6AM, 12PM, 6PM).
@@ -77,36 +83,11 @@ export class ChartAxes extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render();
-  }
-
-  /**
-   * Renders SVG element for chart axes and ticks.
-   */
-  private render() {
-    let axisLines: string = '';
-    let tickLines: string = '';
-
-    AXES.forEach((axis: Coordinates) => {
-      const {x1, y1, x2, y2} = axis;
-      const line = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
-      axisLines += line;
+    const template = require('./chart_axes.pug');
+    this.innerHTML = template({
+      groups: GROUPS,
+      viewbox: VIEWBOX,
     });
-
-    TICKS.forEach((tick: Coordinates) => {
-      const {x1, y1, x2, y2} = tick;
-      const line = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
-      tickLines += line;
-    });
-
-    const html = `\
-      <svg viewbox="0 0 ${VIEWBOX} ${VIEWBOX}">\
-        <g id="axes">${axisLines}</g>\
-        <g id="ticks">${tickLines}</g>\
-      </svg>\
-    `;
-
-    this.innerHTML = html.replace(/\s\s/g, '');
   }
 }
 

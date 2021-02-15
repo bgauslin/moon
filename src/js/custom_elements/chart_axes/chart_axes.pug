@@ -1,0 +1,18 @@
+
+mixin line(coordinates)
+  line(
+    x1=coordinates.x1
+    y1=coordinates.y1
+    x2=coordinates.x2
+    y2=coordinates.y2
+  )
+
+svg(
+  viewbox=`0 0 ${viewbox} ${viewbox}`
+  aria-hidden="true"
+)
+  each group in groups
+    g(id=group.id)
+      each line in group.lines
+        +line(line)
+  
