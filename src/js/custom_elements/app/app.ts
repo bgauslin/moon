@@ -96,7 +96,7 @@ export class App extends HTMLElement {
    * Updates an element with the current date in human-friendly format.
    */
   private updateCurrentDate() {
-    const currentDateElement = this.querySelector('.header__link');
+    const currentDateElement = this.querySelector('header h1 a');
     currentDateElement.textContent = this.dateUtils.prettyDate(
       this.date,
       document.documentElement.lang,

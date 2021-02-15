@@ -27,9 +27,9 @@ html(lang="en-GB")
   body(no-js no-touch)
     div.progress-bar
     moon-app.app
-      header.header
-        h1.header__title
-          a.header__link(href="/" title="Today")= shortTitle
+      header
+        h1
+          a(href="/" title="Today")= shortTitle
         user-location(default="New York, NY")
       main
         noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.
@@ -42,7 +42,7 @@ html(lang="en-GB")
         moon-info.info
         prev-next(direction="prev")
         prev-next(direction="next")
-        app-today(selector=".header__title,.info__phase,.info__percent")
+        app-today(selector="header h1, .info__phase, .info__percent")
       footer
         span © 2020–#{currentYear}
         a(
