@@ -1,6 +1,21 @@
 LOADER_HEIGHT = 3px
 LOADER_WIDTH = 20vw
 
+@keyframes loading 
+  0
+    left (- LOADER_WIDTH)
+    width 30%
+  50%
+    width 30%
+  70%
+    width 70%
+  80%
+    left 50%
+  95%
+    left 120%
+  100%
+    left 100%
+
 .progress-bar
   display none
   height LOADER_HEIGHT
@@ -20,17 +35,5 @@ body[loading] .progress-bar
   position absolute
   width LOADER_WIDTH
 
-@keyframes loading 
-  0
-    left (- LOADER_WIDTH)
-    width 30%
-  50%
-    width 30%
-  70%
-    width 70%
-  80%
-    left 50%
-  95%
-    left 120%
-  100%
-    left 100%
+[no-js] .progress-bar
+  display none
