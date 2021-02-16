@@ -21,9 +21,9 @@ Header set Connection keep-alive
 </FilesMatch>
 
 # Browser caching for static assets.
-<filesMatch ".(css|jpg|jpeg|png|gif|js|ico|eot|ttf|woff|woff2)$">
+<FilesMatch "\.(css|jpg|jpeg|png|gif|js|ico|woff2)$">
   Header set Cache-Control "max-age=2592000, public"
-</filesMatch>
+</FilesMatch>
 
 # Enable gzip compression.
 <ifModule mod_gzip.c>
