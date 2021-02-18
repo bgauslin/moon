@@ -1,14 +1,13 @@
 .app
   display grid
-  grid-template-rows auto 1fr auto
+  grid-template-areas:
+    'header'\
+    'main'
+  grid-template-rows auto 1fr
   min-height 100vh // fallback
   min-height calc(var(--vh, 1vh) * 100)
 
-  @media breakpoint.small
-    grid-template-rows 1fr auto 1fr
-
 [no-js] .app
-  display grid
   grid-template-columns 1fr
   grid-template-rows auto 1fr auto
 
