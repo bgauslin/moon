@@ -1,7 +1,7 @@
 - const title = "Moonrise, Moonset, Moon Phase"
 - const description = "Geolocation-based moon phase, moonrise, and moonset"
 - const shortTitle = "Moon"
-- const currentYear = new Date().getFullYear().toString().substr(-2)
+- const currentYear = new Date().getFullYear()
 
 doctype html
 html(lang="en-GB")
@@ -37,12 +37,8 @@ html(lang="en-GB")
         prev-next(direction="next")
         app-today(selector="header h1, #phase, #percent")
       footer
-        span © 2020–#{currentYear}
         a(
           href="https://gauslin.com"
           title="Visit Ben Gauslin’s Website"
-        ) Ben Gauslin
-        a(
-          href="https://github.com/bgauslin/moon"
-          title="View source code on GitHub"
-        ) GitHub
+        ) © #{currentYear} Ben Gauslin
+

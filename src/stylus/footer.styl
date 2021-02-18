@@ -9,18 +9,9 @@ footer
   justify-content center
   padding 0 0 env(safe-area-inset-bottom)
 
-  span
-    margin-right em(8)
-
   a
     link(rgba(white, .5), rgba(white, .5), white, white)
 
     &:focus
     [no-touch] &:hover
       transition color transition
-
-    &:not(:first-of-type)::before
-      content '·'
-      display inline-block
-      text-align center
-      width 1rem
