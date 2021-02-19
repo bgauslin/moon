@@ -1,13 +1,19 @@
 body
   display grid
   grid-template-areas:
-    'header'\
-    'main'\
-    'nav'
-  grid-template-columns 1fr
+    'header header header'\
+    'charts charts charts'\
+    'prev user-location next'
+  grid-template-columns controls-size 1fr controls-size
   grid-template-rows 1fr auto 1fr
-  min-height 100vh // fallback
   min-height calc(var(--vh, 1vh) * 100)
+
+  @media breakpoint.small
+    grid-template-areas:
+      'header header header'\
+      'prev charts next'\
+      '. user-location .'
+    grid-template-columns minmax(controls-size, 1fr) minmax(chart-size, chart-max-width) minmax(controls-size, 1fr)
 
 // Disable UI while loading data.
 body[loading] *
