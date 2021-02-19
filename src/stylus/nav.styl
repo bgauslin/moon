@@ -1,0 +1,9 @@
+nav
+  align-items center
+  grid-area nav
+  display grid
+  grid-template-areas: 'prev user-location next'
+  grid-template-columns controls-size 1fr controls-size
+
+  @media breakpoint.small
+    grid-template-columns minmax(controls-size, 1fr) minmax(chart-size, chart-max-width) minmax(controls-size, 1fr)

@@ -18,6 +18,7 @@ const TITLE_DIVIDER: string = '·';
  * Custom element that controls the application.
  */
 export class App extends HTMLElement {
+  private clickListener: any;
   private date: AppDate;
   private dateUtils: DateUtils;
   private location: string;
@@ -31,8 +32,9 @@ export class App extends HTMLElement {
     this.dateUtils = new DateUtils();
     this.userLocationObserver = new MutationObserver(() => this.update());
     this.utils = new Utils();
+    this.clickListener = this.handleClick.bind(this);
     this.popstateListener = this.update.bind(this);
-    this.addEventListener('click', this.handleClick);
+    document.addEventListener('click', this.clickListener);
     window.addEventListener('popstate', this.popstateListener, false);
   }
 
@@ -41,13 +43,13 @@ export class App extends HTMLElement {
    */
   connectedCallback() {
     this.setup();
-    this.userLocation = this.querySelector('user-location');
+    this.userLocation = document.querySelector('user-location');
     this.userLocationObserver.observe(this.userLocation, {attributes: true});
     this.utils.init();
   }
 
   disconnectedCallback() {
-    this.removeEventListener('click', this.handleClick);
+    document.removeEventListener('click', this.clickListener);
     window.removeEventListener('popstate', this.popstateListener, false);
   }
 
@@ -96,7 +98,7 @@ export class App extends HTMLElement {
    * Updates an element with the current date in human-friendly format.
    */
   private updateCurrentDate() {
-    const currentDateElement = this.querySelector('header h1 a');
+    const currentDateElement = document.querySelector('header h1 a');
     currentDateElement.textContent = this.dateUtils.prettyDate(
       this.date,
       document.documentElement.lang,
@@ -129,7 +131,7 @@ export class App extends HTMLElement {
 
     items.forEach((item) => {
       const [selector, attribute, value] = item;
-      this.querySelector(selector).setAttribute(attribute, value);
+      document.querySelector(selector).setAttribute(attribute, value);
     });
   }
 

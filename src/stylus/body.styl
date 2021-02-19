@@ -1,0 +1,28 @@
+body
+  display grid
+  grid-template-areas:
+    'header'\
+    'main'\
+    'nav'
+  grid-template-columns 1fr
+  grid-template-rows 1fr auto 1fr
+  min-height 100vh // fallback
+  min-height calc(var(--vh, 1vh) * 100)
+
+// Disable UI while loading data.
+body[loading] *
+  pointer-events none
+
+body[no-js]
+  align-items center
+  grid-template-columns 1fr !important
+  grid-template-rows 1fr !important
+  text-align center
+
+  a
+    color white
+    opacity .5
+
+    &:hover
+    &:focus
+      opacity 1
