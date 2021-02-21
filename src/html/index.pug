@@ -23,16 +23,13 @@ html(lang="en-GB")
       crossorigin="crossorigin"
     )
   body(no-js no-touch)
-    header
-      h1
-        a(href="/" title="Today")= shortTitle
     main
-      noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.
-      moon-charts
       moon-info
+      moon-charts
+      moon-date(selector="#phase, #percent")
       user-location(default="New York, NY")
       prev-next(direction="prev")
       prev-next(direction="next")
       moon-app
-      app-today(selector="header h1, #phase, #percent")
+      noscript Please <a href="https://www.enable-javascript.com/" title="How to enable JavaScript in your browser">enable JavaScript</a> to view this app.      
     .progress-bar

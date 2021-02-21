@@ -98,7 +98,7 @@ export class App extends HTMLElement {
    * Updates an element with the current date in human-friendly format.
    */
   private updateCurrentDate() {
-    const currentDateElement = document.querySelector('header h1 a');
+    const currentDateElement = document.querySelector('moon-date > a');
     currentDateElement.textContent = this.dateUtils.prettyDate(
       this.date,
       document.documentElement.lang,
@@ -114,6 +114,7 @@ export class App extends HTMLElement {
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
 
     const items = [
+      ['moon-date', 'update', ''],
       ['moon-info', 'percent', String(percent)],
       ['moon-info', 'phase', String(phase)],
       ['moon-photo', 'hemisphere', hemisphere],
@@ -126,7 +127,6 @@ export class App extends HTMLElement {
       ['donut-chart[name=sun]', 'end', sunset],
       ['prev-next[direction=next]', 'location', this.location],
       ['prev-next[direction=prev]', 'location', this.location],
-      ['app-today', 'update', ''],
     ];
 
     items.forEach((item) => {

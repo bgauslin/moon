@@ -8,7 +8,7 @@ const UPDATE_ATTR: string = 'update';
  * Custom element that highlights elements if the UI is currently displaying
  * info for today.
  */
-export class Highlighter extends HTMLElement {
+export class DateDisplay extends HTMLElement {
   private date: DateUtils;
   private selectors: string[];
 
@@ -24,12 +24,21 @@ export class Highlighter extends HTMLElement {
   connectedCallback() {
     this.selectors = this.getAttribute(SELECTOR_ATTR).split(',');
     this.removeAttribute(SELECTOR_ATTR);
+    this.setup();
   }
 
   attributeChangedCallback() {
     if (this.hasAttribute(UPDATE_ATTR)) {
       this.update();
     }
+  }
+
+  private setup() {
+    const link = document.createElement('a');
+    link.setAttribute('href', '/');
+    link.setAttribute('title', 'Today');
+    this.appendChild(link);
+    this.selectors.push['moon-date > a'];
   }
 
   private update() {
@@ -50,4 +59,4 @@ export class Highlighter extends HTMLElement {
   }
 }
 
-customElements.define('app-today', Highlighter);
+customElements.define('moon-date', DateDisplay);
