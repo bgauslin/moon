@@ -10,7 +10,7 @@ const UPDATE_ATTR: string = 'update';
  */
 export class DateDisplay extends HTMLElement {
   private date: DateUtils;
-  private selectors: string[];
+  private link: HTMLElement;
 
   constructor() {
     super();
@@ -22,8 +22,6 @@ export class DateDisplay extends HTMLElement {
   }
 
   connectedCallback() {
-    this.selectors = this.getAttribute(SELECTOR_ATTR).split(',');
-    this.removeAttribute(SELECTOR_ATTR);
     this.setup();
   }
 
@@ -34,26 +32,22 @@ export class DateDisplay extends HTMLElement {
   }
 
   private setup() {
-    const link = document.createElement('a');
-    link.setAttribute('href', '/');
-    link.setAttribute('title', 'Today');
-    this.appendChild(link);
-    this.selectors.push['moon-date > a'];
+    this.link = document.createElement('a');
+    this.link.setAttribute('href', '/');
+    this.link.setAttribute('title', 'Today');
+    this.appendChild(this.link);
   }
 
   private update() {
     const active = this.date.activeDate();
     const today = this.date.todaysDate();
     const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
-
-    this.selectors.forEach((selector) => {
-      const element = document.querySelector(selector);
-      if (isToday) {
-        element.classList.add(TODAY_CLASSNAME);
-      } else {
-        element.classList.remove(TODAY_CLASSNAME);
-      }
-    });
+  
+    if (isToday) {
+      this.link.classList.add(TODAY_CLASSNAME);
+    } else {
+      this.link.classList.remove(TODAY_CLASSNAME);
+    }
 
     this.removeAttribute(UPDATE_ATTR);
   }
