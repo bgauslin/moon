@@ -18,7 +18,7 @@ user-location
 
   input
     align-items center
-    background rgba(white, 0)
+    background rgba(white, .15)
     border-radius (location-height / 2)
     color white
     display inline-flex
@@ -29,18 +29,15 @@ user-location
     transition background transition
 
     &:focus
-      background rgba(white, .25)
-
     &:hover
+      background rgba(white, .25)
       cursor pointer
-      opacity .7
 
     &:focus:hover
       cursor text
-      opacity 1
 
     [no-touch] &
-      transition background transition, opacity transition
+      transition background transition
 
   button
     align-items center
@@ -78,11 +75,14 @@ user-location
       width 16px
 
     path:first-child
-      fill black
+      fill rgba(black, 0)
 
   input:focus ~ button[type=reset]
     svg
       background rgba(white, .7)
+
+    path:first-child
+      fill rgba(black, 1)
 
     &:hover svg
     &:focus svg
