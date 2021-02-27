@@ -3,20 +3,24 @@ body
   grid-template-areas:
     '. info .'\
     'charts charts charts'\
+    'charts charts charts'\
+    'charts charts charts'\
     '. location .'\
     'prev date next'
-  grid-template-columns controls-size 1fr controls-size
-  grid-template-rows 2fr auto 1fr 1fr
+  grid-template-columns controls-size minmax(auto, chart-max-size) controls-size
+  grid-template-rows 2fr controls-size auto controls-size 1fr 1fr
   min-height calc(var(--vh, 1vh) * 100)
   padding-bottom env(safe-area-inset-bottom)
 
   @media breakpoint.small
     grid-template-areas:
       '. info .'\
+      '. . .'\
       'prev charts next'\
+      '. . .'\
       '. location .'\
       '. date .'
-    grid-template-columns minmax(controls-size, 1fr) minmax(chart-size, chart-max-width) minmax(controls-size, 1fr)
+    grid-template-columns minmax(controls-size, 1fr) minmax(chart-size, chart-max-size) minmax(controls-size, 1fr)
 
 // Disable UI while loading data.
 body[loading] *

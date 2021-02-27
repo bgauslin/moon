@@ -12,7 +12,7 @@ chart-size-units = chart.size + (chart.margin * 2)
 
 axis-label-size = rem(32)
 button-size = rem(32)
-chart-max-width = rem(480)
+chart-max-size = rem(480)
 chart-size = rem(chart-size-units)
 controls-size = rem(48)
 location-height = rem(32)
@@ -30,5 +30,5 @@ transition-intro = 1s
 // Breakpoints.
 
 breakpoint = {
-  small: 'screen and (min-width: %s)' % (chart-size + (axis-label-size + controls-size * 2))
+  small: 'screen and (min-width: %s)' % (chart-max-size + (controls-size * 2))
 }
