@@ -8,9 +8,10 @@ interface TitleInfo {
   location: string,
 }
 
-const LOADING_ATTR: string = 'loading';
-const LOCATION_ATTR: string = 'location';
-const TITLE_DIVIDER: string = '·';
+const BASE_TITLE = 'Moon';
+const LOADING_ATTR = 'loading';
+const LOCATION_ATTR = 'location';
+const TITLE_DIVIDER = '·';
 
 /**
  * Custom element that controls the application.
@@ -132,14 +133,15 @@ export class App extends HTMLElement {
   }
 
   /** 
-   * Updates document title with info about the current moon phase.
+   * Updates document title with date and location.
    */
   private updateDocumentTitle(info: TitleInfo) {
     const {date, locale, location} = info;
     const dateLabel = this.dateUtils.prettyDate(date, locale, 'short');
-    let pageTitle = `Moon ${TITLE_DIVIDER} ${dateLabel} ${TITLE_DIVIDER} ${location}`;
-
-    document.title = pageTitle;
+    const pageTitle = `${BASE_TITLE} ${TITLE_DIVIDER} ${dateLabel} ${TITLE_DIVIDER} ${location}`;
+    const urlSegments = window.location.pathname.split('/');
+    urlSegments.shift();
+    document.title = urlSegments.length === 4 ? pageTitle : BASE_TITLE;
   }
 
   /**
