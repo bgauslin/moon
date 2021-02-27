@@ -1,11 +1,11 @@
 import Spinner from 'spin';
 
 // [1] MOONPHASEIMAGE_COUNT value is same as loop value in 'photo.styl'
-const ILLUMINATION_ATTR: string = 'illumination';
+const ILLUMINATION_ATTR = 'illumination';
 const MOONPHASEIMAGE_COUNT: number = 26; // [1]
-const PERCENT_ATTR: string = 'percent';
-const PHASE_ATTR: string = 'phase';
-const READY_ATTR: string = 'ready';
+const PERCENT_ATTR = 'percent';
+const PHASE_ATTR = 'phase';
+const READY_ATTR = 'ready';
 const SPINNERDELAY_MS: number = 1000;
 
 const SpinnerOptions: {} = {

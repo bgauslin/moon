@@ -5,14 +5,14 @@ interface UserCoordinates {
   lng: number,
 }
 
-const DEFAULT_ATTR: string = 'default';
-const ENABLED_ATTR: string = 'enabled';
+const DEFAULT_ATTR = 'default';
+const ENABLED_ATTR = 'enabled';
 const GEOCODER_PROXIMITY: number = 100;
-const HIDDEN_ATTR: string = 'hidden';
-const LOADING_ATTR: string = 'loading';
-const LOCAL_STORAGE_ITEM: string = 'location';
-const LOCATION_ATTR: string = 'location';
-const RESTORE_ATTR: string = 'restore';
+const HIDDEN_ATTR = 'hidden';
+const LOADING_ATTR = 'loading';
+const LOCAL_STORAGE_ITEM = 'location';
+const LOCATION_ATTR = 'location';
+const RESTORE_ATTR = 'restore';
 
 /**
  * Custom element that gets the user's location either via text input or via

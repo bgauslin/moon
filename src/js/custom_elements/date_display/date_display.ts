@@ -1,8 +1,8 @@
 import {DateUtils} from '../../modules/DateUtils';
 
-const SELECTOR_ATTR: string = 'selector';
-const TODAY_CLASSNAME: string = 'today';
-const UPDATE_ATTR: string = 'update';
+// const SELECTOR_ATTR = 'selector';
+const TODAY_CLASSNAME = 'today';
+const UPDATE_ATTR = 'update';
 
 /**
  * Custom element that highlights elements if the UI is currently displaying

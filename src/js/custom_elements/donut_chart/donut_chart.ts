@@ -18,9 +18,9 @@ interface Point {
 }
 
 const AXIS_OFFSET: number = -90;
-const COLOR_ATTR: string = 'color';
-const END_ATTR: string = 'end';
-const START_ATTR: string = 'start';
+const COLOR_ATTR = 'color';
+const END_ATTR = 'end';
+const START_ATTR = 'start';
 
 /**
  * Custom element that renders a partial donut chart whose start and end

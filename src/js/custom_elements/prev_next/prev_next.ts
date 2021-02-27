@@ -1,7 +1,7 @@
 import {DateUtils} from '../../modules/DateUtils';
 
-const DIRECTION_ATTR: string = 'direction';
-const LOCATION_ATTR: string = 'location';
+const DIRECTION_ATTR = 'direction';
+const LOCATION_ATTR = 'location';
 
 /**
  * Custom element that renders 'previous' and 'next' navigation links for

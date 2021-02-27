@@ -1,5 +1,5 @@
-const PERCENT_ATTR: string = 'percent';
-const PHASE_ATTR: string = 'phase';
+const PERCENT_ATTR = 'percent';
+const PHASE_ATTR = 'phase';
 
 /**
  * Custom element that renders text for the moon phase and its percentage
