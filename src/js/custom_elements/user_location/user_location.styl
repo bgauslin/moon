@@ -90,21 +90,16 @@ user-location
 
   // 'Find my location' button and icon styles.
   button[id=find]
+    background rgba(white, 0)
     left 0
     z-index 1
+
+    &:hover
+    &:focus
+      background rgba(white, .25)
 
     svg
       width 24px
 
-    path
-      fill rgba(white, 0)
-
-    &[enabled]
-      background rgba(white, 0)
-
-      &:hover
-      &:focus
-        background rgba(white, .25)
-
-    &[enabled] path:last-child
+    path:last-child
       fill rgba(white, 1)

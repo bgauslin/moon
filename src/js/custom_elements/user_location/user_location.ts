@@ -6,7 +6,6 @@ interface UserCoordinates {
 }
 
 const DEFAULT_ATTR = 'default';
-const ENABLED_ATTR = 'enabled';
 const GEOCODER_PROXIMITY: number = 100;
 const HIDDEN_ATTR = 'hidden';
 const LOADING_ATTR = 'loading';
@@ -83,18 +82,12 @@ export class UserLocation extends HTMLElement {
       this.input.focus();
     });
 
-    // Only show geolocation button on input focus.
-    this.input.addEventListener('focus', () => {
-      this.geolocationButton.setAttribute(ENABLED_ATTR, '');
-    });
-
     // Restore previous location if input is empty when blurred and hide
     // the geolocation button.
     this.input.addEventListener('blur', () => {
       if (this.input.value === '') {
         this.restore();
       }
-      this.geolocationButton.removeAttribute(ENABLED_ATTR);
     });
 
     // Get user's location when geolocation button is clicked.
