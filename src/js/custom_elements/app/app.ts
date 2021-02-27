@@ -6,8 +6,6 @@ interface TitleInfo {
   date: AppDate,
   locale: string,
   location: string,
-  percent: number,
-  phase: string,
 }
 
 const LOADING_ATTR: string = 'loading';
@@ -84,8 +82,6 @@ export class App extends HTMLElement {
       date: this.date,
       locale: document.documentElement.lang,
       location: this.location,
-      percent: moonData.percent,
-      phase: moonData.phase,
     });
     
     this.utils.sendPageview(window.location.pathname, document.title);
@@ -139,12 +135,10 @@ export class App extends HTMLElement {
    * Updates document title with info about the current moon phase.
    */
   private updateDocumentTitle(info: TitleInfo) {
-    const {date, locale, location, percent, phase} = info;
+    const {date, locale, location} = info;
     const dateLabel = this.dateUtils.prettyDate(date, locale, 'short');
-    let pageTitle = `${dateLabel} ${TITLE_DIVIDER} ${location} ${TITLE_DIVIDER} ${phase}`;
-    if (percent > 0) {
-      pageTitle += ` ${TITLE_DIVIDER} ${percent}%`;
-    }
+    let pageTitle = `Moon ${TITLE_DIVIDER} ${dateLabel} ${TITLE_DIVIDER} ${location}`;
+
     document.title = pageTitle;
   }
 
