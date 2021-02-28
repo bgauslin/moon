@@ -1,10 +1,15 @@
-all-webfonts()
+@font-face
+  font-display swap
+  font-family 'Avenir Variable'
+  font-weight 1 999
+  src url('https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2') format('woff2')
 
 html
 body
-  webfont()
   background black
   color white
+  font-family 'Avenir Variable', sans-serif
+  font-variation-settings 'wght' 500
   margin 0
   padding 0
   -webkit-tap-highlight-color transparent
@@ -21,7 +26,7 @@ a:focus
 
 input
 button
-  webfont()
+  font-family 'Avenir Variable', sans-serif
   appearance none
   border 0
   outline none
