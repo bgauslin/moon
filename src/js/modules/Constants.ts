@@ -14,62 +14,47 @@ interface Coordinates {
   y2: number,
 }
 
-// Container and centerpoint.
+// Container and center point.
 export const VIEWBOX: number = Chart.SIZE + (Chart.MARGIN * 2);
 const MIDPOINT: number = VIEWBOX / 2;
 
-// Top and left axis lines.
-const AXIS_FIRST_HALF_START: number = Chart.MARGIN;
-const AXIS_FIRST_HALF_END: number = Chart.MARGIN + Chart.SWEEP_WIDTH;
-
-// Bottom and right axis lines.
-const AXIS_SECOND_HALF_START: number = MIDPOINT + ((Chart.SIZE / 2) - Chart.SWEEP_WIDTH)
-const AXIS_SECOND_HALF_END: number = VIEWBOX - Chart.MARGIN;
-
-// Axes values start at the top and go clockwise.
-export const AXES: Coordinates[] = [
-  {
-    x1: MIDPOINT, y1: AXIS_FIRST_HALF_START,
-    x2: MIDPOINT, y2: AXIS_FIRST_HALF_END,
+// Four overlay 90 degree ticks in the moon/set sweep area.
+const SWEEP_INNER_EDGE: number = MIDPOINT + ((Chart.SIZE / 2) - Chart.SWEEP_WIDTH);
+export const SWEEP_TICKS: Coordinates[] = [
+  { // top
+    x1: MIDPOINT, y1: Chart.MARGIN,
+    x2: MIDPOINT, y2: Chart.MARGIN + Chart.SWEEP_WIDTH,
   },
-  {
-    x1: AXIS_SECOND_HALF_START, y1: MIDPOINT,
-    x2: AXIS_SECOND_HALF_END, y2: MIDPOINT,
+  { // right
+    x1: SWEEP_INNER_EDGE, y1: MIDPOINT,
+    x2: VIEWBOX - Chart.MARGIN, y2: MIDPOINT,
   },
-  {
-    x1: MIDPOINT, y1: AXIS_SECOND_HALF_START,
-    x2: MIDPOINT, y2: AXIS_SECOND_HALF_END,
+  { // bottom
+    x1: MIDPOINT, y1: SWEEP_INNER_EDGE,
+    x2: MIDPOINT, y2: VIEWBOX - Chart.MARGIN,
   },
-  {
-    x1: AXIS_FIRST_HALF_START, y1: MIDPOINT,
-    x2: AXIS_FIRST_HALF_END, y2: MIDPOINT,
+  { // left
+    x1: Chart.MARGIN, y1: MIDPOINT,
+    x2: Chart.MARGIN + Chart.SWEEP_WIDTH, y2: MIDPOINT,
   },
 ];
 
-// Top and left tick lines.
-const TICK_FIRST_HALF_START: number = 0;
-const TICK_FIRST_HALF_END: number = Chart.MARGIN;
-
-// Bottom and right tick lines.
-const TICK_SECOND_HALF_START: number = VIEWBOX - Chart.MARGIN;
-const TICK_SECOND_HALF_END: number = VIEWBOX;
-
-// Ticks values start at the top and go clockwise.
-export const TICKS: Coordinates[] = [
-  {
-    x1: MIDPOINT, y1: TICK_FIRST_HALF_START,
-    x2: MIDPOINT, y2: TICK_FIRST_HALF_END,
+// Four major 90 degree ticks outside the sweep area.
+export const MAJOR_TICKS: Coordinates[] = [
+  { // top
+    x1: MIDPOINT, y1: 0,
+    x2: MIDPOINT, y2: Chart.MARGIN,
   },
-  {
-    x1: TICK_SECOND_HALF_START, y1: MIDPOINT,
-    x2: TICK_SECOND_HALF_END, y2: MIDPOINT,
+  { // right
+    x1: VIEWBOX - Chart.MARGIN, y1: MIDPOINT,
+    x2: VIEWBOX, y2: MIDPOINT,
   },
-  {
-    x1: MIDPOINT, y1: TICK_SECOND_HALF_START,
-    x2: MIDPOINT, y2: TICK_SECOND_HALF_END,
+  { // bottom
+    x1: MIDPOINT, y1: VIEWBOX - Chart.MARGIN,
+    x2: MIDPOINT, y2: VIEWBOX,
   },
-  {
-    x1: TICK_FIRST_HALF_START, y1: MIDPOINT,
-    x2: TICK_FIRST_HALF_END, y2: MIDPOINT,
+  { // left
+    x1: 0, y1: MIDPOINT,
+    x2: Chart.MARGIN, y2: MIDPOINT,
   },
 ];
