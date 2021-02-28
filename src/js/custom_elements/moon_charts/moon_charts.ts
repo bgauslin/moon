@@ -1,4 +1,27 @@
-import {CENTER, MAJOR_TICK, MINOR_TICK, SVGLine, SWEEP_TICK, VIEWBOX} from '../../modules/Constants';
+import {Chart} from '../../modules/Constants';
+
+interface Tick {
+  start: number,
+  end: number,
+}
+
+const HOUR_TICK: Tick = {  
+  start: Chart.MARGIN,
+  end: Chart.MARGIN + Chart.SWEEP_WIDTH,
+};
+
+const OUTER_TICK: Tick = {
+  start: 0,
+  end: Chart.MARGIN,
+};
+
+const SWEEP_TICK: Tick = {  
+  start: Chart.MARGIN,
+  end: Chart.MARGIN + Chart.SWEEP_WIDTH,
+};
+
+const CENTER: number = Chart.MARGIN + (Chart.SIZE / 2);
+const VIEWBOX: number = Chart.SIZE + (Chart.MARGIN * 2);
 
 const DIVISIONS: number = 24;
 const ANGLE: number = 360 / DIVISIONS;
@@ -17,8 +40,8 @@ export class MoonCharts extends HTMLElement {
    */
   private setup() {
     const sweepTicks = this.ticks(SWEEP_TICK, true);
-    const majorTicks = this.ticks(MAJOR_TICK, true);
-    const minorTicks = this.ticks(MINOR_TICK);
+    const majorTicks = this.ticks(OUTER_TICK, true);
+    const minorTicks = this.ticks(HOUR_TICK);
 
     const template = require('./moon_charts.pug');
     this.innerHTML += template({
@@ -36,8 +59,8 @@ export class MoonCharts extends HTMLElement {
    * By default, a line for each hour is rendered unless the lines are 'major',
    * which only renders a line every 90 degrees.
    */
-  private ticks(tick: SVGLine, major: boolean = false) {
-    const {x1, y1, x2, y2} = tick;
+  private ticks(tick: Tick, major: boolean = false) {
+    const {start, end} = tick;
     const ticks = [];
 
     for (let i = 1; i <= DIVISIONS; i++) {
@@ -45,10 +68,10 @@ export class MoonCharts extends HTMLElement {
       if (major && degrees % 90 === 0 ||
           !major && degrees % 90 !== 0) {
         const newLine = {
-          x1,
-          y1,
-          x2,
-          y2,
+          x1: CENTER,
+          y1: start,
+          x2: CENTER,
+          y2: end,
           transform: `rotate(${degrees}, ${CENTER}, ${CENTER})`,
         };
         ticks.push(newLine);
