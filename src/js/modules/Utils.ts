@@ -8,17 +8,17 @@ class Utils {
    * Initializes site-wide utilities.
    */
   public init() {
-    this.touchEnabled_();
-    this.standaloneStartup_();
-    this.viewportHeight_();
-    this.googleAnalytics_();
-    window.addEventListener('resize', this.viewportHeight_);
+    this.touchEnabled();
+    this.standaloneStartup();
+    this.viewportHeight();
+    this.googleAnalytics();
+    window.addEventListener('resize', this.viewportHeight);
   }
 
   /**
    * Initializes Google Analytics tracking.
    */
-  private googleAnalytics_() {
+  private googleAnalytics() {
     if (process.env.NODE_ENV === 'production') {
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*(new Date() as any);a=s.createElement(o),
@@ -45,7 +45,7 @@ class Utils {
    * Sets custom property for viewport height that updates 'vh' calculation due
    * to iOS Safari behavior where chrome appears and disappears when scrolling.
    */
-  private viewportHeight_() {
+  private viewportHeight() {
     document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
   }
 
@@ -54,7 +54,7 @@ class Utils {
    * a user may have saved the app with a full URL, which means they will start
    * at that URL every time they launch the app instead of on the current day.
    */
-  private standaloneStartup_() {
+  private standaloneStartup() {
     if ((window as any).navigator.standalone == true || window.matchMedia('(display-mode: standalone)').matches) {
       history.replaceState(null, null, '/');
     }
@@ -63,7 +63,7 @@ class Utils {
   /**
    * Removes 'no-touch' attribute and adds fastclick if device is touch-enabled.
    */
-  private touchEnabled_() {
+  private touchEnabled() {
     if ('ontouchstart' in window || (window as any).DocumentTouch) {
       document.body.removeAttribute('no-touch');
       fastclick['attach'](document.body);
