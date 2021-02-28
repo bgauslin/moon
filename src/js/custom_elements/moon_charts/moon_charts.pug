@@ -1,28 +1,17 @@
--
-  const moonColor = '#fff';
-  const sunColor = '#f8c537';
-
-//- Mixins.
-mixin line(coordinates)
-  line(
-    x1=coordinates.x1
-    y1=coordinates.y1
-    x2=coordinates.x2
-    y2=coordinates.y2
-  )
-
-mixin chartAxes(groups, viewbox)
-  svg(
-    viewbox=`0 0 ${viewbox} ${viewbox}`
-    aria-hidden="true"
-  )
-    each group in groups
-      g(id=group.id)
-        each line in group.lines
-          +line(line)
-
-//- Rendered template.
 moon-photo.photo
-donut-chart(name="sun" color=sunColor)
-donut-chart(name="moon" color=moonColor)
-+chartAxes(groups, viewbox)
+donut-chart(name="sun" color="#f8c537")
+donut-chart(name="moon" color="#fff")
+svg(
+  viewbox=`0 0 ${viewbox} ${viewbox}`
+  aria-hidden="true"
+)
+  each group in groups
+    g(id=group.id)
+      each line in group.lines
+        line(
+          x1=line.x1
+          y1=line.y1
+          x2=line.x2
+          y2=line.y2
+          transform=(line.rotate ? line.rotate : false)
+        )
