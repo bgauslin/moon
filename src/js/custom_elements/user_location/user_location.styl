@@ -53,12 +53,6 @@ user-location
     transition background transition
     width button-size
 
-  svg
-    transition background transition
-
-  path
-    transition fill transition
-
   // Hide the submit button and capture the event on Enter/Go.
   button[type=submit]
     visibility hidden
@@ -68,25 +62,32 @@ user-location
     padding 2px
     right 0
 
-    svg
-      border-radius 50%
-      overflow hidden
-      padding 2px
-      width 16px
+    circle
+      fill rgba(white, 0)
+      transition fill transition
 
-    path:first-child
-      fill rgba(black, 0)
+    path
+      fill none
+      stroke rgba(black, 0)
+      stroke-linecap round
+      stroke-width 1
+      transition stroke transition
 
+  // Reset button states when input is focused.
   input:focus ~ button[type=reset]
-    svg
-      background rgba(white, .7)
+    circle
+      fill rgba(white, .7)
+    
+    path
+      stroke rgba(black, .7)
 
-    path:first-child
-      fill rgba(black, 1)
+    &:focus
+    [no-touch] &:hover
+      circle
+        fill rgba(white, 1)
 
-    &:hover svg
-    &:focus svg
-      background rgba(white, 1)
+      path
+        stroke rgba(black, 1)
 
   // 'Find my location' button and icon styles.
   button[id=find]
@@ -94,8 +95,8 @@ user-location
     left 0
     z-index 1
 
-    &:hover
     &:focus
+    [no-touch] &:hover
       background rgba(white, .25)
 
     svg
