@@ -22,7 +22,10 @@ prev-next
       transform scale(.8)
 
     path
+      fill none
       stroke white
+      stroke-width 1
+      transition stroke transition
 
     &:active path
     [no-touch] &:hover path
@@ -32,11 +35,6 @@ prev-next
     flex 0 0 rem(32)
     height auto
     transition transform transition
-
-  path
-    fill none
-    stroke-width 4
-    transition stroke transition
 
   [no-js] &
     display none
