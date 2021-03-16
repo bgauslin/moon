@@ -39,6 +39,7 @@ user-location
     [no-touch] &
       transition background transition
 
+  // General button styles.
   button
     align-items center
     background 0
@@ -59,7 +60,6 @@ user-location
 
   // Reset button and icon styles.
   button[type=reset]
-    padding 2px
     right 0
 
     circle
@@ -100,7 +100,19 @@ user-location
       background rgba(white, .25)
 
     svg
-      width 24px
+      color white
+      padding 2px
 
-    path:last-child
-      fill rgba(white, 1)
+    circle
+    path
+      stroke currentColor
+      stroke-width 1.5
+
+    circle
+      fill currentColor
+
+    path
+      fill none
+
+    // path:last-child
+    //   fill rgba(white, 1)
