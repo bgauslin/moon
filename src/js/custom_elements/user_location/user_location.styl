@@ -18,7 +18,7 @@ user-location
 
   input
     align-items center
-    background rgba(white, .15)
+    background var(--background-1)
     border-radius (location-height / 2)
     color white
     display inline-flex
@@ -30,7 +30,7 @@ user-location
 
     &:focus
     &:hover
-      background rgba(white, .25)
+      background var(--background-2)
       cursor pointer
 
     &:focus:hover
@@ -76,7 +76,7 @@ user-location
   // Reset button states when input is focused.
   input:focus ~ button[type=reset]
     circle
-      fill rgba(white, .7)
+      fill var(--background-3)
     
     path
       stroke rgba(black, .7)
@@ -91,13 +91,13 @@ user-location
 
   // 'Find my location' button and icon styles.
   button[id=find]
-    background rgba(white, 0)
+    background var(--background-0)
     left 0
     z-index 1
 
     &:focus
     [no-touch] &:hover
-      background rgba(white, .25)
+      background var(--background-2)
 
     svg
       color white
@@ -113,6 +113,3 @@ user-location
 
     path
       fill none
-
-    // path:last-child
-    //   fill rgba(white, 1)

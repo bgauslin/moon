@@ -13,12 +13,19 @@ prev-next
 
   a
     align-items center
+    background var(--background-0)
+    border-radius 50%
     display flex
     height controls-size
     justify-content center
+    transition background transition, transform transition
     width controls-size
 
-    &:active svg
+    &:focus
+    [no-touch] &:hover
+      background var(--background-1)
+
+    &:active
       transform scale(.8)
 
     path
