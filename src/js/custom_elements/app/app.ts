@@ -17,11 +17,11 @@ const TITLE_DIVIDER = '·';
  * Custom element that controls the application.
  */
 export class App extends HTMLElement {
-  private clickListener: any;
+  private clickListener: EventListenerObject;
   private date: AppDate;
   private dateUtils: DateUtils;
   private location: string;
-  private popstateListener: any;
+  private popstateListener: EventListenerObject;
   private userLocation: HTMLElement;
   private userLocationObserver: MutationObserver;
   private utils: Utils;
