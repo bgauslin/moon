@@ -1,27 +1,20 @@
 body
   display grid
-  grid-template-areas:
-    '. info .'\
-    'charts charts charts'\
-    'charts charts charts'\
-    'charts charts charts'\
-    'prev date next'\
-    '. location .'
-  grid-template-columns controls-size minmax(auto, chart-max-size) controls-size
-  grid-template-rows 2fr controls-size auto controls-size 1fr 1fr
+  grid-template:
+    '. info .' 2fr \
+    'charts charts charts' auto \
+    'prev date next' 1fr \
+    '. location .' 1fr / '%s minmax(auto, %s) %s' % (controls-size chart-max-size controls-size)
   min-height calc(var(--vh, 1vh) * 100)
   overflow hidden
   padding-bottom env(safe-area-inset-bottom)
 
   @media breakpoint.small
-    grid-template-areas:
-      '. info .'\
-      '. . .'\
-      'prev charts next'\
-      '. . .'\
-      '. date .'\
-      '. location .'
-    grid-template-columns minmax(controls-size, 1fr) minmax(chart-size, chart-max-size) minmax(controls-size, 1fr)
+    grid-template:
+      '. info .' 2fr \
+      'prev charts next' auto \
+      '. date .' 1fr \
+      '. location .' 1fr / 'minmax(%s, 1fr) minmax(%s, %s) minmax(%s, 1fr)' % (controls-size chart-size chart-max-size controls-size)
 
 // Disable UI while loading data.
 body[loading] *
@@ -29,8 +22,7 @@ body[loading] *
 
 body[no-js]
   align-items center
-  grid-template-columns 1fr !important
-  grid-template-rows 1fr !important
+  grid-template 1fr / 1fr !important
   text-align center
 
   a
