@@ -7,7 +7,7 @@ interface Tick {
 
 const HOUR_TICK: Tick = {  
   start: Chart.MARGIN,
-  end: Chart.MARGIN + Chart.SWEEP_WIDTH,
+  end: Chart.MARGIN - (Chart.SWEEP_WIDTH / 4),
 };
 
 const OUTER_TICK: Tick = {
