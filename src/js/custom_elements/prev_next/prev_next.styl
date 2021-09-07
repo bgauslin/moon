@@ -13,7 +13,7 @@ prev-next
 
   a
     align-items center
-    background var(--background-0)
+    background var(--background-1)
     border-radius 50%
     display flex
     height controls-size
@@ -23,7 +23,7 @@ prev-next
 
     &:focus
     [no-touch] &:hover
-      background var(--background-1)
+      background var(--background-2)
 
     &:active
       transform scale(.8)
@@ -32,11 +32,6 @@ prev-next
       fill none
       stroke white
       stroke-width 1
-      transition stroke transition
-
-    &:focus path
-    [no-touch] &:hover path
-      stroke rgba(white, .7)
 
   svg
     flex 0 0 rem(32)
