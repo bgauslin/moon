@@ -1,9 +1,24 @@
-:root
-  --fineprint em(12)
+body
   --background-0 rgba(white, 0)
   --background-1 rgba(white, .15)
   --background-2 rgba(white, .25)
   --background-3 rgba(white, .7)
+  --fineprint em(12)
+  --grid:
+    '. info .' 2fr \
+    'charts charts charts' \
+    'prev date next' 1fr \
+    '. location .' 1fr / '%s minmax(auto, %s) %s' % (controls-size chart-max-size controls-size)
+  --main-display contents
 
   @media breakpoint.small
+    --grid:
+      '. info .' 2fr \
+      'prev charts next' \
+      '. date .' 1fr \
+      '. location .' 1fr / 'minmax(%s, 1fr) minmax(%s, %s) minmax(%s, 1fr)' % (controls-size chart-size chart-max-size controls-size)
     --fineprint em(14)
+
+[no-js]
+  --grid unset
+  --main-display grid
