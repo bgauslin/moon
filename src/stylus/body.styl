@@ -1,10 +1,14 @@
 body
+  background black
+  color white
   display grid
+  font-family 'Avenir Variable', sans-serif
+  font-variation-settings 'wght' 500
   grid var(--grid)
+  margin 0
   min-height 100vh
   min-height -webkit-fill-available
-  overflow hidden
-  padding-bottom env(safe-area-inset-bottom)
+  padding 0 0 env(safe-area-inset-bottom)
 
 // Disable UI while loading data.
 body[loading] *
@@ -13,10 +17,10 @@ body[loading] *
 body[no-js]
   align-items center
 
-  a
-    color white
-    opacity .5
+body[no-js] a
+  color white
+  opacity .5
 
-    &:hover
-    &:focus
-      opacity 1
+  &:hover
+  &:focus
+    opacity 1
