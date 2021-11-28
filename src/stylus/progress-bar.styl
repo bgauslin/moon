@@ -1,9 +1,6 @@
-LOADER_HEIGHT = 3px
-LOADER_WIDTH = 20vw
-
 @keyframes loading 
   0
-    left (- LOADER_WIDTH)
+    left (- PROGRESS_BAR_WIDTH)
     width 30%
   50%
     width 30%
@@ -18,7 +15,7 @@ LOADER_WIDTH = 20vw
 
 .progress-bar
   display none
-  height LOADER_HEIGHT
+  height PROGRESS_BAR_HEIGHT
   width 100vw
   position fixed
 
@@ -30,10 +27,10 @@ body[loading] .progress-bar
   background white
   content ''
   display block
-  height LOADER_HEIGHT
-  left (- LOADER_WIDTH)
+  height PROGRESS_BAR_HEIGHT
+  left (- PROGRESS_BAR_WIDTH)
   position absolute
-  width LOADER_WIDTH
+  width PROGRESS_BAR_WIDTH
 
 [no-js] .progress-bar
   display none

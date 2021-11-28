@@ -1,118 +1,118 @@
 user-location
-  animation slideInDown transition-intro ease
+  animation slideInDown TRANSITION_INTRO ease
   display block
   grid-area location
-  max-width location-max-width
+  max-width LOCATION_MAX_WIDTH
   place-self center
   position relative
 
-  [no-js] &
-    display none
+user-location
+user-location form
+user-location input
+  height LOCATION_HEIGHT
+  width 100%
 
-  &
-  form
-  input
-    height location-height
-    width 100%
+user-location form
+user-location input
+  position absolute
 
-  form
-  input
-    position absolute
+user-location input
+  align-items center
+  background var(--background-1)
+  border-radius (LOCATION_HEIGHT / 2)
+  color white
+  display inline-flex
+  font-size 1em
+  padding 0 rem(32)
+  text-align center
+  text-overflow ellipsis
+  transition background TRANSITION
 
-  input
-    align-items center
-    background var(--background-1)
-    border-radius (location-height / 2)
+  &:focus
+  &:hover
+    background var(--background-2)
+    cursor pointer
+
+  &:focus:hover
+    cursor text
+
+[no-touch] user-location input
+  transition background TRANSITION
+
+// General button styles.
+user-location button
+  align-items center
+  background 0
+  border-radius 50%
+  display inline-flex
+  height BUTTON_SIZE
+  justify-content center
+  overflow hidden
+  padding 0
+  position absolute
+  top 0
+  transition background TRANSITION
+  width BUTTON_SIZE
+
+// Hide the submit button and capture the event on Enter/Go.
+user-location [type='submit']
+  visibility hidden
+
+// Reset button and icon styles.
+user-location [type='reset']
+  right 0
+
+  & circle
+    fill rgba(white, 0)
+    transition fill TRANSITION
+
+  & path
+    fill none
+    stroke rgba(black, 0)
+    stroke-linecap round
+    stroke-width 1
+    transition stroke TRANSITION
+
+// Reset button states when input is focused.
+user-location input:focus ~ [type='reset']
+  & circle
+    fill var(--background-3)
+
+  & path
+    stroke rgba(black, .7)
+
+  &:focus circle
+  [no-touch] &:hover circle
+    fill rgba(white, 1)
+
+  &:focus path
+  [no-touch] &:hover path
+    stroke rgba(black, 1)
+
+// 'Find my location' button and icon styles.
+user-location [id='find']
+  background var(--background-0)
+  left 0
+  z-index 1
+
+  &:focus
+  [no-touch] &:hover
+    background var(--background-2)
+
+  svg
     color white
-    display inline-flex
-    font-size 1em
-    padding 0 rem(32)
-    text-align center
-    text-overflow ellipsis
-    transition background transition
+    padding 2px
 
-    &:focus
-    &:hover
-      background var(--background-2)
-      cursor pointer
+  circle
+  path
+    stroke currentColor
+    stroke-width 1.5
 
-    &:focus:hover
-      cursor text
+  circle
+    fill currentColor
 
-    [no-touch] &
-      transition background transition
+  path
+    fill none
 
-  // General button styles.
-  button
-    align-items center
-    background 0
-    border-radius 50%
-    display inline-flex
-    height button-size
-    justify-content center
-    overflow hidden
-    padding 0
-    position absolute
-    top 0
-    transition background transition
-    width button-size
-
-  // Hide the submit button and capture the event on Enter/Go.
-  button[type=submit]
-    visibility hidden
-
-  // Reset button and icon styles.
-  button[type=reset]
-    right 0
-
-    circle
-      fill rgba(white, 0)
-      transition fill transition
-
-    path
-      fill none
-      stroke rgba(black, 0)
-      stroke-linecap round
-      stroke-width 1
-      transition stroke transition
-
-  // Reset button states when input is focused.
-  input:focus ~ button[type=reset]
-    circle
-      fill var(--background-3)
-    
-    path
-      stroke rgba(black, .7)
-
-    &:focus
-    [no-touch] &:hover
-      circle
-        fill rgba(white, 1)
-
-      path
-        stroke rgba(black, 1)
-
-  // 'Find my location' button and icon styles.
-  button[id=find]
-    background var(--background-0)
-    left 0
-    z-index 1
-
-    &:focus
-    [no-touch] &:hover
-      background var(--background-2)
-
-    svg
-      color white
-      padding 2px
-
-    circle
-    path
-      stroke currentColor
-      stroke-width 1.5
-
-    circle
-      fill currentColor
-
-    path
-      fill none
+[no-js] user-location
+  display none

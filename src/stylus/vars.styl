@@ -8,15 +8,15 @@ body
     '. info .' 2fr \
     'charts charts charts' \
     'prev date next' 1fr \
-    '. location .' 1fr / '%s minmax(auto, %s) %s' % (controls-size chart-max-size controls-size)
+    '. location .' 1fr / '%s minmax(auto, %s) %s' % (CONTROLS_SIZE CHART_MAX_SIZE CONTROLS_SIZE)
   --main-display contents
 
-  @media breakpoint.small
+  @media Breakpoint.SMALL
     --grid:
       '. info .' 2fr \
       'prev charts next' \
       '. date .' 1fr \
-      '. location .' 1fr / 'minmax(%s, 1fr) minmax(%s, %s) minmax(%s, 1fr)' % (controls-size chart-size chart-max-size controls-size)
+      '. location .' 1fr / 'minmax(%s, 1fr) minmax(%s, %s) minmax(%s, 1fr)' % (CONTROLS_SIZE CHART_SIZE CHART_MAX_SIZE CONTROLS_SIZE)
     --fineprint em(14)
 
 [no-js]

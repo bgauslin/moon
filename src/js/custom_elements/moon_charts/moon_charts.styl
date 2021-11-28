@@ -1,26 +1,26 @@
 moon-charts
-  animation scaleIn transition-intro ease
+  animation scaleIn TRANSITION_INTRO ease
   display block
   grid-area charts
   margin auto
-  max-width chart-max-size
+  max-width CHART_MAX_SIZE
   padding 0 0 100%
   position relative
   width 100%
 
-  [no-js] &
-    display none
+moon-charts svg
+  height 100%
+  position absolute
+  width 100%
 
-  svg
-    height 100%
-    position absolute
-    width 100%
+moon-charts [id='sweep-ticks'] line
+  stroke black
 
-  [id=sweep-ticks] line
-    stroke black
+moon-charts [id='minor-ticks'] line
+  stroke rgba(white, .35)
 
-  [id=minor-ticks] line
-    stroke rgba(white, .35)
+moon-charts [id='major-ticks'] line
+  stroke rgba(white, .7)
 
-  [id=major-ticks] line
-    stroke rgba(white, .7)
+[no-js] moon-charts
+  display none
