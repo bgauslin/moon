@@ -2,46 +2,41 @@ prev-next
   align-self center
   justify-self center
 
-  &[direction=prev]
-    animation slideInLeft transition-intro ease
-    grid-area prev
+prev-next[direction='prev']
+  animation slideInLeft TRANSITION_INTRO ease
+  grid-area prev
 
-  &[direction=next]
-    animation slideInRight transition-intro ease
-    grid-area next
-    text-align right
+prev-next[direction='next']
+  animation slideInRight TRANSITION_INTRO ease
+  grid-area next
+  text-align end
 
-  a
-    align-items center
-    background var(--background-0)
-    border-radius 50%
-    display flex
-    height controls-size
-    justify-content center
-    transition background transition, transform transition
-    width controls-size
+prev-next a
+  align-items center
+  background var(--background-1)
+  border-radius 50%
+  display flex
+  height CONTROLS_SIZE
+  justify-content center
+  transition background TRANSITION, transform TRANSITION
+  width CONTROLS_SIZE
 
-    &:focus
-    [no-touch] &:hover
-      background var(--background-1)
+  &:active
+    transform scale(.8)
 
-    &:active
-      transform scale(.8)
+  &:focus
+  [no-touch] &:hover
+    background var(--background-2)
 
-    path
-      fill none
-      stroke white
-      stroke-width 1
-      transition stroke transition
+prev-next path
+  fill none
+  stroke white
+  stroke-width 2
 
-    &:focus path
-    [no-touch] &:hover path
-      stroke rgba(white, .7)
+prev-next svg
+  flex 0 0 rem(32)
+  height auto
+  transition transform TRANSITION
 
-  svg
-    flex 0 0 rem(32)
-    height auto
-    transition transform transition
-
-  [no-js] &
-    display none
+[no-js] prev-next
+  display none

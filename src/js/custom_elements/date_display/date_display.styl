@@ -1,21 +1,31 @@
 moon-date
-  animation slideInUp transition-intro ease
+  animation slideInUp TRANSITION_INTRO ease
   display block
   grid-area date
   place-self center
 
-  a
-    link(white, white, rgba(white, .7), rgba(white, .7))
-    padding rem(8) rem(16)
-    transition transform transition
-    white-space nowrap
+moon-date a
+  padding rem(8) rem(16)
+  transition transform TRANSITION
+  white-space nowrap
 
-    &:active
-      transform scale(.8)
+  &:link
+  &:visited
+    color white
 
-    [no-touch] &
-      transition color transition, transform transition
+  &:active
+  &:focus
+    color rgba(white, .7)
 
-  .today
-    font-variation-settings 'wght' 600
-    pointer-events none
+  &:active
+    transform scale(.8)
+
+  [no-touch] &:hover
+    color rgba(white, .7)
+
+[no-touch] moon-date a
+  transition color TRANSITION, transform TRANSITION
+
+moon-date .today
+  font-variation-settings 'wght' 600
+  pointer-events none

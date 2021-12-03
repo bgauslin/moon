@@ -1,20 +1,14 @@
 body
+  background black
+  color white
   display grid
-  grid-template:
-    '. info .' 2fr \
-    'charts charts charts' auto \
-    'prev date next' 1fr \
-    '. location .' 1fr / '%s minmax(auto, %s) %s' % (controls-size chart-max-size controls-size)
-  min-height calc(var(--vh, 1vh) * 100)
-  overflow hidden
-  padding-bottom env(safe-area-inset-bottom)
-
-  @media breakpoint.small
-    grid-template:
-      '. info .' 2fr \
-      'prev charts next' auto \
-      '. date .' 1fr \
-      '. location .' 1fr / 'minmax(%s, 1fr) minmax(%s, %s) minmax(%s, 1fr)' % (controls-size chart-size chart-max-size controls-size)
+  font-family 'Avenir Variable', sans-serif
+  font-variation-settings 'wght' 500
+  grid var(--grid)
+  margin 0
+  min-height 100vh
+  min-height -webkit-fill-available
+  padding 0 0 env(safe-area-inset-bottom)
 
 // Disable UI while loading data.
 body[loading] *
@@ -22,13 +16,11 @@ body[loading] *
 
 body[no-js]
   align-items center
-  grid-template 1fr / 1fr !important
-  text-align center
 
-  a
-    color white
-    opacity .5
+body[no-js] a
+  color white
+  opacity .5
 
-    &:hover
-    &:focus
-      opacity 1
+  &:hover
+  &:focus
+    opacity 1

@@ -1,6 +1,6 @@
 moon-info
   align-self end
-  animation slideInDown transition-intro ease
+  animation slideInDown TRANSITION_INTRO ease
   display block
   font-size em(14)
   grid-area info
@@ -8,15 +8,15 @@ moon-info
   text-align center
   white-space nowrap
 
-  [no-js] &
-    display none
+[no-js] moon-info
+  display none
 
-  [id=phase]
-    color white
+moon-info [id='phase']
+  color white
 
-  [id=percent]
-    color rgba(white, .7)
-    margin-top rem(8)
+moon-info [id='percent']
+  color rgba(white, .7)
+  margin-top rem(8)
 
-  [id=percent][invisible]
-    visibility hidden
+moon-info [id='percent'][invisible]
+  visibility hidden
