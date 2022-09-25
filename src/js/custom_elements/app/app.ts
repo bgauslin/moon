@@ -57,7 +57,7 @@ export class App extends HTMLElement {
    */
   private setup() {
     document.body.removeAttribute('no-js');
-    document.body.querySelector('noscript').remove();
+    document.body.querySelector('noscript')?.remove();
   }
 
   /**
@@ -69,7 +69,12 @@ export class App extends HTMLElement {
 
     // Get date and location, then fetch data.
     this.date = this.dateUtils.activeDate();
-    this.location = this.userLocation.getAttribute(LOCATION_ATTR);
+    
+    const location = this.userLocation.getAttribute(LOCATION_ATTR);
+    if (location) {
+      this.location = location;
+    }
+    
     const moonData = await new DataFetcher().fetch(this.date, this.location);
     if (!moonData) {
       document.body.removeAttribute(LOADING_ATTR);
@@ -85,8 +90,6 @@ export class App extends HTMLElement {
       location: this.location,
     });
     
-    this.utils.sendPageview(window.location.pathname, document.title);
-    
     // Disable the progress bar.
     document.body.removeAttribute(LOADING_ATTR);
   }
@@ -96,11 +99,13 @@ export class App extends HTMLElement {
    */
   private updateCurrentDate() {
     const currentDateElement = document.querySelector('moon-date > a');
-    currentDateElement.textContent = this.dateUtils.prettyDate(
-      this.date,
-      document.documentElement.lang,
-      'long',
-    );
+    if (currentDateElement) {
+      currentDateElement.textContent = this.dateUtils.prettyDate(
+        this.date,
+        document.documentElement.lang,
+        'long',
+      );
+    }
   }
   
   /**
@@ -128,7 +133,7 @@ export class App extends HTMLElement {
 
     items.forEach((item) => {
       const [selector, attribute, value] = item;
-      document.querySelector(selector).setAttribute(attribute, value);
+      document.querySelector(selector)?.setAttribute(attribute, value);
     });
   }
 
@@ -154,7 +159,7 @@ export class App extends HTMLElement {
       const linkUrl = new URL(href, window.location.origin);
       if (linkUrl.hostname === window.location.hostname) {
         e.preventDefault();
-        history.pushState(null, null, href);
+        history.pushState(null, '', href);
         this.update();
       }
     }
