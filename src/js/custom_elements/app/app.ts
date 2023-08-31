@@ -42,7 +42,7 @@ export class App extends HTMLElement {
    */
   connectedCallback() {
     this.setup();
-    this.userLocation = document.querySelector('user-location');
+    this.userLocation = <HTMLElement>document.querySelector('user-location');
     this.userLocationObserver.observe(this.userLocation, {attributes: true});
     this.utils.init();
   }
@@ -57,7 +57,13 @@ export class App extends HTMLElement {
    */
   private setup() {
     document.body.removeAttribute('no-js');
-    document.body.querySelector('noscript')?.remove();
+    
+    // TODO: Restore TS nullability.
+    //document.body.querySelector('noscript')?.remove();
+    const nsTag = document.body.querySelector('noscript');
+    if (nsTag) {
+      nsTag.remove();
+    }
   }
 
   /**
@@ -133,7 +139,13 @@ export class App extends HTMLElement {
 
     items.forEach((item) => {
       const [selector, attribute, value] = item;
-      document.querySelector(selector)?.setAttribute(attribute, value);
+
+      // TODO: Restore TS nullability.
+      // document.querySelector(selector)?.setAttribute(attribute, value);
+      const element = document.querySelector(selector);
+      if (element) {
+        element.setAttribute(attribute, value);
+      }
     });
   }
 

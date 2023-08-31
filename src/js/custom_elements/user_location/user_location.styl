@@ -89,30 +89,5 @@ user-location input:focus ~ [type='reset']
   [no-touch] &:hover path
     stroke rgba(black, 1)
 
-// 'Find my location' button and icon styles.
-user-location [id='find']
-  background var(--background-0)
-  left 0
-  z-index 1
-
-  &:focus
-  [no-touch] &:hover
-    background var(--background-2)
-
-  svg
-    color white
-    padding 2px
-
-  circle
-  path
-    stroke currentColor
-    stroke-width 1.5
-
-  circle
-    fill currentColor
-
-  path
-    fill none
-
 [no-js] user-location
   display none
