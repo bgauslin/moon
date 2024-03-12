@@ -171,7 +171,7 @@ export class App extends HTMLElement {
       const linkUrl = new URL(href, window.location.origin);
       if (linkUrl.hostname === window.location.hostname) {
         e.preventDefault();
-        history.pushState(null, '', href);
+        history.replaceState(null, '', href);
         this.update();
       }
     }

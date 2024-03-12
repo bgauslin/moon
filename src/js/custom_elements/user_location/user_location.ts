@@ -114,7 +114,7 @@ export class UserLocation extends HTMLElement {
     urlSegments.splice(-1, 1);
     urlSegments.push(this.dateUtils.urlify(this.location));
 
-    history.pushState(null, '', urlSegments.join('/'));
+    history.replaceState(null, '', urlSegments.join('/'));
     this.setAttribute(LOCATION_ATTR, this.location);
 
     // Save new location to localStorage.
