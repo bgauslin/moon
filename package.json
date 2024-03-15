@@ -26,7 +26,7 @@
     "@types/spin": "^2.3.30",
     "@types/suncalc": "^1.8.0",
     "fastclick": "^1.0.6",
-    "pug": "^3.0.1",
+    "pug": "^2.0.1",
     "pug-loader": "^2.4.0",
     "spin": "^0.0.1",
     "suncalc": "^1.8.0",
