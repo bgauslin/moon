@@ -34,9 +34,15 @@ export class PrevNext extends HTMLElement {
    * Renders a nav link.
    */
   private render() {
-    const template = require('./prev_next.pug');
-    this.innerHTML = template({direction: this.direction});
-    this.link = this.querySelector('a');
+    const path = (this.direction === 'prev') ? 'M15,4 L7,12 L15,20' : 'M9,4 L17,12 L9,20';
+    this.innerHTML = `
+      <a href="" title="">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="${path}"/>
+        </svg>
+      </a>
+    `;
+    this.link = this.querySelector('a')!;
   }
 
   /**
