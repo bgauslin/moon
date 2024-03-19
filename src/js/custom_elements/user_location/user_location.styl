@@ -2,14 +2,14 @@ user-location {
   animation: slideInDown var(--transition-intro) ease;
   display: block;
   grid-area: location;
-  max-width: LOCATION_MAX_WIDTH;
+  max-width: 20rem;
   place-self: center;
   position: relative;
 
   &,
   form,
   input {
-    height: LOCATION_HEIGHT;
+    height: var(--input-height);
     width: 100%;
   }
 
@@ -21,11 +21,11 @@ user-location {
   input {
     align-items: center;
     background: var(--background-1);
-    border-radius: (LOCATION_HEIGHT / 2);
+    border-radius: var(--input-height);
     color: white;
     display: inline-flex;
     font-size: 1em;
-    padding: 0 rem(32);
+    padding: 0 2rem;
     text-align: center;
     text-overflow: ellipsis;
     transition: background var(--transition);
@@ -48,17 +48,17 @@ user-location {
   // General button styles.
   button {
     align-items: center;
+    aspect-ratio: 1;
     background: 0;
     border-radius: 50%;
     display: inline-flex;
-    height: BUTTON_SIZE;
     justify-content: center;
     overflow: hidden;
     padding: 0;
     position: absolute;
     top: 0;
     transition: background var(--transition);
-    width: BUTTON_SIZE;
+    width: 2rem;
   }
 
   // Hide the submit button and capture the event on Enter/Go.

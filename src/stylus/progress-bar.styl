@@ -1,6 +1,9 @@
+$height = 3px;
+$width = 20vw;
+
 @keyframes loading {
   0 {
-    left: (- PROGRESS_BAR_WIDTH);
+    left: (- $width);
     width: 30%;
   }
   50% {
@@ -22,7 +25,7 @@
 
 .progress-bar {
   display: none;
-  height: PROGRESS_BAR_HEIGHT;
+  height: $height;
   width: 100vw;
   position: fixed;
   
@@ -35,10 +38,10 @@
     background: white;
     content: '';
     display: block;
-    height: PROGRESS_BAR_HEIGHT;
-    left: (- PROGRESS_BAR_WIDTH);
+    height: $height;
+    left: (- $width);
     position: absolute;
-    width: PROGRESS_BAR_WIDTH;
+    width: $width;
   }
 
   [no-js] & {
