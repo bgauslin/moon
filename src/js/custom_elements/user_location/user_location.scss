@@ -2,48 +2,35 @@ user-location {
   animation: slideInDown var(--transition-intro) ease;
   display: block;
   grid-area: location;
-  max-inline-size: 20rem;
+  inline-size: 100%;
+  max-inline-size: 22em;
   place-self: center;
-  position: relative;
 
-  &,
-  form,
-  input {
-    block-size: var(--input-size);
-    inline-size: 100%;
-  }
-
-  form,
-  input {
-    position: absolute;
-  }
-
-  input {
-    align-items: center;
+  form {
     background-color: var(--background-1);
     border-radius: var(--input-size);
-    color: white;
-    display: inline-flex;
-    font-size: 1em;
-    padding-block: 0;
-    padding-inline: 2rem;
-    text-align: center;
-    text-overflow: ellipsis;
+    display: grid;
+    grid: 'submit input reset' / 2rem 1fr 2rem;
     transition: background-color var(--transition);
 
-    &:focus,
-    &:hover {
+    &:focus-within {
       background-color: var(--background-2);
-      cursor: pointer;
     }
 
-    &:focus:hover {
-      cursor: text;
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--background-2);
+      }
     }
   }
 
-  [no-touch] & input {
-    transition: background-color var(--transition);
+  input {
+    background: none;
+    color: white;
+    cursor: text;
+    font-size: 1em;
+    grid-area: input;
+    text-align: center;
   }
 
   // General button styles.
@@ -52,24 +39,24 @@ user-location {
     aspect-ratio: 1;
     background-color: transparent;
     border-radius: 50%;
-    display: inline-flex;
+    display: grid;
     inline-size: 2rem;
     inset: 0 auto;
     justify-content: center;
     overflow: hidden;
     padding: 0;
-    position: absolute;
     transition: background-color var(--transition);
   }
 
   // Hide the submit button and capture the event on Enter/Go.
   [type='submit'] {
+    grid-area: submit;
     visibility: hidden;
   }
 
   // Reset button and icon styles.
   [type='reset'] {
-    inset-inline: auto 0;
+    grid-area: reset;
 
     circle {
       fill: rgba(white, 0);
