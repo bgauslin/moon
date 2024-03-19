@@ -1,6 +1,8 @@
 import Spinner from 'spin';
 
 // [1] MOONPHASEIMAGE_COUNT value is same as loop value in 'photo.styl'
+const IMAGE_PATH_1X = '/img/moon-phases-26-240.min.jpg';
+const IMAGE_PATH_2X = '/img/moon-phases-26-480.min.jpg';
 const ILLUMINATION_ATTR = 'illumination';
 const MOONPHASEIMAGE_COUNT: number = 26; // [1]
 const PERCENT_ATTR = 'percent';
@@ -30,7 +32,6 @@ export class MoonPhoto extends HTMLElement {
     super();
     this.imageLoaded = false;
     this.spinner = new Spinner(SpinnerOptions);
-    this.template = require('./photo.pug');
   }
 
   static get observedAttributes(): string[] {
@@ -45,20 +46,28 @@ export class MoonPhoto extends HTMLElement {
    * Renders a photo of the current moon phase.
    */
   private render() {
-    const illumination = parseInt(this.getAttribute(ILLUMINATION_ATTR));
-    const percent = parseInt(this.getAttribute(PERCENT_ATTR));
+    const illumination = parseInt(this.getAttribute(ILLUMINATION_ATTR)!);
+    const percent = parseInt(this.getAttribute(PERCENT_ATTR)!);
     const phase = this.getAttribute(PHASE_ATTR);
 
     if (illumination && percent && phase) {
       const currentFrame = Math.round((percent / 100) * MOONPHASEIMAGE_COUNT);
       const frame = currentFrame === 0 ? MOONPHASEIMAGE_COUNT : currentFrame;
 
-      this.innerHTML = this.template({
-        frame,
-        illumination,
-        phase,
-        ready: this.imageLoaded
-      });
+      const alt = (illumination > 0) ? `${phase} (${illumination}% illumination)` : phase;
+      const ready = this.imageLoaded ? 'ready' : '';
+      this.innerHTML = `
+        <div>
+          <figure>
+            <img 
+              alt="${alt}"
+              src="${IMAGE_PATH_1X}"
+              srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x"
+              frame="${frame}"
+              ${ready}>
+          </figure>
+        </div>
+      `;
     }
 
     if (!this.imageLoaded) {
