@@ -1,8 +1,0 @@
-main {
-  display: var(--main-display);
-
-  [no-js] & {
-    padding: 1.5rem;
-    place-content: center;
-  }
-}
