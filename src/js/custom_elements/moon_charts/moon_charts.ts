@@ -42,16 +42,35 @@ export class MoonCharts extends HTMLElement {
     const sweepTicks = this.ticks(SWEEP_TICK, true);
     const majorTicks = this.ticks(OUTER_TICK, true);
     const minorTicks = this.ticks(HOUR_TICK);
+    
+    const groups = [
+      {id: 'sweep-ticks', lines: sweepTicks},
+      {id: 'major-ticks', lines: majorTicks},
+      {id: 'minor-ticks', lines: minorTicks},
+    ];
 
-    const template = require('./moon_charts.pug');
-    this.innerHTML += template({
-      groups: [
-        {id: 'sweep-ticks', lines: sweepTicks},
-        {id: 'major-ticks', lines: majorTicks},
-        {id: 'minor-ticks', lines: minorTicks},
-      ],
-      viewbox: VIEWBOX,
-    });
+    let html = '';
+
+    for (const group of groups) {
+      const {id, lines} = group;
+      html += `<g id="${id}">`;
+
+      for (const line of lines) {
+        const {x1, y1, x2, y2, transform} = line;
+        const attr = transform ? `transform="${transform}"` : '';
+        html += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" ${attr}/>`;    
+      }
+      html += '</g>';
+    }
+
+    this.innerHTML = `
+      <moon-photo class="photo"></moon-photo>
+      <donut-chart name="sun" color="#f8c537"></donut-chart>
+      <donut-chart name="moon" color="#fff"></donut-chart>
+      <svg viewbox="0 0 ${VIEWBOX} ${VIEWBOX}" aria-hidden="true">
+        ${html}
+      </svg>
+    `;
   }
 
   /**
