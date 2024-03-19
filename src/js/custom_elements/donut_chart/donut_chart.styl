@@ -1,11 +1,14 @@
-donut-chart
-  height 100%
-  position absolute
-  width 100%
+donut-chart {
+  height: 100%;
+  position: absolute;
+  width: 100%;
 
-donut-chart text
-  font-size em(13)
+  text {
+    font-size: em(13);
+  }
 
-// Blend moon arc with sun arc where they overlap.
-donut-chart[name='moon'] circle
-  opacity .5
+  // Blend moon arc with sun arc where they overlap.
+  &[name='moon'] circle {
+    opacity: .5;
+  }
+}

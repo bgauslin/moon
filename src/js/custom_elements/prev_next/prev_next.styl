@@ -1,42 +1,51 @@
-prev-next
-  align-self center
-  justify-self center
+prev-next {
+  align-self: center;
+  justify-self: center;
 
-prev-next[direction='prev']
-  animation slideInLeft TRANSITION_INTRO ease
-  grid-area prev
+  &[direction='prev'] {
+    animation: slideInLeft TRANSITION_INTRO ease;
+    grid-area: prev;
+  }
 
-prev-next[direction='next']
-  animation slideInRight TRANSITION_INTRO ease
-  grid-area next
-  text-align end
+  &[direction='next'] {
+    animation: slideInRight TRANSITION_INTRO ease;
+    grid-area: next;
+    text-align: end;
+  }
 
-prev-next a
-  align-items center
-  background var(--background-1)
-  border-radius 50%
-  display flex
-  height CONTROLS_SIZE
-  justify-content center
-  transition background TRANSITION, transform TRANSITION
-  width CONTROLS_SIZE
+  a {
+    align-items: center;
+    background: var(--background-1);
+    border-radius: 50%;
+    display: flex;
+    height: CONTROLS_SIZE;
+    justify-content: center;
+    transition: background TRANSITION, transform TRANSITION;
+    width: CONTROLS_SIZE;
 
-  &:active
-    transform scale(.8)
+    &:active {
+      transform scale(.8);
+    }
 
-  &:focus
-  [no-touch] &:hover
-    background var(--background-2)
+    &:focus,
+    [no-touch] &:hover {
+      background: var(--background-2);
+    }
+  }
 
-prev-next path
-  fill none
-  stroke white
-  stroke-width 2
+  path {
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+  }
 
-prev-next svg
-  flex 0 0 rem(32)
-  height auto
-  transition transform TRANSITION
+  svg {
+    flex: 0 0 rem(32);
+    height: auto;
+    transition: transform TRANSITION;
+  }
 
-[no-js] prev-next
-  display none
+  [no-js] & {
+    display: none;
+  }
+}

@@ -1,36 +1,47 @@
-@keyframes loading 
-  0
-    left (- PROGRESS_BAR_WIDTH)
-    width 30%
-  50%
-    width 30%
-  70%
-    width 70%
-  80%
-    left 50%
-  95%
-    left 120%
-  100%
-    left 100%
+@keyframes loading {
+  0 {
+    left: (- PROGRESS_BAR_WIDTH);
+    width: 30%;
+  }
+  50% {
+    width: 30%;
+  }
+  70% {
+    width: 70%;
+  }
+  80% {
+    left: 50%;
+  }
+  95% {
+    left: 120%;
+  }
+  100% {
+    left: 100%;
+  }
+}
 
-.progress-bar
-  display none
-  height PROGRESS_BAR_HEIGHT
-  width 100vw
-  position fixed
+.progress-bar {
+  display: none;
+  height: PROGRESS_BAR_HEIGHT;
+  width: 100vw;
+  position: fixed;
+  
+  body[loading] & {
+    display: block;
+  }
 
-body[loading] .progress-bar
-  display block
+  &::before {
+    animation: loading 2s .3s linear infinite;
+    background: white;
+    content: '';
+    display: block;
+    height: PROGRESS_BAR_HEIGHT;
+    left: (- PROGRESS_BAR_WIDTH);
+    position: absolute;
+    width: PROGRESS_BAR_WIDTH;
+  }
 
-.progress-bar::before
-  animation loading 2s .3s linear infinite
-  background white
-  content ''
-  display block
-  height PROGRESS_BAR_HEIGHT
-  left (- PROGRESS_BAR_WIDTH)
-  position absolute
-  width PROGRESS_BAR_WIDTH
-
-[no-js] .progress-bar
-  display none
+  [no-js] & {
+    display: none;
+  }
+}

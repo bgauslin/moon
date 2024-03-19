@@ -1,31 +1,39 @@
-moon-date
-  animation slideInUp TRANSITION_INTRO ease
-  display block
-  grid-area date
-  place-self center
+moon-date {
+  animation: slideInUp TRANSITION_INTRO ease;
+  display: block;
+  grid-area: date;
+  place-self: center;
 
-moon-date a
-  padding rem(8) rem(16)
-  transition transform TRANSITION
-  white-space nowrap
+  a {
+    padding: rem(8) rem(16);
+    transition: transform TRANSITION;
+    white-space: nowrap;
 
-  &:link
-  &:visited
-    color white
+    &:link,
+    &:visited {
+      color: white;
+    }
 
-  &:active
-  &:focus
-    color rgba(white, .7)
+    &:active,
+    &:focus {
+      color: rgba(white, .7);
+    }
 
-  &:active
-    transform scale(.8)
+    &:active {
+      transform: scale(.8);
+    }
 
-  [no-touch] &:hover
-    color rgba(white, .7)
+    [no-touch] &:hover {
+      color: rgba(white, .7);
+    }
+  }
 
-[no-touch] moon-date a
-  transition color TRANSITION, transform TRANSITION
+  [no-touch] & a {
+    transition: color TRANSITION, transform TRANSITION;
+  }
 
-moon-date .today
-  font-variation-settings 'wght' 600
-  pointer-events none
+  .today {
+    font-variation-settings: 'wght' 600;
+    pointer-events: none;
+  }
+}

@@ -1,22 +1,27 @@
-moon-info
-  align-self end
-  animation slideInDown TRANSITION_INTRO ease
-  display block
-  font-size em(14)
-  grid-area info
-  margin rem(16)
-  text-align center
-  white-space nowrap
+moon-info {
+  align-self: end;
+  animation: slideInDown TRANSITION_INTRO ease;
+  display: block;
+  font-size: em(14);
+  grid-area: info;
+  margin: rem(16);
+  text-align: center;
+  white-space: nowrap;
 
-[no-js] moon-info
-  display none
+  [no-js] & {
+    display: none;
+  }
 
-moon-info [id='phase']
-  color white
+  [id='phase'] {
+    color: white;
+  }
 
-moon-info [id='percent']
-  color rgba(white, .7)
-  margin-top rem(8)
+  [id='percent'] {
+    color: rgba(white, .7);
+    margin-top: rem(8);
+  }
 
-moon-info [id='percent'][invisible]
-  visibility hidden
+  [id='percent'][invisible] {
+    visibility: hidden;
+  }
+}
