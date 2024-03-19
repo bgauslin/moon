@@ -69,7 +69,7 @@ user-location {
 
   // Reset button and icon styles.
   [type='reset'] {
-    right: 0;
+    inset-inline: auto 0;
 
     circle {
       fill: rgba(white, 0);

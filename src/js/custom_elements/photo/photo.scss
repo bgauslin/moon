@@ -31,18 +31,18 @@ moon-photo {
   }
 
   img[frame='1'] {
-    top: 0;
+    inset-block: 0 auto;
   }
 
   .spinner {
     position: absolute !important;
-    top: 50%;
+    inset-block: 50% auto;
   }
 }
 
 // NOTE: Keep upper range value coordinated with JS.
 @for $n from 2 through 26 {
   moon-photo img[frame='#{$n}'] {
-    top: ($n - 1) * -100%;
+    inset-block: ($n - 1) * -100% auto;
   }
 }
