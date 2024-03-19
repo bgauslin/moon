@@ -8,7 +8,8 @@ import './custom_elements/photo/photo';
 import './custom_elements/moon_charts/moon_charts';
 import './custom_elements/prev_next/prev_next';
 import './custom_elements/user_location/user_location';
-import '../stylus/index.styl';
+
+import '../styles/index.scss';
 
 if (process.env.NODE_ENV === 'production') {
   if ('serviceWorker' in navigator) {

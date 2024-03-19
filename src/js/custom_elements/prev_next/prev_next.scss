@@ -24,7 +24,7 @@ prev-next {
     width: var(--controls-size);
 
     &:active {
-      transform scale(.8);
+      transform: scale(.8);
     }
 
     &:focus,

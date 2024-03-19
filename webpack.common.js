@@ -17,9 +17,9 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new CopyPlugin([
-      { from: 'src/root' },
       { from: 'src/img', to: 'img' },
       { from: 'src/pwa', to: 'pwa' },
+      { from: 'src/root' },
     ]),
     new Dotenv(),
     new HtmlWebpackPlugin({
@@ -29,7 +29,7 @@ module.exports = {
     new WorkboxPlugin.InjectManifest({
       swSrc: 'src/js/sw.js',
       swDest: 'sw.js',
-      exclude: [/\.htaccess$/, /robots\.txt$/, /\.DS_Store/],
+      exclude: [/\.htaccess$/, /robots\.txt$/, /\.DS_Store$/],
     }),
   ],
   node: {
@@ -56,18 +56,12 @@ module.exports = {
         }
       },
       {
-        test: /\.styl$/,
+        test: /\.scss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: process.env.NODE_ENV === 'development',
-              reloadAll: true,
-            },
-          },
+          'style-loader',
           'css-loader',
           'postcss-loader',
-          'stylus-loader',
+          'sass-loader',
         ],
       },
     ]

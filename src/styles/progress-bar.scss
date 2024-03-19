@@ -1,8 +1,8 @@
-$height = 3px;
-$width = 20vw;
+$height: 3px;
+$width: 20vw;
 
 @keyframes loading {
-  0 {
+  0% {
     left: (- $width);
     width: 30%;
   }
