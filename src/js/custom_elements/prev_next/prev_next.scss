@@ -1,6 +1,5 @@
 prev-next {
-  align-self: center;
-  justify-self: center;
+  place-self: center;
 
   &[direction='prev'] {
     animation: slideInLeft var(--transition-intro) ease;
@@ -10,26 +9,29 @@ prev-next {
   &[direction='next'] {
     animation: slideInRight var(--transition-intro) ease;
     grid-area: next;
-    text-align: end;
   }
 
   a {
-    align-items: center;
     aspect-ratio: 1;
     background-color: var(--background-1);
     border-radius: var(--controls-size);
-    display: flex;
+    display: grid;
     inline-size: var(--controls-size);
-    justify-content: center;
+    place-content: center;
     transition: background-color var(--transition), transform var(--transition);
 
     &:active {
       transform: scale(.8);
     }
 
-    &:focus,
-    [no-touch] &:hover {
-      background: var(--background-2);
+    &:focus-visible {
+      background-color: var(--background-2);
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--background-2);
+      }  
     }
   }
 
@@ -40,8 +42,7 @@ prev-next {
   }
 
   svg {
-    block-size: auto;
-    flex: 0 0 2rem;
+    inline-size: 2rem;
     transition: transform var(--transition);
   }
 
