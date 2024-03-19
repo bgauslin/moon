@@ -1,6 +1,5 @@
 import {DataFetcher, MoonData} from '../../modules/DataFetcher';
 import {AppDate, DateUtils} from '../../modules/DateUtils';
-import {Utils} from '../../modules/Utils';
 
 interface TitleInfo {
   date: AppDate,
@@ -24,46 +23,25 @@ export class App extends HTMLElement {
   private popstateListener: EventListenerObject;
   private userLocation: HTMLElement;
   private userLocationObserver: MutationObserver;
-  private utils: Utils;
 
   constructor() {
     super();
     this.dateUtils = new DateUtils();
     this.userLocationObserver = new MutationObserver(() => this.update());
-    this.utils = new Utils();
     this.clickListener = this.handleClick.bind(this);
     this.popstateListener = this.update.bind(this);
     document.addEventListener('click', this.clickListener);
     window.addEventListener('popstate', this.popstateListener, false);
   }
 
-  /**
-   * Initializes the app when it first loads.
-   */
   connectedCallback() {
-    this.setup();
     this.userLocation = <HTMLElement>document.querySelector('user-location');
     this.userLocationObserver.observe(this.userLocation, {attributes: true});
-    this.utils.init();
   }
 
   disconnectedCallback() {
     document.removeEventListener('click', this.clickListener);
     window.removeEventListener('popstate', this.popstateListener, false);
-  }
-
-  /**
-   * Remove 'no JS' attribute and element from the DOM.
-   */
-  private setup() {
-    document.body.removeAttribute('no-js');
-    
-    // TODO: Restore TS nullability.
-    //document.body.querySelector('noscript')?.remove();
-    const nsTag = document.body.querySelector('noscript');
-    if (nsTag) {
-      nsTag.remove();
-    }
   }
 
   /**

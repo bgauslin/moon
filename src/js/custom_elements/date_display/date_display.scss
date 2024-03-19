@@ -15,8 +15,7 @@ moon-date {
       color: white;
     }
 
-    &:active,
-    &:focus {
+    &:focus-visible {
       color: rgba(white, .7);
     }
 
@@ -24,13 +23,15 @@ moon-date {
       transform: scale(.8);
     }
 
-    [no-touch] &:hover {
-      color: rgba(white, .7);
-    }
-  }
+    @media (any-hover: hover) {
+      & {
+        transition: color var(--transition), transform var(--transition);
+      }
 
-  [no-touch] & a {
-    transition: color var(--transition), transform var(--transition);
+      &:hover {
+        color: rgba(white, .7);
+      }
+    }
   }
 
   .today {

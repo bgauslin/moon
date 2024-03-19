@@ -82,14 +82,22 @@ user-location {
       stroke: rgba(black, .7);
     }
 
-    &:focus circle,
-    [no-touch] &:hover circle {
+    &:focus circle {
       fill: rgba(white, 1);
     }
 
-    &:focus path,
-    [no-touch] &:hover path {
+    &:focus path {
       stroke: rgba(black, 1);
+    }
+
+    @media (any-hover: hover) {
+      &:hover circle {
+        fill: rgba(white, 1);
+      }
+
+      &:hover path {
+        stroke: rgba(black, 1);
+      }
     }
   }
 
