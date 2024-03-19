@@ -134,8 +134,23 @@ export class UserLocation extends HTMLElement {
    * form elements.
    */
   private render() {
-    const template = require('./user_location.pug');
-    this.innerHTML = template({location: this.location});
+    this.innerHTML = `
+      <form>
+        <input
+          type="text"
+          name="location"
+          value="${this.location}"
+          aria-label="Enter a new location"
+          required>
+        <button type="submit" aria-label="Update location"></button>
+        <button type="reset" aria-label="Clear location">
+          <svg viewbox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="6"/>
+            <path d="M10,10 L14,14 M10,14 L14,10"/>
+          </svg>
+        </button>
+      </form>
+    `;
 
     this.form = <HTMLFormElement>this.querySelector('form');
     this.input = <HTMLInputElement>this.querySelector('input');
