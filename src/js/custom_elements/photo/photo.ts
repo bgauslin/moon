@@ -57,16 +57,14 @@ export class MoonPhoto extends HTMLElement {
       const alt = (illumination > 0) ? `${phase} (${illumination}% illumination)` : phase;
       const ready = this.imageLoaded ? 'ready' : '';
       this.innerHTML = `
-        <div>
-          <figure>
-            <img 
-              alt="${alt}"
-              src="${IMAGE_PATH_1X}"
-              srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x"
-              frame="${frame}"
-              ${ready}>
-          </figure>
-        </div>
+        <figure>
+          <img 
+            alt="${alt}"
+            src="${IMAGE_PATH_1X}"
+            srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x"
+            frame="${frame}"
+            ${ready}>
+        </figure>
       `;
     }
 

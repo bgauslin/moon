@@ -1,12 +1,10 @@
 moon-photo {
-  & > div {
-    align-items: center;
-    display: flex;
-    block-size: 100%;
-    inline-size: 100%;
-    justify-content: center;
-    position: absolute;
-  }
+  align-items: center;
+  display: flex;
+  block-size: 100%;
+  inline-size: 100%;
+  justify-content: center;
+  position: absolute;
 
   figure {
     border-radius: 50%;
