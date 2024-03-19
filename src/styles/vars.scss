@@ -9,12 +9,12 @@
   --controls-size: 3rem;
   --fineprint: .75em;
   --grid: '. info .' 2fr 'charts charts charts' 'prev date next' 1fr '. location .' 1fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
-  --input-height: 2rem;
+  --input-size: 2rem;
   --main-display: contents;
   --transition: .3s;
   --transition-intro: 1s;
 
-  @media (min-width: 36rem) {
+  @media (min-inline-size: 36rem) {
     --grid: '. info .' 2fr 'prev charts next' '. date .' 1fr '. location .' 1fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
     --fineprint: .875em;
   }

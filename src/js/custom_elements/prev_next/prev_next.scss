@@ -16,12 +16,12 @@ prev-next {
   a {
     align-items: center;
     aspect-ratio: 1;
-    background: var(--background-1);
-    border-radius: 50%;
+    background-color: var(--background-1);
+    border-radius: var(--controls-size);
     display: flex;
+    inline-size: var(--controls-size);
     justify-content: center;
-    transition: background var(--transition), transform var(--transition);
-    width: var(--controls-size);
+    transition: background-color var(--transition), transform var(--transition);
 
     &:active {
       transform: scale(.8);
@@ -40,8 +40,8 @@ prev-next {
   }
 
   svg {
+    block-size: auto;
     flex: 0 0 2rem;
-    height: auto;
     transition: transform var(--transition);
   }
 

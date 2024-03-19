@@ -2,16 +2,16 @@ moon-charts {
   animation: scaleIn var(--transition-intro) ease;
   display: block;
   grid-area: charts;
+  inline-size: 100%;
   margin: auto;
-  max-width: var(--charts-max-size);
-  padding: 0 0 100%;
+  max-inline-size: var(--charts-max-size);
+  padding-block: 0 100%;
   position: relative;
-  width: 100%;
 
   svg {
-    height: 100%;
+    block-size: 100%;
+    inline-size: 100%;
     position: absolute;
-    width: 100%;
   }
 
   [id='sweep-ticks'] line {

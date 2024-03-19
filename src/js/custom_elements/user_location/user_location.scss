@@ -2,15 +2,15 @@ user-location {
   animation: slideInDown var(--transition-intro) ease;
   display: block;
   grid-area: location;
-  max-width: 20rem;
+  max-inline-size: 20rem;
   place-self: center;
   position: relative;
 
   &,
   form,
   input {
-    height: var(--input-height);
-    width: 100%;
+    block-size: var(--input-size);
+    inline-size: 100%;
   }
 
   form,
@@ -20,19 +20,20 @@ user-location {
 
   input {
     align-items: center;
-    background: var(--background-1);
-    border-radius: var(--input-height);
+    background-color: var(--background-1);
+    border-radius: var(--input-size);
     color: white;
     display: inline-flex;
     font-size: 1em;
-    padding: 0 2rem;
+    padding-block: 0;
+    padding-inline: 2rem;
     text-align: center;
     text-overflow: ellipsis;
-    transition: background var(--transition);
+    transition: background-color var(--transition);
 
     &:focus,
     &:hover {
-      background: var(--background-2);
+      background-color: var(--background-2);
       cursor: pointer;
     }
 
@@ -42,23 +43,23 @@ user-location {
   }
 
   [no-touch] & input {
-    transition: background var(--transition);
+    transition: background-color var(--transition);
   }
 
   // General button styles.
   button {
     align-items: center;
     aspect-ratio: 1;
-    background: 0;
+    background-color: transparent;
     border-radius: 50%;
     display: inline-flex;
+    inline-size: 2rem;
+    inset: 0 auto;
     justify-content: center;
     overflow: hidden;
     padding: 0;
     position: absolute;
-    top: 0;
-    transition: background var(--transition);
-    width: 2rem;
+    transition: background-color var(--transition);
   }
 
   // Hide the submit button and capture the event on Enter/Go.
