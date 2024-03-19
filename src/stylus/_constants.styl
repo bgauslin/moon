@@ -1,24 +1,3 @@
-// Values below are coordinated with 'Chart' enum in 'js/modules/Constants.js'
-Chart = {
-  MARGIN: 44,
-  SIZE: 320,
-  SWEEP_WIDTH: 72,
-}
-
-CHART_SIZE_UNITS = Chart.SIZE + (Chart.MARGIN * 2);
-
-AXIS_LABEL_SIZE = rem(32);
-BUTTON_SIZE = rem(32);
-CHART_MAX_SIZE = rem(480);
-CHART_SIZE = rem(CHART_SIZE_UNITS);
-CONTROLS_SIZE = rem(48);
-LOCATION_HEIGHT = rem(32);
-LOCATION_MAX_WIDTH = rem(Chart.SIZE);
-PHOTO_SIZE = Chart.SIZE - (Chart.SWEEP_WIDTH * 2);
-PHOTO_WIDTH = (PHOTO_SIZE / CHART_SIZE_UNITS) * 100%;
-PROGRESS_BAR_HEIGHT = 3px;
-PROGRESS_BAR_WIDTH = 20vw;
-
-Breakpoint = {
-  SMALL: 'screen and (min-width: %s)' % (CHART_MAX_SIZE + (CONTROLS_SIZE * 2)),
-}
+CHART_MAX_SIZE = 30rem;
+CHART_SIZE = 14.5rem;
+CONTROLS_SIZE = 3rem;
