@@ -14,7 +14,7 @@
   --transition: .3s;
   --transition-intro: 1s;
 
-  @media (min-inline-size: 36rem) {
+  @media (min-width: 36rem) {
     --grid: '. info .' 2fr 'prev charts next' '. date .' 1fr '. location .' 1fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
     --fineprint: .875em;
   }
