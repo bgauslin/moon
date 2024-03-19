@@ -10,7 +10,6 @@ export class MoonInfo extends HTMLElement {
 
   constructor() {
     super();
-    this.template = require('./info.pug');
   }
 
   static get observedAttributes(): string[] {
@@ -21,7 +20,13 @@ export class MoonInfo extends HTMLElement {
     const percent = this.getAttribute(PERCENT_ATTR);
     const phase = this.getAttribute(PHASE_ATTR);
     if (percent && phase) {
-      this.innerHTML = this.template({percent, phase});
+      const visibility = percent === '0' ? 'visibility="invisible"' : '';
+      this.innerHTML = `
+        <div id="phase">${phase}</div>
+        <div id="percent" ${visibility}>
+          ${percent}%
+        </div>
+      `;
     }
   }
 }
