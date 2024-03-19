@@ -1,12 +1,12 @@
 moon-date {
-  animation: slideInUp TRANSITION_INTRO ease;
+  animation: slideInUp var(--transition-intro) ease;
   display: block;
   grid-area: date;
   place-self: center;
 
   a {
     padding: rem(8) rem(16);
-    transition: transform TRANSITION;
+    transition: transform var(--transition);
     white-space: nowrap;
 
     &:link,
@@ -29,7 +29,7 @@ moon-date {
   }
 
   [no-touch] & a {
-    transition: color TRANSITION, transform TRANSITION;
+    transition: color var(--transition), transform var(--transition);
   }
 
   .today {

@@ -1,5 +1,5 @@
 user-location {
-  animation: slideInDown TRANSITION_INTRO ease;
+  animation: slideInDown var(--transition-intro) ease;
   display: block;
   grid-area: location;
   max-width: LOCATION_MAX_WIDTH;
@@ -28,7 +28,7 @@ user-location {
     padding: 0 rem(32);
     text-align: center;
     text-overflow: ellipsis;
-    transition: background TRANSITION;
+    transition: background var(--transition);
 
     &:focus,
     &:hover {
@@ -42,7 +42,7 @@ user-location {
   }
 
   [no-touch] & input {
-    transition: background TRANSITION;
+    transition: background var(--transition);
   }
 
   // General button styles.
@@ -57,7 +57,7 @@ user-location {
     padding: 0;
     position: absolute;
     top: 0;
-    transition: background TRANSITION;
+    transition: background var(--transition);
     width: BUTTON_SIZE;
   }
 
@@ -72,7 +72,7 @@ user-location {
 
     circle {
       fill: rgba(white, 0);
-      transition: fill TRANSITION;
+      transition: fill var(--transition);
     }
 
     path {
@@ -80,7 +80,7 @@ user-location {
       stroke: rgba(black, 0);
       stroke-linecap: round;
       stroke-width: 1;
-      transition: stroke TRANSITION;
+      transition: stroke var(--transition);
     }
   }
 

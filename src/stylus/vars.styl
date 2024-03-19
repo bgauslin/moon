@@ -6,6 +6,8 @@ body {
   --fineprint: em(12);
   --grid: '. info .' 2fr 'charts charts charts' 'prev date next' 1fr '. location .' 1fr / '%s minmax(auto, %s) %s' % (CONTROLS_SIZE CHART_MAX_SIZE CONTROLS_SIZE);
   --main-display: contents;
+  --transition: .3s;
+  --transition-intro: 1s;
 
   @media Breakpoint.SMALL {
     --grid: '. info .' 2fr 'prev charts next' '. date .' 1fr '. location .' 1fr / 'minmax(%s, 1fr) minmax(%s, %s) minmax(%s, 1fr)' % (CONTROLS_SIZE CHART_SIZE CHART_MAX_SIZE CONTROLS_SIZE);
