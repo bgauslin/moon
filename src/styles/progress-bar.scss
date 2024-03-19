@@ -1,9 +1,6 @@
-$height: 3px;
-$width: 20vw;
-
 @keyframes loading {
   0% {
-    left: (- $width);
+    left: -20vw; // Width of pseudo-element.
     width: 30%;
   }
   50% {
@@ -23,9 +20,13 @@ $width: 20vw;
   }
 }
 
+.progress-bar,
+.progress-bar::before {
+  height: 3px;
+}
+
 .progress-bar {
   display: none;
-  height: $height;
   width: 100vw;
   position: fixed;
   
@@ -38,10 +39,8 @@ $width: 20vw;
     background: white;
     content: '';
     display: block;
-    height: $height;
-    left: (- $width);
     position: absolute;
-    width: $width;
+    width: 20vw;
   }
 
   [no-js] & {
