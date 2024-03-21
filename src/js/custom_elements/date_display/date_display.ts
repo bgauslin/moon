@@ -1,9 +1,5 @@
 import {DateUtils} from '../../modules/DateUtils';
 
-// const SELECTOR_ATTR = 'selector';
-const TODAY_CLASSNAME = 'today';
-const UPDATE_ATTR = 'update';
-
 /**
  * Custom element that highlights elements if the UI is currently displaying
  * info for today.
@@ -18,7 +14,7 @@ export class DateDisplay extends HTMLElement {
   }
 
   static get observedAttributes(): string[] {
-    return [UPDATE_ATTR];
+    return ['update'];
   }
 
   connectedCallback() {
@@ -26,15 +22,15 @@ export class DateDisplay extends HTMLElement {
   }
 
   attributeChangedCallback() {
-    if (this.hasAttribute(UPDATE_ATTR)) {
+    if (this.hasAttribute('update')) {
       this.update();
     }
   }
 
   private setup() {
     this.link = document.createElement('a');
+    this.link.title = 'Today';
     this.link.setAttribute('href', '/');
-    this.link.setAttribute('title', 'Today');
     this.appendChild(this.link);
   }
 
@@ -44,12 +40,12 @@ export class DateDisplay extends HTMLElement {
     const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
   
     if (isToday) {
-      this.link.classList.add(TODAY_CLASSNAME);
+      this.link.classList.add('today');
     } else {
-      this.link.classList.remove(TODAY_CLASSNAME);
+      this.link.classList.remove('today');
     }
 
-    this.removeAttribute(UPDATE_ATTR);
+    this.removeAttribute('update');
   }
 }
 

@@ -117,9 +117,6 @@ export class App extends HTMLElement {
 
     items.forEach((item) => {
       const [selector, attribute, value] = item;
-
-      // TODO: Restore TS nullability.
-      // document.querySelector(selector)?.setAttribute(attribute, value);
       const element = document.querySelector(selector);
       if (element) {
         element.setAttribute(attribute, value);
@@ -136,7 +133,7 @@ export class App extends HTMLElement {
     const pageTitle = `${BASE_TITLE} ${TITLE_DIVIDER} ${dateLabel} ${TITLE_DIVIDER} ${location}`;
     const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
-    document.title = urlSegments.length === 4 ? pageTitle : BASE_TITLE;
+    document.title = (urlSegments.length === 4) ? pageTitle : BASE_TITLE;
   }
 
   /**

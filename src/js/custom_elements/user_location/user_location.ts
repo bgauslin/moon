@@ -5,10 +5,7 @@ interface UserCoordinates {
   lng: number,
 }
 
-const DEFAULT_ATTR = 'default';
 const LOCAL_STORAGE_ITEM = 'location';
-const LOCATION_ATTR = 'location';
-const RESTORE_ATTR = 'restore';
 
 /**
  * Custom element that gets the user's location either via text input or via
@@ -31,22 +28,22 @@ export class UserLocation extends HTMLElement {
   }
 
   static get observedAttributes(): string[] {
-    return [LOCATION_ATTR, RESTORE_ATTR];
+    return ['location', 'restore'];
   }
 
   connectedCallback() {
-    this.defaultLocation = this.getAttribute(DEFAULT_ATTR) || '';
-    this.removeAttribute(DEFAULT_ATTR);
-    this.setAttribute(LOCATION_ATTR, this.initialLocation());
+    this.defaultLocation = this.getAttribute('default') || '';
+    this.removeAttribute('default');
+    this.setAttribute('location', this.initialLocation());
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (name === RESTORE_ATTR) {
+    if (name === 'restore') {
       this.restore();
     }
 
-    if (name === LOCATION_ATTR && !this.hasSetup) {
-      this.location = this.getAttribute(LOCATION_ATTR) || this.defaultLocation;
+    if (name === 'location' && !this.hasSetup) {
+      this.location = this.getAttribute('location') || this.defaultLocation;
       this.previousLocation = this.location;
       this.render();
       this.addListeners_();
@@ -115,7 +112,7 @@ export class UserLocation extends HTMLElement {
     urlSegments.push(this.dateUtils.urlify(this.location));
 
     history.replaceState(null, '', urlSegments.join('/'));
-    this.setAttribute(LOCATION_ATTR, this.location);
+    this.setAttribute('location', this.location);
 
     // Save new location to localStorage.
     localStorage.setItem(LOCAL_STORAGE_ITEM, this.location);

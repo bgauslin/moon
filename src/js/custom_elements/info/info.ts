@@ -20,7 +20,7 @@ export class MoonInfo extends HTMLElement {
     const percent = this.getAttribute(PERCENT_ATTR);
     const phase = this.getAttribute(PHASE_ATTR);
     if (percent && phase) {
-      const visibility = percent === '0' ? 'visibility="invisible"' : '';
+      const visibility = (percent === '0') ? 'visibility="invisible"' : '';
       this.innerHTML = `
         <div id="phase">${phase}</div>
         <div id="percent" ${visibility}>

@@ -1,13 +1,9 @@
 import Spinner from 'spin';
 
-// [1] MOONPHASEIMAGE_COUNT value is same as loop value in 'photo.styl'
+// [1] MOONPHASEIMAGE_COUNT value is same as loop value in 'photo.scss'
 const IMAGE_PATH_1X = '/img/moon-phases-26-240.min.jpg';
 const IMAGE_PATH_2X = '/img/moon-phases-26-480.min.jpg';
-const ILLUMINATION_ATTR = 'illumination';
 const MOONPHASEIMAGE_COUNT: number = 26; // [1]
-const PERCENT_ATTR = 'percent';
-const PHASE_ATTR = 'phase';
-const READY_ATTR = 'ready';
 const SPINNERDELAY_MS: number = 1000;
 
 const SpinnerOptions: {} = {
@@ -26,7 +22,6 @@ const SpinnerOptions: {} = {
 export class MoonPhoto extends HTMLElement {
   private imageLoaded: boolean;
   private spinner: Spinner;
-  private template: any;
 
   constructor() {
     super();
@@ -35,7 +30,7 @@ export class MoonPhoto extends HTMLElement {
   }
 
   static get observedAttributes(): string[] {
-    return [ILLUMINATION_ATTR, PERCENT_ATTR, PHASE_ATTR];
+    return ['illumination', 'percent', 'phase'];
   }
 
   attributeChangedCallback() {
@@ -46,13 +41,13 @@ export class MoonPhoto extends HTMLElement {
    * Renders a photo of the current moon phase.
    */
   private render() {
-    const illumination = parseInt(this.getAttribute(ILLUMINATION_ATTR)!);
-    const percent = parseInt(this.getAttribute(PERCENT_ATTR)!);
-    const phase = this.getAttribute(PHASE_ATTR);
+    const illumination = parseInt(this.getAttribute('illumination')!);
+    const percent = parseInt(this.getAttribute('percent')!);
+    const phase = this.getAttribute('phase');
 
     if (illumination && percent && phase) {
       const currentFrame = Math.round((percent / 100) * MOONPHASEIMAGE_COUNT);
-      const frame = currentFrame === 0 ? MOONPHASEIMAGE_COUNT : currentFrame;
+      const frame = (currentFrame === 0) ? MOONPHASEIMAGE_COUNT : currentFrame;
 
       const alt = (illumination > 0) ? `${phase} (${illumination}% illumination)` : phase;
       const ready = this.imageLoaded ? 'ready' : '';
@@ -82,13 +77,13 @@ export class MoonPhoto extends HTMLElement {
 
     if (image) {
       image.onload = () => {
-        image.setAttribute(READY_ATTR, '');
+        image.setAttribute('ready', '');
         this.spinner.stop();
         this.imageLoaded = true;
       };
 
       window.setTimeout(() => {
-        if (!image.hasAttribute(READY_ATTR)) {
+        if (!image.hasAttribute('ready')) {
           this.spinner.spin();
           this.appendChild(this.spinner.el);
         }
