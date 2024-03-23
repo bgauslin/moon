@@ -5,9 +5,10 @@ moon-date {
   place-self: center;
 
   a {
+    display: block;
     padding-block: .5rem;
     padding-inline: 1rem;
-    transition: transform var(--transition);
+    transition: color var(--transition), transform var(--transition);
     white-space: nowrap;
 
     &:link,
@@ -19,17 +20,17 @@ moon-date {
       color: rgba(white, .7);
     }
 
-    &:active {
+    &.touch {
       transform: scale(.8);
     }
 
     @media (any-hover: hover) {
-      & {
-        transition: color var(--transition), transform var(--transition);
-      }
-
       &:hover {
         color: rgba(white, .7);
+      }
+
+      &:active {
+        transform: scale(.8);
       }
     }
   }

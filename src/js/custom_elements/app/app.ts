@@ -21,6 +21,9 @@ export class App extends HTMLElement {
   private dateUtils: DateUtils;
   private location: string;
   private popstateListener: EventListenerObject;
+  private target: HTMLElement;
+  private touchstartListener: EventListenerObject;
+  private touchendListener: EventListenerObject;
   private userLocation: HTMLElement;
   private userLocationObserver: MutationObserver;
 
@@ -30,18 +33,26 @@ export class App extends HTMLElement {
     this.userLocationObserver = new MutationObserver(() => this.update());
     this.clickListener = this.handleClick.bind(this);
     this.popstateListener = this.update.bind(this);
-    document.addEventListener('click', this.clickListener);
-    window.addEventListener('popstate', this.popstateListener, false);
+    this.touchstartListener = this.handleTouchstart.bind(this);
+    this.touchendListener = this.handleTouchend.bind(this);
   }
 
   connectedCallback() {
     this.userLocation = <HTMLElement>document.querySelector('user-location');
     this.userLocationObserver.observe(this.userLocation, {attributes: true});
+    document.addEventListener('click', this.clickListener);
+    document.addEventListener('touchstart', this.touchstartListener);
+    document.addEventListener('touchend', this.touchendListener);
+    window.addEventListener('popstate', this.popstateListener);
   }
 
   disconnectedCallback() {
     document.removeEventListener('click', this.clickListener);
-    window.removeEventListener('popstate', this.popstateListener, false);
+    window.removeEventListener('popstate', this.popstateListener);
+    document.removeEventListener('click', this.clickListener);
+    document.removeEventListener('touchstart', this.touchstartListener);
+    document.removeEventListener('touchend', this.touchendListener);
+    window.removeEventListener('popstate', this.popstateListener);
   }
 
   /**
@@ -150,6 +161,25 @@ export class App extends HTMLElement {
         this.update();
       }
     }
+  }
+
+  /**
+   * Adds class to elements on touchstart.
+   */
+  private handleTouchstart(event: TouchEvent) {
+    const composed = event.composedPath();
+    this.target = <HTMLElement>composed[0];
+
+    if (this.target.tagName === 'A') {
+      this.target.classList.add('touch');
+    }
+  }
+  
+  /**
+   * Removes class fromm touched elements on touchend.
+   */
+  private handleTouchend() {
+    this.target.classList.remove('touch');
   }
 }
 

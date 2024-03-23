@@ -20,18 +20,23 @@ prev-next {
     place-content: center;
     transition: background-color var(--transition), transform var(--transition);
 
-    &:active {
-      transform: scale(.8);
-    }
-
     &:focus-visible {
       background-color: var(--background-2);
+    }
+
+    &.touch {
+      background-color: var(--background-2);
+      transform: scale(.8);
     }
 
     @media (any-hover: hover) {
       &:hover {
         background-color: var(--background-2);
       }  
+
+      &:active {
+        transform: scale(.8);
+      }
     }
   }
 
