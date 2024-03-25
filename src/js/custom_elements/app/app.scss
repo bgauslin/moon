@@ -23,3 +23,10 @@ moon-app {
   display: grid;
   grid: var(--app-grid);
 }
+
+:is(donut-chart, moon-charts, moon-photo) {
+  animation: scaleIn var(--transition-intro) ease;
+  aspect-ratio: 1;  
+  grid-area: charts;
+  place-self: center;
+}

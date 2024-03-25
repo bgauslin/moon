@@ -1,10 +1,6 @@
 donut-chart {
-  animation: scaleIn var(--transition-intro) ease;
-  aspect-ratio: 1;
-  grid-area: charts;
   inline-size: 100%;
   max-inline-size: var(--charts-max-size);
-  place-self: center;
 
   text {
     font-size: .8125em;
