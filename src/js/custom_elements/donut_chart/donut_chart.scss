@@ -1,14 +1,29 @@
 donut-chart {
-  block-size: 100%;
+  animation: scaleIn var(--transition-intro) ease;
+  aspect-ratio: 1;
+  grid-area: charts;
   inline-size: 100%;
-  position: absolute;
+  max-inline-size: var(--charts-max-size);
+  place-self: center;
 
   text {
     font-size: .8125em;
   }
 
-  // Blend moon arc with sun arc where they overlap.
-  &[name='moon'] circle {
-    opacity: .5;
+  &[name="sun"] circle {
+    stroke: #f8c537;
+  }
+
+  &[name="sun"] text {
+    fill: #f8c537;
+  }
+
+  &[name="moon"] circle {
+    opacity: .5; // Blend moon arc with sun arc where they overlap.
+    stroke: white;
+  }
+
+  &[name="moon"] text {
+    fill: white;
   }
 }

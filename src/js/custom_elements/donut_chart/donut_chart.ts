@@ -101,7 +101,6 @@ export class DonutChart extends HTMLElement {
     const setTransform = `rotate(${setSweep.sweep}, ${setRotation.x}, ${setRotation.y})`;
 
     // Static values.
-    const color = this.getAttribute('color');
     const strokeWidth = Chart.SWEEP_WIDTH;
     
     // Render the chart.
@@ -113,17 +112,15 @@ export class DonutChart extends HTMLElement {
             cy="${cy}"
             r="${radius}"
             fill="transparent"
-            stroke="${color}"
             stroke-width="${strokeWidth}"
             stroke-dasharray="${circumference}"
             stroke-dashoffset="${strokeDashOffset}"
             transform="${transform}"/>
           <text
-            fill="${color}"
             x="${riseRotation.x}"
             y="${riseRotation.y}"
             transform="${riseTransform}">${riseTime}</text>
-          <text fill="${color}"
+          <text
             x="${setRotation.x}"
             y="${setRotation.y}"
             transform="${setTransform}">${setTime}</text>

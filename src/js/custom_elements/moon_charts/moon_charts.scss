@@ -5,13 +5,10 @@ moon-charts {
   inline-size: 100%;
   margin: auto;
   max-inline-size: var(--charts-max-size);
-  padding-block: 0 100%;
-  position: relative;
 
   svg {
-    block-size: 100%;
+    aspect-ratio: 1;
     inline-size: 100%;
-    position: absolute;
   }
 
   [id='sweep-ticks'] line {

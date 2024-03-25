@@ -27,10 +27,12 @@ export class App extends HTMLElement {
   private userLocationObserver: MutationObserver;
 
   private dateElement: HTMLElement;
-  private prev: HTMLElement;
-  private next: HTMLElement;
   private info: HTMLElement;
+  private moon: HTMLElement;
+  private next: HTMLElement;
+  private prev: HTMLElement;
   private photo: HTMLElement;
+  private sun: HTMLElement;
 
   constructor() {
     super();
@@ -58,11 +60,15 @@ export class App extends HTMLElement {
     window.removeEventListener('popstate', this.popstateListener);
   }
 
-
+  /**
+   * Renders elements into the DOM and sets references to them for updating.
+   */
   private setup() {
     this.innerHTML = `
       <moon-info></moon-info>
-      <moon-photo class="photo"></moon-photo>
+      <moon-photo></moon-photo>
+      <donut-chart name="sun"></donut-chart>
+      <donut-chart name="moon"></donut-chart>
       <moon-charts></moon-charts>
       <moon-date></moon-date>
       <user-location default="New Orleans, LA"></user-location>
@@ -72,9 +78,11 @@ export class App extends HTMLElement {
 
     this.dateElement = <HTMLElement>this.querySelector('moon-date');
     this.info = <HTMLElement>this.querySelector('moon-info');
+    this.moon = <HTMLElement>this.querySelector('donut-chart[name="moon"]');
     this.next = <HTMLElement>this.querySelector('[direction="next"]');
     this.photo = <HTMLElement>this.querySelector('moon-photo');
     this.prev = <HTMLElement>this.querySelector('[direction="prev"]');
+    this.sun = <HTMLElement>this.querySelector('donut-chart[name="sun"]');
     this.userLocation = <HTMLElement>this.querySelector('user-location');
   }
 
@@ -131,10 +139,11 @@ export class App extends HTMLElement {
    * themselves.
    */
   private updateElements(moonData: MoonData) {
-    const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
+    const {hemisphere, illumination, moonrise, moonset, percent, phase,
+        sunrise, sunset} = moonData;
 
     this.dateElement.setAttribute('update', '');
-
+    
     this.info.setAttribute('percent', `${percent}`);
     this.info.setAttribute('phase', `${phase}`);
     
@@ -146,21 +155,11 @@ export class App extends HTMLElement {
     this.photo.setAttribute('percent', `${percent}`);
     this.photo.setAttribute('phase', phase);
 
-    // TODO: Refactor/relocate.
-    const items = [
-      ['donut-chart[name=moon]', 'start', moonrise],
-      ['donut-chart[name=moon]', 'end', moonset],
-      ['donut-chart[name=sun]', 'start', sunrise],
-      ['donut-chart[name=sun]', 'end', sunset],
-    ];
+    this.moon.setAttribute('start', moonrise);
+    this.moon.setAttribute('end', moonset);
 
-    items.forEach((item) => {
-      const [selector, attribute, value] = item;
-      const element = document.querySelector(selector);
-      if (element) {
-        element.setAttribute(attribute, value);
-      }
-    });
+    this.sun.setAttribute('start', sunrise);
+    this.sun.setAttribute('end', sunset);
   }
 
   /** 

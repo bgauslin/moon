@@ -63,9 +63,7 @@ export class MoonCharts extends HTMLElement {
       html += '</g>';
     }
 
-    this.innerHTML += `
-      <donut-chart name="sun" color="#f8c537"></donut-chart>
-      <donut-chart name="moon" color="#fff"></donut-chart>
+    this.innerHTML = `
       <svg viewbox="0 0 ${VIEWBOX} ${VIEWBOX}" aria-hidden="true">
         ${html}
       </svg>
