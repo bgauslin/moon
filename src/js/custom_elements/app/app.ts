@@ -16,7 +16,6 @@ const TITLE_DIVIDER = '·';
  * Custom element that controls the application.
  */
 export class App extends HTMLElement {
-  private clickListener: EventListenerObject;
   private date: AppDate;
   private dateUtils: DateUtils;
   private location: string;
@@ -27,32 +26,55 @@ export class App extends HTMLElement {
   private userLocation: HTMLElement;
   private userLocationObserver: MutationObserver;
 
+  private dateElement: HTMLElement;
+  private prev: HTMLElement;
+  private next: HTMLElement;
+  private info: HTMLElement;
+  private charts: HTMLElement;
+
   constructor() {
     super();
     this.dateUtils = new DateUtils();
-    this.userLocationObserver = new MutationObserver(() => this.update());
-    this.clickListener = this.handleClick.bind(this);
     this.popstateListener = this.update.bind(this);
     this.touchstartListener = this.handleTouchstart.bind(this);
     this.touchendListener = this.handleTouchend.bind(this);
+    this.userLocationObserver = new MutationObserver(() => this.update());
   }
 
   connectedCallback() {
-    this.userLocation = <HTMLElement>document.querySelector('user-location');
-    this.userLocationObserver.observe(this.userLocation, {attributes: true});
-    document.addEventListener('click', this.clickListener);
-    document.addEventListener('touchstart', this.touchstartListener, {passive: true});
-    document.addEventListener('touchend', this.touchendListener, {passive: true});
+    this.addEventListener('click', this.handleClick);
+    this.addEventListener('touchstart', this.touchstartListener, {passive: true});
+    this.addEventListener('touchend', this.touchendListener, {passive: true});
     window.addEventListener('popstate', this.popstateListener);
+
+    this.setup();
+    this.userLocationObserver.observe(this.userLocation, {attributes: true});
   }
 
   disconnectedCallback() {
-    document.removeEventListener('click', this.clickListener);
+    this.removeEventListener('click', this.handleClick);
+    this.removeEventListener('touchstart', this.touchstartListener);
+    this.removeEventListener('touchend', this.touchendListener);
     window.removeEventListener('popstate', this.popstateListener);
-    document.removeEventListener('click', this.clickListener);
-    document.removeEventListener('touchstart', this.touchstartListener);
-    document.removeEventListener('touchend', this.touchendListener);
-    window.removeEventListener('popstate', this.popstateListener);
+  }
+
+
+  private setup() {
+    this.innerHTML = `
+      <moon-info></moon-info>
+      <moon-charts></moon-charts>
+      <moon-date></moon-date>
+      <user-location default="New Orleans, LA"></user-location>
+      <prev-next direction="prev"></prev-next>
+      <prev-next direction="next"></prev-next>
+    `;
+
+    this.charts = <HTMLElement>this.querySelector('moon-charts');
+    this.dateElement = <HTMLElement>this.querySelector('moon-date');
+    this.info = <HTMLElement>this.querySelector('moon-info');
+    this.next = <HTMLElement>this.querySelector('[direction="next"]');
+    this.prev = <HTMLElement>this.querySelector('[direction="prev"]');
+    this.userLocation = <HTMLElement>this.querySelector('user-location');
   }
 
   /**
@@ -110,10 +132,8 @@ export class App extends HTMLElement {
   private updateElements(moonData: MoonData) {
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
 
+    // TODO: Refactor/relocate.
     const items = [
-      ['moon-date', 'update', ''],
-      ['moon-info', 'percent', String(percent)],
-      ['moon-info', 'phase', String(phase)],
       ['moon-photo', 'hemisphere', hemisphere],
       ['moon-photo', 'illumination', String(illumination)],
       ['moon-photo', 'percent', String(percent)],
@@ -122,8 +142,6 @@ export class App extends HTMLElement {
       ['donut-chart[name=moon]', 'end', moonset],
       ['donut-chart[name=sun]', 'start', sunrise],
       ['donut-chart[name=sun]', 'end', sunset],
-      ['prev-next[direction=next]', 'location', this.location],
-      ['prev-next[direction=prev]', 'location', this.location],
     ];
 
     items.forEach((item) => {
@@ -133,6 +151,12 @@ export class App extends HTMLElement {
         element.setAttribute(attribute, value);
       }
     });
+
+    this.dateElement.setAttribute('update', '');
+    this.info.setAttribute('percent', `${percent}`);
+    this.info.setAttribute('phase', `${phase}`);
+    this.next.setAttribute('location', this.location);
+    this.prev.setAttribute('location', this.location);
   }
 
   /** 

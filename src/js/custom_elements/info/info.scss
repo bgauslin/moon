@@ -8,10 +8,6 @@ moon-info {
   text-align: center;
   white-space: nowrap;
 
-  [no-js] & {
-    display: none;
-  }
-
   [id='phase'] {
     color: white;
   }

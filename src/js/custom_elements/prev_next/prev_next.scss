@@ -49,8 +49,4 @@ prev-next {
     inline-size: 2rem;
     transition: transform var(--transition);
   }
-
-  [no-js] & {
-    display: none;
-  }
 }
