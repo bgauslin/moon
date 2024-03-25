@@ -30,7 +30,7 @@ export class App extends HTMLElement {
   private prev: HTMLElement;
   private next: HTMLElement;
   private info: HTMLElement;
-  private charts: HTMLElement;
+  private photo: HTMLElement;
 
   constructor() {
     super();
@@ -62,6 +62,7 @@ export class App extends HTMLElement {
   private setup() {
     this.innerHTML = `
       <moon-info></moon-info>
+      <moon-photo class="photo"></moon-photo>
       <moon-charts></moon-charts>
       <moon-date></moon-date>
       <user-location default="New Orleans, LA"></user-location>
@@ -69,10 +70,10 @@ export class App extends HTMLElement {
       <prev-next direction="next"></prev-next>
     `;
 
-    this.charts = <HTMLElement>this.querySelector('moon-charts');
     this.dateElement = <HTMLElement>this.querySelector('moon-date');
     this.info = <HTMLElement>this.querySelector('moon-info');
     this.next = <HTMLElement>this.querySelector('[direction="next"]');
+    this.photo = <HTMLElement>this.querySelector('moon-photo');
     this.prev = <HTMLElement>this.querySelector('[direction="prev"]');
     this.userLocation = <HTMLElement>this.querySelector('user-location');
   }
@@ -132,12 +133,21 @@ export class App extends HTMLElement {
   private updateElements(moonData: MoonData) {
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = moonData;
 
+    this.dateElement.setAttribute('update', '');
+
+    this.info.setAttribute('percent', `${percent}`);
+    this.info.setAttribute('phase', `${phase}`);
+    
+    this.next.setAttribute('location', this.location);
+    this.prev.setAttribute('location', this.location);
+    
+    this.photo.setAttribute('hemisphere', hemisphere);
+    this.photo.setAttribute('illumination', `${illumination}`);
+    this.photo.setAttribute('percent', `${percent}`);
+    this.photo.setAttribute('phase', phase);
+
     // TODO: Refactor/relocate.
     const items = [
-      ['moon-photo', 'hemisphere', hemisphere],
-      ['moon-photo', 'illumination', String(illumination)],
-      ['moon-photo', 'percent', String(percent)],
-      ['moon-photo', 'phase', phase],
       ['donut-chart[name=moon]', 'start', moonrise],
       ['donut-chart[name=moon]', 'end', moonset],
       ['donut-chart[name=sun]', 'start', sunrise],
@@ -151,12 +161,6 @@ export class App extends HTMLElement {
         element.setAttribute(attribute, value);
       }
     });
-
-    this.dateElement.setAttribute('update', '');
-    this.info.setAttribute('percent', `${percent}`);
-    this.info.setAttribute('phase', `${phase}`);
-    this.next.setAttribute('location', this.location);
-    this.prev.setAttribute('location', this.location);
   }
 
   /** 

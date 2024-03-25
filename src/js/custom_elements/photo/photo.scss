@@ -1,16 +1,14 @@
 moon-photo {
-  align-items: center;
-  display: flex;
-  block-size: 100%;
-  inline-size: 100%;
-  justify-content: center;
-  position: absolute;
+  aspect-ratio: 1;
+  grid-area: charts;
+  inline-size: 44%;
+  max-inline-size: 212px; // TODO: Comment about how value is determined.
+  place-self: center;
 
   figure {
     border-radius: 50%;
-    flex: 0 0 44%;
     overflow: hidden;
-    padding-block: 0 44%;
+    padding-block: 0 100%;
     position: relative;
   }
 
