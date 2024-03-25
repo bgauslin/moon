@@ -16,10 +16,8 @@ html {
 body {
   background: black;
   color: white;
-  display: grid;
   font-family: 'Avenir Variable', sans-serif;
   font-variation-settings: 'wght' 500;
-  grid: var(--grid);
   margin: 0;
   min-block-size: 100dvh;
   padding-block: 0 env(safe-area-inset-bottom);
@@ -41,15 +39,6 @@ body {
     &:focus {
       opacity: 1;
     }
-  }
-}
-
-main {
-  display: var(--main-display);
-
-  [no-js] & {
-    padding: 1.5rem;
-    place-content: center;
   }
 }
 
