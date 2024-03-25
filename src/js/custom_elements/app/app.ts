@@ -41,8 +41,8 @@ export class App extends HTMLElement {
     this.userLocation = <HTMLElement>document.querySelector('user-location');
     this.userLocationObserver.observe(this.userLocation, {attributes: true});
     document.addEventListener('click', this.clickListener);
-    document.addEventListener('touchstart', this.touchstartListener);
-    document.addEventListener('touchend', this.touchendListener);
+    document.addEventListener('touchstart', this.touchstartListener, {passive: true});
+    document.addEventListener('touchend', this.touchendListener, {passive: true});
     window.addEventListener('popstate', this.popstateListener);
   }
 
