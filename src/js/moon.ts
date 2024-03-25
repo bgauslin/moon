@@ -5,8 +5,8 @@ import './custom_elements/date_display/date_display';
 import './custom_elements/donut_chart/donut_chart';
 import './custom_elements/info/info';
 import './custom_elements/photo/photo';
-import './custom_elements/moon_charts/moon_charts';
 import './custom_elements/prev_next/prev_next';
+import './custom_elements/ticks_chart/ticks_chart';
 import './custom_elements/user_location/user_location';
 
 import '../styles/index.scss';

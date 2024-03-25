@@ -69,7 +69,7 @@ export class App extends HTMLElement {
       <moon-photo></moon-photo>
       <donut-chart name="sun"></donut-chart>
       <donut-chart name="moon"></donut-chart>
-      <moon-charts></moon-charts>
+      <ticks-chart></ticks-chart>
       <moon-date></moon-date>
       <user-location default="New Orleans, LA"></user-location>
       <prev-next direction="prev"></prev-next>

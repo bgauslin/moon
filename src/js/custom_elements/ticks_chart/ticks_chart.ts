@@ -5,6 +5,14 @@ interface Tick {
   end: number,
 }
 
+interface TickLine {
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  transform: string,
+}
+
 const HOUR_TICK: Tick = {  
   start: Chart.MARGIN,
   end: Chart.MARGIN - (Chart.SWEEP_WIDTH / 4),
@@ -26,19 +34,15 @@ const VIEWBOX: number = Chart.SIZE + (Chart.MARGIN * 2);
 const DIVISIONS: number = 24;
 const ANGLE: number = 360 / DIVISIONS;
 
-export class MoonCharts extends HTMLElement {
+/**
+ * Renders an SVG containing grouped lines.
+ */
+export class TicksChart extends HTMLElement {
   constructor() {
     super();
   }
 
   connectedCallback() {
-    this.setup();
-  }
-
-  /**
-   * Renders an SVG containing grouped lines.
-   */
-  private setup() {
     const sweepTicks = this.ticks(SWEEP_TICK, true);
     const majorTicks = this.ticks(OUTER_TICK, true);
     const minorTicks = this.ticks(HOUR_TICK);
@@ -97,4 +101,4 @@ export class MoonCharts extends HTMLElement {
   }
 }
 
-customElements.define('moon-charts', MoonCharts);
+customElements.define('ticks-chart', TicksChart);
