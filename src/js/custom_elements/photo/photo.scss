@@ -1,7 +1,8 @@
 moon-photo {
+  animation: scaleIn var(--transition-intro) ease;
   aspect-ratio: 1;
   grid-area: charts;
-  inline-size: 44%;
+  inline-size: 44%;  // TODO: Comment about how value is determined.
   max-inline-size: 212px; // TODO: Comment about how value is determined.
   place-self: center;
 
