@@ -17,22 +17,21 @@ const TITLE_DIVIDER = '·';
  */
 export class App extends HTMLElement {
   private date: AppDate;
+  private dateElement: HTMLElement;
   private dateUtils: DateUtils;
+  private info: HTMLElement;
   private location: string;
+  private moon: HTMLElement;
+  private next: HTMLElement;
   private popstateListener: EventListenerObject;
+  private photo: HTMLElement;
+  private prev: HTMLElement;
+  private sun: HTMLElement;
   private target: HTMLElement;
   private touchstartListener: EventListenerObject;
   private touchendListener: EventListenerObject;
   private userLocation: HTMLElement;
   private userLocationObserver: MutationObserver;
-
-  private dateElement: HTMLElement;
-  private info: HTMLElement;
-  private moon: HTMLElement;
-  private next: HTMLElement;
-  private prev: HTMLElement;
-  private photo: HTMLElement;
-  private sun: HTMLElement;
 
   constructor() {
     super();
@@ -107,7 +106,7 @@ export class App extends HTMLElement {
       return;
     }
 
-    // Update the DOM and send a pageview.
+    // Update the DOM.
     this.updateCurrentDate();
     this.updateElements(moonData);
     this.updateDocumentTitle({
