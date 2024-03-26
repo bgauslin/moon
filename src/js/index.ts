@@ -1,4 +1,4 @@
-require ('dotenv').config();
+// require ('dotenv').config();
 
 import './custom_elements/app/app';
 import './custom_elements/donut_chart/donut_chart';

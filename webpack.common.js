@@ -1,5 +1,5 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -8,7 +8,7 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: {
-    moon: './src/js/moon.ts',
+    app: './src/js/index.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -16,11 +16,13 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CopyPlugin([
-      { from: 'src/img', to: 'img' },
-      { from: 'src/pwa', to: 'pwa' },
-      { from: 'src/root' },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        { from: 'src/img', to: 'img' },
+        { from: 'src/pwa', to: 'pwa' },
+        { from: 'src/root' },
+      ],
+    }),
     new Dotenv(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -32,38 +34,29 @@ module.exports = {
       exclude: [/\.htaccess$/, /robots\.txt$/, /\.DS_Store$/],
     }),
   ],
-  node: {
-    fs: 'empty',
-  },
-  resolve: {
-    extensions: ['.js', '.ts']
-  },
   module: {
     rules: [
       {
-        test: /\.(ts|js)$/,
+        test: /\.ts?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/typescript',
-            ],
-            plugins: [
-              'babel-plugin-transform-es2015-modules-commonjs',
-            ],
-          }
-        }
+        use: 'ts-loader',
       },
       {
+        // App shell styles and custom properties.
         test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, 'src/styles')
+        ],
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           'sass-loader',
         ],
       },
-    ]
-  }
+    ],
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.scss'],
+  },
 }
