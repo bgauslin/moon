@@ -1,35 +1,26 @@
 moon-photo {
-  inline-size: 44%;  // TODO: Comment about how value is determined.
-  max-inline-size: 212px; // TODO: Comment about how value is determined.
+  aspect-ratio: 1;
+  border-radius: 50%;
+  inline-size: 42.5%; // TODO: Comment about how value is determined.
+  max-inline-size: 204px; // 480 SVG viewbox * inline-size
+  overflow: hidden;
+  position: relative;
 
-  figure {
-    border-radius: 50%;
-    overflow: hidden;
-    padding-block: 0 100%;
-    position: relative;
-  }
-
-  &[hemisphere='southern'] figure {
+  &[hemisphere='southern'] {
     transform: rotate(180deg);
   }
 
   img {
-    opacity: 0;
     position: absolute;
     transition: opacity var(--transition) ease;
   }
 
-  img[ready] {
-    opacity: 1;
+  img[data-loading] {
+    opacity: 0;
   }
 
   img[frame='1'] {
     inset-block: 0 auto;
-  }
-
-  .spinner {
-    position: absolute !important;
-    inset-block: 50% auto;
   }
 }
 

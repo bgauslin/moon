@@ -15,9 +15,7 @@
     }
   },
   "dependencies": {
-    "@types/spin": "^2.3.30",
     "@types/suncalc": "^1.8.0",
-    "spin": "^0.0.1",
     "suncalc": "^1.8.0",
     "tz-lookup": "^6.1.24"
   },
