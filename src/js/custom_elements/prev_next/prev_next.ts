@@ -23,8 +23,8 @@ export class PrevNext extends HTMLElement {
     this.render();
   }
 
-  attributeChangedCallback() {
-    this.update();
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    this.update(newValue);
   }
 
   /**
@@ -45,16 +45,13 @@ export class PrevNext extends HTMLElement {
   /**
    * Updates link and title relative to current date and location.
    */
-  private update() {
-    if (this.link) {
-      const date = (this.direction === 'prev') ? this.dateUtils.prevDate() : this.dateUtils.nextDate();
-      const location = this.getAttribute('location');
-      const title = `${this.dateUtils.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
+  private update(location: string) {
+    const date = (this.direction === 'prev') ? this.dateUtils.prevDate() : this.dateUtils.nextDate();      
+    const title = `${this.dateUtils.prettyDate(date, document.documentElement.lang, 'long')} - ${location}`;
 
-      this.link.setAttribute('href', `${this.dateUtils.makeUrl(date, location!)}`);
-      this.link.title = title;
-      this.link.ariaLabel = title;
-    }
+    this.link.setAttribute('href', `${this.dateUtils.makeUrl(date, location!)}`);
+    this.link.title = title;
+    this.link.ariaLabel = title;
   }
 }
 
