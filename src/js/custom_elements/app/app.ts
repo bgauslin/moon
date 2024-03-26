@@ -158,9 +158,7 @@ export class App extends HTMLElement {
     this.prev.setAttribute('location', this.location);
     
     this.photo.setAttribute('hemisphere', hemisphere);
-    this.photo.setAttribute('illumination', `${illumination}`);
     this.photo.setAttribute('percent', `${percent}`);
-    this.photo.setAttribute('phase', phase);
 
     this.moon.setAttribute('start', moonrise);
     this.moon.setAttribute('end', moonset);

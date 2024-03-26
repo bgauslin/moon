@@ -1,58 +1,54 @@
-// [1] MOONPHASEIMAGE_COUNT value is same as loop value in 'photo.scss'
-const IMAGE_PATH_1X = '/img/moon-phases-26-240.min.jpg';
-const IMAGE_PATH_2X = '/img/moon-phases-26-480.min.jpg';
-const MOONPHASEIMAGE_COUNT: number = 26; // [1]
 /**
  * Custom element that renders a photo for the current moon phase. The image
  * is a reponsive sprite containing all of the moon phases and the custom
- * element adjusts the vertical position of the sprite to show the moon phase.
+ * element adjusts the vertical position of the sprite to show the moon phase
+ * via a numeric 'frame' attribute.
  */
 export class MoonPhoto extends HTMLElement {
+  private image: HTMLImageElement;
+  private imageCount: number
   private imageLoaded: boolean;
 
   constructor() {
     super();
+    this.imageCount = 26; // Property should match CSS [frame] max.
     this.imageLoaded = false;
   }
 
   static get observedAttributes(): string[] {
-    return ['illumination', 'percent', 'phase'];
+    return ['percent'];
   }
 
-  attributeChangedCallback() {
+  connectedCallback() {
     this.render();
   }
 
-  /** 
-   * Renders a photo of the current moon phase.
-   */
-  private render() {
-    const illumination = parseInt(this.getAttribute('illumination')!);
-    const percent = parseInt(this.getAttribute('percent')!);
-    const phase = this.getAttribute('phase');
+  attributeChangedCallback() {
+    this.update();
+  }
 
-    if (illumination && percent && phase) {
-      const currentFrame = Math.round((percent / 100) * MOONPHASEIMAGE_COUNT);
-      const frame = (currentFrame === 0) ? MOONPHASEIMAGE_COUNT : currentFrame;
-      const alt = (illumination > 0) ? `${phase} (${illumination}% illumination)` : phase;
+  render() {
+    const imagePath1x = '/img/moon-phases-26-240.min.jpg';
+    const imagePath2x = '/img/moon-phases-26-480.min.jpg';
 
-      this.innerHTML = `
-        <img 
-          alt="${alt}"
-          src="${IMAGE_PATH_1X}"
-          srcset="${IMAGE_PATH_1X} 1x, ${IMAGE_PATH_2X} 2x"
-          frame="${frame}">
-      `;
+    this.innerHTML = `<img  alt="" src="${imagePath1x}" srcset="${imagePath1x} 1x, ${imagePath2x} 2x">`;
+    this.image = <HTMLImageElement>this.querySelector('img');
 
-      if (!this.imageLoaded) {
-        const image = this.querySelector('img')!;
-        image.dataset.loading = '';
-        image.onload = () => {
-          delete image.dataset.loading;
-          this.imageLoaded = true;
-        };
-      }
+    if (!this.imageLoaded) {
+      this.image.dataset.loading = '';
+      this.image.onload = () => {
+        delete this.image.dataset.loading;
+        this.imageLoaded = true;
+      };
     }
+  }
+
+  private update() {
+    const percent = Number(this.getAttribute('percent'));    
+    const currentFrame = Math.round((percent / 100) * this.imageCount);
+    const frame = (currentFrame === 0) ? this.imageCount : currentFrame;
+
+    this.setAttribute('frame', `${frame}`);
   }
 }
 

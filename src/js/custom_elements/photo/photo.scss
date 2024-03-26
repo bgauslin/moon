@@ -2,7 +2,7 @@ moon-photo {
   aspect-ratio: 1;
   border-radius: 50%;
   inline-size: 42.5%; // TODO: Comment about how value is determined.
-  max-inline-size: 204px; // 480 SVG viewbox * inline-size
+  max-inline-size: 204px; // = 480 SVG viewbox * inline-size
   overflow: hidden;
   position: relative;
 
@@ -10,23 +10,23 @@ moon-photo {
     transform: rotate(180deg);
   }
 
+  &[frame='1'] img {
+    inset-block: 0 auto;
+  }
+
   img {
     position: absolute;
     transition: opacity var(--transition) ease;
   }
 
-  img[data-loading] {
+  [data-loading] {
     opacity: 0;
-  }
-
-  img[frame='1'] {
-    inset-block: 0 auto;
   }
 }
 
-// NOTE: Keep upper range value coordinated with JS.
+// NOTE: Loop max should match JS property.
 @for $n from 2 through 26 {
-  moon-photo img[frame='#{$n}'] {
+  moon-photo[frame='#{$n}'] img {
     inset-block: ($n - 1) * -100% auto;
   }
 }
