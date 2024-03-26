@@ -106,25 +106,23 @@ export class DonutChart extends HTMLElement {
     // Render the chart.
     this.innerHTML = `
       <svg viewbox="0 0 ${height} ${width}">
-        <g>
-          <circle
-            cx="${cx}"
-            cy="${cy}"
-            r="${radius}"
-            fill="transparent"
-            stroke-width="${strokeWidth}"
-            stroke-dasharray="${circumference}"
-            stroke-dashoffset="${strokeDashOffset}"
-            transform="${transform}"/>
-          <text
-            x="${riseRotation.x}"
-            y="${riseRotation.y}"
-            transform="${riseTransform}">${riseTime}</text>
-          <text
-            x="${setRotation.x}"
-            y="${setRotation.y}"
-            transform="${setTransform}">${setTime}</text>
-        </g>
+        <circle
+          cx="${cx}"
+          cy="${cy}"
+          r="${radius}"
+          fill="transparent"
+          stroke-width="${strokeWidth}"
+          stroke-dasharray="${circumference}"
+          stroke-dashoffset="${strokeDashOffset}"
+          transform="${transform}"/>
+        <text
+          x="${riseRotation.x}"
+          y="${riseRotation.y}"
+          transform="${riseTransform}">${riseTime}</text>
+        <text
+          x="${setRotation.x}"
+          y="${setRotation.y}"
+          transform="${setTransform}">${setTime}</text>
       </svg>
     `;
   }
