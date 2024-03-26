@@ -4,7 +4,7 @@
  * element adjusts the vertical position of the sprite to show the moon phase
  * via a numeric 'frame' attribute.
  */
-export class MoonPhoto extends HTMLElement {
+class MoonPhoto extends HTMLElement {
   private image: HTMLImageElement;
   private imageCount: number
   private imageLoaded: boolean;

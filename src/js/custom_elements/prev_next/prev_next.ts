@@ -4,7 +4,7 @@ import {DateUtils} from '../../modules/DateUtils';
  * Custom element that renders 'previous' and 'next' navigation links for
  * showing the moon phase for the next or previous day.
  */
-export class PrevNext extends HTMLElement {
+class PrevNext extends HTMLElement {
   private dateUtils: DateUtils;  
   private direction: string;
   private link: HTMLElement;

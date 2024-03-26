@@ -12,7 +12,7 @@ const BASE_TITLE = 'Moon';
 /**
  * Custom element that controls the application.
  */
-export class App extends HTMLElement {
+class App extends HTMLElement {
   private date: AppDate;
   private dateElement: HTMLElement;
   private dateUtils: DateUtils;

@@ -12,7 +12,7 @@ const LOCAL_STORAGE_ITEM = 'location';
  * the Geolocation API and a reverse geocoding API to convert lat/lng
  * coordinates to a named location.
  */
-export class UserLocation extends HTMLElement {
+class UserLocation extends HTMLElement {
   private dateUtils: DateUtils;
   private defaultLocation: string;
   private form: HTMLFormElement;
