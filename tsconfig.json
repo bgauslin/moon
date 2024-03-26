@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "module": "es6",
+    "moduleResolution": "node",
     "outDir": "./dist/",
     "noImplicitAny": true,
-    "module": "es6",
     "target": "es6",
-    "allowJs": true,
-    "moduleResolution": "node",
   },
   "include": [
     "global.d.ts"
