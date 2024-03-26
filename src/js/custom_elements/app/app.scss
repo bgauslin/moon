@@ -4,10 +4,10 @@ moon-app {
   --background-2: #{rgba(white, .25)};
   --background-3: #{rgba(white, .7)};
   
-  --app-grid: '. phase .' 1fr '. percent .' 1fr 'charts charts charts' 'prev date next' 1fr '. location .' 1fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
+  --app-grid: '. phase .' 2fr '. percent .' 1fr 'charts charts charts' 'prev date next' 1fr '. location .' 2fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
   --chart-size: 14.5rem;
   --charts-max-size: 30rem;
-  --controls-size: 3rem;
+  --controls-size: 2.75rem;
   
   --fineprint: .75em;
   --input-size: 2rem;
@@ -15,7 +15,7 @@ moon-app {
   --transition-intro: 1s;
 
   @media (min-width: 36rem) {
-    --app-grid: '. phase .' 1fr '. percent .' 1fr 'prev charts next' '. date .' 1fr '. location .' 1fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
+    --app-grid: '. phase .' 2fr '. percent .' 1fr 'prev charts next' '. date .' 1fr '. location .' 2fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
     --fineprint: .875em;
   }
 

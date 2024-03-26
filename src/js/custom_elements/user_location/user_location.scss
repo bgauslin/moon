@@ -2,8 +2,6 @@ user-location {
   animation: slideInDown var(--transition-intro) ease;
   display: block;
   grid-area: location;
-  inline-size: 100%;
-  max-inline-size: 22em;
   place-self: center;
 
   form {
