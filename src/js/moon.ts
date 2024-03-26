@@ -10,7 +10,7 @@ import './custom_elements/user_location/user_location';
 import '../styles/index.scss';
 
 // Clean up the DOM since JS is enabled.
-document.body.removeAttribute('no-js');
+document.body.classList.remove('no-js');
 document.body.querySelector('noscript')!.remove();
 
 // Register the Service Worker.
