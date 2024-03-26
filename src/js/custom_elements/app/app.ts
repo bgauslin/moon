@@ -182,13 +182,13 @@ export class App extends HTMLElement {
   /**
    * Adds SPA behavior to clicked links.
    */
-  private handleClick(e: Event) {
-    const target = e.target as HTMLElement;
+  private handleClick(event: Event) {
+    const target = <HTMLElement>event.target;
     const href = target.getAttribute('href');
     if (href) {
       const linkUrl = new URL(href, window.location.origin);
       if (linkUrl.hostname === window.location.hostname) {
-        e.preventDefault();
+        event.preventDefault();
         history.replaceState(null, '', href);
         this.update();
       }
