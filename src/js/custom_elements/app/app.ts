@@ -26,6 +26,7 @@ export class App extends HTMLElement {
   private popstateListener: EventListenerObject;
   private photo: HTMLElement;
   private prev: HTMLElement;
+  private progress: HTMLElement;
   private sun: HTMLElement;
   private target: HTMLElement;
   private touchstartListener: EventListenerObject;
@@ -73,6 +74,7 @@ export class App extends HTMLElement {
       <user-location default="New Orleans, LA"></user-location>
       <prev-next direction="prev"></prev-next>
       <prev-next direction="next"></prev-next>
+      <div class="progress-bar"></div>
     `;
 
     this.dateElement = <HTMLElement>this.querySelector('.date');
@@ -81,6 +83,7 @@ export class App extends HTMLElement {
     this.next = <HTMLElement>this.querySelector('[direction="next"]');
     this.photo = <HTMLElement>this.querySelector('moon-photo');
     this.prev = <HTMLElement>this.querySelector('[direction="prev"]');
+    this.progress = <HTMLElement>this.querySelector('.progress-bar');
     this.sun = <HTMLElement>this.querySelector('donut-chart[name="sun"]');
     this.userLocation = <HTMLElement>this.querySelector('user-location');
   }
@@ -90,7 +93,7 @@ export class App extends HTMLElement {
    */
   private async update(): Promise<any> {
     // Enable progress bar.
-    document.body.setAttribute(LOADING_ATTR, '');
+    this.progress.dataset.loading = '';
 
     // Get date and location, then fetch data.
     this.date = this.dateUtils.activeDate();
@@ -102,7 +105,7 @@ export class App extends HTMLElement {
     
     const moonData = await new DataFetcher().fetch(this.date, this.location);
     if (!moonData) {
-      document.body.removeAttribute(LOADING_ATTR);
+      delete this.progress.dataset.loading;
       return;
     }
 
@@ -116,7 +119,7 @@ export class App extends HTMLElement {
     });
     
     // Disable the progress bar.
-    document.body.removeAttribute(LOADING_ATTR);
+    delete this.progress.dataset.loading;
   }
   
   /**

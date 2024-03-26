@@ -27,24 +27,20 @@
 
 .progress-bar {
   display: none;
-  width: 100vw;
   position: fixed;
+  width: 100vw;
   
-  body[loading] & {
+  &[data-loading] {
     display: block;
   }
 
   &::before {
     animation: loading 2s .3s linear infinite;
-    background: white;
+    background-color: white;
     content: '';
     display: block;
     left: -20vw;
     position: absolute;
     width: 20vw;
-  }
-
-  [no-js] & {
-    display: none;
   }
 }

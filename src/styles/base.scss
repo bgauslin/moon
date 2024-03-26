@@ -1,9 +1,17 @@
+// -----------------------------------------------------------------------------
+// Webfonts.
+// -----------------------------------------------------------------------------
+
 @font-face {
   font-display: swap;
   font-family: 'Avenir Variable';
   font-weight: 1 999;
   src: url('https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2') format('woff2');
 }
+
+// -----------------------------------------------------------------------------
+// HTML elements.
+// -----------------------------------------------------------------------------
 
 * {
   box-sizing: border-box;
@@ -21,17 +29,17 @@ body {
   margin: 0;
   min-block-size: 100dvh;
   padding-block: 0 env(safe-area-inset-bottom);
+}
 
-  // Disable UI while loading data.
-  &[loading] * {
-    pointer-events: none;
-  }
+// Disable UI while loading data.
+body:has([data-loading]) {
+  pointer-events: none;
+}
 
-  &[no-js] {
-    align-items: center;
-  }
+body[no-js] {
+  place-items: center;
 
-  &[no-js] a {
+  a {
     color: white;
     opacity: .5;
 
@@ -71,4 +79,74 @@ svg {
 [hidden] {
   display: none !important;
   pointer-events: none !important;
+}
+
+// -----------------------------------------------------------------------------
+// Animations
+// -----------------------------------------------------------------------------
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes scaleIn {
+  0%, 50% {
+    opacity: 0;
+  }
+  50% {
+    transform: scale(2);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  0%, 50% {
+    opacity: 0;
+  }
+  50% {
+    transform: translate3d(0, 50%, 0);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  0%, 50% {
+    opacity: 0;
+  }
+  50% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  0%, 50% {
+    opacity: 0;
+  }
+  50% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  0%, 50% {
+    opacity: 0;
+  }
+  50% {
+    transform: translate3d(50%, 0, 0);
+  }
+  100% {
+    opacity: 1;
+  }
 }
