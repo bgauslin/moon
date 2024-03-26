@@ -1,7 +1,6 @@
 require ('dotenv').config();
 
 import './custom_elements/app/app';
-import './custom_elements/date_display/date_display';
 import './custom_elements/donut_chart/donut_chart';
 import './custom_elements/info/info';
 import './custom_elements/photo/photo';

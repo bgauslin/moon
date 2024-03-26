@@ -69,13 +69,13 @@ export class App extends HTMLElement {
       <donut-chart name="sun"></donut-chart>
       <donut-chart name="moon"></donut-chart>
       <ticks-chart></ticks-chart>
-      <moon-date></moon-date>
+      <a href="/" title="Today" class="date"></a>
       <user-location default="New Orleans, LA"></user-location>
       <prev-next direction="prev"></prev-next>
       <prev-next direction="next"></prev-next>
     `;
 
-    this.dateElement = <HTMLElement>this.querySelector('moon-date');
+    this.dateElement = <HTMLElement>this.querySelector('.date');
     this.info = <HTMLElement>this.querySelector('moon-info');
     this.moon = <HTMLElement>this.querySelector('donut-chart[name="moon"]');
     this.next = <HTMLElement>this.querySelector('[direction="next"]');
@@ -123,14 +123,21 @@ export class App extends HTMLElement {
    * Updates an element with the current date in human-friendly format.
    */
   private updateCurrentDate() {
-    const currentDateElement = document.querySelector('moon-date > a');
-    if (currentDateElement) {
-      currentDateElement.textContent = this.dateUtils.prettyDate(
-        this.date,
-        document.documentElement.lang,
-        'long',
-      );
+    const active = this.dateUtils.activeDate();
+    const today = this.dateUtils.todaysDate();
+    const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
+  
+    if (isToday) {
+      this.dateElement.classList.add('today');
+    } else {
+      this.dateElement.classList.remove('today');
     }
+
+    this.dateElement.textContent = this.dateUtils.prettyDate(
+      this.date,
+      document.documentElement.lang,
+      'long',
+    );
   }
   
   /**
@@ -140,8 +147,6 @@ export class App extends HTMLElement {
   private updateElements(moonData: MoonData) {
     const {hemisphere, illumination, moonrise, moonset, percent, phase,
         sunrise, sunset} = moonData;
-
-    this.dateElement.setAttribute('update', '');
     
     this.info.setAttribute('percent', `${percent}`);
     this.info.setAttribute('phase', `${phase}`);

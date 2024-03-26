@@ -30,3 +30,42 @@ moon-app {
   grid-area: charts;
   place-self: center;
 }
+
+.date {
+  animation: slideInUp var(--transition-intro) ease;
+  display: block;
+  grid-area: date;
+  padding-block: .5rem;
+  padding-inline: 1rem;
+  place-self: center;
+  transition: color var(--transition), transform var(--transition);
+  white-space: nowrap;
+
+  &:link,
+  &:visited {
+    color: white;
+  }
+
+  &:focus-visible {
+    color: rgba(white, .7);
+  }
+
+  &.touch {
+    transform: scale(.8);
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      color: rgba(white, .7);
+    }
+
+    &:active {
+      transform: scale(.8);
+    }
+  }
+}
+
+.today {
+  font-variation-settings: 'wght' 600;
+  pointer-events: none;
+}
