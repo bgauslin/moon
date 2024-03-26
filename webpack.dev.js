@@ -1,5 +1,5 @@
 const common = require('./webpack.common.js');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = merge(common, {
@@ -8,7 +8,6 @@ module.exports = merge(common, {
     filename: '[name].js',
   },
   devServer: {
-    contentBase: './dist',
     historyApiFallback: {
       index: '/index.html',
     },

@@ -98,7 +98,7 @@ export class DateUtils {
   /**
    * Date formatted per the locale.
    */
-  public prettyDate(date: AppDate, locale: string, monthFormat: string): string {
+  public prettyDate(date: AppDate, locale: string, monthFormat: 'long' | 'short'): string {
     let {year, month, day} = date;
     month -= 1; // Adjust month for UTC format.
     const date_ = new Date(Date.UTC(year, month, day));
