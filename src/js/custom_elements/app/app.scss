@@ -4,7 +4,7 @@ moon-app {
   --background-2: #{rgba(white, .25)};
   --background-3: #{rgba(white, .7)};
   
-  --app-grid: '. info .' 2fr 'charts charts charts' 'prev date next' 1fr '. location .' 1fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
+  --app-grid: '. phase .' 1fr '. percent .' 1fr 'charts charts charts' 'prev date next' 1fr '. location .' 1fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
   --chart-size: 14.5rem;
   --charts-max-size: 30rem;
   --controls-size: 3rem;
@@ -15,7 +15,7 @@ moon-app {
   --transition-intro: 1s;
 
   @media (min-width: 36rem) {
-    --app-grid: '. info .' 2fr 'prev charts next' '. date .' 1fr '. location .' 1fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
+    --app-grid: '. phase .' 1fr '. percent .' 1fr 'prev charts next' '. date .' 1fr '. location .' 1fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
     --fineprint: .875em;
   }
 
@@ -24,6 +24,15 @@ moon-app {
   grid: var(--app-grid);
 }
 
+[id='phase'] {
+  grid-area: phase;
+}
+
+[id='percent'] {
+  grid-area: percent;
+}
+
+
 :is(donut-chart, moon-photo, ticks-chart) {
   animation: scaleIn var(--transition-intro) ease;
   aspect-ratio: 1;  
@@ -31,7 +40,7 @@ moon-app {
   place-self: center;
 }
 
-.date {
+[id='date'] {
   animation: slideInUp var(--transition-intro) ease;
   display: block;
   grid-area: date;
@@ -63,9 +72,25 @@ moon-app {
       transform: scale(.8);
     }
   }
+
+  &.today {
+    font-variation-settings: 'wght' 600;
+    pointer-events: none;
+  }
 }
 
-.today {
-  font-variation-settings: 'wght' 600;
-  pointer-events: none;
+:is([id='phase'], [id='percent']) {
+  animation: slideInDown var(--transition-intro) ease;
+  font-size: .875em;
+}
+
+[id='phase'] {
+  color: white;
+  place-self: end center;
+}
+
+[id='percent'] {
+  color: rgba(white, .7);
+  margin-block: .5rem 0;
+  place-self: start center;
 }

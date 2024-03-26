@@ -8,9 +8,6 @@ interface TitleInfo {
 }
 
 const BASE_TITLE = 'Moon';
-const LOADING_ATTR = 'loading';
-const LOCATION_ATTR = 'location';
-const TITLE_DIVIDER = '·';
 
 /**
  * Custom element that controls the application.
@@ -19,12 +16,13 @@ export class App extends HTMLElement {
   private date: AppDate;
   private dateElement: HTMLElement;
   private dateUtils: DateUtils;
-  private info: HTMLElement;
   private location: string;
   private moon: HTMLElement;
   private next: HTMLElement;
-  private popstateListener: EventListenerObject;
+  private percentElement: HTMLElement;
+  private phaseElement: HTMLElement;
   private photo: HTMLElement;
+  private popstateListener: EventListenerObject;
   private prev: HTMLElement;
   private progress: HTMLElement;
   private sun: HTMLElement;
@@ -65,22 +63,24 @@ export class App extends HTMLElement {
    */
   private setup() {
     this.innerHTML = `
-      <moon-info></moon-info>
+      <div id="phase"></div>
+      <div id="percent"></div>
       <moon-photo></moon-photo>
       <donut-chart name="sun"></donut-chart>
       <donut-chart name="moon"></donut-chart>
       <ticks-chart></ticks-chart>
-      <a href="/" title="Today" class="date"></a>
+      <a href="/" title="Today" id="date"></a>
       <user-location default="New Orleans, LA"></user-location>
       <prev-next direction="prev"></prev-next>
       <prev-next direction="next"></prev-next>
       <div class="progress-bar"></div>
     `;
 
-    this.dateElement = <HTMLElement>this.querySelector('.date');
-    this.info = <HTMLElement>this.querySelector('moon-info');
+    this.dateElement = <HTMLElement>this.querySelector('#date');
     this.moon = <HTMLElement>this.querySelector('donut-chart[name="moon"]');
     this.next = <HTMLElement>this.querySelector('[direction="next"]');
+    this.percentElement = <HTMLElement>this.querySelector('#percent');
+    this.phaseElement = <HTMLElement>this.querySelector('#phase');
     this.photo = <HTMLElement>this.querySelector('moon-photo');
     this.prev = <HTMLElement>this.querySelector('[direction="prev"]');
     this.progress = <HTMLElement>this.querySelector('.progress-bar');
@@ -98,7 +98,7 @@ export class App extends HTMLElement {
     // Get date and location, then fetch data.
     this.date = this.dateUtils.activeDate();
     
-    const location = this.userLocation.getAttribute(LOCATION_ATTR);
+    const location = this.userLocation.getAttribute('location');
     if (location) {
       this.location = location;
     }
@@ -151,9 +151,9 @@ export class App extends HTMLElement {
     const {hemisphere, illumination, moonrise, moonset, percent, phase,
         sunrise, sunset} = moonData;
     
-    this.info.setAttribute('percent', `${percent}`);
-    this.info.setAttribute('phase', `${phase}`);
-    
+    this.phaseElement.textContent = `${phase}`;
+    this.percentElement.textContent = `${percent}%`;
+
     this.next.setAttribute('location', this.location);
     this.prev.setAttribute('location', this.location);
     
@@ -175,7 +175,7 @@ export class App extends HTMLElement {
   private updateDocumentTitle(info: TitleInfo) {
     const {date, locale, location} = info;
     const dateLabel = this.dateUtils.prettyDate(date, locale, 'short');
-    const pageTitle = `${BASE_TITLE} ${TITLE_DIVIDER} ${dateLabel} ${TITLE_DIVIDER} ${location}`;
+    const pageTitle = `${BASE_TITLE} · ${dateLabel} · ${location}`;
     const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
     document.title = (urlSegments.length === 4) ? pageTitle : BASE_TITLE;
