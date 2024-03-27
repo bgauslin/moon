@@ -5,7 +5,7 @@ interface UserCoordinates {
   lng: number,
 }
 
-const LOCAL_STORAGE_ITEM = 'location';
+const STORAGE_ITEM = 'location';
 
 /**
  * Custom element that gets the user's location either via text input or via
@@ -46,7 +46,7 @@ class UserLocation extends HTMLElement {
       this.location = this.getAttribute('location') || this.defaultLocation;
       this.previousLocation = this.location;
       this.render();
-      this.addListeners_();
+      this.addListeners();
       this.hasSetup = true;
     }
   }
@@ -54,11 +54,11 @@ class UserLocation extends HTMLElement {
   /**
    * Updates location widget with user-provided location if it has changed.
    */
-  private addListeners_() {
+  private addListeners() {
     // Get new location on submit, blur the input, and update the attribute
     // to trigger App.update().
-    this.form.addEventListener('submit', (e: Event) => {
-      e.preventDefault();
+    this.form.addEventListener('submit', (event: Event) => {
+      event.preventDefault();
       const newLocation = this.input.value;
       if (newLocation !== this.location) {
         this.location = newLocation;
@@ -68,8 +68,8 @@ class UserLocation extends HTMLElement {
     });
 
     // Clear the input and focus it when the reset icon/button is clicked.
-    this.form.addEventListener('reset', (e: Event) => {
-      e.preventDefault();
+    this.form.addEventListener('reset', (event: Event) => {
+      event.preventDefault();
       this.input.value = '';
       this.input.focus();
     });
@@ -98,7 +98,7 @@ class UserLocation extends HTMLElement {
     if (urlSegments.length === 4) {
       return urlSegments[3].replace(/[+]/g, ' ');
     } else {
-      return localStorage.getItem(LOCAL_STORAGE_ITEM) || this.defaultLocation;
+      return localStorage.getItem(STORAGE_ITEM) || this.defaultLocation;
     }
   }
 
@@ -115,7 +115,7 @@ class UserLocation extends HTMLElement {
     this.setAttribute('location', this.location);
 
     // Save new location to localStorage.
-    localStorage.setItem(LOCAL_STORAGE_ITEM, this.location);
+    localStorage.setItem(STORAGE_ITEM, this.location);
   }
 
   /**
