@@ -27,7 +27,7 @@ class MoonPhoto extends HTMLElement {
     this.update();
   }
 
-  render() {
+  private render() {
     const imagePath1x = '/img/moon-phases-26-240.min.jpg';
     const imagePath2x = '/img/moon-phases-26-480.min.jpg';
 
