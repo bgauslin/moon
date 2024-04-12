@@ -3,11 +3,6 @@ import {customElement, state} from 'lit/decorators.js';
 import {DataFetcher, MoonData} from '../../modules/DataFetcher';
 import {AppDate, DateUtils} from '../../modules/DateUtils';
 
-interface TitleInfo {
-  date: AppDate,
-  locale: string,
-  location: string,
-}
 
 const BASE_TITLE = document.title;
 const DEFAULT_LOCATION = 'New Orleans, LA';
@@ -54,25 +49,20 @@ class MoonApp extends LitElement {
     return this;
   }
 
+  /**
+   * Enables the progress bar while fetching moon data for the current date and
+   * location, then updates the document title and disables the progress bar.
+   */
   private async updateApp(): Promise<any> {
-    // Enable progress bar then fetch moon data for date and location.
     this.loading = true;
     
-    this.location = DEFAULT_LOCATION; // TODO: Get location from widget.
     const date = this.dateUtils.activeDate();
-
+    this.location = DEFAULT_LOCATION; // TODO: Get location from widget.
     this.moonData = await new DataFetcher().fetch(date, this.location);
-    if (!this.moonData) {
-      this.loading = false;
-      return;
-    }
 
-    // Update document and disable progress bar.
-    this.updateDocumentTitle({
-      date,
-      locale: document.documentElement.lang,
-      location: this.location,
-    });
+    if (this.moonData) {
+      this.updateDocumentTitle(date);
+    }
 
     this.loading = false;
   }
@@ -85,13 +75,8 @@ class MoonApp extends LitElement {
     const {hemisphere, moonrise, moonset, percent, phase, sunrise, sunset} = this.moonData;
     const active = this.dateUtils.activeDate();
     const today = this.dateUtils.todaysDate();
-
     const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
-    const prettyDate = this.dateUtils.prettyDate(
-      active,
-      document.documentElement.lang,
-      'long',
-    );
+    const prettyDate = this.dateUtils.prettyDate(active, document.documentElement.lang, 'long');
 
     return html`
       <div id="phase">${phase}</div>
@@ -174,12 +159,13 @@ class MoonApp extends LitElement {
     this.updateApp();
   }
 
-  private updateDocumentTitle(info: TitleInfo) {
-    const {date, locale, location} = info;
-    const dateLabel = this.dateUtils.prettyDate(date, locale, 'short');
-    const pageTitle = `${BASE_TITLE} · ${dateLabel} · ${location}`;
+  private updateDocumentTitle(date: AppDate) {
+    const dateLabel =
+        this.dateUtils.prettyDate(date, document.documentElement.lang, 'short');
+    const pageTitle = `${BASE_TITLE} · ${dateLabel} · ${this.location}`;
     const urlSegments = window.location.pathname.split('/');
     urlSegments.shift();
+
     document.title = (urlSegments.length === 4) ? pageTitle : BASE_TITLE;
   }
 
