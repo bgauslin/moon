@@ -1,3 +1,5 @@
+import {LitElement, html} from 'lit';
+import {customElement, state} from 'lit/decorators.js';
 import {DataFetcher, MoonData} from '../../modules/DataFetcher';
 import {AppDate, DateUtils} from '../../modules/DateUtils';
 
@@ -7,169 +9,171 @@ interface TitleInfo {
   location: string,
 }
 
-const BASE_TITLE = 'Moon';
+const BASE_TITLE = document.title;
+const DEFAULT_LOCATION = 'New Orleans, LA';
 
 /**
  * Custom element that controls the application.
  */
-class App extends HTMLElement {
-  private date: AppDate;
-  private dateElement: HTMLElement;
+@customElement('moon-app')
+class MoonApp extends LitElement {
   private dateUtils: DateUtils;
-  private location: string;
-  private moon: HTMLElement;
-  private next: HTMLElement;
-  private percentElement: HTMLElement;
-  private phaseElement: HTMLElement;
-  private photo: HTMLElement;
   private popstateListener: EventListenerObject;
-  private prev: HTMLElement;
-  private progress: HTMLElement;
-  private sun: HTMLElement;
-  private target: HTMLElement;
-  private touchstartListener: EventListenerObject;
   private touchendListener: EventListenerObject;
-  private userLocation: HTMLElement;
-  private userLocationObserver: MutationObserver;
+  private touchstartListener: EventListenerObject;
+
+  @state() loading: boolean;
+  @state() location: string;
+  @state() moonData: MoonData;
+  @state() touchTarget: HTMLElement;
 
   constructor() {
     super();
     this.dateUtils = new DateUtils();
-    this.popstateListener = this.update.bind(this);
+    this.popstateListener = this.updateApp.bind(this);
     this.touchstartListener = this.handleTouchstart.bind(this);
     this.touchendListener = this.handleTouchend.bind(this);
-    this.userLocationObserver = new MutationObserver(() => this.update());
   }
 
   connectedCallback() {
-    this.addEventListener('click', this.handleClick);
+    super.connectedCallback();
+    window.addEventListener('popstate', this.popstateListener);
     this.addEventListener('touchstart', this.touchstartListener, {passive: true});
     this.addEventListener('touchend', this.touchendListener, {passive: true});
-    window.addEventListener('popstate', this.popstateListener);
-
-    this.setup();
-    this.userLocationObserver.observe(this.userLocation, {attributes: true});
+    this.updateApp();
   }
 
   disconnectedCallback() {
-    this.removeEventListener('click', this.handleClick);
+    super.disconnectedCallback();
+    window.removeEventListener('popstate', this.popstateListener);
     this.removeEventListener('touchstart', this.touchstartListener);
     this.removeEventListener('touchend', this.touchendListener);
-    window.removeEventListener('popstate', this.popstateListener);
   }
 
-  /**
-   * Renders elements into the DOM and sets references to them for updating.
-   */
-  private setup() {
-    this.innerHTML = `
-      <div id="phase"></div>
-      <div id="percent"></div>
-      <moon-photo></moon-photo>
-      <donut-chart name="sun"></donut-chart>
-      <donut-chart name="moon"></donut-chart>
-      <ticks-chart></ticks-chart>
-      <a href="/" title="Today" id="date"></a>
-      <user-location default="New Orleans, LA"></user-location>
-      <prev-next direction="prev"></prev-next>
-      <prev-next direction="next"></prev-next>
-      <div class="progress-bar"></div>
-    `;
-
-    this.dateElement = <HTMLElement>this.querySelector('#date');
-    this.moon = <HTMLElement>this.querySelector('donut-chart[name="moon"]');
-    this.next = <HTMLElement>this.querySelector('[direction="next"]');
-    this.percentElement = <HTMLElement>this.querySelector('#percent');
-    this.phaseElement = <HTMLElement>this.querySelector('#phase');
-    this.photo = <HTMLElement>this.querySelector('moon-photo');
-    this.prev = <HTMLElement>this.querySelector('[direction="prev"]');
-    this.progress = <HTMLElement>this.querySelector('.progress-bar');
-    this.sun = <HTMLElement>this.querySelector('donut-chart[name="sun"]');
-    this.userLocation = <HTMLElement>this.querySelector('user-location');
+  protected createRenderRoot() {
+    return this;
   }
 
-  /**
-   * Updates the app when the URL changes.
-   */
-  private async update(): Promise<any> {
-    // Enable progress bar.
-    this.progress.dataset.loading = '';
+  private async updateApp(): Promise<any> {
+    // Enable progress bar then fetch moon data for date and location.
+    this.loading = true;
+    
+    this.location = DEFAULT_LOCATION; // TODO: Get location from widget.
+    const date = this.dateUtils.activeDate();
 
-    // Get date and location, then fetch data.
-    this.date = this.dateUtils.activeDate();
-    
-    const location = this.userLocation.getAttribute('location');
-    if (location) {
-      this.location = location;
-    }
-    
-    const moonData = await new DataFetcher().fetch(this.date, this.location);
-    if (!moonData) {
-      delete this.progress.dataset.loading;
+    this.moonData = await new DataFetcher().fetch(date, this.location);
+    if (!this.moonData) {
+      this.loading = false;
       return;
     }
 
-    // Update the DOM.
-    this.updateCurrentDate();
-    this.updateElements(moonData);
+    // Update document and disable progress bar.
     this.updateDocumentTitle({
-      date: this.date,
+      date,
       locale: document.documentElement.lang,
       location: this.location,
     });
-    
-    // Disable the progress bar.
-    delete this.progress.dataset.loading;
+
+    this.loading = false;
   }
-  
-  /**
-   * Updates an element with the current date in human-friendly format.
-   */
-  private updateCurrentDate() {
-    const active = this.dateUtils.activeDate();
-    const today = this.dateUtils.todaysDate();
-    const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
-  
-    if (isToday) {
-      this.dateElement.classList.add('today');
-    } else {
-      this.dateElement.classList.remove('today');
+
+  protected render() {
+    if (!this.moonData) {
+      return;
     }
 
-    this.dateElement.textContent = this.dateUtils.prettyDate(
-      this.date,
+    const {hemisphere, moonrise, moonset, percent, phase, sunrise, sunset} = this.moonData;
+    const active = this.dateUtils.activeDate();
+    const today = this.dateUtils.todaysDate();
+
+    const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
+    const prettyDate = this.dateUtils.prettyDate(
+      active,
       document.documentElement.lang,
       'long',
     );
+
+    return html`
+      <div id="phase">${phase}</div>
+      <div id="percent">${percent}%</div>
+
+      <moon-photo
+        hemisphere="${hemisphere}"
+        percent="${percent}"></moon-photo>
+      
+      <donut-chart
+        name="sun"
+        start="${sunrise}"
+        end="${sunset}"></donut-chart>
+      <donut-chart
+        name="moon"
+        start="${moonrise}"
+        end="${moonset}"></donut-chart>
+      <ticks-chart></ticks-chart>
+      
+      <a href="/"
+        id="date"
+        title="Today"
+        ?data-today="${isToday ?? true}"
+        @click="${this.reset}">${prettyDate}</a>
+
+      <user-location
+        default="${DEFAULT_LOCATION}"></user-location>
+
+      ${this.renderButton('prev')}
+      ${this.renderButton('next')}
+
+      <div
+        class="progress-bar"
+        ?data-loading="${this.loading}"></div>
+    `;
   }
-  
-  /**
-   * Updates attributes on all custom elements so they can then update
-   * themselves.
-   */
-  private updateElements(moonData: MoonData) {
-    const {hemisphere, illumination, moonrise, moonset, percent, phase,
-        sunrise, sunset} = moonData;
-    
-    this.phaseElement.textContent = `${phase}`;
-    this.percentElement.textContent = `${percent}%`;
 
-    this.next.setAttribute('location', this.location);
-    this.prev.setAttribute('location', this.location);
-    
-    this.photo.setAttribute('hemisphere', hemisphere);
-    this.photo.setAttribute('percent', `${percent}`);
+  private renderButton(direction: string) {
+    let path = 'M9,4 L17,12 L9,20';
+    let date = this.dateUtils.nextDate();
 
-    this.moon.setAttribute('start', moonrise);
-    this.moon.setAttribute('end', moonset);
+    if (direction === 'prev') {
+      path = 'M15,4 L7,12 L15,20';
+      date = this.dateUtils.prevDate();
+    }
 
-    this.sun.setAttribute('start', sunrise);
-    this.sun.setAttribute('end', sunset);
+    const label = this.dateUtils.prettyDate(date, document.documentElement.lang, 'long');
+
+    return html`
+      <button
+        aria-label="${label}"
+        data-direction="${direction}"  
+        title="${label}"
+        type="button"
+        @click="${this.navigate}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="${path}"/>
+        </svg>
+      </button>
+    `;
   }
 
-  /** 
-   * Updates document title with date and location.
-   */
+  private navigate(event: Event) {
+    const target = <HTMLElement>event.target;
+    const direction = target.dataset.direction;
+    
+    const date = (direction === 'prev') ? this.dateUtils.prevDate() : this.dateUtils.nextDate();
+    const href = this.dateUtils.makeUrl(date, this.location);
+
+    const linkUrl = new URL(href, window.location.origin);
+    if (linkUrl.hostname === window.location.hostname) {
+      history.replaceState(null, '', href);
+      this.updateApp();
+    }
+  }
+
+  private reset(event: Event) {
+    event.preventDefault();
+    history.replaceState(null, '', '/');
+    this.updateApp();
+  }
+
   private updateDocumentTitle(info: TitleInfo) {
     const {date, locale, location} = info;
     const dateLabel = this.dateUtils.prettyDate(date, locale, 'short');
@@ -179,40 +183,16 @@ class App extends HTMLElement {
     document.title = (urlSegments.length === 4) ? pageTitle : BASE_TITLE;
   }
 
-  /**
-   * Adds SPA behavior to clicked links.
-   */
-  private handleClick(event: Event) {
-    const target = <HTMLElement>event.target;
-    const href = target.getAttribute('href');
-    if (href) {
-      const linkUrl = new URL(href, window.location.origin);
-      if (linkUrl.hostname === window.location.hostname) {
-        event.preventDefault();
-        history.replaceState(null, '', href);
-        this.update();
-      }
-    }
-  }
-
-  /**
-   * Adds class to elements on touchstart.
-   */
   private handleTouchstart(event: TouchEvent) {
     const composed = event.composedPath();
-    this.target = <HTMLElement>composed[0];
+    this.touchTarget = <HTMLElement>composed[0];
 
-    if (this.target.tagName === 'A') {
-      this.target.classList.add('touch');
+    if (this.touchTarget.tagName === 'A') {
+      this.touchTarget.classList.add('touch');
     }
   }
-  
-  /**
-   * Removes class fromm touched elements on touchend.
-   */
+
   private handleTouchend() {
-    this.target.classList.remove('touch');
+    this.touchTarget.classList.remove('touch');
   }
 }
-
-customElements.define('moon-app', App);
