@@ -22,6 +22,7 @@ moon-app {
   block-size: 100dvh;
   display: grid;
   grid: var(--app-grid);
+  inline-size: 100vw;
 }
 
 [id='phase'] {

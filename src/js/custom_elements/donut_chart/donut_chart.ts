@@ -23,7 +23,7 @@ const AXIS_OFFSET: number = -90;
  * Custom element that renders a partial donut chart whose start and end
  * points are determined by start and end times. A complete circle is 24 hours
  * and the custom element also renders the start and end time labels with
- * rotation adjustments for which vertical half of the app the time lable is on.
+ * rotation adjustments for which vertical half of the app the time label is on.
  */
 export class DonutChart extends HTMLElement {
   constructor() {

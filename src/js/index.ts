@@ -6,7 +6,3 @@ import './custom_elements/ticks_chart/ticks_chart';
 import './custom_elements/user_location/user_location';
 
 import '../styles/index.scss';
-
-// Clean up the DOM since JS is enabled.
-document.body.classList.remove('no-js');
-document.body.querySelector('noscript')!.remove();

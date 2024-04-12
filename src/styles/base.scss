@@ -1,7 +1,3 @@
-// -----------------------------------------------------------------------------
-// Webfonts.
-// -----------------------------------------------------------------------------
-
 @font-face {
   font-display: swap;
   font-family: 'Avenir Variable';
@@ -9,17 +5,14 @@
   src: url('https://assets.gauslin.com/fonts/AvenirNext-Variable.woff2') format('woff2');
 }
 
-// -----------------------------------------------------------------------------
-// HTML elements.
-// -----------------------------------------------------------------------------
-
-* {
-  box-sizing: border-box;
+:root {
+  --link-color: CornflowerBlue;
+  --link-focus-color: DarkOrange;
+  --link-visited-color: MediumPurple;
 }
 
-[hidden] {
-  display: none !important;
-  pointer-events: none !important;
+:where(*) {
+  box-sizing: border-box;
 }
 
 html {
@@ -30,35 +23,52 @@ html {
 body {
   background: black;
   color: white;
+  display: grid;
   font-family: 'Avenir Variable', sans-serif;
   font-variation-settings: 'wght' 500;
   margin: 0;
   min-block-size: 100dvh;
   padding-block: 0 env(safe-area-inset-bottom);
+  place-content: center;
 
   // Disable UI while loading data.
   &:has([data-loading]) {
     pointer-events: none;
   }
+}
 
-  &.no-js {
-    place-items: center;
+:not(:defined) {
+  display: none;
+}
 
-    a {
-      color: white;
-      opacity: .5;
-
-      &:hover,
-      &:focus {
-        opacity: 1;
-      }
-    }
-  }
+noscript {
+  padding: 1.5em;
+  text-align: center;
 }
 
 a {
+  color: var(--link-color);
   outline: none;
   text-decoration: none;
+
+  &:visited {
+    color: var(--link-visited-color);
+  }
+  
+  &:focus-visible,
+  &:active {
+    color: var(--link-focus-color);
+  }
+  
+  @media (any-hover: hover) {
+    & {
+      transition: color var(--transition);
+    }
+  
+    &:hover {
+      color: var(--link-focus-color);
+    }
+  }
 }
 
 input,
@@ -77,23 +87,17 @@ figure {
 img,
 svg {
   block-size: auto;
-  pointer-events: none;
-  vertical-align: middle;
   inline-size: 100%;
+  vertical-align: middle;
 }
 
-// -----------------------------------------------------------------------------
-// Animations
-// -----------------------------------------------------------------------------
-
-@keyframes blink {
-  to {
-    visibility: hidden;
-  }
+svg {
+  pointer-events: none;
 }
 
 @keyframes scaleIn {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 0;
   }
   50% {
@@ -105,11 +109,12 @@ svg {
 }
 
 @keyframes slideInUp {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 0;
   }
   50% {
-    transform: translate3d(0, 50%, 0);
+    transform: translate3d(0, 100%, 0);
   }
   100% {
     opacity: 1;
@@ -117,11 +122,12 @@ svg {
 }
 
 @keyframes slideInDown {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 0;
   }
   50% {
-    transform: translate3d(0, -50%, 0);
+    transform: translate3d(0, -100%, 0);
   }
   100% {
     opacity: 1;
@@ -129,11 +135,12 @@ svg {
 }
 
 @keyframes slideInLeft {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 0;
   }
   50% {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
   }
   100% {
     opacity: 1;
@@ -141,11 +148,12 @@ svg {
 }
 
 @keyframes slideInRight {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 0;
   }
   50% {
-    transform: translate3d(50%, 0, 0);
+    transform: translate3d(100%, 0, 0);
   }
   100% {
     opacity: 1;
