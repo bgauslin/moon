@@ -47,16 +47,15 @@ export class DataFetcher {
 
     // Get lat/lng via API based on location.
     if (newLocation !== this.location) {
-      const endpoint = `${process.env.GEOCODE_API}?searchtext=${newLocation}&app_id=${process.env.GEOCODER_APP_ID}&app_code=${process.env.GEOCODER_APP_CODE}`;
+      const endpoint = `${process.env.GEOCODE_API}search?q=${newLocation}&api_key=${process.env.GEOCODE_API_KEY}`;
       const response = await fetch(endpoint);
       const data = await response.json();
-      const coords = data.Response.View[0].Result[0].Location.DisplayPosition;
-      this.lat = coords.Latitude;
-      this.lng = coords.Longitude;
+      const {lat, lon} = data[0];
+      this.lat = lat;
+      this.lng = lon;
       this.location = newLocation;
-      this.timezone = tzLookup(this.lat, this.lng);
+      this.timezone = tzLookup(lat, lon);
     }
-
     // Create a Date object from the date parameter for SunCalc.
     const {year, month, day} = date;
     const monthIndex = month - 1;
