@@ -56,7 +56,6 @@ export class DataFetcher {
       this.location = newLocation;
       this.timezone = tzLookup(lat, lon);
     }
-
     // Create a Date object from the date parameter for SunCalc.
     const {year, month, day} = date;
     const monthIndex = month - 1;

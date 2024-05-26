@@ -33,12 +33,21 @@ moon-app {
   grid-area: percent;
 }
 
-
 :is(donut-chart, moon-photo, ticks-chart) {
   animation: scaleIn var(--transition-intro) ease;
   aspect-ratio: 1;  
   grid-area: charts;
   place-self: center;
+}
+
+[data-direction='prev'] {
+  animation: slideInLeft var(--transition-intro) ease;
+  grid-area: prev;
+}
+
+[data-direction='next'] {
+  animation: slideInRight var(--transition-intro) ease;
+  grid-area: next;
 }
 
 [id='date'] {
@@ -74,13 +83,14 @@ moon-app {
     }
   }
 
-  &.today {
+  &[data-today] {
     font-variation-settings: 'wght' 600;
     pointer-events: none;
   }
 }
 
-:is([id='phase'], [id='percent']) {
+[id='phase'],
+[id='percent'] {
   animation: slideInDown var(--transition-intro) ease;
   font-size: .875em;
 }
@@ -94,4 +104,45 @@ moon-app {
   color: rgba(white, .7);
   margin-block: .5rem 0;
   place-self: start center;
+}
+
+// Prev-next buttons.
+[data-direction] {
+  aspect-ratio: 1;
+  background-color: var(--background-1);
+  border-radius: var(--controls-size);
+  display: grid;
+  inline-size: var(--controls-size);
+  place-content: center;
+  place-self: center;
+  transition: background-color var(--transition), transform var(--transition);
+
+  &:focus-visible {
+    background-color: var(--background-2);
+  }
+
+  &.touch {
+    transform: scale(.8);
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      background-color: var(--background-2);
+    }  
+
+    &:active {
+      transform: scale(.8);
+    }
+  }
+
+  path {
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+  }
+
+  svg {
+    inline-size: 1.5rem;
+    transition: transform var(--transition);
+  }
 }
