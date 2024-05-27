@@ -10,23 +10,18 @@ moon-photo {
     transform: rotate(180deg);
   }
 
-  &[frame='1'] img {
+  figure {
+    position: absolute;
+  }
+
+  &[frame='1'] figure {
     inset-block: 0 auto;
   }
 
-  img {
-    position: absolute;
-    transition: opacity var(--transition) ease;
-  }
-
-  [data-loading] {
-    opacity: 0;
-  }
-}
-
-// NOTE: Loop max should match JS property.
-@for $n from 2 through 26 {
-  moon-photo[frame='#{$n}'] img {
-    inset-block: ($n - 1) * -100% auto;
+  // NOTE: Loop max should match JS property.
+  @for $n from 2 through 26 {
+    &[frame='#{$n}'] figure {
+      inset-block: ($n - 1) * -100% auto;
+    }
   }
 }

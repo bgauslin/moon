@@ -5,14 +5,11 @@
  * via a numeric 'frame' attribute.
  */
 class MoonPhoto extends HTMLElement {
-  private image: HTMLImageElement;
   private imageCount: number
-  private imageLoaded: boolean;
 
   constructor() {
     super();
     this.imageCount = 26; // Property should match CSS [frame] max.
-    this.imageLoaded = false;
   }
 
   static get observedAttributes(): string[] {
@@ -28,19 +25,18 @@ class MoonPhoto extends HTMLElement {
   }
 
   private render() {
-    const imagePath1x = '/img/moon-phases-26-240.min.jpg';
-    const imagePath2x = '/img/moon-phases-26-480.min.jpg';
+    const imagePath = 'https://assets.gauslin.com/images/moon/';
 
-    this.innerHTML = `<img  alt="" src="${imagePath1x}" srcset="${imagePath1x} 1x, ${imagePath2x} 2x">`;
-    this.image = <HTMLImageElement>this.querySelector('img');
-
-    if (!this.imageLoaded) {
-      this.image.dataset.loading = '';
-      this.image.onload = () => {
-        delete this.image.dataset.loading;
-        this.imageLoaded = true;
-      };
+    let html = '<figure>';
+    for (let i = 1; i <= this.imageCount; i++) {
+      const j = (i < 10) ? `0${i}` : i;
+      const image1x = `${imagePath}phase-${j}@small.webp`;
+      const image2x = `${imagePath}phase-${j}@medium.webp`;
+      html += `<img alt="" src="${image1x}" srcset="${image1x} 1x, ${image2x} 2x">`;
     }
+    html += '</figure>';
+
+    this.innerHTML = html;
   }
 
   private update() {
