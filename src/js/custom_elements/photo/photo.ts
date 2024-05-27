@@ -1,50 +1,31 @@
 /**
- * Custom element that renders a photo for the current moon phase. The image
- * is a reponsive sprite containing all of the moon phases and the custom
- * element adjusts the vertical position of the sprite to show the moon phase
- * via a numeric 'frame' attribute.
+ * Custom element that renders a photo for the current moon phase when the
+ * custom element's 'percent' attribute changes.
  */
+const IMAGE_COUNT = 26;
+const IMAGE_PATH = 'https://assets.gauslin.com/images/moon/';
+
+
 class MoonPhoto extends HTMLElement {
-  private imageCount: number
-
-  constructor() {
-    super();
-    this.imageCount = 26; // Property should match CSS [frame] max.
-  }
-
   static get observedAttributes(): string[] {
     return ['percent'];
   }
 
-  connectedCallback() {
-    this.render();
-  }
-
+  /**
+   * Converts a percentage to its corresponding integer within a range of
+   * numbers whose maximum is less than 100, then renders that image.
+   */
   attributeChangedCallback() {
-    this.update();
-  }
+    const percent = Number(this.getAttribute('percent')); 
+   
+    const currentFrame = Math.round((percent / 100) * IMAGE_COUNT);
+    const frame = (currentFrame === 0) ? IMAGE_COUNT : currentFrame;
+    const imageIndex = (frame < 10) ? `0${frame}` : frame;
 
-  private render() {
-    const imagePath = 'https://assets.gauslin.com/images/moon/';
+    const image1x = `${IMAGE_PATH}phase-${imageIndex}@small.webp`;
+    const image2x = `${IMAGE_PATH}phase-${imageIndex}@medium.webp`;
 
-    let html = '<figure>';
-    for (let i = 1; i <= this.imageCount; i++) {
-      const j = (i < 10) ? `0${i}` : i;
-      const image1x = `${imagePath}phase-${j}@small.webp`;
-      const image2x = `${imagePath}phase-${j}@medium.webp`;
-      html += `<img alt="" src="${image1x}" srcset="${image1x} 1x, ${image2x} 2x">`;
-    }
-    html += '</figure>';
-
-    this.innerHTML = html;
-  }
-
-  private update() {
-    const percent = Number(this.getAttribute('percent'));    
-    const currentFrame = Math.round((percent / 100) * this.imageCount);
-    const frame = (currentFrame === 0) ? this.imageCount : currentFrame;
-
-    this.setAttribute('frame', `${frame}`);
+    this.innerHTML = `<img src="${image1x}" srcset="${image1x} 1x, ${image2x} 2x" alt="">`;
   }
 }
 

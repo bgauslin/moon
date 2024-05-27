@@ -4,24 +4,8 @@ moon-photo {
   inline-size: 42.5%; // TODO: Comment about how value is determined.
   max-inline-size: 204px; // = 480 SVG viewbox * inline-size
   overflow: hidden;
-  position: relative;
 
   &[hemisphere='southern'] {
     transform: rotate(180deg);
-  }
-
-  figure {
-    position: absolute;
-  }
-
-  &[frame='1'] figure {
-    inset-block: 0 auto;
-  }
-
-  // NOTE: Loop max should match JS property.
-  @for $n from 2 through 26 {
-    &[frame='#{$n}'] figure {
-      inset-block: ($n - 1) * -100% auto;
-    }
   }
 }
