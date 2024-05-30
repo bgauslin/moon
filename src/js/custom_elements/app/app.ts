@@ -170,10 +170,9 @@ class MoonApp extends LitElement {
   }
 
   private handleTouchstart(event: TouchEvent) {
-    const composed = event.composedPath();
-    this.touchTarget = <HTMLElement>composed[0];
+    this.touchTarget = <HTMLElement>event.composedPath()[0];
 
-    if (this.touchTarget.tagName === 'A') {
+    if (['A', 'BUTTON'].includes(this.touchTarget.tagName)) {
       this.touchTarget.classList.add('touch');
     }
   }
