@@ -8,7 +8,7 @@ user-location {
     background-color: var(--background-1);
     border-radius: var(--input-size);
     display: grid;
-    grid: 'submit input reset' / 2rem 1fr 2rem;
+    grid: 'geo input reset' / 2rem 1fr 2rem;
     transition: background-color var(--transition);
 
     &:focus-within {
@@ -33,22 +33,19 @@ user-location {
 
   // General button styles.
   button {
-    align-items: center;
     aspect-ratio: 1;
     background-color: transparent;
     border-radius: 50%;
     display: grid;
     inline-size: 2rem;
-    inset: 0 auto;
-    justify-content: center;
-    overflow: hidden;
+    place-content: center;
     padding: 0;
     transition: background-color var(--transition);
   }
 
   // Hide the submit button and capture the event on Enter/Go.
   [type='submit'] {
-    grid-area: submit;
+    grid-area: 1 / 1 / -1 / -1;
     visibility: hidden;
   }
 
@@ -96,6 +93,41 @@ user-location {
       &:hover path {
         stroke: rgba(black, 1);
       }
+    }
+  }
+
+  // Geolocation button.
+  [id='geo'] {
+    background-color: var(--background-0);
+    grid-area: geo;
+  
+    &:focus {
+      background-color: var(--background-2);
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--background-2);
+      }
+    }
+
+    svg {
+      color: white;
+      padding: 2px;
+    }
+
+    circle,
+    path {
+      stroke: currentColor;
+      stroke-width: 1.5;
+    }
+
+    circle {
+      fill: currentColor;
+    }
+
+    path {
+      fill: none;
     }
   }
 }
