@@ -1,22 +1,26 @@
 import {LitElement, html} from 'lit';
-import {customElement, state} from 'lit/decorators.js';
+import {customElement, query, state} from 'lit/decorators.js';
 import {DataFetcher, MoonData} from '../../modules/DataFetcher';
 import {AppDate, DateUtils} from '../../modules/DateUtils';
 
 
-const BASE_TITLE = document.title;
-const DEFAULT_LOCATION = 'San Francisco';
+const DEFAULT_LOCATION = 'New York';
+const STORAGE_ITEM = 'location';
 
 /**
  * Custom element that controls the application.
  */
 @customElement('moon-app')
 class MoonApp extends LitElement {
-  private dateUtils: DateUtils;
+  private fetcher: DataFetcher;
+  private utils: DateUtils;
   private popstateListener: EventListenerObject;
   private touchendListener: EventListenerObject;
   private touchstartListener: EventListenerObject;
 
+  @query('user-location') userLocation: HTMLElement;
+
+  @state() baseTitle = document.title;
   @state() loading: boolean;
   @state() location: string;
   @state() moonData: MoonData;
@@ -24,7 +28,8 @@ class MoonApp extends LitElement {
 
   constructor() {
     super();
-    this.dateUtils = new DateUtils();
+    this.fetcher = new DataFetcher();
+    this.utils = new DateUtils();
     this.popstateListener = this.updateApp.bind(this);
     this.touchstartListener = this.handleTouchstart.bind(this);
     this.touchendListener = this.handleTouchend.bind(this);
@@ -35,6 +40,9 @@ class MoonApp extends LitElement {
     window.addEventListener('popstate', this.popstateListener);
     this.addEventListener('touchstart', this.touchstartListener, {passive: true});
     this.addEventListener('touchend', this.touchendListener, {passive: true});
+    this.addEventListener('location', this.updateLocation);
+
+    this.initialLocation();
     this.updateApp();
   }
 
@@ -43,28 +51,102 @@ class MoonApp extends LitElement {
     window.removeEventListener('popstate', this.popstateListener);
     this.removeEventListener('touchstart', this.touchstartListener);
     this.removeEventListener('touchend', this.touchendListener);
+    this.removeEventListener('location', this.updateLocation);
   }
 
   protected createRenderRoot() {
     return this;
   }
 
-  /**
-   * Enables the progress bar while fetching moon data for the current date and
-   * location, then updates the document title and disables the progress bar.
-   */
   private async updateApp(): Promise<any> {
     this.loading = true;
     
-    const date = this.dateUtils.activeDate();
-    this.location = DEFAULT_LOCATION; // TODO: Get location from widget.
-    this.moonData = await new DataFetcher().fetch(date, this.location);
-
+    const date = this.utils.activeDate();
+    this.moonData = await this.fetcher.fetch(date, this.location);
     if (this.moonData) {
       this.updateDocumentTitle(date);
     }
 
+    // Update the address bar.
+    const segments = window.location.pathname.split('/');
+    segments.splice(-1, 1);
+    segments.push(this.utils.urlify(this.location));
+    history.replaceState(null, '', segments.join('/'));
+
+    // Save location for later visits.
+    localStorage.setItem(STORAGE_ITEM, this.location);
+
     this.loading = false;
+  }
+
+  /**
+   * On first run, location may or may not be set. If not, check if there's a
+   * location in the address bar and use that. Then check localStorage, and
+   * if that doesn't exist, use fallback location. On all subsequent updates,
+   * location is set via custom element attribute since location can also be
+   * user-defined.
+   */
+  private initialLocation() {
+    const segments = window.location.pathname.split('/');
+    segments.shift();
+
+    // 4 URL segments are year, month, day, location
+    if (segments.length === 4) {
+      this.location = segments[3].replace(/[+]/g, ' ');
+    } else {
+      this.location = localStorage.getItem(STORAGE_ITEM) || DEFAULT_LOCATION;
+    }
+  }
+
+  private async updateLocation(event: CustomEvent) {
+    await this.updateComplete;
+    this.location = event.detail.location;
+    this.updateApp();
+  }
+
+  private navigate(event: Event) {
+    const target = <HTMLElement>event.target;
+    const direction = target.dataset.direction;
+    
+    const date = (direction === 'prev') ? this.utils.prevDate() : this.utils.nextDate();
+    const href = this.utils.makeUrl(date, this.location);
+
+    const linkUrl = new URL(href, window.location.origin);
+    if (linkUrl.hostname === window.location.hostname) {
+      history.replaceState(null, '', href); //
+      this.updateApp();
+    }
+  }
+
+  /**
+   * Removes all segments from URL for when active date is today.
+   */
+  private reset(event: Event) {
+    event.preventDefault();
+    history.replaceState(null, '', '/');
+    this.updateApp();
+  }
+
+  private updateDocumentTitle(date: AppDate) {
+    const dateLabel =
+        this.utils.prettyDate(date, document.documentElement.lang, 'short');
+    const pageTitle = `${this.baseTitle} · ${dateLabel} · ${this.location}`;
+    const urlSegments = window.location.pathname.split('/');
+    urlSegments.shift();
+
+    document.title = (urlSegments.length === 4) ? pageTitle : this.baseTitle;
+  }
+
+  private handleTouchstart(event: TouchEvent) {
+    this.touchTarget = <HTMLElement>event.composedPath()[0];
+
+    if (['A', 'BUTTON'].includes(this.touchTarget.tagName)) {
+      this.touchTarget.classList.add('touch');
+    }
+  }
+
+  private handleTouchend() {
+    this.touchTarget.classList.remove('touch');
   }
 
   protected render() {
@@ -73,10 +155,10 @@ class MoonApp extends LitElement {
     }
 
     const {hemisphere, moonrise, moonset, percent, phase, sunrise, sunset} = this.moonData;
-    const active = this.dateUtils.activeDate();
-    const today = this.dateUtils.todaysDate();
+    const active = this.utils.activeDate();
+    const today = this.utils.todaysDate();
     const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
-    const prettyDate = this.dateUtils.prettyDate(active, document.documentElement.lang, 'long');
+    const prettyDate = this.utils.prettyDate(active, document.documentElement.lang, 'long');
 
     return html`
       <div id="phase">${phase}</div>
@@ -102,8 +184,7 @@ class MoonApp extends LitElement {
         ?data-today="${isToday ?? true}"
         @click="${this.reset}">${prettyDate}</a>
 
-      <user-location
-        default="${DEFAULT_LOCATION}"></user-location>
+      <user-location .location="${this.location}"></user-location>
 
       ${this.renderButton('prev')}
       ${this.renderButton('next')}
@@ -116,14 +197,14 @@ class MoonApp extends LitElement {
 
   private renderButton(direction: string) {
     let path = 'M9,4 L17,12 L9,20';
-    let date = this.dateUtils.nextDate();
+    let date = this.utils.nextDate();
 
     if (direction === 'prev') {
       path = 'M15,4 L7,12 L15,20';
-      date = this.dateUtils.prevDate();
+      date = this.utils.prevDate();
     }
 
-    const label = this.dateUtils.prettyDate(date, document.documentElement.lang, 'long');
+    const label = this.utils.prettyDate(date, document.documentElement.lang, 'long');
 
     return html`
       <button
@@ -137,47 +218,5 @@ class MoonApp extends LitElement {
         </svg>
       </button>
     `;
-  }
-
-  private navigate(event: Event) {
-    const target = <HTMLElement>event.target;
-    const direction = target.dataset.direction;
-    
-    const date = (direction === 'prev') ? this.dateUtils.prevDate() : this.dateUtils.nextDate();
-    const href = this.dateUtils.makeUrl(date, this.location);
-
-    const linkUrl = new URL(href, window.location.origin);
-    if (linkUrl.hostname === window.location.hostname) {
-      history.replaceState(null, '', href);
-      this.updateApp();
-    }
-  }
-
-  private reset(event: Event) {
-    event.preventDefault();
-    history.replaceState(null, '', '/');
-    this.updateApp();
-  }
-
-  private updateDocumentTitle(date: AppDate) {
-    const dateLabel =
-        this.dateUtils.prettyDate(date, document.documentElement.lang, 'short');
-    const pageTitle = `${BASE_TITLE} · ${dateLabel} · ${this.location}`;
-    const urlSegments = window.location.pathname.split('/');
-    urlSegments.shift();
-
-    document.title = (urlSegments.length === 4) ? pageTitle : BASE_TITLE;
-  }
-
-  private handleTouchstart(event: TouchEvent) {
-    this.touchTarget = <HTMLElement>event.composedPath()[0];
-
-    if (['A', 'BUTTON'].includes(this.touchTarget.tagName)) {
-      this.touchTarget.classList.add('touch');
-    }
-  }
-
-  private handleTouchend() {
-    this.touchTarget.classList.remove('touch');
   }
 }

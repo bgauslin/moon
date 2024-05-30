@@ -53,8 +53,8 @@ export class DataFetcher {
       const {lat, lon} = data[0];
       this.lat = lat;
       this.lng = lon;
-      this.location = newLocation;
       this.timezone = tzLookup(lat, lon);
+      this.location = newLocation;
     }
     // Create a Date object from the date parameter for SunCalc.
     const {year, month, day} = date;
