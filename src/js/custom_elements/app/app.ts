@@ -5,7 +5,7 @@ import {AppDate, DateUtils} from '../../modules/DateUtils';
 
 
 const BASE_TITLE = document.title;
-const DEFAULT_LOCATION = 'New Orleans, LA';
+const DEFAULT_LOCATION = 'San Francisco';
 
 /**
  * Custom element that controls the application.
