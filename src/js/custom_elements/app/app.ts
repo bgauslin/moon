@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit';
-import {customElement, query, state} from 'lit/decorators.js';
+import {customElement, state} from 'lit/decorators.js';
 import {DataFetcher, MoonData} from '../../modules/DataFetcher';
 import {AppDate, DateUtils} from '../../modules/DateUtils';
 
@@ -17,8 +17,6 @@ class MoonApp extends LitElement {
   private popstateListener: EventListenerObject;
   private touchendListener: EventListenerObject;
   private touchstartListener: EventListenerObject;
-
-  @query('user-location') userLocation: HTMLElement;
 
   @state() baseTitle = document.title;
   @state() loading: boolean;
@@ -38,10 +36,9 @@ class MoonApp extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('popstate', this.popstateListener);
+    this.addEventListener('location', this.updateLocation);
     this.addEventListener('touchstart', this.touchstartListener, {passive: true});
     this.addEventListener('touchend', this.touchendListener, {passive: true});
-    this.addEventListener('location', this.updateLocation);
-
     this.initialLocation();
     this.updateApp();
   }
@@ -49,9 +46,9 @@ class MoonApp extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('popstate', this.popstateListener);
+    this.removeEventListener('location', this.updateLocation);
     this.removeEventListener('touchstart', this.touchstartListener);
     this.removeEventListener('touchend', this.touchendListener);
-    this.removeEventListener('location', this.updateLocation);
   }
 
   protected createRenderRoot() {
@@ -82,9 +79,7 @@ class MoonApp extends LitElement {
   /**
    * On first run, location may or may not be set. If not, check if there's a
    * location in the address bar and use that. Then check localStorage, and
-   * if that doesn't exist, use fallback location. On all subsequent updates,
-   * location is set via custom element attribute since location can also be
-   * user-defined.
+   * if that doesn't exist, use fallback location.
    */
   private initialLocation() {
     const segments = window.location.pathname.split('/');
