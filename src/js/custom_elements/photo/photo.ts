@@ -7,6 +7,7 @@ const IMAGE_PATH = 'https://assets.gauslin.com/images/moon/';
 
 
 class MoonPhoto extends HTMLElement {
+
   static get observedAttributes(): string[] {
     return ['percent'];
   }
@@ -17,15 +18,25 @@ class MoonPhoto extends HTMLElement {
    */
   attributeChangedCallback() {
     const percent = Number(this.getAttribute('percent')); 
-   
     const currentFrame = Math.round((percent / 100) * IMAGE_COUNT);
     const frame = (currentFrame === 0) ? IMAGE_COUNT : currentFrame;
     const imageIndex = (frame < 10) ? `0${frame}` : frame;
 
+    const image = document.createElement('img');
     const image1x = `${IMAGE_PATH}phase-${imageIndex}@small.webp`;
     const image2x = `${IMAGE_PATH}phase-${imageIndex}@medium.webp`;
+    
+    image.alt = '';
+    image.src = image1x;
+    image.srcset = `${image1x} 1x, ${image2x} 2x`;
+    image.width = 240;
+    image.height = 240;
 
-    this.innerHTML = `<img src="${image1x}" srcset="${image1x} 1x, ${image2x} 2x" alt="">`;
+    this.replaceChildren(image);
+
+    // TODO: Better image loading/preloading.
+    image.dataset.loading = '';
+    image.onload = () => delete image.dataset.loading;
   }
 }
 

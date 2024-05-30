@@ -8,4 +8,12 @@ moon-photo {
   &[hemisphere='southern'] {
     transform: rotate(180deg);
   }
+  
+  img {
+    transition: opacity 1s ease;
+  }
+  
+  [data-loading] {
+    opacity: 0;
+  }
 }
