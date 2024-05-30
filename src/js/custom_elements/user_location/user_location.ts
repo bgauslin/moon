@@ -35,13 +35,13 @@ class UserLocation extends LitElement {
 
   private clearLocation(event: Event) {
     event.preventDefault();
-    this.location = '';
+    this.input.value = '';
     this.input.focus();
   }
 
   private restoreLocation() {
-    if (this.location === '') {
-      this.location = this.previousLocation;
+    if (this.input.value === '') {
+      this.input.value = this.previousLocation;
     }
   }
 
