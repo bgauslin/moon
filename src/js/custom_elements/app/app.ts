@@ -14,7 +14,6 @@ const STORAGE_ITEM = 'location';
 class MoonApp extends LitElement {
   private fetcher: DataFetcher;
   private utils: DateUtils;
-  // private progressListener: EventListenerObject;
   private popstateListener: EventListenerObject;
   private touchendListener: EventListenerObject;
   private touchstartListener: EventListenerObject;
@@ -29,7 +28,6 @@ class MoonApp extends LitElement {
     super();
     this.fetcher = new DataFetcher();
     this.utils = new DateUtils();
-    // this.progressListener = this.updateProgress.bind(this);
     this.popstateListener = this.updateApp.bind(this);
     this.touchstartListener = this.handleTouchstart.bind(this);
     this.touchendListener = this.handleTouchend.bind(this);
@@ -37,8 +35,8 @@ class MoonApp extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener('popstate', this.popstateListener);
     this.addEventListener('location', this.updateLocation);
+    window.addEventListener('popstate', this.popstateListener);
     this.addEventListener('progress', this.updateProgress);
     this.addEventListener('touchstart', this.touchstartListener, {passive: true});
     this.addEventListener('touchend', this.touchendListener, {passive: true});
@@ -48,8 +46,8 @@ class MoonApp extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener('popstate', this.popstateListener);
     this.removeEventListener('location', this.updateLocation);
+    window.removeEventListener('popstate', this.popstateListener);
     this.removeEventListener('progress', this.updateProgress);
     this.removeEventListener('touchstart', this.touchstartListener);
     this.removeEventListener('touchend', this.touchendListener);
@@ -61,8 +59,6 @@ class MoonApp extends LitElement {
 
   private updateProgress(event: CustomEvent) {
     this.loading = event.detail.enabled;
-    
-    console.log('enabled', event.detail.enabled);
   }
 
   private async updateApp(): Promise<any> {
@@ -118,7 +114,7 @@ class MoonApp extends LitElement {
 
     const linkUrl = new URL(href, window.location.origin);
     if (linkUrl.hostname === window.location.hostname) {
-      history.replaceState(null, '', href); //
+      history.replaceState(null, '', href);
       this.updateApp();
     }
   }
