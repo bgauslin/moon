@@ -50,7 +50,7 @@ class UserLocation extends LitElement {
    * Geolocation API.
    */
   private getGeolocation() {
-    // TODO: Dispatch custom event to enable loading indicator.
+    this.progressBar(true);
 
     // Get user's location.
     const success = (position: any) => {
@@ -58,14 +58,13 @@ class UserLocation extends LitElement {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       });
-      // TODO: Dispatch custom event to disable loading indicator.
     }
 
     // Alert user and restore input with previous location.
     const error = () => {
       alert(`Uh oh. We were unable to retrieve your location. :(\n\nYou may need to enable Location Services on your device before you can use this feature.`);
       this.location = this.previousLocation;
-      // TODO: Dispatch custom event to disable loading indicator.
+      this.progressBar(false);
     }
 
     // Get user's current geolocation coordinates.
@@ -94,7 +93,7 @@ class UserLocation extends LitElement {
       this.input.value = this.location;
 
       this.dispatchLocation();
-
+      this.progressBar(false);
     } catch (error) {
       console.warn('Currently unable to fetch data. :(');
     }
@@ -106,6 +105,16 @@ class UserLocation extends LitElement {
       composed: true,
       detail: {
         location: this.location,
+      }
+    }));
+  }
+
+  private progressBar(enabled: boolean) {
+    this.dispatchEvent(new CustomEvent('progress', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        enabled: enabled,
       }
     }));
   }

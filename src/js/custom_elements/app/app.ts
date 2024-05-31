@@ -14,6 +14,7 @@ const STORAGE_ITEM = 'location';
 class MoonApp extends LitElement {
   private fetcher: DataFetcher;
   private utils: DateUtils;
+  // private progressListener: EventListenerObject;
   private popstateListener: EventListenerObject;
   private touchendListener: EventListenerObject;
   private touchstartListener: EventListenerObject;
@@ -28,6 +29,7 @@ class MoonApp extends LitElement {
     super();
     this.fetcher = new DataFetcher();
     this.utils = new DateUtils();
+    // this.progressListener = this.updateProgress.bind(this);
     this.popstateListener = this.updateApp.bind(this);
     this.touchstartListener = this.handleTouchstart.bind(this);
     this.touchendListener = this.handleTouchend.bind(this);
@@ -37,6 +39,7 @@ class MoonApp extends LitElement {
     super.connectedCallback();
     window.addEventListener('popstate', this.popstateListener);
     this.addEventListener('location', this.updateLocation);
+    this.addEventListener('progress', this.updateProgress);
     this.addEventListener('touchstart', this.touchstartListener, {passive: true});
     this.addEventListener('touchend', this.touchendListener, {passive: true});
     this.initialLocation();
@@ -47,12 +50,19 @@ class MoonApp extends LitElement {
     super.disconnectedCallback();
     window.removeEventListener('popstate', this.popstateListener);
     this.removeEventListener('location', this.updateLocation);
+    this.removeEventListener('progress', this.updateProgress);
     this.removeEventListener('touchstart', this.touchstartListener);
     this.removeEventListener('touchend', this.touchendListener);
   }
 
   protected createRenderRoot() {
     return this;
+  }
+
+  private updateProgress(event: CustomEvent) {
+    this.loading = event.detail.enabled;
+    
+    console.log('enabled', event.detail.enabled);
   }
 
   private async updateApp(): Promise<any> {
