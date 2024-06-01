@@ -20,11 +20,11 @@ class MoonPhoto extends HTMLElement {
     const percent = Number(this.getAttribute('percent')); 
     const currentFrame = Math.round((percent / 100) * IMAGE_COUNT);
     const frame = (currentFrame === 0) ? IMAGE_COUNT : currentFrame;
-    const imageIndex = (frame < 10) ? `0${frame}` : frame;
+    const index = (frame < 10) ? `0${frame}` : frame;
 
     const image = document.createElement('img');
-    const image1x = `${IMAGE_PATH}phase-${imageIndex}@small.webp`;
-    const image2x = `${IMAGE_PATH}phase-${imageIndex}@medium.webp`;
+    const image1x = `${IMAGE_PATH}phase-${index}@1x.webp`;
+    const image2x = `${IMAGE_PATH}phase-${index}@2x.webp`;
     
     image.alt = '';
     image.src = image1x;
@@ -34,7 +34,7 @@ class MoonPhoto extends HTMLElement {
 
     this.replaceChildren(image);
 
-    // TODO: Better image loading/preloading.
+    // TODO(photo): Better image loading/preloading.
     image.dataset.loading = '';
     image.onload = () => delete image.dataset.loading;
   }

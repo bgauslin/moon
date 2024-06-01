@@ -1,7 +1,7 @@
 moon-photo {
   aspect-ratio: 1;
   border-radius: 50%;
-  inline-size: 42.5%; // TODO: Comment about how value is determined.
+  inline-size: 42.5%; // TODO(photo): Comment with math for how value is determined.
   max-inline-size: 204px; // = 480 SVG viewbox * inline-size
   overflow: hidden;
 
