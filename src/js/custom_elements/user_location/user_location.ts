@@ -54,10 +54,24 @@ class UserLocation extends LitElement {
 
     // Get user's location.
     const success = (position: any) => {
-      this.reverseGeocode({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
+      const {latitude, longitude} = position.coords;
+      const endpoint = `${process.env.GEOCODE_API}reverse?lat=${latitude}&lon=${longitude}&api_key=${process.env.GEOCODE_API_KEY}`;
+
+      try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        const {address} = data;
+        const {city} = address;
+  
+        this.location = city;
+        this.previousLocation = this.location;
+        this.input.value = this.location;
+  
+        this.dispatchLocation();
+        this.progressBar(false);
+      } catch (error) {
+        console.warn('Currently unable to fetch data. :(');
+      }
     }
 
     // Alert user and restore input with previous location.
@@ -73,30 +87,6 @@ class UserLocation extends LitElement {
       timeout: 5000,
       maximumAge: 0,
     }); 
-  }
-
-  /**
-   * Fetches human-friendly location based on geo coordinates via API.
-   */
-  private async reverseGeocode(coords: UserCoordinates): Promise<any> {
-    const {lat, lng} = coords;
-    const endpoint = `${process.env.GEOCODE_API}reverse?lat=${lat}&lon=${lng}&api_key=${process.env.GEOCODE_API_KEY}`;
-
-    try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      const {address} = data;
-      const {city} = address;
-
-      this.location = city;
-      this.previousLocation = this.location;
-      this.input.value = this.location;
-
-      this.dispatchLocation();
-      this.progressBar(false);
-    } catch (error) {
-      console.warn('Currently unable to fetch data. :(');
-    }
   }
 
   private dispatchLocation() {
