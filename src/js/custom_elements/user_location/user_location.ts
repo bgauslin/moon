@@ -57,8 +57,11 @@ class UserLocation extends LitElement {
         this.previousLocation = this.location;
         this.input.value = this.location;
   
-        this.sendLocation();
-        this.sendProgress(false);
+        // Wait a second so that the API doesn't complain.
+        window.setTimeout(() => {
+          this.sendLocation();
+          this.sendProgress(false);
+        }, 1000);        
       } catch (error) {
         console.warn('Currently unable to fetch data. :(');
       }
