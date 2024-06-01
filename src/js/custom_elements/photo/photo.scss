@@ -1,8 +1,8 @@
 moon-photo {
   aspect-ratio: 1;
   border-radius: 50%;
-  inline-size: 42.5%; // TODO(photo): Comment with math for how value is determined.
-  max-inline-size: 204px; // = 480 SVG viewbox * inline-size
+  inline-size: 42.5%;     // = max-inline-size / 480 viewbox
+  max-inline-size: 204px; // = 480 viewbox * inline-size
   overflow: hidden;
 
   &[hemisphere='southern'] {

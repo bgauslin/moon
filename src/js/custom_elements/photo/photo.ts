@@ -34,9 +34,12 @@ class MoonPhoto extends HTMLElement {
 
     this.replaceChildren(image);
 
-    // TODO(photo): Better image loading/preloading.
-    image.dataset.loading = '';
-    image.onload = () => delete image.dataset.loading;
+    window.requestAnimationFrame(() => {
+      if (!image.complete) {
+        image.dataset.loading = '';
+        image.onload = () => delete image.dataset.loading;
+      }
+    });
   }
 }
 
