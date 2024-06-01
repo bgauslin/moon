@@ -41,6 +41,7 @@ class UserLocation extends LitElement {
 
   private getGeolocation() {
     this.sendProgress(true);
+    this.input.value = 'Locating...';
 
     const success = async (position: any) => {
       const {latitude, longitude} = position.coords;
@@ -103,7 +104,6 @@ class UserLocation extends LitElement {
         @submit="${this.updateLocation}">
         <input
           type="text"
-          name="location"
           value="${this.location}"
           aria-label="Enter a location"
           required
@@ -131,7 +131,7 @@ class UserLocation extends LitElement {
       return html`
         <button
           type="button"
-          aria-label="Get location"
+          aria-label="Get current location"
           id="geo"
           @click="${this.getGeolocation}">
           <svg viewBox="0 0 24 24" aria-hidden="true">
