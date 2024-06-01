@@ -42,7 +42,7 @@ class UserLocation extends LitElement {
   private getGeolocation() {
     this.sendProgress(true);
 
-    const success = (position: any) => {
+    const success = async (position: any) => {
       const {latitude, longitude} = position.coords;
       const endpoint = `${process.env.GEOCODE_API}reverse?lat=${latitude}&lon=${longitude}&api_key=${process.env.GEOCODE_API_KEY}`;
 
