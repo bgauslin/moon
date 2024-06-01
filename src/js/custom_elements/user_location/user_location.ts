@@ -1,15 +1,9 @@
 import {LitElement, html} from 'lit';
 import {customElement, property, query, state} from 'lit/decorators.js';
 
-interface UserCoordinates {
-  lat: number,
-  lng: number,
-}
 
 /**
- * Custom element that gets the user's location either via text input or via
- * the Geolocation API and a reverse geocoding API to convert lat/lng
- * coordinates to a named location.
+ * Custom element that sets a location via text input or geolocation.
  */
 @customElement('user-location')
 class UserLocation extends LitElement {
@@ -30,7 +24,7 @@ class UserLocation extends LitElement {
     event.preventDefault();
     this.location = this.input.value;
     this.previousLocation = this.location;
-    this.dispatchLocation();
+    this.sendLocation();
   }
 
   private clearLocation(event: Event) {
@@ -45,14 +39,9 @@ class UserLocation extends LitElement {
     }
   }
 
-  /**
-   * Fetches human-friendly location based on geo coordinates provided by the
-   * Geolocation API.
-   */
   private getGeolocation() {
-    this.progressBar(true);
+    this.sendProgress(true);
 
-    // Get user's location.
     const success = (position: any) => {
       const {latitude, longitude} = position.coords;
       const endpoint = `${process.env.GEOCODE_API}reverse?lat=${latitude}&lon=${longitude}&api_key=${process.env.GEOCODE_API_KEY}`;
@@ -67,21 +56,19 @@ class UserLocation extends LitElement {
         this.previousLocation = this.location;
         this.input.value = this.location;
   
-        this.dispatchLocation();
-        this.progressBar(false);
+        this.sendLocation();
+        this.sendProgress(false);
       } catch (error) {
         console.warn('Currently unable to fetch data. :(');
       }
     }
 
-    // Alert user and restore input with previous location.
     const error = () => {
       alert(`Uh oh. We were unable to retrieve your location. :(\n\nYou may need to enable Location Services on your device before you can use this feature.`);
       this.location = this.previousLocation;
-      this.progressBar(false);
+      this.sendProgress(false);
     }
 
-    // Get user's current geolocation coordinates.
     navigator.geolocation.getCurrentPosition(success, error, {
       enableHighAccuracy: true,
       timeout: 5000,
@@ -89,7 +76,7 @@ class UserLocation extends LitElement {
     }); 
   }
 
-  private dispatchLocation() {
+  private sendLocation() {
     this.dispatchEvent(new CustomEvent('location', {
       bubbles: true,
       composed: true,
@@ -99,7 +86,7 @@ class UserLocation extends LitElement {
     }));
   }
 
-  private progressBar(enabled: boolean) {
+  private sendProgress(enabled: boolean) {
     this.dispatchEvent(new CustomEvent('progress', {
       bubbles: true,
       composed: true,
@@ -109,10 +96,6 @@ class UserLocation extends LitElement {
     }));
   }
 
-  /**
-   * Renders HTML form element for user's location and sets references to
-   * form elements.
-   */
   protected render() {
     return html`
       <form
