@@ -15,7 +15,7 @@ moon-app {
   --transition-intro: 1s;
 
   @media (min-width: 36rem) {
-    --app-gap: 1rem;
+    --app-gap: 0;
     --app-grid: '. phase .' 2fr '. percent .' 1fr 'prev charts next' '. date .' 1fr '. location .' 2fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
     --fineprint: .875em;
   }
