@@ -61,15 +61,17 @@ class UserLocation extends LitElement {
         window.setTimeout(() => {
           this.sendLocation();
           this.sendProgress(false);
-        }, 1000);        
+        }, 1000);       
       } catch (error) {
         console.warn('Currently unable to fetch data. :(');
+        this.input.value = this.location;
+        this.sendProgress(false);
       }
     }
 
     const error = () => {
       alert(`Uh oh. We were unable to retrieve your location. :(\n\nYou may need to enable Location Services on your device before you can use this feature.`);
-      this.location = this.previousLocation;
+      this.input.value = this.location;
       this.sendProgress(false);
     }
 
