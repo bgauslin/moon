@@ -10,7 +10,6 @@ import {AppDate, Utils} from '../../modules/Utils';
 class MoonApp extends LitElement {
   private fetcher: DataFetcher;
   private utils: Utils;
-  private popstateListener: EventListenerObject;
   private touchendListener: EventListenerObject;
   private touchstartListener: EventListenerObject;
 
@@ -26,7 +25,6 @@ class MoonApp extends LitElement {
     super();
     this.fetcher = new DataFetcher();
     this.utils = new Utils();
-    this.popstateListener = this.updateApp.bind(this);
     this.touchstartListener = this.handleTouchstart.bind(this);
     this.touchendListener = this.handleTouchend.bind(this);
   }
@@ -34,18 +32,16 @@ class MoonApp extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('location', this.updateLocation);
-    window.addEventListener('popstate', this.popstateListener);
     this.addEventListener('progress', this.updateProgress);
     this.addEventListener('touchstart', this.touchstartListener, {passive: true});
     this.addEventListener('touchend', this.touchendListener, {passive: true});
     this.initialLocation();
-    this.updateApp();
+    this.updateWindow();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('location', this.updateLocation);
-    window.removeEventListener('popstate', this.popstateListener);
     this.removeEventListener('progress', this.updateProgress);
     this.removeEventListener('touchstart', this.touchstartListener);
     this.removeEventListener('touchend', this.touchendListener);
@@ -59,7 +55,7 @@ class MoonApp extends LitElement {
     this.loading = event.detail.enabled;
   }
 
-  private async updateApp(): Promise<any> {
+  private async updateWindow(): Promise<any> {
     this.loading = true;
     
     const date = this.utils.activeDate();
@@ -67,12 +63,6 @@ class MoonApp extends LitElement {
     if (this.moonData) {
       this.updateDocumentTitle(date);
     }
-
-    // Update the address bar.
-    const segments = window.location.pathname.split('/');
-    segments.splice(-1, 1);
-    segments.push(this.utils.urlify(this.location));
-    history.replaceState(null, '', segments.join('/'));
 
     // Save location for later visits.
     localStorage.setItem(this.storageItem, this.location);
@@ -100,7 +90,14 @@ class MoonApp extends LitElement {
   private async updateLocation(event: CustomEvent) {
     await this.updateComplete;
     this.location = event.detail.location;
-    this.updateApp();
+
+    // Update the address bar.
+    const segments = window.location.pathname.split('/');
+    segments.splice(-1, 1);
+    segments.push(this.utils.urlify(this.location));
+    history.replaceState(null, '', segments.join('/'));
+
+    this.updateWindow();
   }
 
   private navigate(event: Event) {
@@ -113,17 +110,15 @@ class MoonApp extends LitElement {
     const linkUrl = new URL(href, window.location.origin);
     if (linkUrl.hostname === window.location.hostname) {
       history.replaceState(null, '', href);
-      this.updateApp();
+      this.updateWindow();
     }
   }
 
-  /**
-   * Removes all segments from URL for when active date is today.
-   */
+
   private reset(event: Event) {
     event.preventDefault();
     history.replaceState(null, '', '/');
-    this.updateApp();
+    this.updateWindow();
   }
 
   private updateDocumentTitle(date: AppDate) {

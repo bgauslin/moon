@@ -24,7 +24,6 @@ export class Utils {
 
     // If date part of URL isn't valid, replace URL with '/' and return today.
     if (!this.isValidMonth(month) || !this.isValidDay(year, month, day)) {
-      history.replaceState(null, null, '/');
       return this.todaysDate();
     }
 
