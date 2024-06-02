@@ -1,19 +1,55 @@
 moon-photo {
   aspect-ratio: 1;
   border-radius: 50%;
+  display: grid;
   inline-size: 42.5%;     // = max-inline-size / 480 viewbox
   max-inline-size: 204px; // = 480 viewbox * inline-size
   overflow: hidden;
+  place-content: center;
 
-  &[hemisphere='southern'] {
-    transform: rotate(180deg);
-  }
-  
   img {
     transition: opacity 1s ease;
   }
   
-  [data-loading] {
+  img[data-loading] {
     opacity: 0;
+  }
+
+  &[hemisphere='southern'] img {
+    transform: rotate(180deg);
+  }
+
+  .spinner {
+    --gradient: linear-gradient(currentColor 0 0) 50%;
+    --mask: conic-gradient(from 22deg, #0003, #000);
+
+    animation: spin .9s steps(8) infinite;
+    aspect-ratio: 1;
+    display: grid;
+    inline-size: 1.5rem;
+    mask: var(--mask);
+    -webkit-mask: var(--mask);
+    z-index: -1;
+  }
+
+  .spinner,
+  .spinner::before {
+    background:
+      var(--gradient) / 34% 7% space no-repeat,
+      var(--gradient) / 7% 34% no-repeat space;
+  }
+
+  .spinner::before {
+    content: '';
+    transform: rotate(45deg);
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0turn);
+    }
+    to {
+      transform: rotate(1turn);
+    }
   }
 }
