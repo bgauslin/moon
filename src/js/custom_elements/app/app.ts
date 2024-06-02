@@ -185,7 +185,7 @@ class MoonApp extends LitElement {
         ?data-today="${isToday ?? true}"
         @click="${this.reset}">${prettyDate}</a>
 
-      <user-location .location="${this.location}"></user-location>
+      <moon-location .location="${this.location}"></moon-location>
 
       ${this.renderButton('prev')}
       ${this.renderButton('next')}
