@@ -42,6 +42,10 @@ moon-app {
   place-self: center;
 }
 
+user-location {
+  animation: slideInUp var(--transition-intro) ease;
+}
+
 [data-direction='prev'] {
   animation: slideInLeft var(--transition-intro) ease;
   grid-area: prev;

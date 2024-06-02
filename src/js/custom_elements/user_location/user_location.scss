@@ -1,5 +1,4 @@
 user-location {
-  animation: slideInDown var(--transition-intro) ease;
   display: block;
   grid-area: location;
   place-self: center;
@@ -28,6 +27,7 @@ user-location {
     cursor: text;
     font-size: 1em;
     grid-area: input;
+    inline-size: 100%;
     text-align: center;
   }
 
@@ -95,15 +95,19 @@ user-location {
     background-color: var(--background-0);
     color: white;
     grid-area: geo;
+    opacity: .7;
     transition: background-color var(--transition), opacity var(--transition);
   
+    &.touch,
     &:focus {
       background-color: var(--background-2);
+      opacity: 1;
     }
 
     @media (any-hover: hover) {
       &:hover {
         background-color: var(--background-2);
+        opacity: 1;
       }
     }
 
