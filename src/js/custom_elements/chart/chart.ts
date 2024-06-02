@@ -1,5 +1,3 @@
-import {Chart} from '../../modules/Constants';
-
 interface Arc {
   radius: number,
   sweep: number,
@@ -15,6 +13,13 @@ interface LabelProps {
 interface Point {
   x: number,
   y: number,
+}
+
+export enum Chart {
+  LABEL_GAP = 8,
+  MARGIN = 44,
+  SIZE = 320,
+  SWEEP_WIDTH = 72,
 }
 
 const AXIS_OFFSET: number = -90;

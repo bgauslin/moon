@@ -1,4 +1,4 @@
-import {Chart} from '../../modules/Constants';
+import {Chart} from '../chart/chart';
 
 interface Tick {
   start: number,
