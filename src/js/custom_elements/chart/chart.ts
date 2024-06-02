@@ -25,7 +25,7 @@ const AXIS_OFFSET: number = -90;
  * and the custom element also renders the start and end time labels with
  * rotation adjustments for which vertical half of the app the time label is on.
  */
-export class DonutChart extends HTMLElement {
+class MoonChart extends HTMLElement {
   constructor() {
     super();
   }
@@ -182,4 +182,4 @@ export class DonutChart extends HTMLElement {
   }
 }
 
-customElements.define('donut-chart', DonutChart);
+customElements.define('moon-chart', MoonChart);

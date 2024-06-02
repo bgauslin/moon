@@ -169,14 +169,14 @@ class MoonApp extends LitElement {
         hemisphere="${hemisphere}"
         percent="${percent}"></moon-photo>
       
-      <donut-chart
+      <moon-chart
         name="sun"
         start="${sunrise}"
-        end="${sunset}"></donut-chart>
-      <donut-chart
+        end="${sunset}"></moon-chart>
+      <moon-chart
         name="moon"
         start="${moonrise}"
-        end="${moonset}"></donut-chart>
+        end="${moonset}"></moon-chart>
       <moon-ticks></moon-ticks>
       
       <a href="/"
