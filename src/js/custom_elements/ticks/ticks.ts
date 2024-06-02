@@ -37,7 +37,7 @@ const ANGLE: number = 360 / DIVISIONS;
 /**
  * Renders an SVG containing grouped lines.
  */
-class TicksChart extends HTMLElement {
+class MoonTicks extends HTMLElement {
   constructor() {
     super();
   }
@@ -101,4 +101,4 @@ class TicksChart extends HTMLElement {
   }
 }
 
-customElements.define('ticks-chart', TicksChart);
+customElements.define('moon-ticks', MoonTicks);

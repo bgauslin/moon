@@ -35,7 +35,7 @@ moon-app {
   grid-area: percent;
 }
 
-:is(donut-chart, moon-photo, ticks-chart) {
+:is(donut-chart, moon-photo, moon-ticks) {
   animation: scaleIn var(--transition-intro) ease;
   aspect-ratio: 1;  
   grid-area: charts;

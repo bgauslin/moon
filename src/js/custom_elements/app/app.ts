@@ -177,7 +177,7 @@ class MoonApp extends LitElement {
         name="moon"
         start="${moonrise}"
         end="${moonset}"></donut-chart>
-      <ticks-chart></ticks-chart>
+      <moon-ticks></moon-ticks>
       
       <a href="/"
         id="date"
