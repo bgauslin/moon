@@ -4,6 +4,7 @@ moon-app {
   --background-2: #{rgba(white, .25)};
   --background-3: #{rgba(white, .7)};
   
+  --app-gap: 0 .5rem;
   --app-grid: '. phase .' 2fr '. percent .' 1fr 'charts charts charts' '. date .' 1fr 'prev location next' 2fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
   --chart-size: 14.5rem;
   --charts-max-size: 30rem;
@@ -14,12 +15,14 @@ moon-app {
   --transition-intro: 1s;
 
   @media (min-width: 36rem) {
+    --app-gap: 1rem;
     --app-grid: '. phase .' 2fr '. percent .' 1fr 'prev charts next' '. date .' 1fr '. location .' 2fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
     --fineprint: .875em;
   }
 
   block-size: 100dvh;
   display: grid;
+  gap: var(--app-gap);
   grid: var(--app-grid);
   inline-size: 100vw;
 }
