@@ -22,8 +22,6 @@ export enum Chart {
   SWEEP_WIDTH = 72,
 }
 
-const AXIS_OFFSET: number = -90;
-
 /**
  * Custom element that renders a partial donut chart whose start and end
  * points are determined by start and end times. A complete circle is 24 hours
@@ -31,8 +29,19 @@ const AXIS_OFFSET: number = -90;
  * rotation adjustments for which vertical half of the app the time label is on.
  */
 class MoonChart extends HTMLElement {
+  private axisOffset: number = -90;
+  private circumference: number;
+  private cx: number;
+  private cy: number;
+  private height: number = Chart.SIZE + (Chart.MARGIN * 2);
+  private radius: number = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
+  private width: number = Chart.SIZE + (Chart.MARGIN * 2);
+
   constructor() {
     super();
+    this.cx = this.height / 2;
+    this.cy = this.width / 2;
+    this.circumference = 2 * Math.PI * this.radius;
   }
 
   static get observedAttributes(): string[] {
@@ -56,21 +65,13 @@ class MoonChart extends HTMLElement {
       return;
     }
 
-    // Set up the math for drawing arc sweeps.
-    const height = Chart.SIZE + (Chart.MARGIN * 2);
-    const width = Chart.SIZE + (Chart.MARGIN * 2);
-    const cx = height / 2;
-    const cy = width / 2;
-    const radius = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
-    const circumference = 2 * Math.PI * radius;
-    
     // Convert values to degrees for arc. 'sweep' start and end values are
     // adjusted since the default start for SVG circles is 3 o'clock and we
     // want arcs to start at 6 o'clock, which is midnight graphically.
-    const sweepStart = this.timeToDegrees(start) + AXIS_OFFSET;
-    const sweepEnd = this.timeToDegrees(end) + AXIS_OFFSET;
+    const sweepStart = this.timeToDegrees(start) + this.axisOffset;
+    const sweepEnd = this.timeToDegrees(end) + this.axisOffset;
 
-    const transform = `rotate(${sweepStart}, ${cx}, ${cy})`;
+    const transform = `rotate(${sweepStart}, ${this.cx}, ${this.cy})`;
 
     // 'sweep' = arc length with any negative values converted to positive
     // for cleaner math.
@@ -80,8 +81,8 @@ class MoonChart extends HTMLElement {
     }
 
     // Calculate arc stroke values for SVG.
-    const strokeOffset = (sweep / 360) * circumference;
-    const strokeDashOffset = circumference - strokeOffset;
+    const strokeOffset = (sweep / 360) * this.circumference;
+    const strokeDashOffset = this.circumference - strokeOffset;
 
     // Label for 'rise' time.
     const riseTime = start;
@@ -89,8 +90,8 @@ class MoonChart extends HTMLElement {
     const riseRotation = this.labelRotation({
       radius: riseSweep.radius,
       angle: sweepStart,
-      xOffset: cx,
-      yOffset: cy,
+      xOffset: this.cx,
+      yOffset: this.cy,
     });
     const riseTransform = `rotate(${riseSweep.sweep}, ${riseRotation.x}, ${riseRotation.y})`;
 
@@ -100,8 +101,8 @@ class MoonChart extends HTMLElement {
     const setRotation = this.labelRotation({
       radius: setSweep.radius,
       angle: sweepEnd,
-      xOffset: cx,
-      yOffset: cy,
+      xOffset: this.cx,
+      yOffset: this.cy,
     });
     const setTransform = `rotate(${setSweep.sweep}, ${setRotation.x}, ${setRotation.y})`;
 
@@ -110,14 +111,14 @@ class MoonChart extends HTMLElement {
     
     // Render the chart.
     this.innerHTML = `
-      <svg viewbox="0 0 ${height} ${width}">
+      <svg viewbox="0 0 ${this.height} ${this.width}">
         <circle
-          cx="${cx}"
-          cy="${cy}"
-          r="${radius}"
+          cx="${this.cx}"
+          cy="${this.cy}"
+          r="${this.radius}"
           fill="transparent"
           stroke-width="${strokeWidth}"
-          stroke-dasharray="${circumference}"
+          stroke-dasharray="${this.circumference}"
           stroke-dashoffset="${strokeDashOffset}"
           transform="${transform}"/>
         <text
@@ -143,7 +144,7 @@ class MoonChart extends HTMLElement {
     let radiusForLabels = (Chart.SIZE / 2) + Chart.LABEL_GAP;
     let sweep = degrees;
 
-    const leftSideStart = 180 + AXIS_OFFSET;
+    const leftSideStart = 180 + this.axisOffset;
     const leftSideEnd = leftSideStart + 180;
 
     if (degrees > leftSideStart && degrees < leftSideEnd) {
