@@ -6,9 +6,9 @@ user-location {
 
   form {
     background-color: var(--background-1);
-    border-radius: var(--input-size);
+    border-radius: var(--controls-size);
     display: grid;
-    grid: 'geo input reset' / 2rem 1fr 2rem;
+    grid: 'geo input reset' / var(--controls-size) 1fr var(--controls-size);
     transition: background-color var(--transition);
 
     &:focus-within {
@@ -37,7 +37,7 @@ user-location {
     background-color: transparent;
     border-radius: 50%;
     display: grid;
-    inline-size: 2rem;
+    inline-size: 2.75rem;
     place-content: center;
     padding: 0;
     transition: background-color var(--transition);
@@ -52,6 +52,10 @@ user-location {
   // Reset button and icon styles.
   [type='reset'] {
     grid-area: reset;
+
+    svg {
+      inline-size: 2rem;
+    }
 
     circle {
       fill: rgba(white, 0);
@@ -99,7 +103,10 @@ user-location {
   // Geolocation button.
   [id='geo'] {
     background-color: var(--background-0);
+    color: white;
+    opacity: 0;
     grid-area: geo;
+    transition: background-color var(--transition), opacity var(--transition);
   
     &:focus {
       background-color: var(--background-2);
@@ -112,7 +119,8 @@ user-location {
     }
 
     svg {
-      color: white;
+      // color: currentColor;
+      inline-size: 2rem;
       padding: 2px;
     }
 
@@ -130,4 +138,8 @@ user-location {
       fill: none;
     }
   }
+}
+
+input:focus ~ [id='geo'] {
+  opacity: 1;
 }

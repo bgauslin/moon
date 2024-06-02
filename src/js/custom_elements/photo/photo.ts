@@ -8,6 +8,7 @@ const IMAGE_PATH = 'https://assets.gauslin.com/images/moon/';
 
 class MoonPhoto extends HTMLElement {
   private image: HTMLImageElement;
+  private spinner: HTMLElement;
 
   static get observedAttributes(): string[] {
     return ['percent'];
@@ -39,21 +40,23 @@ class MoonPhoto extends HTMLElement {
     this.image.alt = '';
     this.image.src = image1x;
     this.image.srcset = `${image1x} 1x, ${image2x} 2x`;
-    this.image.width = 240;
-    this.image.height = 240;
+    this.image.height = 204;
+    this.image.width = 204;
 
     this.appendChild(this.image);
 
     window.requestAnimationFrame(() => {
       if (!this.image.complete) {
-        const spinner = document.createElement('div');
-        spinner.classList.add('spinner');
-        this.appendChild(spinner);
+        this.spinner = document.createElement('div');
+        this.spinner.classList.add('spinner');
+        this.appendChild(this.spinner);
 
         this.image.dataset.loading = '';
         this.image.onload = () => {
           delete this.image.dataset.loading;
-          this.image.addEventListener('transitionend', () => this.removeChild(spinner));
+          this.image.addEventListener('transitionend', () => {
+            this.removeChild(this.spinner);
+          });
         }
       }
     });
