@@ -2,12 +2,10 @@
  * Custom element that renders a photo for the current moon phase when the
  * custom element's 'percent' attribute changes.
  */
-const IMAGE_COUNT = 26;
-const IMAGE_PATH = 'https://assets.gauslin.com/images/moon/';
-
-
 class MoonPhoto extends HTMLElement {
   private image: HTMLImageElement;
+  private imageCount: number = 26;
+  private imagePath: string = 'https://assets.gauslin.com/images/moon/';
   private spinner: HTMLElement;
 
   static get observedAttributes(): string[] {
@@ -25,12 +23,12 @@ class MoonPhoto extends HTMLElement {
    * numbers whose maximum is less than 100, then renders that image.
    */
   updateImage(percent: number) {
-    const currentFrame = Math.round((percent / 100) * IMAGE_COUNT);
-    const frame = (currentFrame === 0) ? IMAGE_COUNT : currentFrame;
-    const index = (frame < 10) ? `0${frame}` : frame;
+    const currentFrame = Math.round((percent / 100) * this.imageCount);
+    const frame = (currentFrame === 0) ? this.imageCount : currentFrame;
+    const count = (frame < 10) ? `0${frame}` : frame;
 
-    const image1x = `${IMAGE_PATH}phase-${index}@1x.webp`;
-    const image2x = `${IMAGE_PATH}phase-${index}@2x.webp`;
+    const image1x = `${this.imagePath}phase-${count}@1x.webp`;
+    const image2x = `${this.imagePath}phase-${count}@2x.webp`;
 
     if (this.image) {
       this.removeChild(this.image);
