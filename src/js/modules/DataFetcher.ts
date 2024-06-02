@@ -1,6 +1,6 @@
 import SunCalc from 'suncalc';
 import tzLookup from 'tz-lookup';
-import {AppDate, DateUtils} from './DateUtils';
+import {AppDate, Utils} from './Utils';
 
 export interface MoonData {
   hemisphere: string,
@@ -29,14 +29,14 @@ interface SunriseSunset {
  */
 export class DataFetcher {
   private date: Date;
-  private dateUtils: DateUtils;
+  private dateUtils: Utils;
   private lat: number;
   private lng: number;
   private location: string;
   private timezone: string;
 
   constructor() {
-    this.dateUtils = new DateUtils();
+    this.dateUtils = new Utils();
   }
 
   /**

@@ -1,11 +1,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
 import {DataFetcher, MoonData} from '../../modules/DataFetcher';
-import {AppDate, DateUtils} from '../../modules/DateUtils';
-
-
-const DEFAULT_LOCATION = 'New York';
-const STORAGE_ITEM = 'location';
+import {AppDate, Utils} from '../../modules/Utils';
 
 /**
  * Custom element that controls the application.
@@ -13,21 +9,23 @@ const STORAGE_ITEM = 'location';
 @customElement('moon-app')
 class MoonApp extends LitElement {
   private fetcher: DataFetcher;
-  private utils: DateUtils;
+  private utils: Utils;
   private popstateListener: EventListenerObject;
   private touchendListener: EventListenerObject;
   private touchstartListener: EventListenerObject;
 
-  @state() baseTitle = document.title;
+  @state() baseTitle: string = document.title;
+  @state() defaultLocation: string = 'New York';
   @state() loading: boolean;
   @state() location: string;
   @state() moonData: MoonData;
+  @state() storageItem: string = 'location';
   @state() touchTarget: HTMLElement;
 
   constructor() {
     super();
     this.fetcher = new DataFetcher();
-    this.utils = new DateUtils();
+    this.utils = new Utils();
     this.popstateListener = this.updateApp.bind(this);
     this.touchstartListener = this.handleTouchstart.bind(this);
     this.touchendListener = this.handleTouchend.bind(this);
@@ -77,7 +75,7 @@ class MoonApp extends LitElement {
     history.replaceState(null, '', segments.join('/'));
 
     // Save location for later visits.
-    localStorage.setItem(STORAGE_ITEM, this.location);
+    localStorage.setItem(this.storageItem, this.location);
 
     this.loading = false;
   }
@@ -95,7 +93,7 @@ class MoonApp extends LitElement {
     if (segments.length === 4) {
       this.location = segments[3].replace(/[+]/g, ' ');
     } else {
-      this.location = localStorage.getItem(STORAGE_ITEM) || DEFAULT_LOCATION;
+      this.location = localStorage.getItem(this.storageItem) || this.defaultLocation;
     }
   }
 

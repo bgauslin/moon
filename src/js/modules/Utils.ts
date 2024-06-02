@@ -10,7 +10,7 @@ const DAYS_IN_MONTHS: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
  * Class with handy date/time utilities for determing current date, previous
  * date, and next date, as well as human-friendly date formatting.
  */
-export class DateUtils {
+export class Utils {
   /** 
    * Parses date from the URL and falls back to today if URL isn't valid.
    */
