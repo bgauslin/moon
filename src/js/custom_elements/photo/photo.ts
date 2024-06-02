@@ -7,14 +7,15 @@ const IMAGE_PATH = 'https://assets.gauslin.com/images/moon/';
 
 
 class MoonPhoto extends HTMLElement {
+  private image: HTMLImageElement;
 
   static get observedAttributes(): string[] {
     return ['percent'];
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (newValue !== oldValue) {
-      this.updateImage(newValue);
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    if (name === 'percent' && newValue !== oldValue) {
+      this.updateImage(Number(newValue));
     }
   }
 
@@ -22,8 +23,8 @@ class MoonPhoto extends HTMLElement {
    * Converts a percentage to its corresponding integer within a range of
    * numbers whose maximum is less than 100, then renders that image.
    */
-  updateImage(percent) {
-    const currentFrame = Math.round((Number(percent) / 100) * IMAGE_COUNT);
+  updateImage(percent: number) {
+    const currentFrame = Math.round((percent / 100) * IMAGE_COUNT);
     const frame = (currentFrame === 0) ? IMAGE_COUNT : currentFrame;
     const index = (frame < 10) ? `0${frame}` : frame;
 
