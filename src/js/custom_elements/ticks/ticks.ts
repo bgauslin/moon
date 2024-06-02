@@ -5,47 +5,40 @@ interface Tick {
   end: number,
 }
 
-interface TickLine {
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  transform: string,
-}
-
-const HOUR_TICK: Tick = {  
-  start: Chart.MARGIN,
-  end: Chart.MARGIN - (Chart.SWEEP_WIDTH / 4),
-};
-
-const OUTER_TICK: Tick = {
-  start: 0,
-  end: Chart.MARGIN,
-};
-
-const SWEEP_TICK: Tick = {  
-  start: Chart.MARGIN,
-  end: Chart.MARGIN + Chart.SWEEP_WIDTH,
-};
-
-const CENTER: number = Chart.MARGIN + (Chart.SIZE / 2);
-const VIEWBOX: number = Chart.SIZE + (Chart.MARGIN * 2);
-
-const DIVISIONS: number = 24;
-const ANGLE: number = 360 / DIVISIONS;
-
 /**
  * Renders an SVG containing grouped lines.
  */
 class MoonTicks extends HTMLElement {
+  private angle: number;
+  private center: number = Chart.MARGIN + (Chart.SIZE / 2);
+  private divisions: number = 24;
+  private hourTick: Tick;
+  private outerTick: Tick;
+  private sweepTick: Tick;
+  private viewbox: number = Chart.SIZE + (Chart.MARGIN * 2);
+
   constructor() {
     super();
+
+    this.angle = 360 / this.divisions;
+    this.hourTick = {
+      start: Chart.MARGIN,
+      end: Chart.MARGIN - (Chart.SWEEP_WIDTH / 4),
+    };
+    this.outerTick = {
+      start: 0,
+      end: Chart.MARGIN,
+    };
+    this.sweepTick = {
+      start: Chart.MARGIN,
+      end: Chart.MARGIN + Chart.SWEEP_WIDTH,
+    };
   }
 
   connectedCallback() {
-    const sweepTicks = this.ticks(SWEEP_TICK, true);
-    const majorTicks = this.ticks(OUTER_TICK, true);
-    const minorTicks = this.ticks(HOUR_TICK);
+    const sweepTicks = this.ticks(this.sweepTick, true);
+    const majorTicks = this.ticks(this.outerTick, true);
+    const minorTicks = this.ticks(this.hourTick);
     
     const groups = [
       {id: 'sweep-ticks', lines: sweepTicks},
@@ -68,7 +61,7 @@ class MoonTicks extends HTMLElement {
     }
 
     this.innerHTML = `
-      <svg viewbox="0 0 ${VIEWBOX} ${VIEWBOX}" aria-hidden="true">
+      <svg viewbox="0 0 ${this.viewbox} ${this.viewbox}" aria-hidden="true">
         ${html}
       </svg>
     `;
@@ -83,16 +76,16 @@ class MoonTicks extends HTMLElement {
     const {start, end} = tick;
     const ticks = [];
 
-    for (let i = 1; i <= DIVISIONS; i++) {
-      const degrees = i * ANGLE;
+    for (let i = 1; i <= this.divisions; i++) {
+      const degrees = i * this.angle;
       if (major && degrees % 90 === 0 ||
           !major && degrees % 90 !== 0) {
         const newLine = {
-          x1: CENTER,
+          x1: this.center,
           y1: start,
-          x2: CENTER,
+          x2: this.center,
           y2: end,
-          transform: `rotate(${degrees}, ${CENTER}, ${CENTER})`,
+          transform: `rotate(${degrees}, ${this.center}, ${this.center})`,
         };
         ticks.push(newLine);
       }
