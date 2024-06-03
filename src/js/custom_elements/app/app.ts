@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
 import {DataFetcher, MoonData} from '../../modules/DataFetcher';
-import {AppDate, Utils} from '../../modules/Utils';
+import {Utils} from '../../modules/Utils';
 
 /**
  * Custom element that controls the application.
@@ -32,72 +32,23 @@ class MoonApp extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('location', this.updateLocation);
-    this.addEventListener('progress', this.updateProgress);
+    this.addEventListener('progress', this.progress);
     this.addEventListener('touchstart', this.touchstartListener, {passive: true});
     this.addEventListener('touchend', this.touchendListener, {passive: true});
-    this.initialLocation();
-    this.updateWindow();
+    this.getLocation();
+    this.updateApp();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('location', this.updateLocation);
-    this.removeEventListener('progress', this.updateProgress);
+    this.removeEventListener('progress', this.progress);
     this.removeEventListener('touchstart', this.touchstartListener);
     this.removeEventListener('touchend', this.touchendListener);
   }
 
   protected createRenderRoot() {
     return this;
-  }
-
-  private updateProgress(event: CustomEvent) {
-    this.loading = event.detail.enabled;
-  }
-
-  private async updateWindow(): Promise<any> {
-    this.loading = true;
-    
-    const date = this.utils.activeDate();
-    this.moonData = await this.fetcher.fetch(date, this.location);
-    if (this.moonData) {
-      this.updateDocumentTitle(date);
-    }
-
-    // Save location for later visits.
-    localStorage.setItem(this.storageItem, this.location);
-
-    this.loading = false;
-  }
-
-  /**
-   * On first run, location may or may not be set. If not, check if there's a
-   * location in the address bar and use that. Then check localStorage, and
-   * if that doesn't exist, use fallback location.
-   */
-  private initialLocation() {
-    const segments = window.location.pathname.split('/');
-    segments.shift();
-
-    // 4 URL segments are year, month, day, location
-    if (segments.length === 4) {
-      this.location = segments[3].replace(/[+]/g, ' ');
-    } else {
-      this.location = localStorage.getItem(this.storageItem) || this.defaultLocation;
-    }
-  }
-
-  private async updateLocation(event: CustomEvent) {
-    await this.updateComplete;
-    this.location = event.detail.location;
-
-    // Update the address bar.
-    const segments = window.location.pathname.split('/');
-    segments.splice(-1, 1);
-    segments.push(this.utils.urlify(this.location));
-    history.replaceState(null, '', segments.join('/'));
-
-    this.updateWindow();
   }
 
   private navigate(event: Event) {
@@ -110,25 +61,70 @@ class MoonApp extends LitElement {
     const linkUrl = new URL(href, window.location.origin);
     if (linkUrl.hostname === window.location.hostname) {
       history.replaceState(null, '', href);
-      this.updateWindow();
+      this.updateApp();
     }
   }
 
+  private async updateLocation(event: CustomEvent) {
+    await this.updateComplete;
+    this.location = event.detail.location;
+
+    // Update address bar with new location.
+    const segments = window.location.pathname.split('/');
+    segments.splice(-1, 1);
+    segments.push(this.utils.urlify(this.location));
+    history.replaceState(null, '', segments.join('/'));
+
+    this.updateApp();
+  }
 
   private reset(event: Event) {
     event.preventDefault();
     history.replaceState(null, '', '/');
-    this.updateWindow();
+    this.updateApp();
   }
 
-  private updateDocumentTitle(date: AppDate) {
-    const dateLabel =
-        this.utils.prettyDate(date, document.documentElement.lang, 'short');
-    const pageTitle = `${this.baseTitle} · ${dateLabel} · ${this.location}`;
-    const urlSegments = window.location.pathname.split('/');
-    urlSegments.shift();
+  private async updateApp(): Promise<any> {
+    this.loading = true;
+    
+    const date = this.utils.activeDate();
+    this.moonData = await this.fetcher.fetch(date, this.location);
+    
+    // Update document title in browser history.
+    if (this.moonData) {
+      const label = this.utils.prettyDate(date, document.documentElement.lang, 'short');
+      const title = `${this.baseTitle} · ${label} · ${this.location}`;
+      const urlSegments = window.location.pathname.split('/');
+      urlSegments.shift();
 
-    document.title = (urlSegments.length === 4) ? pageTitle : this.baseTitle;
+      document.title = (urlSegments.length === 4) ? title : this.baseTitle;
+    }
+
+    // Save location for later visits.
+    localStorage.setItem(this.storageItem, this.location);
+
+    this.loading = false;
+  }
+
+  private progress(event: CustomEvent) {
+    this.loading = event.detail.enabled;
+  }
+
+  /**
+   * On first run, location may or may not be set. If not, check if there's a
+   * location in the address bar and use that. Then check localStorage, and
+   * if that doesn't exist, use fallback location.
+   */
+  private getLocation() {
+    const segments = window.location.pathname.split('/');
+    segments.shift();
+
+    // 4 URL segments are year, month, day, location
+    if (segments.length === 4) {
+      this.location = segments[3].replace(/[+]/g, ' ');
+    } else {
+      this.location = localStorage.getItem(this.storageItem) || this.defaultLocation;
+    }
   }
 
   private handleTouchstart(event: TouchEvent) {
