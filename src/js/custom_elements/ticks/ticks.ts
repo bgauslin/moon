@@ -12,9 +12,9 @@ class MoonTicks extends HTMLElement {
   private angle: number;
   private center: number = Chart.MARGIN + (Chart.SIZE / 2);
   private divisions: number = 24;
-  private hourTick: Tick;
-  private outerTick: Tick;
-  private sweepTick: Tick;
+  private major: Tick;
+  private minor: Tick;
+  private sweep: Tick;
   private viewbox: number = Chart.SIZE + (Chart.MARGIN * 2);
 
   constructor() {
