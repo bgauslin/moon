@@ -19,33 +19,35 @@ class MoonTicks extends HTMLElement {
 
   constructor() {
     super();
+    this.setProperties();
+  }
 
+  connectedCallback() {
+    this.render()(
+  }
+
+  private setProperties() {
     this.angle = 360 / this.divisions;
-    this.hourTick = {
-      start: Chart.MARGIN,
-      end: Chart.MARGIN - (Chart.SWEEP_WIDTH / 4),
-    };
-    this.outerTick = {
+    this.major = {
       start: 0,
       end: Chart.MARGIN,
     };
-    this.sweepTick = {
+    this.minor = {
+      start: Chart.MARGIN,
+      end: Chart.MARGIN - (Chart.SWEEP_WIDTH / 4),
+    };
+    this.sweep = {
       start: Chart.MARGIN,
       end: Chart.MARGIN + Chart.SWEEP_WIDTH,
     };
   }
 
-  connectedCallback() {
-    const sweepTicks = this.ticks(this.sweepTick, true);
-    const majorTicks = this.ticks(this.outerTick, true);
-    const minorTicks = this.ticks(this.hourTick);
-    
+  private render() {
     const groups = [
-      {id: 'sweep-ticks', lines: sweepTicks},
-      {id: 'major-ticks', lines: majorTicks},
-      {id: 'minor-ticks', lines: minorTicks},
+      {id: 'sweep-ticks', lines: this.ticks(this.sweep, true)},
+      {id: 'major-ticks', lines: this.ticks(this.major, true)},
+      {id: 'minor-ticks', lines: this.ticks(this.minor)},
     ];
-
     let html = '';
 
     for (const group of groups) {
