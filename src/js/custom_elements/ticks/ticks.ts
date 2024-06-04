@@ -1,4 +1,4 @@
-import {Chart} from '../chart/chart';
+import {chart} from '../chart/chart';
 
 interface Tick {
   start: number,
@@ -10,12 +10,12 @@ interface Tick {
  */
 class MoonTicks extends HTMLElement {
   private angle: number;
-  private center: number = Chart.MARGIN + (Chart.SIZE / 2);
+  private center: number;
   private divisions: number = 24;
   private major: Tick;
   private minor: Tick;
+  private size: number = chart.size + (chart.margin * 2);
   private sweep: Tick;
-  private viewbox: number = Chart.SIZE + (Chart.MARGIN * 2);
 
   constructor() {
     super();
@@ -23,22 +23,25 @@ class MoonTicks extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render()(
+    this.render();
   }
 
   private setProperties() {
+    const {margin, sweep} = chart;
+
     this.angle = 360 / this.divisions;
+    this.center = this.size / 2;
     this.major = {
       start: 0,
-      end: Chart.MARGIN,
+      end: margin,
     };
     this.minor = {
-      start: Chart.MARGIN,
-      end: Chart.MARGIN - (Chart.SWEEP_WIDTH / 4),
+      start: margin,
+      end: margin - (sweep / 4),
     };
     this.sweep = {
-      start: Chart.MARGIN,
-      end: Chart.MARGIN + Chart.SWEEP_WIDTH,
+      start: margin,
+      end: margin + sweep,
     };
   }
 
@@ -63,7 +66,7 @@ class MoonTicks extends HTMLElement {
     }
 
     this.innerHTML = `
-      <svg viewbox="0 0 ${this.viewbox} ${this.viewbox}" aria-hidden="true">
+      <svg viewbox="0 0 ${this.size} ${this.size}" aria-hidden="true">
         ${html}
       </svg>
     `;

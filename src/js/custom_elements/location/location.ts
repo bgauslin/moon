@@ -1,7 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property, query, state} from 'lit/decorators.js';
 
-
 /**
  * Custom element that sets a location via text input or geolocation.
  */

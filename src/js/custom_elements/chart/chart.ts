@@ -15,11 +15,12 @@ interface Point {
   y: number,
 }
 
-export enum Chart {
-  LABEL_GAP = 8,
-  MARGIN = 44,
-  SIZE = 320,
-  SWEEP_WIDTH = 72,
+/** Dimensions for SVG chart elements. */
+export const chart = {
+  gap: 8,
+  margin: 44,
+  size: 320,
+  sweep: 72,
 }
 
 /**
@@ -33,14 +34,13 @@ class MoonChart extends HTMLElement {
   private circumference: number;
   private cx: number;
   private cy: number;
-  private height: number = Chart.SIZE + (Chart.MARGIN * 2);
-  private radius: number = (Chart.SIZE - Chart.SWEEP_WIDTH) / 2;
-  private width: number = Chart.SIZE + (Chart.MARGIN * 2);
+  private size: number = chart.size + (chart.margin * 2);
+  private radius: number = (chart.size - chart.sweep) / 2;
 
   constructor() {
     super();
-    this.cx = this.height / 2;
-    this.cy = this.width / 2;
+    this.cx = this.size / 2;
+    this.cy = this.size / 2;
     this.circumference = 2 * Math.PI * this.radius;
   }
 
@@ -107,11 +107,11 @@ class MoonChart extends HTMLElement {
     const setTransform = `rotate(${setSweep.sweep}, ${setRotation.x}, ${setRotation.y})`;
 
     // Static values.
-    const strokeWidth = Chart.SWEEP_WIDTH;
+    const strokeWidth = chart.sweep;
     
     // Render the chart.
     this.innerHTML = `
-      <svg viewbox="0 0 ${this.height} ${this.width}">
+      <svg viewbox="0 0 ${this.size} ${this.size}">
         <circle
           cx="${this.cx}"
           cy="${this.cy}"
@@ -141,7 +141,9 @@ class MoonChart extends HTMLElement {
    */
   private labelPlacement(degrees: number): Arc {
     // Gap from edge of chart's arc for label placement.
-    let radiusForLabels = (Chart.SIZE / 2) + Chart.LABEL_GAP;
+    const {gap, margin, size} = chart;
+
+    let radiusForLabels = (size / 2) + gap;
     let sweep = degrees;
 
     const leftSideStart = 180 + this.axisOffset;
@@ -149,7 +151,7 @@ class MoonChart extends HTMLElement {
 
     if (degrees > leftSideStart && degrees < leftSideEnd) {
       sweep -= 180;
-      radiusForLabels += Chart.MARGIN - Chart.LABEL_GAP;
+      radiusForLabels += margin - gap;
     }
 
     return {radius: radiusForLabels, sweep};

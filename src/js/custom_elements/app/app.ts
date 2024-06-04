@@ -9,9 +9,9 @@ import {Utils} from '../../modules/Utils';
 @customElement('moon-app')
 class MoonApp extends LitElement {
   private fetcher: DataFetcher;
-  private utils: Utils;
   private touchendListener: EventListenerObject;
   private touchstartListener: EventListenerObject;
+  private utils: Utils;
 
   @state() baseTitle: string = document.title;
   @state() defaultLocation: string = 'New York';
