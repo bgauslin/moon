@@ -107,10 +107,11 @@ class MoonLocation extends LitElement {
         @reset="${this.clearLocation}"
         @submit="${this.updateLocation}">
         <input
+          aria-label="Enter a location"
+          inputmode="search"
+          required
           type="text"
           value="${this.location}"
-          aria-label="Enter a location"
-          required
           @blur="${this.restoreLocation}">
         <button type="submit" aria-label="Update location"></button>
         ${this.renderResetButton()}
