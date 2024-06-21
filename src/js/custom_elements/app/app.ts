@@ -144,7 +144,7 @@ class MoonApp extends LitElement {
       return;
     }
 
-    const {hemisphere, moonrise, moonset, percent, phase, sunrise, sunset} = this.moonData;
+    const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = this.moonData;
     const active = this.utils.activeDate();
     const today = this.utils.todaysDate();
     const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
@@ -152,7 +152,7 @@ class MoonApp extends LitElement {
 
     return html`
       <div id="phase">${phase}</div>
-      <div id="percent">${percent}%</div>
+      <div id="illumination">${illumination}% illumination</div>
 
       <moon-photo
         hemisphere="${hemisphere}"

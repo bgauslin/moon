@@ -5,7 +5,7 @@ moon-app {
   --background-3: #{rgba(white, .7)};
   
   --app-gap: 0 .5rem;
-  --app-grid: '. phase .' 2fr '. percent .' 1fr 'charts charts charts' '. date .' 1fr 'prev location next' 2fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
+  --app-grid: '. phase .' 2fr '. illumination .' 1fr 'charts charts charts' '. date .' 1fr 'prev location next' 2fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
   --chart-size: 14.5rem;
   --charts-max-size: 30rem;
   --controls-size: 2.75rem;
@@ -16,7 +16,7 @@ moon-app {
 
   @media (min-width: 36rem) {
     --app-gap: 0;
-    --app-grid: '. phase .' 2fr '. percent .' 1fr 'prev charts next' '. date .' 1fr '. location .' 2fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
+    --app-grid: '. phase .' 2fr '. illumination .' 1fr 'prev charts next' '. date .' 1fr '. location .' 2fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
     --fineprint: .875em;
   }
 
@@ -31,8 +31,8 @@ moon-app {
   grid-area: phase;
 }
 
-[id='percent'] {
-  grid-area: percent;
+[id='illumination'] {
+  grid-area: illumination;
 }
 
 :is(moon-chart, moon-photo, moon-ticks) {
@@ -96,7 +96,7 @@ moon-location {
 }
 
 [id='phase'],
-[id='percent'] {
+[id='illumination'] {
   animation: slideInDown var(--transition-intro) ease;
   font-size: .875em;
 }
@@ -106,7 +106,7 @@ moon-location {
   place-self: end center;
 }
 
-[id='percent'] {
+[id='illumination'] {
   color: rgba(white, .7);
   margin-block: .5rem 0;
   place-self: start center;

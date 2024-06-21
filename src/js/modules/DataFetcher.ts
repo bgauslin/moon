@@ -141,7 +141,7 @@ export class DataFetcher {
    */
   private moonPhaseIllumination(): number {
     const illumination = SunCalc.getMoonIllumination(this.date);
-    return Math.floor(illumination.fraction * 100);
+    return Math.ceil(illumination.fraction * 100);
   }
 
   // TODO(fetcher): Update moonPhase() values to ensure all phases display.
@@ -176,6 +176,6 @@ export class DataFetcher {
    */
   private moonPhasePercent(): number {
     const illumination = SunCalc.getMoonIllumination(this.date);
-    return Math.floor(illumination.phase * 100);
+    return Math.ceil(illumination.phase * 100);
   }
 }
