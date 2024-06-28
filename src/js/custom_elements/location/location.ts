@@ -74,11 +74,13 @@ class MoonLocation extends LitElement {
       this.sendProgress(false);
     }
 
-    navigator.geolocation.getCurrentPosition(success, error, {
+    const options = {
       enableHighAccuracy: true,
-      timeout: 5000,
       maximumAge: 0,
-    }); 
+      timeout: 5000,
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error, options); 
   }
 
   private sendLocation() {
