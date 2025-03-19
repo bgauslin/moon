@@ -77,7 +77,7 @@ class MoonApp extends LitElement {
 
   private reset(event: Event) {
     event.preventDefault();
-    history.replaceState(null, '', '/');
+    history.replaceState(null, '', window.location.pathname);
     this.updateApp();
   }
 
@@ -114,7 +114,7 @@ class MoonApp extends LitElement {
     const location = new URL(window.location.href).searchParams.get('w');
 
     if (location) {
-      this.location = location;
+      this.location = location.replace(/[+]/g, ' ');
      } else {
       this.location = localStorage.getItem(this.storageItem) || this.defaultLocation;
      }
