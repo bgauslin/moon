@@ -15,19 +15,19 @@ export class Utils {
    * Parses date from the URL and falls back to today if URL isn't valid.
    */
   public activeDate(): AppDate {
-    const urlSegments = window.location.pathname.split('/');
-    urlSegments.shift();
+    const url = new URL(window.location.href);
+    const [year, month, day] = [...url.hash.replace('#','').split('-')];
 
-    const year = parseInt(urlSegments[0]);
-    const month = parseInt(urlSegments[1]);
-    const day = parseInt(urlSegments[2]);
+    const year_ = parseInt(year);
+    const month_ = parseInt(month);
+    const day_ = parseInt(day);
 
     // If date part of URL isn't valid, replace URL with '/' and return today.
-    if (!this.isValidMonth(month) || !this.isValidDay(year, month, day)) {
+    if (!this.isValidMonth(month_) || !this.isValidDay(year_, month_, day_)) {
       return this.todaysDate();
     }
 
-    return {year, month, day};
+    return {year: year_, month: month_, day: day_};
   }
 
   /** 
@@ -143,10 +143,12 @@ export class Utils {
    */
   public makeUrl(date: AppDate, location: string): URL {
     const {year, month, day} = date;
-    const month_ = this.zeroPad(month);
-    const day_ = this.zeroPad(day);
-    const location_ = this.urlify(location);
-    return new URL(`/${year}/${month_}/${day_}/${location_}`, window.location.origin);
+    const url = new URL(window.location.href);
+
+    url.hash = `${year}-${this.zeroPad(month)}-${this.zeroPad(day)}`;
+    url.searchParams.set('w', this.urlify(location));
+    
+    return url;
   }
 
   /**

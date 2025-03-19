@@ -56,11 +56,10 @@ class MoonApp extends LitElement {
     const direction = target.dataset.direction;
     
     const date = (direction === 'prev') ? this.utils.prevDate() : this.utils.nextDate();
-    const href = this.utils.makeUrl(date, this.location);
+    const url = this.utils.makeUrl(date, this.location);
 
-    const linkUrl = new URL(href, window.location.origin);
-    if (linkUrl.hostname === window.location.hostname) {
-      history.replaceState(null, '', href);
+    if (url.hostname === window.location.hostname) {
+      history.replaceState(null, '', url);
       this.updateApp();
     }
   }
@@ -69,11 +68,9 @@ class MoonApp extends LitElement {
     await this.updateComplete;
     this.location = event.detail.location;
 
-    // Update address bar with new location.
-    const segments = window.location.pathname.split('/');
-    segments.splice(-1, 1);
-    segments.push(this.utils.urlify(this.location));
-    history.replaceState(null, '', segments.join('/'));
+    const url = new URL(window.location.href);
+    url.searchParams.set('w', this.utils.urlify(this.location));
+    history.replaceState(null, '', url);
 
     this.updateApp();
   }
@@ -94,10 +91,8 @@ class MoonApp extends LitElement {
     if (this.moonData) {
       const label = this.utils.prettyDate(date, document.documentElement.lang, 'short');
       const title = `${this.baseTitle} · ${label} · ${this.location}`;
-      const urlSegments = window.location.pathname.split('/');
-      urlSegments.shift();
-
-      document.title = (urlSegments.length === 4) ? title : this.baseTitle;
+      const url = new URL(window.location.href);
+      document.title = url.hash ? title : this.baseTitle;
     }
 
     // Save location for later visits.
@@ -113,18 +108,16 @@ class MoonApp extends LitElement {
   /**
    * On first run, location may or may not be set. If not, check if there's a
    * location in the address bar and use that. Then check localStorage, and
-   * if that doesn't exist, use fallback location.
+   * if that doesn't exist, use the default location.
    */
   private getLocation() {
-    const segments = window.location.pathname.split('/');
-    segments.shift();
+    const location = new URL(window.location.href).searchParams.get('w');
 
-    // 4 URL segments are year, month, day, location
-    if (segments.length === 4) {
-      this.location = segments[3].replace(/[+]/g, ' ');
-    } else {
+    if (location) {
+      this.location = location;
+     } else {
       this.location = localStorage.getItem(this.storageItem) || this.defaultLocation;
-    }
+     }
   }
 
   private handleTouchstart(event: TouchEvent) {
