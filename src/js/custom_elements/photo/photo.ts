@@ -5,7 +5,7 @@
 class MoonPhoto extends HTMLElement {
   private image: HTMLImageElement;
   private imageCount: number = 26;
-  private imagePath: string = 'https://assets.gauslin.com/images/moon/';
+  private imagePath: string = 'https://gauslin.com/images/moon/';
   private spinner: HTMLElement;
 
   static get observedAttributes(): string[] {
