@@ -6,7 +6,6 @@ class MoonPhoto extends HTMLElement {
   private image: HTMLImageElement;
   private imageCount: number = 26;
   private imagePath: string = 'https://gauslin.com/images/moon/';
-  private spinner: HTMLElement;
 
   static get observedAttributes(): string[] {
     return ['percent'];
@@ -25,39 +24,40 @@ class MoonPhoto extends HTMLElement {
   updateImage(percent: number) {
     const currentFrame = Math.round((percent / 100) * this.imageCount);
     const frame = (currentFrame === 0) ? this.imageCount : currentFrame;
-    const count = (frame < 10) ? `0${frame}` : frame;
-
-    const image1x = `${this.imagePath}phase-${count}@1x.webp`;
-    const image2x = `${this.imagePath}phase-${count}@2x.webp`;
 
     if (this.image) {
       this.removeChild(this.image);
     }
 
-    this.image = document.createElement('img');
-    this.image.alt = '';
-    this.image.src = image1x;
-    this.image.srcset = `${image1x} 1x, ${image2x} 2x`;
-    this.image.height = 204;
-    this.image.width = 204;
-
+    this.image = this.renderImage(frame);
     this.appendChild(this.image);
 
     window.requestAnimationFrame(() => {
       if (!this.image.complete) {
-        this.spinner = document.createElement('div');
-        this.spinner.classList.add('spinner');
-        this.appendChild(this.spinner);
-
         this.image.dataset.loading = '';
         this.image.onload = () => {
           delete this.image.dataset.loading;
-          this.image.addEventListener('transitionend', () => {
-            this.removeChild(this.spinner);
-          });
         }
       }
     });
+  }
+
+  /**
+   * Helper function for rendering an image.
+   */
+  renderImage(frame: number) {
+    const count = (frame < 10) ? `0${frame}` : frame;
+    const image1x = `${this.imagePath}phase-${count}@1x.webp`;
+    const image2x = `${this.imagePath}phase-${count}@2x.webp`;
+
+    const image = document.createElement('img');
+    image.alt = '';
+    image.src = image1x;
+    image.srcset = `${image1x} 1x, ${image2x} 2x`;
+    image.height = 204;
+    image.width = 204;
+
+    return image;
   }
 }
 
