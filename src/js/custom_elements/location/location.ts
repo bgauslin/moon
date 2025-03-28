@@ -7,6 +7,7 @@ import {customElement, property, query, state} from 'lit/decorators.js';
 @customElement('moon-location')
 class MoonLocation extends LitElement {
   @property({attribute: 'location', reflect: true}) location: string;
+  @query('#geo') geoButton: HTMLButtonElement;
   @query('input') input: HTMLInputElement;
   @state() previousLocation: string;
 
@@ -23,6 +24,7 @@ class MoonLocation extends LitElement {
     event.preventDefault();
     this.location = this.input.value;
     this.previousLocation = this.location;
+    this.input.blur();
     this.sendLocation();
   }
 
@@ -55,6 +57,7 @@ class MoonLocation extends LitElement {
         this.location = city;
         this.previousLocation = this.location;
         this.input.value = this.location;
+        this.geoButton.blur();
   
         // Wait a second so that the API doesn't complain.
         window.setTimeout(() => {
