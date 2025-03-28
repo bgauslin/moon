@@ -23,38 +23,4 @@ moon-photo {
   &[hemisphere='southern'] img {
     transform: rotate(180deg);
   }
-
-  .spinner {
-    --gradient: linear-gradient(currentColor 0 0) 50%;
-    --mask: conic-gradient(from 22deg, #0003, #000);
-
-    animation: spin .9s steps(8) infinite;
-    aspect-ratio: 1;
-    display: grid;
-    inline-size: 1.5rem;
-    mask: var(--mask);
-    -webkit-mask: var(--mask);
-    z-index: -1;
-  }
-
-  .spinner,
-  .spinner::before {
-    background:
-      var(--gradient) / 34% 7% space no-repeat,
-      var(--gradient) / 7% 34% no-repeat space;
-  }
-
-  .spinner::before {
-    content: '';
-    transform: rotate(45deg);
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0turn);
-    }
-    to {
-      transform: rotate(1turn);
-    }
-  }
 }
