@@ -5,7 +5,6 @@
 class MoonPhoto extends HTMLElement {
   private image: HTMLImageElement;
   private imageCount: number = 26;
-  private imagePath: string = 'https://gauslin.com/images/moon/';
 
   static get observedAttributes(): string[] {
     return ['percent'];
@@ -47,8 +46,8 @@ class MoonPhoto extends HTMLElement {
    */
   renderImage(frame: number) {
     const count = (frame < 10) ? `0${frame}` : frame;
-    const image1x = `${this.imagePath}phase-${count}@1x.webp`;
-    const image2x = `${this.imagePath}phase-${count}@2x.webp`;
+    const image1x = `img/phase-${count}@1x.webp`;
+    const image2x = `img/phase-${count}@2x.webp`;
 
     const image = document.createElement('img');
     image.alt = '';
