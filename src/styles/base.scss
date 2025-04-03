@@ -21,7 +21,7 @@ html {
 }
 
 body {
-  background: black;
+  background-color: black;
   color: white;
   display: grid;
   font-family: 'Avenir Variable', sans-serif;
@@ -73,10 +73,10 @@ a {
 
 input,
 button {
-  font-family: 'Avenir Variable', sans-serif;
   appearance: none;
   border: 0;
   cursor: pointer;
+  font-family: 'Avenir Variable', sans-serif;
   outline: none;
 }
 
