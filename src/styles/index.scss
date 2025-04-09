@@ -1,9 +1,9 @@
-@import 'base';
+@use 'base';
 
-@import '../js/components/app/app';
-@import '../js/components/app/progress-bar';
-@import '../js/components/chart/chart';
-@import '../js/components/location/location';
-@import '../js/components/photo/photo';
-@import '../js/components/ticks/ticks';
+@use '../js/components/app/app';
+@use '../js/components/app/progress-bar';
+@use '../js/components/chart/chart';
+@use '../js/components/location/location';
+@use '../js/components/photo/photo';
+@use '../js/components/ticks/ticks';
 

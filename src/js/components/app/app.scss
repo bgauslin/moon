@@ -13,11 +13,15 @@ moon-app {
   --transition-intro: 1s;
 
   @media (min-width: 36rem) {
-    --app-gap: 0;
-    --app-grid: '. phase .' 2fr '. illumination .' 1fr 'prev charts next' '. date .' 1fr '. location .' 2fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
-    --fineprint: .875em;
+    & {
+      --app-gap: 0;
+      --app-grid: '. phase .' 2fr '. illumination .' 1fr 'prev charts next' '. date .' 1fr '. location .' 2fr / minmax(var(--controls-size), 1fr) minmax(var(--chart-size), var(--charts-max-size)) minmax(var(--controls-size), 1fr);
+      --fineprint: .875em;
+    }
   }
+}
 
+moon-app {
   block-size: 100dvh;
   display: grid;
   gap: var(--app-gap);
