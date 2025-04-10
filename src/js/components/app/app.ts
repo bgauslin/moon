@@ -32,7 +32,7 @@ class MoonApp extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('location', this.updateLocation);
-    this.addEventListener('progress', this.progress);
+    this.addEventListener('progress', this.updateProgress);
     this.addEventListener('touchstart', this.touchstartListener, {passive: true});
     this.addEventListener('touchend', this.touchendListener, {passive: true});
     this.getLocation();
@@ -42,7 +42,7 @@ class MoonApp extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('location', this.updateLocation);
-    this.removeEventListener('progress', this.progress);
+    this.removeEventListener('progress', this.updateProgress);
     this.removeEventListener('touchstart', this.touchstartListener);
     this.removeEventListener('touchend', this.touchendListener);
   }
@@ -51,34 +51,19 @@ class MoonApp extends LitElement {
     return this;
   }
 
-  private navigate(event: Event) {
-    const target = <HTMLElement>event.target;
-    const direction = target.dataset.direction;
-    
-    const date = (direction === 'prev') ? this.utils.prevDate() : this.utils.nextDate();
-    const url = this.utils.makeUrl(date, this.location);
+  /**
+   * On first run, location may or may not be set. If not, check if there's a
+   * location in the address bar and use that. Then check localStorage, and
+   * if that doesn't exist, use the default location.
+   */
+  private getLocation() {
+    const location = new URL(window.location.href).searchParams.get('w');
 
-    if (url.hostname === window.location.hostname) {
-      history.replaceState(null, '', url);
-      this.updateApp();
-    }
-  }
-
-  private async updateLocation(event: CustomEvent) {
-    await this.updateComplete;
-    this.location = event.detail.location;
-
-    const url = new URL(window.location.href);
-    url.searchParams.set('w', this.utils.urlify(this.location));
-    history.replaceState(null, '', url);
-
-    this.updateApp();
-  }
-
-  private reset(event: Event) {
-    event.preventDefault();
-    history.replaceState(null, '', window.location.pathname);
-    this.updateApp();
+    if (location) {
+      this.location = location.replace(/[+]/g, ' ');
+     } else {
+      this.location = localStorage.getItem(this.storageItem) || this.defaultLocation;
+     }
   }
 
   private async updateApp(): Promise<any> {
@@ -101,23 +86,41 @@ class MoonApp extends LitElement {
     this.loading = false;
   }
 
-  private progress(event: CustomEvent) {
-    this.loading = event.detail.enabled;
+  private async updateLocation(event: CustomEvent) {
+    await this.updateComplete;
+    this.location = event.detail.location;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('w', this.utils.urlify(this.location));
+    history.replaceState(null, '', url);
+
+    this.updateApp();
   }
 
   /**
-   * On first run, location may or may not be set. If not, check if there's a
-   * location in the address bar and use that. Then check localStorage, and
-   * if that doesn't exist, use the default location.
+   * Shows/hides the progress bar when fetching data.
    */
-  private getLocation() {
-    const location = new URL(window.location.href).searchParams.get('w');
+  private updateProgress(event: CustomEvent) {
+    this.loading = event.detail.enabled;
+  }
 
-    if (location) {
-      this.location = location.replace(/[+]/g, ' ');
-     } else {
-      this.location = localStorage.getItem(this.storageItem) || this.defaultLocation;
-     }
+  private navigate(event: Event) {
+    const target = <HTMLElement>event.target;
+    const direction = target.dataset.direction;
+    
+    const date = (direction === 'prev') ? this.utils.prevDate() : this.utils.nextDate();
+    const url = this.utils.makeUrl(date, this.location);
+
+    if (url.hostname === window.location.hostname) {
+      history.replaceState(null, '', url);
+      this.updateApp();
+    }
+  }
+
+  private reset(event: Event) {
+    event.preventDefault();
+    history.replaceState(null, '', window.location.pathname);
+    this.updateApp();
   }
 
   private handleTouchstart(event: TouchEvent) {
@@ -133,9 +136,7 @@ class MoonApp extends LitElement {
   }
 
   protected render() {
-    if (!this.moonData) {
-      return;
-    }
+    if (!this.moonData) return;
 
     const {hemisphere, illumination, moonrise, moonset, percent, phase, sunrise, sunset} = this.moonData;
     const active = this.utils.activeDate();
