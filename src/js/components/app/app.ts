@@ -14,7 +14,7 @@ class MoonApp extends LitElement {
   private utils: Utils;
 
   @state() baseTitle: string = document.title;
-  @state() defaultLocation: string = 'New York';
+  @state() defaultLocation: string = 'New Orleans';
   @state() loading: boolean;
   @state() location: string;
   @state() moonData: MoonData;
