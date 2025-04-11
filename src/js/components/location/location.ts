@@ -107,18 +107,22 @@ class MoonLocation extends LitElement {
   }
 
   protected render() {
+    const label = 'Enter a location';
     return html`
       <form
         @reset="${this.clearLocation}"
         @submit="${this.updateLocation}">
         <input
-          aria-label="Enter a location"
+          aria-label="${label}"
           inputmode="search"
-          required
+          title="${label}"
           type="text"
           value="${this.location}"
+          required
           @blur="${this.restoreLocation}">
-        <button type="submit" aria-label="Update location"></button>
+        <button
+          aria-label="Update location"
+          type="submit"></button>
         ${this.renderResetButton()}
         ${this.renderGeoButton()}
       </form>
@@ -126,9 +130,13 @@ class MoonLocation extends LitElement {
   }
 
   private renderResetButton() {
+    const label = 'Clear location';
     return html`
-      <button type="reset" aria-label="Clear location">
-        <svg viewbox="0 0 24 24" aria-hidden="true">
+      <button
+        aria-label="${label}"
+        title="${label}"
+        type="reset">
+        <svg aria-hidden="true" viewbox="0 0 24 24">
           <circle cx="12" cy="12" r="6"/>
           <path d="M10,10 L14,14 M10,14 L14,10"/>
         </svg>
@@ -138,13 +146,15 @@ class MoonLocation extends LitElement {
 
   private renderGeoButton() {
     if (navigator.geolocation) {
+      const label = 'Get current location';
       return html`
         <button
-          type="button"
-          aria-label="Get current location"
+          aria-label="${label}"  
           id="geo"
+          title="${label}"
+          type="button"
           @click="${this.getGeolocation}">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
             <path d="M12,2 v3 M22,12 h-3 M12,22 v-3 M2,12 h3 M5,12 A7 7 0 1 1 19,12 M5,12 A7 7 0 0 0 19,12"/>
             <circle cx="12" cy="12" r="2.5"/>
           </svg>
