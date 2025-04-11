@@ -2,6 +2,7 @@ const path = require('path');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const FontPreloadPlugin = require('webpack-font-preload-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -21,6 +22,11 @@ module.exports = {
       ],
     }),
     new Dotenv(),
+    new FontPreloadPlugin({
+      index: 'index.html',
+      insertBefore: 'link:first-of-type',
+      loadType: 'preload',
+    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/html/index.html',
