@@ -56,6 +56,7 @@ export class DataFetcher {
       this.timezone = tzLookup(lat, lon);
       this.location = newLocation;
     }
+
     // Create a Date object from the date parameter for SunCalc.
     const {year, month, day} = date;
     const monthIndex = month - 1;
@@ -66,6 +67,7 @@ export class DataFetcher {
     const {sunrise, sunset} = this.sunriseSunset();
     const {moonrise, moonset} = this.moonriseMoonset();
 
+    // Bundle eveything up for rendering.
     return {
       hemisphere: this.hemisphere(),
       illumination: this.moonPhaseIllumination(),

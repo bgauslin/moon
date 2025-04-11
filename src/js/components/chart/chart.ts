@@ -61,9 +61,7 @@ class MoonChart extends HTMLElement {
     const start = this.getAttribute('start');
     const end = this.getAttribute('end');
 
-    if (!start || !end) {
-      return;
-    }
+    if (!start || !end) return;
 
     // Convert values to degrees for arc. 'sweep' start and end values are
     // adjusted since the default start for SVG circles is 3 o'clock and we
