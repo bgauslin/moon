@@ -46,17 +46,17 @@ class MoonPhoto extends HTMLElement {
    */
   renderImage(frame: number) {
     const count = (frame < 10) ? `0${frame}` : frame;
-    const image1x = `img/phase-${count}@1x.webp`;
-    const image2x = `img/phase-${count}@2x.webp`;
+    const image1x = `images/phase-${count}@1x.webp`;
+    const image2x = `images/phase-${count}@2x.webp`;
 
-    const image = document.createElement('img');
-    image.alt = '';
-    image.src = image1x;
-    image.srcset = `${image1x} 1x, ${image2x} 2x`;
-    image.height = 204;
-    image.width = 204;
+    const img = document.createElement('img');
+    img.alt = '';
+    img.src = image1x;
+    img.srcset = `${image1x} 1x, ${image2x} 2x`;
+    img.height = 204;
+    img.width = 204;
 
-    return image;
+    return img;
   }
 }
 
