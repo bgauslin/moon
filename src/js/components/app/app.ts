@@ -147,32 +147,26 @@ class MoonApp extends LitElement {
     return html`
       <div id="phase">${phase}</div>
       <div id="illumination">${illumination}% illumination</div>
-
       <moon-photo
         hemisphere="${hemisphere}"
         percent="${percent}"></moon-photo>
-      
       <moon-chart
         name="sun"
         start="${sunrise}"
-        end="${sunset}"></moon-chart>
+        end="${sunset}"/></moon-chart>
       <moon-chart
         name="moon"
         start="${moonrise}"
         end="${moonset}"></moon-chart>
       <moon-ticks></moon-ticks>
-      
       <a href="/"
         id="date"
         title="Today"
         ?data-today="${isToday ?? true}"
         @click="${this.reset}">${prettyDate}</a>
-
       <moon-location .location="${this.location}"></moon-location>
-
       ${this.renderButton('prev')}
       ${this.renderButton('next')}
-
       <div
         class="progress-bar"
         ?data-loading="${this.loading}"></div>
@@ -182,12 +176,10 @@ class MoonApp extends LitElement {
   private renderButton(direction: string) {
     let path = 'M9,4 L17,12 L9,20';
     let date = this.utils.nextDate();
-
     if (direction === 'prev') {
       path = 'M15,4 L7,12 L15,20';
       date = this.utils.prevDate();
     }
-
     const label = this.utils.prettyDate(date, document.documentElement.lang, 'long');
 
     return html`
@@ -197,7 +189,7 @@ class MoonApp extends LitElement {
         title="${label}"
         type="button"
         @click="${this.navigate}">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
+        <svg aria-hidden="true" viewbox="0 0 24 24">
           <path d="${path}"/>
         </svg>
       </button>

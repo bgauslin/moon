@@ -29,6 +29,7 @@ export const chart = {
  * and the custom element also renders the start and end time labels with
  * rotation adjustments for which vertical half of the app the time label is on.
  */
+customElements.define('moon-chart',
 class MoonChart extends HTMLElement {
   private axisOffset: number = -90;
   private circumference: number;
@@ -186,6 +187,4 @@ class MoonChart extends HTMLElement {
   private degreesToRadians(angle: number): number {
     return angle * (Math.PI / 180);
   }
-}
-
-customElements.define('moon-chart', MoonChart);
+});

@@ -154,7 +154,7 @@ class MoonLocation extends LitElement {
           title="${label}"
           type="button"
           @click="${this.getGeolocation}">
-          <svg aria-hidden="true" viewBox="0 0 24 24">
+          <svg aria-hidden="true" viewbox="0 0 24 24">
             <path d="M12,2 v3 M22,12 h-3 M12,22 v-3 M2,12 h3 M5,12 A7 7 0 1 1 19,12 M5,12 A7 7 0 0 0 19,12"/>
             <circle cx="12" cy="12" r="2.5"/>
           </svg>

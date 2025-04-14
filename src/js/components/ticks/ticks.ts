@@ -8,6 +8,7 @@ interface Tick {
 /**
  * Renders an SVG containing grouped lines.
  */
+customElements.define('moon-ticks',
 class MoonTicks extends HTMLElement {
   private angle: number;
   private center: number;
@@ -66,7 +67,7 @@ class MoonTicks extends HTMLElement {
     }
 
     this.innerHTML = `
-      <svg viewbox="0 0 ${this.size} ${this.size}" aria-hidden="true">
+      <svg aria-hidden="true" viewbox="0 0 ${this.size} ${this.size}">
         ${html}
       </svg>
     `;
@@ -97,6 +98,4 @@ class MoonTicks extends HTMLElement {
     }
     return ticks;
   }
-}
-
-customElements.define('moon-ticks', MoonTicks);
+});

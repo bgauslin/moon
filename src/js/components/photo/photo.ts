@@ -2,6 +2,7 @@
  * Custom element that renders a photo for the current moon phase when the
  * custom element's 'percent' attribute changes.
  */
+customElements.define('moon-photo',
 class MoonPhoto extends HTMLElement {
   private image: HTMLImageElement;
   private imageCount: number = 26;
@@ -58,6 +59,4 @@ class MoonPhoto extends HTMLElement {
 
     return img;
   }
-}
-
-customElements.define('moon-photo', MoonPhoto);
+});
