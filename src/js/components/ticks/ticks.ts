@@ -6,10 +6,9 @@ interface Tick {
 }
 
 /**
- * Renders an SVG containing grouped lines.
+ * Custom eleent that renders an SVG containing grouped lines. That's it.
  */
-customElements.define('moon-ticks',
-class MoonTicks extends HTMLElement {
+customElements.define('moon-ticks', class extends HTMLElement {
   private angle: number;
   private center: number;
   private divisions: number = 24;
