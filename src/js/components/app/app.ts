@@ -151,18 +151,18 @@ class MoonApp extends LitElement {
         hemisphere="${hemisphere}"
         percent="${percent}"></moon-photo>
       <moon-chart
+        end="${sunset}"
         name="sun"
-        start="${sunrise}"
-        end="${sunset}"/></moon-chart>
+        start="${sunrise}"></moon-chart>
       <moon-chart
+        end="${moonset}"
         name="moon"
-        start="${moonrise}"
-        end="${moonset}"></moon-chart>
+        start="${moonrise}"></moon-chart>
       <moon-ticks></moon-ticks>
       <a href="/"
+        ?data-today="${isToday ?? true}"  
         id="date"
         title="Today"
-        ?data-today="${isToday ?? true}"
         @click="${this.reset}">${prettyDate}</a>
       <moon-location .location="${this.location}"></moon-location>
       ${this.renderButton('prev')}
