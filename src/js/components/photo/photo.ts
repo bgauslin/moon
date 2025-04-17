@@ -18,7 +18,7 @@ customElements.define('moon-photo', class extends HTMLElement {
    * Converts a percentage to its corresponding integer within a range of
    * numbers whose maximum is less than 100, then renders that image.
    */
-  updateImage(percent: number) {
+  private updateImage(percent: number) {
     const currentFrame = Math.round((percent / 100) * this.imageCount);
     const frame = (currentFrame === 0) ? this.imageCount : currentFrame;
 
@@ -42,7 +42,7 @@ customElements.define('moon-photo', class extends HTMLElement {
   /**
    * Helper function for rendering an image.
    */
-  renderImage(frame: number) {
+  private renderImage(frame: number): HTMLImageElement {
     const count = (frame < 10) ? `0${frame}` : frame;
     const image1x = `images/phase-${count}@1x.webp`;
     const image2x = `images/phase-${count}@2x.webp`;
