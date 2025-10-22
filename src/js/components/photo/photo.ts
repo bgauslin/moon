@@ -44,8 +44,8 @@ customElements.define('moon-photo', class extends HTMLElement {
    */
   private renderImage(frame: number): HTMLImageElement {
     const count = (frame < 10) ? `0${frame}` : frame;
-    const image1x = `images/phase-${count}@1x.webp`;
-    const image2x = `images/phase-${count}@2x.webp`;
+    const image1x = `./images/phase-${count}@1x.webp`;
+    const image2x = `./images/phase-${count}@2x.webp`;
 
     const img = document.createElement('img');
     img.alt = '';
