@@ -3,6 +3,7 @@ import {customElement, state} from 'lit/decorators.js';
 import {DataFetcher, MoonData} from '../../modules/DataFetcher';
 import {Utils} from '../../modules/Utils';
 
+
 /**
  * Custom element that controls the application.
  */

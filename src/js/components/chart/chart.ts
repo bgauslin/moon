@@ -15,13 +15,16 @@ interface Point {
   y: number,
 }
 
-/** Dimensions for SVG chart elements. */
+/**
+ * Dimensions for SVG chart elements.
+ */
 export const chart = {
   gap: 8,
   margin: 44,
   size: 320,
   sweep: 72,
 }
+
 
 /**
  * Custom element that renders a partial donut chart whose start and end

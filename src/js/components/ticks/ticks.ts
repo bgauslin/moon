@@ -1,5 +1,6 @@
 import {chart} from '../chart/chart';
 
+
 interface Tick {
   start: number,
   end: number,
