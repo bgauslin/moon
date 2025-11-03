@@ -10,8 +10,8 @@ import {Utils} from '../../modules/Utils';
 @customElement('moon-app')
 class MoonApp extends LitElement {
   private fetcher: DataFetcher;
-  private touchendListener: EventListenerObject;
-  private touchstartListener: EventListenerObject;
+  private touchendHandler: EventListenerObject;
+  private touchstartHandler: EventListenerObject;
   private utils: Utils;
 
   @state() baseTitle: string = document.title;
@@ -26,16 +26,16 @@ class MoonApp extends LitElement {
     super();
     this.fetcher = new DataFetcher();
     this.utils = new Utils();
-    this.touchstartListener = this.handleTouchstart.bind(this);
-    this.touchendListener = this.handleTouchend.bind(this);
+    this.touchstartHandler = this.handleTouchstart.bind(this);
+    this.touchendHandler = this.handleTouchend.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('location', this.updateLocation);
     this.addEventListener('progress', this.updateProgress);
-    this.addEventListener('touchstart', this.touchstartListener, {passive: true});
-    this.addEventListener('touchend', this.touchendListener, {passive: true});
+    this.addEventListener('touchstart', this.touchstartHandler, {passive: true});
+    this.addEventListener('touchend', this.touchendHandler, {passive: true});
     this.getLocation();
     this.updateApp();
   }
@@ -44,8 +44,8 @@ class MoonApp extends LitElement {
     super.disconnectedCallback();
     this.removeEventListener('location', this.updateLocation);
     this.removeEventListener('progress', this.updateProgress);
-    this.removeEventListener('touchstart', this.touchstartListener);
-    this.removeEventListener('touchend', this.touchendListener);
+    this.removeEventListener('touchstart', this.touchstartHandler);
+    this.removeEventListener('touchend', this.touchendHandler);
   }
 
   protected createRenderRoot() {

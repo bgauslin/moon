@@ -6,7 +6,7 @@ customElements.define('moon-photo', class extends HTMLElement {
   private image: HTMLImageElement;
   private imageCount: number = 26;
 
-  static  observedAttributes: string[] = ['percent'];
+  static observedAttributes: string[] = ['percent'];
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === 'percent' && newValue !== oldValue) {
