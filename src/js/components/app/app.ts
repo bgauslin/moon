@@ -8,7 +8,7 @@ import {Utils} from '../../modules/Utils';
  * Custom element that controls the application.
  */
 @customElement('moon-app')
-class MoonApp extends LitElement {
+class App extends LitElement {
   private fetcher: DataFetcher;
   private touchendHandler: EventListenerObject;
   private touchstartHandler: EventListenerObject;
