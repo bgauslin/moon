@@ -10,6 +10,7 @@ import {Utils} from '../../modules/Utils';
 @customElement('moon-app')
 class App extends LitElement {
   private fetcher: DataFetcher;
+  private keyHandler: EventListenerObject;
   private touchendHandler: EventListenerObject;
   private touchstartHandler: EventListenerObject;
   private utils: Utils;
@@ -26,12 +27,14 @@ class App extends LitElement {
     super();
     this.fetcher = new DataFetcher();
     this.utils = new Utils();
+    this.keyHandler = this.handleKey.bind(this);
     this.touchstartHandler = this.handleTouchstart.bind(this);
     this.touchendHandler = this.handleTouchend.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
+    document.addEventListener('keydown', this.keyHandler);
     this.addEventListener('location', this.updateLocation);
     this.addEventListener('progress', this.updateProgress);
     this.addEventListener('touchstart', this.touchstartHandler, {passive: true});
@@ -42,6 +45,7 @@ class App extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    document.removeEventListener('keydown', this.keyHandler);
     this.removeEventListener('location', this.updateLocation);
     this.removeEventListener('progress', this.updateProgress);
     this.removeEventListener('touchstart', this.touchstartHandler);
@@ -105,10 +109,7 @@ class App extends LitElement {
     this.loading = event.detail.enabled;
   }
 
-  private navigate(event: Event) {
-    const target = <HTMLElement>event.target;
-    const direction = target.dataset.direction;
-    
+  private navigate(direction: string) {
     const date = (direction === 'prev') ? this.utils.prevDate() : this.utils.nextDate();
     const url = this.utils.makeUrl(date, this.location);
 
@@ -122,6 +123,22 @@ class App extends LitElement {
     event.preventDefault();
     history.replaceState(null, '', window.location.pathname);
     this.updateApp();
+  }
+
+  private handleKey(event: KeyboardEvent) {
+    const {code} = event;
+
+    if (code === 'ArrowRight') {
+      this.navigate('next');
+    }
+
+    if (code === 'ArrowLeft') {
+      this.navigate('prev');
+    }
+
+    if (code === 'Space') {
+      this.reset(event);
+    }
   }
 
   private handleTouchstart(event: TouchEvent) {
@@ -189,7 +206,7 @@ class App extends LitElement {
         data-direction="${direction}"  
         title="${label}"
         type="button"
-        @click="${this.navigate}">
+        @click="${() => this.navigate(direction)}">
         <svg aria-hidden="true" viewbox="0 0 24 24">
           <path d="${path}"/>
         </svg>
