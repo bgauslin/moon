@@ -6,20 +6,25 @@ moon-chart {
     font-size: .8125em;
   }
 
-  &[name="sun"] circle {
-    stroke: #f8c537;
+  &[name='sun'] {
+    circle {
+      stroke: var(--sun-color);
+    }
+
+    text {
+      fill: var(--sun-color);
+    }
   }
 
-  &[name="sun"] text {
-    fill: #f8c537;
-  }
+  /* Blend moon arc with sun arc via opacity where they overlap. */
+  &[name='moon'] {
+    circle {
+      opacity: .5;
+      stroke: var(--moon-color);
+    }
 
-  &[name="moon"] circle {
-    opacity: .5; // Blend moon arc with sun arc where they overlap.
-    stroke: white;
-  }
-
-  &[name="moon"] text {
-    fill: white;
+    text {
+      fill: var(--moon-color);
+    }
   }
 }

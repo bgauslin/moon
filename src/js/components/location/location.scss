@@ -31,7 +31,6 @@ moon-location {
     text-align: center;
   }
 
-  // General button styles.
   button {
     aspect-ratio: 1;
     background-color: transparent;
@@ -43,13 +42,15 @@ moon-location {
     transition: background-color var(--transition);
   }
 
-  // Hide the submit button and capture the event on Enter/Go.
+  /* Hide the submit button and capture the event on Enter/Go. */
   [type='submit'] {
     grid-area: 1 / 1 / -1 / -1;
     visibility: hidden;
   }
 
-  // Reset button and icon styles.
+  /**
+   * Reset button.
+   */
   [type='reset'] {
     color: white;
     grid-area: reset;
@@ -90,7 +91,9 @@ moon-location {
     }
   }
 
-  // Geolocation button.
+  /**
+   * Geolocation button.
+   */
   [id='geo'] {
     background-color: var(--background-0);
     color: white;

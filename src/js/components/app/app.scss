@@ -1,3 +1,6 @@
+/**
+ * App variables.
+ */
 moon-app {
   --app-gap: 0 .5rem;
   --app-grid: '. phase .' 2fr '. illumination .' 1fr 'charts charts charts' '. date .' 1fr 'prev location next' 2fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
@@ -9,6 +12,8 @@ moon-app {
   --charts-max-size: 30rem;
   --controls-size: 2.75rem;
   --fineprint: .75em;
+  --moon-color: white;
+  --sun-color: #f8c537;
   --transition: .3s;
   --transition-intro: 1s;
 
@@ -21,6 +26,9 @@ moon-app {
   }
 }
 
+/**
+ * App properties.
+ */
 moon-app {
   block-size: 100dvh;
   display: grid;
@@ -29,14 +37,9 @@ moon-app {
   inline-size: 100vw;
 }
 
-[id='phase'] {
-  grid-area: phase;
-}
-
-[id='illumination'] {
-  grid-area: illumination;
-}
-
+/**
+ * SVG donut charts and photo.
+ */
 :is(moon-chart, moon-ticks, [id='photo']) {
   animation: scaleIn var(--transition-intro) ease;
   aspect-ratio: 1;  
@@ -44,20 +47,16 @@ moon-app {
   place-self: center;
 }
 
+/**
+ * Geolocation widget.
+ */
 moon-location {
   animation: slideInUp var(--transition-intro) ease;
 }
 
-[data-direction='prev'] {
-  animation: slideInLeft var(--transition-intro) ease;
-  grid-area: prev;
-}
-
-[data-direction='next'] {
-  animation: slideInRight var(--transition-intro) ease;
-  grid-area: next;
-}
-
+/**
+ * Current date link.
+ */
 [id='date'] {
   animation: slideInUp var(--transition-intro) ease;
   display: block;
@@ -97,6 +96,9 @@ moon-location {
   }
 }
 
+/**
+ * Text elements.
+ */
 [id='phase'],
 [id='illumination'] {
   animation: slideInDown var(--transition-intro) ease;
@@ -105,16 +107,20 @@ moon-location {
 
 [id='phase'] {
   color: white;
+  grid-area: phase;
   place-self: end center;
 }
 
 [id='illumination'] {
   color: rgba(white, .7);
+  grid-area: illumination;
   margin-block: .5rem 0;
   place-self: start center;
 }
 
-// Prev-next buttons.
+/**
+ * Prev-next navigation buttons.
+ */
 [data-direction] {
   aspect-ratio: 1;
   background-color: var(--background-1);
@@ -153,4 +159,14 @@ moon-location {
     inline-size: 1.5rem;
     transition: transform var(--transition);
   }
+}
+
+[data-direction='prev'] {
+  animation: slideInLeft var(--transition-intro) ease;
+  grid-area: prev;
+}
+
+[data-direction='next'] {
+  animation: slideInRight var(--transition-intro) ease;
+  grid-area: next;
 }

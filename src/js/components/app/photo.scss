@@ -4,8 +4,8 @@
   aspect-ratio: 1;
   background: image-set('../images/all-phases@1x.webp' 1x, '../images/all-phases@2x.webp' 2x) no-repeat 0 0 / 100%;
   border-radius: 50%;
-  inline-size: 42.5%;     // = max-inline-size / 480 viewbox
-  max-inline-size: 204px; // = 480 viewbox * inline-size
+  inline-size: 42.5%;      // = max-inline-size / 480 viewbox
+  max-inline-size: 204px;  // = 480 viewbox * inline-size
 
   &[data-hemisphere='southern'] {
     transform: rotate(180deg);
