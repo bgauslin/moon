@@ -4,16 +4,8 @@
   aspect-ratio: 1;
   background: image-set('../images/all-phases@1x.webp' 1x, '../images/all-phases@2x.webp' 2x) no-repeat 0 0 / 100%;
   border-radius: 50%;
-  display: grid;
-  grid: 1fr / 1fr;
   inline-size: 42.5%;     // = max-inline-size / 480 viewbox
   max-inline-size: 204px; // = 480 viewbox * inline-size
-  overflow: hidden;
-  place-items: center;
-
-  & > * {
-    grid-area: 1 / 1;
-  }
 
   &[data-hemisphere='southern'] {
     transform: rotate(180deg);
@@ -29,5 +21,3 @@
     }
   }
 }
-
-
