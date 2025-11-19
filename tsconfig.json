@@ -14,9 +14,9 @@
   ],
   "files": [
     "src/js/index.ts",
-    "src/js/components/app/app.ts",
-    "src/js/components/chart/chart.ts",
-    "src/js/components/location/location.ts",
-    "src/js/components/ticks/ticks.ts"
+    "src/js/app.ts",
+    "src/js/chart.ts",
+    "src/js/location.ts",
+    "src/js/ticks.ts"
   ]
 }

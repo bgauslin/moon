@@ -1,4 +1,4 @@
-import {chart} from '../chart/chart';
+import {chart} from './chart';
 
 
 interface Tick {

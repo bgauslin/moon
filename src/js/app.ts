@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
-import {DataFetcher, MoonData} from '../../modules/DataFetcher';
-import {Utils} from '../../modules/Utils';
+import {DataFetcher, MoonData} from './DataFetcher';
+import {Utils} from './Utils';
 
 
 /**

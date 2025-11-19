@@ -1,6 +1,6 @@
-import './components/app/app';
-import './components/chart/chart';
-import './components/location/location';
-import './components/ticks/ticks';
+import './app';
+import './chart';
+import './location';
+import './ticks';
 
 import '../styles/index.scss';
