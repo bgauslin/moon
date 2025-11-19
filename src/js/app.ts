@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
-import {DataFetcher} from './data_fetcher';
+import {DataFetcher} from './data-fetcher';
 import {MoonData} from './shared';
 import {Utils} from './utils';
 
