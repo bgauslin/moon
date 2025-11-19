@@ -5,8 +5,7 @@ import {customElement, property, query, state} from 'lit/decorators.js';
 /**
  * Custom element that sets a location via text input or geolocation.
  */
-@customElement('moon-location')
-class Location extends LitElement {
+@customElement('moon-location') class Location extends LitElement {
   @property({attribute: 'location', reflect: true}) location: string;
   @query('#geo') geoButton: HTMLButtonElement;
   @query('input') input: HTMLInputElement;

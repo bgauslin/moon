@@ -1,4 +1,4 @@
-import {chart} from './chart';
+import {Chart} from './shared';
 
 
 interface Tick {
@@ -7,7 +7,7 @@ interface Tick {
 }
 
 /**
- * Custom eleent that renders an SVG containing grouped lines. That's it.
+ * Custom element that renders an SVG containing grouped lines. That's it.
  */
 customElements.define('moon-ticks', class extends HTMLElement {
   private angle: number;
@@ -15,7 +15,7 @@ customElements.define('moon-ticks', class extends HTMLElement {
   private divisions: number = 24;
   private major: Tick;
   private minor: Tick;
-  private size: number = chart.size + (chart.margin * 2);
+  private size: number = Chart.size + (Chart.margin * 2);
   private sweep: Tick;
 
   constructor() {
@@ -28,7 +28,7 @@ customElements.define('moon-ticks', class extends HTMLElement {
   }
 
   private setProperties() {
-    const {margin, sweep} = chart;
+    const {margin, sweep} = Chart;
 
     this.angle = 360 / this.divisions;
     this.center = this.size / 2;

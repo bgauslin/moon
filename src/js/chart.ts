@@ -1,29 +1,4 @@
-interface Arc {
-  radius: number,
-  sweep: number,
-}
-
-interface LabelProps {
-  angle: number,
-  radius: number,
-  xOffset: number,
-  yOffset: number,
-}
-
-interface Point {
-  x: number,
-  y: number,
-}
-
-/**
- * Dimensions for SVG chart elements.
- */
-export const chart = {
-  gap: 8,
-  margin: 44,
-  size: 320,
-  sweep: 72,
-}
+import {Arc, Chart, LabelProps, Point} from './shared';
 
 
 /**
@@ -37,8 +12,8 @@ customElements.define('moon-chart', class extends HTMLElement {
   private circumference: number;
   private cx: number;
   private cy: number;
-  private size: number = chart.size + (chart.margin * 2);
-  private radius: number = (chart.size - chart.sweep) / 2;
+  private size: number = Chart.size + (Chart.margin * 2);
+  private radius: number = (Chart.size - Chart.sweep) / 2;
 
   static observedAttributes: string[] = ['start', 'end'];
 
@@ -106,7 +81,7 @@ customElements.define('moon-chart', class extends HTMLElement {
     const setTransform = `rotate(${setSweep.sweep}, ${setRotation.x}, ${setRotation.y})`;
 
     // Static values.
-    const strokeWidth = chart.sweep;
+    const strokeWidth = Chart.sweep;
     
     // Render the chart.
     this.innerHTML = `
@@ -140,7 +115,7 @@ customElements.define('moon-chart', class extends HTMLElement {
    */
   private labelPlacement(degrees: number): Arc {
     // Gap from edge of chart's arc for label placement.
-    const {gap, margin, size} = chart;
+    const {gap, margin, size} = Chart;
 
     let radiusForLabels = (size / 2) + gap;
     let sweep = degrees;

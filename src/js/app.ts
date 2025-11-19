@@ -1,14 +1,14 @@
 import {LitElement, html} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
-import {DataFetcher, MoonData} from './DataFetcher';
-import {Utils} from './Utils';
+import {DataFetcher} from './data_fetcher';
+import {MoonData} from './shared';
+import {Utils} from './utils';
 
 
 /**
  * Custom element that controls the application.
  */
-@customElement('moon-app')
-class App extends LitElement {
+@customElement('moon-app') class App extends LitElement {
   private fetcher: DataFetcher;
   private keyHandler: EventListenerObject;
   private touchendHandler: EventListenerObject;

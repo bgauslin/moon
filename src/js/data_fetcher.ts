@@ -1,28 +1,8 @@
 import SunCalc from 'suncalc';
 import tzLookup from 'tz-lookup';
-import {AppDate, Utils} from './Utils';
+import {AppDate, Utils} from './utils';
+import {MoonData, MoonriseMoonset, SunriseSunset} from './shared';
 
-
-export interface MoonData {
-  hemisphere: string,
-  illumination: number,
-  moonrise: string,
-  moonset: string,
-  percent: number,
-  phase: string,
-  sunrise: string,
-  sunset: string,
-}
-
-interface MoonriseMoonset {
-  moonrise: string,
-  moonset: string,
-}
-
-interface SunriseSunset {
-  sunrise: string,
-  sunset: string,
-}
 
 /**
  * Class that gets lat/lng coordinates from a geocoding API to then
