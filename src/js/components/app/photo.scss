@@ -1,0 +1,33 @@
+@use 'sass:math';
+
+[id='photo'] {
+  aspect-ratio: 1;
+  background: image-set('../images/all-phases@1x.webp' 1x, '../images/all-phases@2x.webp' 2x) no-repeat 0 0 / 100%;
+  border-radius: 50%;
+  display: grid;
+  grid: 1fr / 1fr;
+  inline-size: 42.5%;     // = max-inline-size / 480 viewbox
+  max-inline-size: 204px; // = 480 viewbox * inline-size
+  overflow: hidden;
+  place-items: center;
+
+  & > * {
+    grid-area: 1 / 1;
+  }
+
+  &[data-hemisphere='southern'] {
+    transform: rotate(180deg);
+  }
+
+  // The sprite has 26 photos, but we need to add/subtract one to ensure
+  // proper css positioning from 0-100% with a 1-based index.
+  $total: 25;
+  $shift: math.div(100, $total);
+  @for $n from 0 through $total {
+    &[data-frame='#{$n + 1}'] { 
+      background-position: 0 math.percentage(math.div($n * $shift, 100));
+    }
+  }
+}
+
+

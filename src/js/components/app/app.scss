@@ -37,7 +37,7 @@ moon-app {
   grid-area: illumination;
 }
 
-:is(moon-chart, moon-photo, moon-ticks) {
+:is(moon-chart, moon-ticks, [id='photo']) {
   animation: scaleIn var(--transition-intro) ease;
   aspect-ratio: 1;  
   grid-area: charts;

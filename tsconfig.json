@@ -17,7 +17,6 @@
     "src/js/components/app/app.ts",
     "src/js/components/chart/chart.ts",
     "src/js/components/location/location.ts",
-    "src/js/components/photo/photo.ts",
     "src/js/components/ticks/ticks.ts"
   ]
 }

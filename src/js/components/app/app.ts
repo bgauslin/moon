@@ -20,6 +20,7 @@ class App extends LitElement {
   @state() loading: boolean;
   @state() location: string;
   @state() moonData: MoonData;
+  @state() photoCount: number = 26;
   @state() storageItem: string = 'location';
   @state() touchTarget: HTMLElement;
 
@@ -128,6 +129,11 @@ class App extends LitElement {
   private handleKey(event: KeyboardEvent) {
     const {code} = event;
 
+    // Ignore keyboard events if location field is active.
+    if (document.activeElement.tagName === 'INPUT') {
+      return;
+    }
+
     if (code === 'ArrowRight') {
       this.navigate('next');
     }
@@ -162,12 +168,17 @@ class App extends LitElement {
     const isToday = `${active.year}${active.month}${active.day}` === `${today.year}${today.month}${today.day}`;
     const prettyDate = this.utils.prettyDate(active, document.documentElement.lang, 'long');
 
+    // Set frame number for the photo to an integer between 1 and 26.
+    const currentFrame = Math.floor((percent / 100) * this.photoCount) + 1;
+    const frame = (currentFrame === 0) ? this.photoCount : currentFrame;
+
     return html`
       <div id="phase">${phase}</div>
       <div id="illumination">${illumination}% illumination</div>
-      <moon-photo
-        hemisphere="${hemisphere}"
-        percent="${percent}"></moon-photo>
+      <div
+        id="photo"
+        data-frame="${frame}"
+        data-hemisphere="${hemisphere}"></div>
       <moon-chart
         end="${sunset}"
         name="sun"
