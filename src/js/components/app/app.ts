@@ -17,6 +17,7 @@ class App extends LitElement {
 
   @state() baseTitle: string = document.title;
   @state() defaultLocation: string = 'Montevideo';
+  @state() intro: boolean = true;
   @state() loading: boolean;
   @state() location: string;
   @state() moonData: MoonData;
@@ -90,6 +91,18 @@ class App extends LitElement {
     localStorage.setItem(this.storageItem, this.location);
 
     this.loading = false;
+
+    // Set a guard attribute for playing element animations only once.
+    if (this.intro) {
+      this.setAttribute('intro', '');
+      await this.updateComplete;
+
+      const photo = this.querySelector('[id="photo"]');
+      photo.addEventListener('animationend', () => {
+        this.removeAttribute('intro');
+        this.intro = false;
+      }, {once: true});
+    }
   }
 
   private async updateLocation(event: CustomEvent) {

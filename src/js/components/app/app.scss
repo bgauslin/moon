@@ -11,11 +11,11 @@ moon-app {
   --chart-size: 14.5rem;
   --charts-max-size: 30rem;
   --controls-size: 2.75rem;
+  --duration-intro: 1s;
   --fineprint: .75em;
   --moon-color: white;
   --sun-color: #f8c537;
   --transition: .3s;
-  --transition-intro: 1s;
 
   @media (min-width: 36rem) {
     & {
@@ -41,24 +41,15 @@ moon-app {
  * SVG donut charts and photo.
  */
 :is(moon-chart, moon-ticks, [id='photo']) {
-  animation: scaleIn var(--transition-intro) ease;
   aspect-ratio: 1;  
   grid-area: charts;
   place-self: center;
 }
 
 /**
- * Geolocation widget.
- */
-moon-location {
-  animation: slideInUp var(--transition-intro) ease;
-}
-
-/**
  * Current date link.
  */
 [id='date'] {
-  animation: slideInUp var(--transition-intro) ease;
   display: block;
   grid-area: date;
   padding-block: .5rem;
@@ -101,7 +92,6 @@ moon-location {
  */
 [id='phase'],
 [id='illumination'] {
-  animation: slideInDown var(--transition-intro) ease;
   font-size: .875em;
 }
 
@@ -162,11 +152,9 @@ moon-location {
 }
 
 [data-direction='prev'] {
-  animation: slideInLeft var(--transition-intro) ease;
   grid-area: prev;
 }
 
 [data-direction='next'] {
-  animation: slideInRight var(--transition-intro) ease;
   grid-area: next;
 }
