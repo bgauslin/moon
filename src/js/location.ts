@@ -11,13 +11,21 @@ import {customElement, property, query, state} from 'lit/decorators.js';
   @query('input') input: HTMLInputElement;
   @state() previousLocation: string;
 
-  protected createRenderRoot() {
-    return this;
+  constructor() {
+    super();
   }
 
   connectedCallback() {
     super.connectedCallback();
     this.previousLocation = this.location;
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+  }
+
+  protected createRenderRoot() {
+    return this;
   }
 
   private updateLocation(event: Event) {

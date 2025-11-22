@@ -15,14 +15,14 @@ customElements.define('moon-chart', class extends HTMLElement {
   private size: number = Chart.size + (Chart.margin * 2);
   private radius: number = (Chart.size - Chart.sweep) / 2;
 
-  static observedAttributes: string[] = ['start', 'end'];
-
   constructor() {
     super();
     this.cx = this.size / 2;
     this.cy = this.size / 2;
     this.circumference = 2 * Math.PI * this.radius;
   }
+
+  static observedAttributes: string[] = ['start', 'end'];
 
   attributeChangedCallback() {
     this.render();
