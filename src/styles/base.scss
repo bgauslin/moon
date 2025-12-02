@@ -7,8 +7,8 @@
 
 :root {
   --link-color: CornflowerBlue;
-  --link-focus-color: DarkOrange;
-  --link-visited-color: MediumPurple;
+  --link-color-focus: DarkOrange;
+  --link-color-visited: MediumPurple;
 }
 
 :where(*) {
@@ -52,12 +52,12 @@ a {
   text-decoration: none;
 
   &:visited {
-    color: var(--link-visited-color);
+    color: var(--link-color-visited);
   }
   
   &:focus-visible,
   &:active {
-    color: var(--link-focus-color);
+    color: var(--link-color-focus);
   }
   
   @media (any-hover: hover) {
@@ -66,7 +66,7 @@ a {
     }
   
     &:hover {
-      color: var(--link-focus-color);
+      color: var(--link-color-focus);
     }
   }
 }
