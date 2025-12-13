@@ -17,6 +17,7 @@
     "src/js/app.ts",
     "src/js/chart.ts",
     "src/js/location.ts",
-    "src/js/ticks.ts"
+    "src/js/ticks.ts",
+    "src/js/touch.ts"
   ]
 }

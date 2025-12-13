@@ -11,8 +11,6 @@ import {Utils} from './utils';
 @customElement('moon-app') class App extends LitElement {
   private fetcher: DataFetcher;
   private keyHandler: EventListenerObject;
-  private touchEndHandler: EventListenerObject;
-  private touchStartHandler: EventListenerObject;
   private utils: Utils;
 
   @state() baseTitle: string = document.title;
@@ -30,15 +28,11 @@ import {Utils} from './utils';
     this.fetcher = new DataFetcher();
     this.utils = new Utils();
     this.keyHandler = this.handleKey.bind(this);
-    this.touchStartHandler = this.handleTouchStart.bind(this);
-    this.touchEndHandler = this.handleTouchEnd.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener(Events.KeyDown, this.keyHandler);
-    this.addEventListener(Events.TouchStart, this.touchStartHandler, {passive: true});
-    this.addEventListener(Events.TouchEnd, this.touchEndHandler, {passive: true});
     this.getLocation();
     this.updateApp();
   }
@@ -46,8 +40,6 @@ import {Utils} from './utils';
   disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener(Events.KeyDown, this.keyHandler);
-    this.removeEventListener(Events.TouchStart, this.touchStartHandler);
-    this.removeEventListener(Events.TouchEnd, this.touchEndHandler);
   }
 
   protected createRenderRoot() {
@@ -156,18 +148,6 @@ import {Utils} from './utils';
     }
   }
 
-  private handleTouchStart(event: TouchEvent) {
-    this.touchTarget = <HTMLElement>event.composedPath()[0];
-
-    if (['A', 'BUTTON'].includes(this.touchTarget.tagName)) {
-      this.touchTarget.classList.add('touch');
-    }
-  }
-
-  private handleTouchEnd() {
-    this.touchTarget.classList.remove('touch');
-  }
-
   protected render() {
     if (!this.moonData) return;
 
@@ -210,6 +190,7 @@ import {Utils} from './utils';
         @progress=${this.updateProgress}></moon-location>
       ${this.renderButton('prev')}
       ${this.renderButton('next')}
+      <moon-touch></moon-touch>
       <div
         class="progress-bar"
         ?data-loading=${this.loading}></div>
