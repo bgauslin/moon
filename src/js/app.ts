@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, state} from 'lit/decorators.js';
 import {DataFetcher} from './data-fetcher';
-import {MoonData} from './shared';
+import {Events, MoonData} from './shared';
 import {Utils} from './utils';
 
 
@@ -11,8 +11,8 @@ import {Utils} from './utils';
 @customElement('moon-app') class App extends LitElement {
   private fetcher: DataFetcher;
   private keyHandler: EventListenerObject;
-  private touchendHandler: EventListenerObject;
-  private touchstartHandler: EventListenerObject;
+  private touchEndHandler: EventListenerObject;
+  private touchStartHandler: EventListenerObject;
   private utils: Utils;
 
   @state() baseTitle: string = document.title;
@@ -30,28 +30,24 @@ import {Utils} from './utils';
     this.fetcher = new DataFetcher();
     this.utils = new Utils();
     this.keyHandler = this.handleKey.bind(this);
-    this.touchstartHandler = this.handleTouchstart.bind(this);
-    this.touchendHandler = this.handleTouchend.bind(this);
+    this.touchStartHandler = this.handleTouchStart.bind(this);
+    this.touchEndHandler = this.handleTouchEnd.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
-    document.addEventListener('keydown', this.keyHandler);
-    this.addEventListener('location', this.updateLocation);
-    this.addEventListener('progress', this.updateProgress);
-    this.addEventListener('touchstart', this.touchstartHandler, {passive: true});
-    this.addEventListener('touchend', this.touchendHandler, {passive: true});
+    document.addEventListener(Events.KeyDown, this.keyHandler);
+    this.addEventListener(Events.TouchStart, this.touchStartHandler, {passive: true});
+    this.addEventListener(Events.TouchEnd, this.touchEndHandler, {passive: true});
     this.getLocation();
     this.updateApp();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    document.removeEventListener('keydown', this.keyHandler);
-    this.removeEventListener('location', this.updateLocation);
-    this.removeEventListener('progress', this.updateProgress);
-    this.removeEventListener('touchstart', this.touchstartHandler);
-    this.removeEventListener('touchend', this.touchendHandler);
+    document.removeEventListener(Events.KeyDown, this.keyHandler);
+    this.removeEventListener(Events.TouchStart, this.touchStartHandler);
+    this.removeEventListener(Events.TouchEnd, this.touchEndHandler);
   }
 
   protected createRenderRoot() {
@@ -98,7 +94,7 @@ import {Utils} from './utils';
       await this.updateComplete;
 
       const photo = this.querySelector('[id="photo"]');
-      photo.addEventListener('animationend', () => {
+      photo.addEventListener(Events.AnimationEnd, () => {
         this.removeAttribute('intro');
         this.intro = false;
       }, {once: true});
@@ -160,7 +156,7 @@ import {Utils} from './utils';
     }
   }
 
-  private handleTouchstart(event: TouchEvent) {
+  private handleTouchStart(event: TouchEvent) {
     this.touchTarget = <HTMLElement>event.composedPath()[0];
 
     if (['A', 'BUTTON'].includes(this.touchTarget.tagName)) {
@@ -168,7 +164,7 @@ import {Utils} from './utils';
     }
   }
 
-  private handleTouchend() {
+  private handleTouchEnd() {
     this.touchTarget.classList.remove('touch');
   }
 
@@ -201,17 +197,22 @@ import {Utils} from './utils';
         name="moon"
         start="${moonrise}"></moon-chart>
       <moon-ticks></moon-ticks>
-      <a href="/"
-        ?data-today="${isToday ?? true}"  
+      <a href="./"
         id="date"
         title="Today"
-        @click="${this.reset}">${prettyDate}</a>
-      <moon-location .location="${this.location}"></moon-location>
+        ?data-today=${isToday ?? true}  
+        @click=${this.reset}>
+        ${prettyDate}
+      </a>
+      <moon-location
+        .location=${this.location}
+        @location=${this.updateLocation}
+        @progress=${this.updateProgress}></moon-location>
       ${this.renderButton('prev')}
       ${this.renderButton('next')}
       <div
         class="progress-bar"
-        ?data-loading="${this.loading}"></div>
+        ?data-loading=${this.loading}></div>
     `;
   }
 
@@ -230,8 +231,8 @@ import {Utils} from './utils';
         data-direction="${direction}"  
         title="${label}"
         type="button"
-        @click="${() => this.navigate(direction)}">
-        <svg aria-hidden="true" viewbox="0 0 24 24">
+        @click=${() => this.navigate(direction)}>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="${path}"/>
         </svg>
       </button>

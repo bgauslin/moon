@@ -1,14 +1,17 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, nothing} from 'lit';
 import {customElement, property, query, state} from 'lit/decorators.js';
+import {Events} from './shared';
 
 
 /**
  * Custom element that sets a location via text input or geolocation.
  */
 @customElement('moon-location') class Location extends LitElement {
-  @property({attribute: 'location', reflect: true}) location: string;
+  @property({reflect: true}) location: string;
+  
   @query('#geo') geoButton: HTMLButtonElement;
   @query('input') input: HTMLInputElement;
+  
   @state() previousLocation: string;
 
   constructor() {
@@ -95,9 +98,7 @@ import {customElement, property, query, state} from 'lit/decorators.js';
   }
 
   private sendLocation() {
-    this.dispatchEvent(new CustomEvent('location', {
-      bubbles: true,
-      composed: true,
+    this.dispatchEvent(new CustomEvent(Events.Location, {
       detail: {
         location: this.location,
       }
@@ -105,9 +106,7 @@ import {customElement, property, query, state} from 'lit/decorators.js';
   }
 
   private sendProgress(enabled: boolean) {
-    this.dispatchEvent(new CustomEvent('progress', {
-      bubbles: true,
-      composed: true,
+    this.dispatchEvent(new CustomEvent(Events.Progress, {
       detail: {
         enabled: enabled,
       }
@@ -115,59 +114,49 @@ import {customElement, property, query, state} from 'lit/decorators.js';
   }
 
   protected render() {
-    const label = 'Enter a location';
+    const geolocationLabel = 'Get current location';
+    const locationLabel = 'Enter a location';
+    const resetLabel = 'Clear location';
     return html`
       <form
-        @reset="${this.clearLocation}"
-        @submit="${this.updateLocation}">
+        @reset=${this.clearLocation}
+        @submit=${this.updateLocation}>
         <input
-          aria-label="${label}"
+          aria-label="${locationLabel}"
           inputmode="search"
-          title="${label}"
+          title="${locationLabel}"
           type="text"
           value="${this.location}"
           required
-          @blur="${this.restoreLocation}">
+          @blur=${this.restoreLocation}>
+
         <button
           aria-label="Update location"
           type="submit"></button>
-        ${this.renderResetButton()}
-        ${this.renderGeoButton()}
-      </form>
-    `;
-  }
 
-  private renderResetButton() {
-    const label = 'Clear location';
-    return html`
-      <button
-        aria-label="${label}"
-        title="${label}"
-        type="reset">
-        <svg aria-hidden="true" viewbox="0 0 24 24">
-          <circle cx="12" cy="12" r="6"/>
-          <path d="M10,10 L14,14 M10,14 L14,10"/>
-        </svg>
-      </button>
-    `;
-  }
-
-  private renderGeoButton() {
-    if (navigator.geolocation) {
-      const label = 'Get current location';
-      return html`
         <button
-          aria-label="${label}"  
-          id="geo"
-          title="${label}"
-          type="button"
-          @click="${this.getGeolocation}">
-          <svg aria-hidden="true" viewbox="0 0 24 24">
-            <path d="M12,2 v3 M22,12 h-3 M12,22 v-3 M2,12 h3 M5,12 A7 7 0 1 1 19,12 M5,12 A7 7 0 0 0 19,12"/>
-            <circle cx="12" cy="12" r="2.5"/>
+          aria-label="${resetLabel}"
+          title="${resetLabel}"
+          type="reset">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="6"/>
+            <path d="M10,10 L14,14 M10,14 L14,10"/>
           </svg>
         </button>
-      `;
-    }
+
+        ${navigator.geolocation ? html`
+          <button
+            aria-label="${geolocationLabel}"  
+            id="geo"
+            title="${geolocationLabel}"
+            type="button"
+            @click=${this.getGeolocation}>
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12,2 v3 M22,12 h-3 M12,22 v-3 M2,12 h3 M5,12 A7 7 0 1 1 19,12 M5,12 A7 7 0 0 0 19,12"/>
+              <circle cx="12" cy="12" r="2.5"/>
+            </svg>
+          </button>` : nothing}
+      </form>
+    `;
   }
 }

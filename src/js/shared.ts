@@ -48,3 +48,15 @@ export interface SunriseSunset {
   sunrise: string,
   sunset: string,
 }
+
+/**
+ * Events.
+ */
+export enum Events {
+  AnimationEnd = 'animationend',
+  KeyDown = 'keydown',
+  Location = 'location',
+  Progress = 'progress',
+  TouchEnd = 'touchend',
+  TouchStart = 'touchstart',
+}
