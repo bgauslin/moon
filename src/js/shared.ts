@@ -1,6 +1,12 @@
-/**
- * Chart properties.
- */
+export enum Events {
+  AnimationEnd = 'animationend',
+  KeyDown = 'keydown',
+  Location = 'location',
+  Progress = 'progress',
+  TouchEnd = 'touchend',
+  TouchStart = 'touchstart',
+}
+
 export interface Arc {
   radius: number,
   sweep: number,
@@ -20,14 +26,6 @@ export interface LabelProps {
   yOffset: number,
 }
 
-export interface Point {
-  x: number,
-  y: number,
-}
-
-/**
- * Moon properties.
- */
 export interface MoonData {
   hemisphere: string,
   illumination: number,
@@ -44,19 +42,17 @@ export interface MoonriseMoonset {
   moonset: string,
 }
 
+export interface Point {
+  x: number,
+  y: number,
+}
+
 export interface SunriseSunset {
   sunrise: string,
   sunset: string,
 }
 
-/**
- * Events.
- */
-export enum Events {
-  AnimationEnd = 'animationend',
-  KeyDown = 'keydown',
-  Location = 'location',
-  Progress = 'progress',
-  TouchEnd = 'touchend',
-  TouchStart = 'touchstart',
+export interface Tick {
+  start: number,
+  end: number,
 }

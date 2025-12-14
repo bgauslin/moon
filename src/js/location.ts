@@ -4,7 +4,7 @@ import {Events} from './shared';
 
 
 /**
- * Custom element that sets a location via text input or geolocation.
+ * Lit custom element that sets a location via text input or geolocation.
  */
 @customElement('moon-location') class Location extends LitElement {
   @property({reflect: true}) location: string;

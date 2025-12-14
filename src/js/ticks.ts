@@ -1,13 +1,8 @@
-import {Chart} from './shared';
+import {Chart, Tick} from './shared';
 
-
-interface Tick {
-  start: number,
-  end: number,
-}
 
 /**
- * Custom element that renders an SVG containing grouped lines. That's it.
+ * Vanilla custom element that renders an SVG of grouped lines. That's it.
  */
 customElements.define('moon-ticks', class extends HTMLElement {
   private angle: number;

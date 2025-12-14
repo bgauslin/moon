@@ -6,7 +6,7 @@ import {Utils} from './utils';
 
 
 /**
- * Custom element that controls the application.
+ * Lit custom element that controls the application.
  */
 @customElement('moon-app') class App extends LitElement {
   private fetcher: DataFetcher;
@@ -14,7 +14,7 @@ import {Utils} from './utils';
   private utils: Utils;
 
   @state() baseTitle: string = document.title;
-  @state() defaultLocation: string = 'Montevideo';
+  @state() defaultLocation: string = 'Buenos Aires';
   @state() intro: boolean = true;
   @state() loading: boolean;
   @state() location: string;
