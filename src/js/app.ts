@@ -8,7 +8,7 @@ import {Utils} from './utils';
 /**
  * Lit custom element that controls the application.
  */
-@customElement('moon-app') class App extends LitElement {
+@customElement('luna-app') class App extends LitElement {
   private fetcher: DataFetcher;
   private keyHandler: EventListenerObject;
   private utils: Utils;
@@ -168,15 +168,15 @@ import {Utils} from './utils';
         id="photo"
         data-frame="${frame}"
         data-hemisphere="${hemisphere}"></div>
-      <moon-chart
+      <luna-chart
         end="${sunset}"
         name="sun"
-        start="${sunrise}"></moon-chart>
-      <moon-chart
+        start="${sunrise}"></luna-chart>
+      <luna-chart
         end="${moonset}"
         name="moon"
-        start="${moonrise}"></moon-chart>
-      <moon-ticks></moon-ticks>
+        start="${moonrise}"></luna-chart>
+      <luna-ticks></luna-ticks>
       <a href="./"
         id="date"
         title="Today"
@@ -184,13 +184,13 @@ import {Utils} from './utils';
         @click=${this.reset}>
         ${prettyDate}
       </a>
-      <moon-location
+      <luna-location
         .location=${this.location}
         @location=${this.updateLocation}
-        @progress=${this.updateProgress}></moon-location>
+        @progress=${this.updateProgress}></luna-location>
       ${this.renderButton('prev')}
       ${this.renderButton('next')}
-      <moon-touch></moon-touch>
+      <luna-touch></luna-touch>
       <div
         class="progress-bar"
         ?data-loading=${this.loading}></div>

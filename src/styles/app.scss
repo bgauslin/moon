@@ -1,7 +1,7 @@
 /**
  * App variables.
  */
-moon-app {
+luna-app {
   --app-gap: 0 .5rem;
   --app-grid: '. phase .' 2fr '. illumination .' 1fr 'charts charts charts' '. date .' 1fr 'prev location next' 2fr / var(--controls-size) minmax(auto, var(--charts-max-size)) var(--controls-size);
   --background-0: #{rgba(white, 0)};
@@ -29,7 +29,7 @@ moon-app {
 /**
  * App properties.
  */
-moon-app {
+luna-app {
   block-size: 100dvh;
   display: grid;
   gap: var(--app-gap);
@@ -40,7 +40,7 @@ moon-app {
 /**
  * SVG donut charts and photo.
  */
-:is(moon-chart, moon-ticks, [id='photo']) {
+:is(luna-chart, luna-ticks, [id='photo']) {
   aspect-ratio: 1;  
   grid-area: charts;
   place-self: center;

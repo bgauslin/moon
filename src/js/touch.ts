@@ -5,7 +5,7 @@ import {Events} from './shared';
  * Vanilla custom element that adds/removes a 'touch' class on touch targets
  * in the DOM for applying CSS.
  */	
-customElements.define('moon-touch', class extends HTMLElement {
+customElements.define('luna-touch', class extends HTMLElement {
   private touchEndHandler: EventListenerObject;
   private touchStartHandler: EventListenerObject;
   private touchTarget: HTMLElement;

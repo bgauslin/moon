@@ -4,7 +4,7 @@ import {Chart, Tick} from './shared';
 /**
  * Vanilla custom element that renders an SVG of grouped lines. That's it.
  */
-customElements.define('moon-ticks', class extends HTMLElement {
+customElements.define('luna-ticks', class extends HTMLElement {
   private angle: number;
   private center: number;
   private divisions: number = 24;

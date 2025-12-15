@@ -6,7 +6,7 @@ import {Events} from './shared';
 /**
  * Lit custom element that sets a location via text input or geolocation.
  */
-@customElement('moon-location') class Location extends LitElement {
+@customElement('luna-location') class Location extends LitElement {
   @property({reflect: true}) location: string;
   
   @query('#geo') geoButton: HTMLButtonElement;

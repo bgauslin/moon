@@ -1,5 +1,5 @@
 [intro] {
-  :is(moon-chart, moon-ticks, [id='photo']) {
+  :is(luna-chart, luna-ticks, [id='photo']) {
     animation: scaleIn var(--duration-intro) ease;
   }
 
@@ -7,7 +7,7 @@
     animation: scaleInFlipped var(--duration-intro) ease;
   }
 
-  moon-location {
+  luna-location {
     animation: slideInUp var(--duration-intro) ease;
   }
 
