@@ -10,7 +10,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      base: '/moon/',
+      base: '/luna/',
       filename: 'index.html',
       template: 'src/html/index.html',
     }),
